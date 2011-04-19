@@ -1,7 +1,7 @@
 <script language="javascript">
 $(document).ready(function() {
-	$("a.popin-discussion").popin({
-		width:800,
+	$("a.popin-request").popin({
+		width:700,
 		height:500,
 		className: "mypopin3",
 		loaderImg : '<?php echo $vars['url']; ?>/mod/enlightn/media/graphics/loading.gif',
@@ -18,4 +18,4 @@ $(document).ready(function() {
 	});
 });
 </script>
-<a href="<?php echo $vars['url']; ?>/mod/enlightn/ajax/discussion_edit.php" class="popin-discussion"><?php echo elgg_echo('enlightn:newdiscussion');?></a>
+<a href="<?php echo $vars['url']; ?>/mod/enlightn/ajax/invitations.php" class="popin-request"><?php echo elgg_echo('enlightn:membershiprequest');?> (<?php echo count($vars['requests']);?>)</a>

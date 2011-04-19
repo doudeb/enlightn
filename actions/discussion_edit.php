@@ -16,7 +16,6 @@
 		$tags = get_input('interests');
 		$access = get_input('membership');
 		$user = $_SESSION['user']->getGUID(); // you need to be logged in to comment on a group forum
-		$status = get_input('vis'); // sticky, resolved, closed
 		$userto = get_input('invite');
 	// Convert string of tags into a preformatted array
 		$tagarray = string_to_tag_array($tags);
@@ -51,7 +50,7 @@
 				$enlightndiscussion->tags = $tagarray;
 			}
 	// add metadata
-	        $enlightndiscussion->status = $status; // the current status i.e sticky, closed, resolved, open
+	       // $enlightndiscussion->status = $status; // the current status i.e sticky, closed, resolved, open
 	           
     // now add the topic message as an annotation
         	$enlightndiscussion->annotate('group_topic_post',$message,$access, $user);   
@@ -71,7 +70,9 @@
 						if (!$usertoid->isFriend()) {
 							add_entity_relationship($_SESSION['user']->guid, 'friend', $usertoid->guid);
 						}
-						if(add_entity_relationship($usertoid->guid, 'member', $enlightndiscussion->guid)) {
+						if(add_entity_relationship($enlightndiscussion->guid, 'invited', $usertoid->guid)) {
+							// Add membership requested
+							add_entity_relationship($usertoid->guid, 'membership_request', $enlightndiscussion->guid);
 							// Send email
 							$url = "{$CONFIG->url}pg/groups/invitations/{$usertoid->username}";
 							if (notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
@@ -88,7 +89,7 @@
 			}	
 	// Forward to the group forum page
 	        global $CONFIG;
-	        $url = $CONFIG->wwwroot . "pg/enlightn/index/";
+	        $url = $CONFIG->wwwroot . "pg/enlightn";
 			forward($url);
 			
 				

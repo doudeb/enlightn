@@ -11,6 +11,7 @@
 
 <form action="<?php echo $vars['url']; ?>action/enlightn/edit" enctype="multipart/form-data" method="post">
            
+<div class="contentWrapper">
 
 	<?php echo elgg_view('input/securitytoken'); ?>
 
@@ -50,18 +51,6 @@
 															)); ?>
 		</label>
 	</p>
-	<p>
-		<label>
-			<?php echo elgg_echo('groups:membership'); ?><br />
-			<?php echo elgg_view('input/access', array('internalname' => 'membership','value' => $membership, 'options' => array( ACCESS_PRIVATE => elgg_echo('groups:access:private'), ACCESS_PUBLIC => elgg_echo('groups:access:public')))); ?>
-		</label>
-	</p>
-	
-	<?php
-
-	if (get_plugin_setting('hidden_groups', 'groups') == 'yes')
-	{
-?>
 
 	<p>
 		<label>
@@ -73,7 +62,7 @@
 				$this_owner = get_loggedin_userid();
 			}
 			
-			$access = array(ACCESS_FRIENDS => elgg_echo("access:friends:label"), ACCESS_LOGGED_IN => elgg_echo("LOGGED_IN"), ACCESS_PUBLIC => elgg_echo("PUBLIC"));
+			$access = array(ACCESS_FRIENDS => elgg_echo("access:friends:label"), ACCESS_LOGGED_IN => elgg_echo("LOGGED_IN"), ACCESS_PUBLIC => elgg_echo("PUBLIC"), ACCESS_PRIVATE => elgg_echo("PRIVATE"));
 			$collections = get_user_access_collections($vars['entity']->guid);
 			if (is_array($collections)) {
 				foreach ($collections as $c)
@@ -81,7 +70,7 @@
 			}
 
 			$current_access = ($vars['entity']->access_id ? $vars['entity']->access_id : ACCESS_PUBLIC);
-			echo elgg_view('input/access', array('internalname' => 'vis', 
+			echo elgg_view('input/access', array('internalname' => 'membership', 
 												'value' =>  $current_access,
 												'options' => $access));
 			
@@ -89,42 +78,6 @@
 			?>
 		</label>
 	</p>
-
-<?php 	
-	}
-	
-	?>
-	
-    <?php
-		if (isset($vars['config']->group_tool_options)) {
-			foreach($vars['config']->group_tool_options as $group_option) {
-				$group_option_toggle_name = $group_option->name."_enable";
-				if ($group_option->default_on) {
-					$group_option_default_value = 'yes';
-				} else {
-					$group_option_default_value = 'no';
-				}
-?>	
-    <p>
-			<label>
-				<?php echo $group_option->label; ?><br />
-				<?php
-
-					echo elgg_view("input/radio",array(
-									"internalname" => $group_option_toggle_name,
-									"value" => $vars['entity']->$group_option_toggle_name ? $vars['entity']->$group_option_toggle_name : $group_option_default_value,
-									'options' => array(
-														elgg_echo('groups:yes') => 'yes',
-														elgg_echo('groups:no') => 'no',
-													   ),
-													));
-				?>
-			</label>
-	</p>
-	<?php
-		}
-	}
-	?>
 	<p>
 		<?php
 			if ($vars['entity'])

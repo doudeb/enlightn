@@ -1,0 +1,52 @@
+<?php
+	/**
+	 * Join a group action.
+	 *
+	 * @package ElggGroups
+	 */
+
+	// Load configuration
+	global $CONFIG;
+
+	gatekeeper();
+
+	$user_guid = get_input('user_guid', get_loggedin_userid());
+	$discussion_guid = get_input('discussion_guid');
+
+	// @todo fix for #287
+	// disable access to get entity.
+	$invitations = get_invitations($user_guid, TRUE);
+
+	if (in_array($discussion_guid, $invitations)) {
+		$ia = elgg_set_ignore_access(TRUE);
+	}
+
+	$user = get_entity($user_guid);
+	$discussion = get_entity($discussion_guid);
+
+	if (($user instanceof ElggUser) && ($discussion instanceof ElggObject))
+	{
+		if (add_entity_relationship($user->guid, 'member', $discussion->guid))
+		{
+			system_message(elgg_echo("groups:joined"));
+
+			// Remove any invite or join request flags
+			remove_entity_relationship($discussion->guid, 'invited', $user->guid);
+			remove_entity_relationship($user->guid, 'membership_request', $discussion->guid);
+
+			// add to river
+			add_to_river('river/relationship/member/create','join',$user->guid,$discussion->guid);
+
+			forward($vars['url'] . "pg/enlightn");
+			exit;
+		}
+		else
+			register_error(elgg_echo("groups:cantjoin"));
+
+	}
+	else
+		register_error(elgg_echo("groups:cantjoin"));
+
+	forward($_SERVER['HTTP_REFERER']);
+	exit;
+?>

@@ -17,7 +17,7 @@
 <?php
 	if ($vars['pagination'] !== false) {
 		$baseurl = $vars['url'] . 'mod/enlightn/ajax/activity.php';
-        $javascriptcall = "onclick=\"javascript:$('div').removeClass('loader') ; javascript:$('#activity_container').load('%s'); return false;\"";
+        $javascriptcall = "onclick=\"javascript:loadContent('#activity_container','%s'); return false;\"";
 
 		$nav = '';
 
@@ -42,9 +42,7 @@
 		}
 	}
 ?>
-<div id="loading" class="loader">
-<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">
-</div>
+<div id="loading" class="loader"></div>
 <div class="river_item_list">
 <?php
 	if (isset($vars['items']) && is_array($vars['items'])) {
