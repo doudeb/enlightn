@@ -7,9 +7,9 @@
 	 */
 
 ?>
-
+<div id="elgg_topbar_container_search"><?php echo elgg_view('page_elements/searchbox'); ?></div>
+<div class="clearfloat"></div>
 <div id="topic_posts"><!-- open the topic_posts div -->
-  
 <?php
     //display follow up comments
     $count = $vars['entity']->countAnnotations('group_topic_post');
@@ -24,9 +24,9 @@
     											));
 
 ?>
-    <!-- grab the topic title -->
-        <div id="content_area_group_title">
-        	<h2><?php echo $vars['entity']->title; ?></h2>
+<!-- grab the topic title -->
+    <div id="topic_header">
+    	<h2><?php echo $vars['entity']->title; ?></h2>
 <script language="javascript">
 $(document).ready(function() {
 	$("a.popin-discussion-invite").popin({
@@ -60,13 +60,14 @@ $(document).ready(function() {
 	echo "<div id=\"groups_member_link\"><a href=\"{$more_url}\">" . elgg_echo('groups:members:more') . "</a></div>";*/
 
 ?>
-        </div>
+    </div>
 <?php
 	// check to find out the status of the topic and act
     if($vars['entity']->status != "closed" /*&& page_owner_entity()->isMember($vars['user'])*/){
         
         //display the add comment form, this will appear after all the existing comments
-	    echo elgg_view("enlightn/addpost", array('entity' => $vars['entity']));
+	    echo elgg_view("enlightn/addpost", array('entity' => $vars['entity']
+	    											, 'owner' => $vars['owner']));
 	    
     } elseif($vars['entity']->status == "closed") {
         

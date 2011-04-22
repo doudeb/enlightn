@@ -26,6 +26,7 @@ unset($discussion_list);
 //Now lest's see what we are talking about
 $discussion = elgg_view('enlightn/discussion',array());
 $body .= $discussion;
+unset($discussion);
 page_draw(elgg_echo('enlightn:enlightn'),$body);
 
 ?>

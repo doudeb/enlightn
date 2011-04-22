@@ -8,7 +8,7 @@
 
 // Make sure we're logged in and have a CSRF token
 gatekeeper();
-
+elgg_get_access_object()->set_ignore_access(true);
 // Get input
 $topic_guid = (int) get_input('topic_guid');
 $group_guid = (int) get_input('group_guid');
@@ -46,5 +46,5 @@ if ($post_id == false) {
 add_to_river('enlightn/river/comment', 'create', $user->guid, $topic_guid, "", 0, $post_id);
 
 system_message(elgg_echo("groupspost:success"));
-
+elgg_get_access_object()->set_ignore_access(false);
 forward($_SERVER['HTTP_REFERER']);

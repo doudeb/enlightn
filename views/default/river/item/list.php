@@ -1,10 +1,3 @@
-<style>
-.loader {
-        visibility : hidden;
-        float : left;
-}
-</style>
-
 <?php
 /**
  *
@@ -36,13 +29,11 @@
 			$prevurl = elgg_http_add_url_query_elements($baseurl, array('offset' => $newoffset));
 			$nav .= '<a class="forward" ' . sprintf($javascriptcall,$prevurl) . ' href="'.$prevurl.'">' . elgg_echo('next') . ' &raquo;</a> ';
 		}
-
 		if (!empty($nav)) {
-			echo '<div class="river_pagination"><p>'.$nav.'</p><div class="clearfloat"></div></div>';
+			echo '<div class="river_pagination">'.$nav.'<div class="clearfloat"></div></div>';
 		}
 	}
 ?>
-<div id="loading" class="loader"></div>
 <div class="river_item_list">
 <?php
 	if (isset($vars['items']) && is_array($vars['items'])) {

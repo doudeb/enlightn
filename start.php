@@ -9,7 +9,7 @@ function enlightn_init() {
 	define('ENLIGHTN_DISCUSSION', 'enlightndiscussion');
 	define('ENLIGHTN_FOLLOW', 'member');
 	//Disable rights
-	elgg_get_access_object()->set_ignore_access(true);
+	//elgg_get_access_object()->set_ignore_access(true);
 	//require_once("model/enlightn.php");
     // Extend system CSS with our own styles
     //extend_view('css','enlightn/css');
@@ -87,22 +87,20 @@ function enlightn_page_handler($page) {
 	function get_discussion ($user_guid, $discussiontype) {
 		$discussions = array();
 		$discussion_options = array();
-		$discussion_options['limit'] = "50";
+		$discussion_options['limit'] = "10";
 		$discussion_options['types'] = "object";
 		$discussion_options['subtypes'] = ENLIGHTN_DISCUSSION;		
 		switch ($discussiontype) {
 			case 1:
-				elgg_get_access_object()->set_ignore_access(false);
 				$discussions = elgg_get_entities($discussion_options);				
-				elgg_get_access_object()->set_ignore_access(true);
 				break;
 			case 2:
 				$discussion_options['relationship'] = ENLIGHTN_FOLLOW;
 				$discussion_options['relationship_guid'] = $user_guid;
 				$discussion_options['inverse_relationship'] = false;
-				$discussions = elgg_get_entities_from_relationship($discussion_options);		
-				//elgg_get_access_object()->set_ignore_access(false);
-				//var_dump($discussions);
+				elgg_get_access_object()->set_ignore_access(true);
+				$discussions = elgg_get_entities_from_relationship($discussion_options);
+				elgg_get_access_object()->set_ignore_access(false);
 				break;
 			default:
 				$discussions += get_discussion($user_guid,1);

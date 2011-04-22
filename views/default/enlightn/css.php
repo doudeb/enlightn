@@ -7,7 +7,3 @@
 	 */
 
 ?>
-#activity_container {
-	border: 1px solid;	
-}
-
