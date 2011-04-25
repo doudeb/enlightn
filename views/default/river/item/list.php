@@ -30,7 +30,8 @@
 			$nav .= '<a class="forward" ' . sprintf($javascriptcall,$prevurl) . ' href="'.$prevurl.'">' . elgg_echo('next') . ' &raquo;</a> ';
 		}
 		if (!empty($nav)) {
-			echo '<div class="river_pagination">'.$nav.'<div class="clearfloat"></div></div>';
+			//echo '<div class="river_pagination">'.$nav.'</div>';
+			echo $nav;
 		}
 	}
 ?>

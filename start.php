@@ -8,6 +8,7 @@ function enlightn_init() {
 	global $CONFIG;
 	define('ENLIGHTN_DISCUSSION', 'enlightndiscussion');
 	define('ENLIGHTN_FOLLOW', 'member');
+	define('ENLIGHTN_READED', 'readed');
 	//Disable rights
 	//elgg_get_access_object()->set_ignore_access(true);
 	//require_once("model/enlightn.php");

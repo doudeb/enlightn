@@ -11,6 +11,6 @@ $discussion_type = get_input('discussion_type');
 $discussion_items = get_discussion($user_guid, $discussion_type);
 elgg_get_access_object()->set_ignore_access(true);
 foreach ($discussion_items as $key => $topic) {
-    echo  elgg_view("enlightn/discussion_short", array('entity' => $topic, 'current' => $key===0?true:false));
+    echo  elgg_view("enlightn/discussion_short", array('entity' => $topic, 'current' => $key===0?true:false, 'user_guid' => $user_guid));
 }
 elgg_get_access_object()->set_ignore_access(false);

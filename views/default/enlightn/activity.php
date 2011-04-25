@@ -29,6 +29,13 @@ function loadContent (divId,dataTo) {
 	#margin:4px 4px 4px 4px;
 	border-bottom: 2px solid #cccccc;
 }
+
+#short_post_view_unread {
+	padding:5px 10px 5px 10px;
+	#margin:4px 4px 4px 4px;
+	border-bottom: 2px solid #cccccc;
+	background:#cccccc;
+}
 #discussion { 
 	background:#cccccc;
 	#-webkit-border-radius: 8px;
@@ -38,6 +45,8 @@ function loadContent (divId,dataTo) {
 	border-right: 2px solid #cccccc;
 	width: 60%;
 	float:left;
+	height : 800px;
+	overflow: auto;
 }
 #topic_header { 
 	background:#FFFFFF;
@@ -46,6 +55,10 @@ function loadContent (divId,dataTo) {
 	#padding:5px 10px 5px 10px;
 	margin:4px 4px 4px 4px;
 	border: 1px solid #000000;
+}
+#short_friendly_time{
+	float:left;
+	width:110px;
 }
 </style>
 <div id="left_container">

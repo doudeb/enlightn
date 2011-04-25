@@ -14,9 +14,11 @@
 	}
 	$comment = strip_tags($comment);//this is so we don't get large images etc in the activity river
 	$url = $object->getURL();
+	$url_post = '<a href="" onclick="javascript:loadContent(\'#discussion\',\'' . $vars['url'] . '/mod/enlightn/ajax/discussion.php?discussion_id=' .$object->guid .'\'); return false;">';
+	//var_dump($url_post);
 	$url_user = "<a href=\"{$performed_by->getURL()}\">{$performed_by->name}</a>";
 	$string = sprintf(elgg_echo("groupforum:river:posted"),$url_user) . " ";
-	$string .= elgg_echo("groupforum:river:annotate:create") . " | <a href=\"" . $url . "\">" . $object->title . "</a>";
+	$string .= elgg_echo("groupforum:river:annotate:create") . " | " . $url_post . $object->title . "</a>";
 	if ($comment) {
 		$string .= "<div class=\"river_content_display\">";
 		$string .= elgg_get_excerpt($comment, 200);

@@ -2,7 +2,8 @@
 include_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php");
 
 
-	gatekeeper();	
+	gatekeeper();
+	$user_guid = get_loggedin_userid();
     // get the entity from id
     elgg_get_access_object()->set_ignore_access(true);
     $topic = get_entity(get_input('discussion_id'));
@@ -11,4 +12,5 @@ include_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php")
          
     // Display them
 	echo elgg_view("enlightn/viewposts", array('entity' => $topic
-												,'owner' => $owner));
+												,'owner' => $owner
+												,'user_guid' => $user_guid));
