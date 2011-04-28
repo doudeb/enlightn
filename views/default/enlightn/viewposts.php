@@ -11,6 +11,10 @@
 <div class="clearfloat"></div>
 <div id="topic_posts"><!-- open the topic_posts div -->
 <?php
+	//mark the discsussion as read
+	if(!check_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$vars['entity']->guid)) {
+		add_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$vars['entity']->guid);
+	}
     //display follow up comments
     $count = $vars['entity']->countAnnotations('group_topic_post');
     $offset = (int) get_input('offset',0);

@@ -13,7 +13,7 @@ $(document).ready(function() {
 			
 		},
 		onExit: function() {
-			
+			loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/discussion_short.php?discussion_type=1');
 		}
 	});
 });

@@ -139,5 +139,41 @@ function get_discussion_members($discussion_guid, $limit = 10, $offset = 0, $sit
 		'count' => $count,
 		'site_guid' => $site_guid
 	));
-}	
+}
+
+function get_activity_items ($user_guid, $limit = 10, $offset = 0) {
+	$sql = "Select r.* 
+From river r
+Left Join entity_relationships As rel On rel.guid_two In(r.object_guid, r.annotation_id) And rel.guid_one = $user_guid And rel.relationship = '" . ENLIGHTN_READED . "'
+Where r.subject_guid != $user_guid
+And rel.id Is Null
+Order By r.posted Desc
+Limit $offset, $limit";
+	return get_data($sql);
+	/*global $activity_items;
+	$nb_item 		= count($activity_items);
+	if (count($activity_items) === 0) {
+		$activity_items = array();
+	}	
+	$activity_items = array_merge($activity_items, get_river_items(0,0,0,0,0,0,$limit - $nb_item,$offset));
+	if (is_array($activity_items)) {
+		foreach ($activity_items as $key=>$item) {
+			if ($item->subject_guid === $user_guid) {
+				unset($activity_items[$key]);
+			}
+			if (check_entity_relationship($user_guid,ENLIGHTN_READED,$item->object_guid)) {
+				unset($activity_items[$key]);
+			}
+			if (check_entity_relationship($user_guid,ENLIGHTN_READED,$item->annotation_id)) {
+				unset($activity_items[$key]);
+			}
+		}
+	}
+	$nb_item 		= count($activity_items);
+	if ($nb_item < $limit) {
+		$activity_items = get_activity_items($user_guid,$limit,$offset+$limit);
+	}*/
+	return $activity_items;
+}
+
 ?>

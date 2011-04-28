@@ -18,8 +18,7 @@ And Case
 	When 1=$discussion_type Then e.access_id = 1 #All for logged user aka public
 	Else Null
 End 
-Order By e.time_created desc
-	";
+Order By e.time_created desc";
 		elgg_get_access_object()->set_ignore_access(true);
 		return  get_data($query, 'entity_row_to_elggstar');
 	}

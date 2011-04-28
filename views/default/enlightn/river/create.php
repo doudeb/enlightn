@@ -11,6 +11,7 @@
 	$url = $object->getURL();
 	$url_post = '<a href="" onclick="javascript:loadContent(\'#discussion\',\'' . $vars['url'] . '/mod/enlightn/ajax/discussion.php?discussion_id=' .$object->guid .'\'); return false;">';
 	$comment = false;//$object->getAnnotations("group_topic_post", 1, 0, "asc");
+	$contents = false;
 	if ($comment) {
 		foreach ($comment as $c) {
 			$contents = $c->value;

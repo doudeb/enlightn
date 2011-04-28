@@ -11,6 +11,7 @@
 $post = $vars['entity']->getAnnotations('', 1, 0, "desc");
 $post = $post[0];
 $flag_readed = check_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$post->id);
+$post_owner = get_entity($post->owner_guid);
 ?>
 <!-- grab the topic title -->
 <div id="short_friendly_time"><small><?php echo elgg_view_friendly_time($post->time_created) ?></small></div>   
@@ -32,7 +33,7 @@ $flag_readed = check_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$po
 	if ($vars['current'] === true) {
 ?>
 <script language="javascript">
-javascript:loadContent('#discussion','<?php echo $vars['url'] ?>/mod/enlightn/ajax/discussion.php?discussion_id=<?php echo $vars['entity']->guid; ?>');
+//javascript:loadContent('#discussion','<?php echo $vars['url'] ?>/mod/enlightn/ajax/discussion.php?discussion_id=<?php echo $vars['entity']->guid; ?>');
 </script>
 <?php
 	}

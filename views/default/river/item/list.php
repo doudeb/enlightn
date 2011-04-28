@@ -14,12 +14,12 @@
 
 		$nav = '';
 
-		if (sizeof($vars['items']) > $vars['limit']) {
+		//if (sizeof($vars['items']) > $vars['limit']) {
 			$newoffset = $vars['offset'] + $vars['limit'];
 			$nexturl = elgg_http_add_url_query_elements($baseurl, array('offset' => $newoffset));
 
 			$nav .= '<a class="back" ' . sprintf($javascriptcall,$nexturl) . ' href="'.$nexturl.'">&laquo; ' . elgg_echo('previous') . '</a> ';
-		}
+		//}
 
 		if ($vars['offset'] > 0) {
 			$newoffset = $vars['offset'] - $vars['limit'];

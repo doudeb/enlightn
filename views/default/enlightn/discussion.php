@@ -1,1 +1,1 @@
-<div id="discussion"></div>
+<div id="discussion"><?php echo elgg_view('page_elements/spotlight', $vars); ?></div>
