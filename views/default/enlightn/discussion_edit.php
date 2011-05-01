@@ -8,38 +8,37 @@
 	// new groups default to open membership
 	
 ?>
+<div id="pop_container_advanced">
 <form id="discussion_edit" action="<?php echo $vars['url']; ?>action/enlightn/edit" enctype="multipart/form-data" method="post">
            
 <div class="contentWrapper">
-
 	<?php echo elgg_view('input/securitytoken'); ?>
-
-			<?php echo elgg_echo("enlightn:to") ?><br />
-			<?php echo elgg_view("enlightn/helper/adduser",array(
+	<ul>
+		<li><?php echo elgg_echo("enlightn:to") ?> : <?php echo elgg_view("enlightn/helper/adduser",array(
 															'internalname' => 'invite',
 															'internalid' => 'invite',
 															'value' => $vars['entity']->invite,
-															)); ?>
-			<?php echo elgg_echo("groups:name") ?><br />
+															)); ?></li>
+		<li><?php echo elgg_echo("groups:name") ?> : 
 			<?php echo elgg_view("input/text",array(
 															'internalname' => 'title',
 															'internalid' => 'title',
 															'value' => $vars['entity']->name,
-															)); ?>
-			<?php echo elgg_echo("groups:description") ?><br />
+															)); ?></li>
+		<li><?php echo elgg_echo("groups:description") ?> : 
 			<?php echo elgg_view("input/longtext",array(
 															'internalname' => 'description',
 															'internalid' => 'description',
 															'value' => $vars['entity']->description,
-															)); ?>
+															)); ?><li>
 	
-			<?php echo elgg_echo("groups:interests") ?><br />
+		<li><?php echo elgg_echo("groups:interests") ?> : 
 			<?php echo elgg_view("input/tags",array(
 															'internalname' => 'interests',
 															'internalid' => 'interests',
 															'value' => $vars['entity']->interests,
-															)); ?>
-			<?php echo elgg_echo('groups:visibility'); ?><br />
+															)); ?></li>
+		<li><?php echo elgg_echo('groups:visibility'); ?>
 			<?php 
 			
 			$this_owner = $vars['entity']->owner_guid;
@@ -62,7 +61,7 @@
 												'options' => $access));
 			
 			
-			?>
+			?></li>
 		<?php
 			if ($vars['entity'])
 			{ 
@@ -71,6 +70,7 @@
 		<?php
 			}
 		?>
+		</ul>
 		<div id="discussion_close" style="float: right;"><input type="button" class="submit_button popin-close" value="<?php echo elgg_echo("close"); ?>" /></div>
 		<div id="submission"><input type="submit" class="submit_button" value="<?php echo elgg_echo("save"); ?>" /></div>
 </form>
@@ -168,3 +168,4 @@ if ($vars['entity']) {
 <?php
 }
 ?>
+</div>
