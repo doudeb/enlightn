@@ -7,13 +7,14 @@ $(document).ready(function() {
 		loaderImg : '<?php echo $vars['url']; ?>/mod/enlightn/media/graphics/loading.gif',
 		opacity: .6,
 		onStart: function() {
-			
+
 		},
 		onComplete: function() {
-			
+
 		},
 		onExit: function() {
-			loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/discussion_short.php?discussion_type=1');
+			loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/discussion_short.php?discussion_type=1&discussion_id=' + discussion_id);
+
 		}
 	});
 });

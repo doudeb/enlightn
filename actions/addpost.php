@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Elgg groups: add post to a topic 
+ * Elgg groups: add post to a topic
  *
  * @package ElggGroups
  */
@@ -12,7 +12,7 @@ elgg_get_access_object()->set_ignore_access(true);
 // Get input
 $topic_guid = (int) get_input('topic_guid');
 $group_guid = (int) get_input('group_guid');
-$post = get_input('topic_post');
+$post = get_input('topic_post',null,false);
 
 
 // make sure we have text in the post

@@ -2,7 +2,7 @@
 
     /**
 	 * Elgg groups plugin add topic action.
-	 * 
+	 *
 	 * @package ElggGroups
 	 */
 
@@ -10,7 +10,7 @@
 if (!isloggedin()) forward();
 // Get input data
 $title = strip_tags(get_input('title'));
-$message = get_input('description');
+$message = get_input('description',null,false);
 $tags = get_input('interests');
 $access = get_input('membership');
 $user = $_SESSION['user']->getGUID(); // you need to be logged in to comment on a group forum
@@ -23,7 +23,7 @@ $tagarray = string_to_tag_array($tags);
 if (empty($title) || empty($message)) {
 	register_error(elgg_echo("grouptopic:blank"));
 	echo elgg_echo('enlightn:missingData');
-	
+
 // Otherwise, save the topic
 } else {
 	// Initialise a new ElggObject
@@ -47,11 +47,11 @@ if (empty($title) || empty($message)) {
 	if (is_array($tagarray)) {
 		$enlightndiscussion->tags = $tagarray;
 	}
-      
+
 	// now add the topic message as an annotation
 	$annotationid = $enlightndiscussion->annotate('group_topic_post',$message,$access, $user);
 	// add to river
-	add_to_river('enlightn/river/create','create',$_SESSION['user']->guid,$enlightndiscussion->guid,"", 0, $post_id);  
+	add_to_river('enlightn/river/create','create',$_SESSION['user']->guid,$enlightndiscussion->guid,"", 0, $post_id);
 	// Success message
 	system_message(elgg_echo("grouptopic:created"));
 	// Add users membership to the discussion
@@ -79,14 +79,20 @@ if (empty($title) || empty($message)) {
 						register_error(elgg_echo("groups:usernotinvited"));
 
 				}
-			}			
-		}		
+			}
+		}
 	}
 	//Mark the message as read
 	add_entity_relationship($_SESSION['user']->guid, ENLIGHTN_READED, $enlightndiscussion->guid);
 	add_entity_relationship($_SESSION['user']->guid, ENLIGHTN_READED, $annotationid);
 	echo elgg_echo('enlightn:discussion_sucessfully_created');
 }
+?>
+<script language="javascript">
+	var discussion_id = <?php echo $enlightndiscussion->guid ?>;
+</script>
+
+<?php
 exit();
-		
+
 ?>

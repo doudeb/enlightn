@@ -9,7 +9,7 @@ include_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php")
     $topic = get_entity(get_input('discussion_id'));
     if (!$topic) forward();
 	$owner = get_entity(get_loggedin_userid());
-         
+
     // Display them
 	echo elgg_view("enlightn/viewposts", array('entity' => $topic
 												,'owner' => $owner

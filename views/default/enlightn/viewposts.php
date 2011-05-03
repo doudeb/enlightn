@@ -2,7 +2,7 @@
 
     /**
 	 * Elgg groups plugin display topic posts
-	 * 
+	 *
 	 * @package ElggGroups
 	 */
 
@@ -18,7 +18,7 @@
     //display follow up comments
     $count = $vars['entity']->countAnnotations('group_topic_post');
     $offset = (int) get_input('offset',0);
-    
+
     $baseurl = $vars['entity']->getURL();
     echo elgg_view('navigation/pagination',array(
     												'limit' => 50,
@@ -40,13 +40,13 @@ $(document).ready(function() {
 		loaderImg : '<?php echo $vars['url']; ?>/mod/enlightn/media/graphics/loading.gif',
 		opacity: .6,
 		onStart: function() {
-			
+
 		},
 		onComplete: function() {
-			
+
 		},
 		onExit: function() {
-			
+
 		}
 	});
 });
@@ -55,9 +55,9 @@ $(document).ready(function() {
 <?php
     $members = get_discussion_members($vars['entity']->guid,12);
     foreach($members as $mem) {
-           
-        echo "<div class=\"member_icon\"><a href=\"".$mem->getURL()."\">" . elgg_view("profile/icon",array('entity' => $mem, 'size' => 'tiny', 'override' => 'true')) . "</a></div>";   
-           
+
+        echo "<div class=\"member_icon\"><a href=\"".$mem->getURL()."\">" . elgg_view("profile/icon",array('entity' => $mem, 'size' => 'tiny', 'override' => 'true')) . "</a></div>";
+
     }
 	echo "<div class=\"clearfloat\"></div>";
 	/*$more_url = "{$vars['url']}pg/groups/memberlist/{$vars['entity']->guid}/";
@@ -68,23 +68,24 @@ $(document).ready(function() {
 <?php
 	// check to find out the status of the topic and act
     if($vars['entity']->status != "closed" /*&& page_owner_entity()->isMember($vars['user'])*/){
-        
+
         //display the add comment form, this will appear after all the existing comments
 	    echo elgg_view("enlightn/addpost", array('entity' => $vars['entity']
 	    											, 'owner' => $vars['owner']));
-	    
+
     } elseif($vars['entity']->status == "closed") {
-        
+
         //this topic has been closed by the owner
         echo "<h2>" . elgg_echo("groups:topicisclosed") . "</h2>";
         echo "<p>" . elgg_echo("groups:topiccloseddesc") . "</p>";
-        
-    } 										
+
+    }
     foreach($vars['entity']->getAnnotations('group_topic_post', 50, $offset, "desc") as $post) {
     	if(!check_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$post->id)) {
     		add_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$post->id);
     	}
-	    echo elgg_view("forum/topicposts",array('entity' => $post));
+    	//var_dump($post);
+	    echo elgg_view("enlightn/topicpost",array('entity' => $post));
 	}
 ?>
 </div>
