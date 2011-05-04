@@ -6,10 +6,9 @@
 	 */
 
 	// Load configuration
-	global $CONFIG;
-
 	gatekeeper();
-
+	global $CONFIG;
+	$url = $CONFIG->wwwroot . "pg/enlightn";
 	$user_guid = get_input('user_guid', get_loggedin_userid());
 	$discussion_guid = get_input('discussion_guid');
 
@@ -24,10 +23,8 @@
 	$user = get_entity($user_guid);
 	$discussion = get_entity($discussion_guid);
 
-	if (($user instanceof ElggUser) && ($discussion instanceof ElggObject))
-	{
-		if (add_entity_relationship($user->guid, 'member', $discussion->guid))
-		{
+	if (($user instanceof ElggUser)) 	{
+		if (add_entity_relationship($user->guid, 'member', $discussion->guid)) {
 			system_message(elgg_echo("groups:joined"));
 
 			// Remove any invite or join request flags
@@ -47,6 +44,6 @@
 	else
 		register_error(elgg_echo("groups:cantjoin"));
 
-	forward($_SERVER['HTTP_REFERER']);
+	forward($url . '?discussion_id=' . $discussion->guid);
 	exit;
 ?>

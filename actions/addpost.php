@@ -8,6 +8,8 @@
 
 // Make sure we're logged in and have a CSRF token
 gatekeeper();
+global $CONFIG;
+$url = $CONFIG->wwwroot . "pg/enlightn";
 elgg_get_access_object()->set_ignore_access(true);
 // Get input
 $topic_guid = (int) get_input('topic_guid');
@@ -48,4 +50,4 @@ add_to_river('enlightn/river/comment', 'create', $user->guid, $topic_guid, "", 0
 add_entity_relationship($_SESSION['user']->guid, ENLIGHTN_READED, $post_id);
 system_message(elgg_echo("groupspost:success"));
 elgg_get_access_object()->set_ignore_access(false);
-forward($_SERVER['HTTP_REFERER']);
+forward($url . '?discussion_id=' . $topic_guid);

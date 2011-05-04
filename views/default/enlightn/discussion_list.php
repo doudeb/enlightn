@@ -6,7 +6,7 @@
 </div>
 <div id="discussion_list_container"></div>
 <script language="javascript">
-javascript:loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/discussion_short.php?discussion_type=1');
+javascript:loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/discussion_short.php?discussion_type=1&discussion_id=<?php echo $vars['discussion_id']?>');
 </script>
 <!-- Leftcontainer end -->
 </div>

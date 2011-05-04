@@ -19,4 +19,4 @@ $(document).ready(function() {
 	});
 });
 </script>
-<a href="<?php echo $vars['url']; ?>/mod/enlightn/ajax/discussion_edit.php" class="popin-discussion"><?php echo elgg_echo('enlightn:newdiscussion');?></a>
+<div class="button"><strong><a href="<?php echo $vars['url']; ?>/mod/enlightn/ajax/discussion_edit.php" class="popin-discussion"><?php echo elgg_echo('enlightn:newdiscussion');?></a></strong></div>
