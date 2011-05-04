@@ -2703,4 +2703,70 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 
 .totalimg{ font-size:10px; color:#333333;float:left; margin:5px;}
 
+#pop_container_advanced {
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: rgba(82, 82, 82, 0.702);
+	background-image: none;
+	background-origin: padding-box;
+	background-position: 0% 0%;
+	background-repeat: repeat;
+	background-size: auto;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+}
+
+.button {
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: #dddddd;
+	background-image: url("<?php echo $vars['url'] ?>mod/enlightn/media/graphics/bg-btn.gif");
+	background-origin: padding-box;
+	background-position: 0px 0px;
+	background-repeat: repeat-x;
+	background-size: auto;
+	border-bottom-color: #999999;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-left-color: #bbbbbb;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #bbbbbb;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top-color: #bbbbbb;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-top-style: solid;
+	border-top-width: 1px;
+	box-shadow: 0px 1px 0px;
+	color: #333333 !important;
+	cursor: pointer;
+	display: inline-block;
+	line-height: 15px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	padding-bottom: 5px;
+	padding-left: 9px;
+	padding-right: 9px;
+	padding-top: 5px;
+}
 </style>
+<script language="javascript">
+function loadContent (divId,dataTo) {
+	javascript:$(divId).prepend('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
+	javascript:$(divId).load(dataTo);
+}
+</script>
