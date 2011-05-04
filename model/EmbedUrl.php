@@ -49,6 +49,7 @@ class Embed_url {
 		return $url_host[0];
 	}
 
+
 	private function fetchRecord () {
 		$data = file_get_contents($this->url);
 		$this->html =  $data;
@@ -81,8 +82,10 @@ class Embed_url {
 	private function sortImages () {
 		$c=sizeof($this->images);
 		for ($i=0;$i<=$c;$i++) {
-			//var_dump($this->images[$i] , $this->isImageId($this->images[$i]), $this->isRelatedImage($this->images[$i]));
-			if(@$this->images[$i] && $this->isImageId($this->images[$i]) && $this->isRelatedImage($this->images[$i]) > 40) {
+			$this->images[$i] = $this->chroot($this->images[$i]);
+			if(@$this->images[$i]
+					&& $this->isImageId($this->images[$i])
+					&& $this->isRelatedImage($this->images[$i]) > 40) {
 				$image_data = @getimagesize(@$this->images[$i]);
 				if(@$image_data) {
 					list($width, $height, $type, $attr) = $image_data;
@@ -101,6 +104,15 @@ class Embed_url {
 	private function isRelatedImage ($image) {
 		similar_text($this->url,$image, $is_image_related);
 		return $is_image_related;
+	}
+
+	private function chroot($image) {
+		if (substr($image,0,1) == '/') {
+			 $parsed_url = parse_url($this->url);
+			 //var_dump($parsed_url);
+			 return $parsed_url['scheme'] . '://' . $parsed_url['host'] . $image;
+		}
+		return $image;
 	}
 }
 ?>

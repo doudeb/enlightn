@@ -25,7 +25,7 @@
 		<?php
 		if (is_array($vars['entity']->sortedImage)) {
 			foreach ($vars['entity']->sortedImage as $key=>$image) {
-				if ($key===1) {
+				if ($key===0) {
 					echo '<img src="' . $image . '" width="100px" alt="" id="imagePreview">';
 				}
 				echo '<input type="hidden" name="imgsrc['. $key . ']" value="' . $image . '" id="imgsrc'. $key . '">';
