@@ -23,7 +23,11 @@ $post_owner = get_entity($post->owner_guid);
                 <?php
                     //get infomation about the owner of the comment
                     if ($post_owner = get_user($post->owner_guid)) {
-                       echo "<p><b>" . $post_owner->name . "</b><br />";
+                       echo "<b>" . $post_owner->name . "</b>";
+                    }
+                    if (!check_entity_relationship($vars['user_guid'], ENLIGHTN_FOLLOW, $vars['entity']->guid)) {
+                    	echo elgg_view("enlightn/follow", array('entity' => $vars['entity']
+    													, 'user_guid' => $vars['user_guid']));
                     }
                    //display the actual message posted
                    echo parse_urls(elgg_view("output/longtext",array("value" => elgg_get_excerpt($post->value, 200))));

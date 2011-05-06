@@ -30,6 +30,28 @@ if (isset($vars['value'])) {
 }
 ?>
 <script type="text/javascript">
+	/*$().ready(function() {
+		$('textarea.<?php echo $class?>').tinymce({
+			// Location of TinyMCE script
+			script_url : '<?php echo $vars['url']; ?>mod/enlightn/media/js/tinymce/tiny_mce.js',
+			mode : "specific_textareas",
+			editor_selector : "mceEditor",
+			theme : "advanced",
+			relative_urls : false,
+			theme_advanced_buttons1 : "bold,italic,underline,separator,strikethrough,bullist,numlist,undo,redo,link,unlink,image,blockquote,code",
+			theme_advanced_buttons2 : "",
+			theme_advanced_buttons3 : "",
+			theme_advanced_toolbar_location : "top",
+			theme_advanced_toolbar_align : "left",
+			theme_advanced_statusbar_location : "bottom",
+			theme_advanced_resizing : true,
+			extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]"
+		});
+	});*/
+</script>
+<!-- /TinyMCE -->
+
+<script type="text/javascript">
 
 	function getCurrentImage() {
 		return $('#imagePreview').attr('src');
@@ -46,6 +68,11 @@ if (isset($vars['value'])) {
 	}
 
 	function changePublishSettings (currElement, destElement) {
+		if (currElement == '#publish_text') {
+			$('#result_embed').css('display', 'none');
+		} else {
+			$('#result_embed').css('display', 'block');
+		}
 		$(currElement).addClass('selected');
 		$(destElement).css('display', 'block');
 		$("#publish_selector li").each(function () {
@@ -61,14 +88,12 @@ if (isset($vars['value'])) {
 	}
 
 	$(document).ready(function(){
-		// delete event
 		$('#attach_media').click( function(){
 			loadContent("#result_embed",'<?php echo $vars['url'] ?>/mod/enlightn/ajax/fetch_media.php?url='+ $("#url_media").val());
 		});
 	});
 
 	$(document).ready(function(){
-		// delete event
 		$('#attach_url').click( function(){
 			loadContent("#result_embed",'<?php echo $vars['url'] ?>/mod/enlightn/ajax/fetch_url.php?url='+ $("#url").val());
 		});

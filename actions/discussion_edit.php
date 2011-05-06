@@ -49,9 +49,9 @@ if (empty($title) || empty($message)) {
 	}
 
 	// now add the topic message as an annotation
-	$annotationid = $enlightndiscussion->annotate('group_topic_post',$message,$access, $user);
+	$annotationid = $enlightndiscussion->annotate(ENLIGHTN_DISCUSSION,$message,$access, $user);
 	// add to river
-	add_to_river('enlightn/river/create','create',$_SESSION['user']->guid,$enlightndiscussion->guid,"", 0, $post_id);
+	add_to_river('enlightn/river/create','create',$_SESSION['user']->guid,$enlightndiscussion->guid,$access, 0, $post_id);
 	// Success message
 	system_message(elgg_echo("grouptopic:created"));
 	// Add users membership to the discussion

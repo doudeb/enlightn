@@ -13,7 +13,7 @@
 	<div class="contentWrapper">
 		<ul>
 		<?php echo elgg_view('input/securitytoken'); ?>
-<li><?php echo elgg_echo('groups:visibility'); ?>
+			<li><?php echo elgg_echo('groups:visibility'); ?>
 				<?php
 
 				$this_owner = $vars['entity']->owner_guid;
@@ -121,7 +121,7 @@
 	    alert('About to submit: \n\n' + queryString);
 	    // here we could return false to prevent the form from being submitted;
 	    // returning anything other than false will allow the form submit to continue
-	    return true;
+	    return false;
 	}
 
 	// post-submit callback

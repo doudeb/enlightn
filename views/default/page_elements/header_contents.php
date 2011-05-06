@@ -13,7 +13,7 @@
 	 **/
 ?>
 <div id="layout_header">
-	<div id="logo"><a href="<?php echo $vars['url']; ?>"><img src="<?php echo $vars['url']; ?>mod/black_pod_free/graphics/logo.gif" alt="<?php echo $vars['config']->sitename; ?>" title="<?php echo $vars['config']->sitename; ?>" /></a></div>
+	<div id="logo"><a href="<?php echo $vars['url']; ?>"><img src="<?php echo $vars['url']; ?>mod/enlightn/media/graphics/logo.gif" alt="<?php echo $vars['config']->sitename; ?>" title="<?php echo $vars['config']->sitename; ?>" /></a></div>
 	<?php if (isloggedin()) { ?>
 	<div id="top_search_box"><br /><?php echo elgg_view('page_elements/searchbox'); ?></div>
 	<div class="clearFloat"></div>

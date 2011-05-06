@@ -52,7 +52,7 @@
 		<br /><br />
 			<input type="hidden" name="cur_image" id="cur_image" value="0" />
 			<input type="hidden" name="total_images" id="total_images" value="<?php echo $key?>" />
-			<label style="float:left"><img src="<?php echo $vars['url'];?>mod/enlightn/media/graphics/prev.png" id="prev" alt="<<" /><img src="http://enlightn_dev.doudeb/mod/enlightn/media/graphics/next.png" id="next" alt=">>" /></label>
+			<label style="float:left"><img src="<?php echo $vars['url'];?>mod/enlightn/media/graphics/prev.png" id="prev" alt="<<" /><img src="<?php echo $vars['url'];?>mod/enlightn/media/graphics/next.png" id="next" alt=">>" /></label>
 		<br />
 	</div>
 	<script>refreshInput('url');</script>

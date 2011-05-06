@@ -60,7 +60,8 @@ $release = get_version(true);
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery-ui-1.7.2.custom.min.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery.form.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>_css/js.php?lastcache=<?php echo $vars['config']->lastcache; ?>&amp;js=initialise_elgg&amp;viewtype=<?php echo $vars['view']; ?>"></script>
-	<script type="text/javascript" src="<?php echo $vars['url']; ?>/mod/enlightn/media/js/jquery.popin.js"></script>
+	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.popin.js"></script>
+	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/tinymce/jquery.tinymce.js"></script>			
 <?php
 	global $pickerinuse;
 	if (isset($pickerinuse) && $pickerinuse == true) {
@@ -274,7 +275,7 @@ blockquote p {
 	width:100%;
 	margin:0px auto;
 	height:60px;
-	background:#252525 url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/header-main.gif) repeat-x;
+	background:#252525 url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/header-main.gif) repeat-x;
 	color:#fff;
 }
 #logo h1,#logo h1 a {
@@ -460,17 +461,17 @@ span.contentIntro p {
 *************************************** */
 
 #elgg_topbar_container_left a.privatemessages {
-	background:transparent url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/toolbar_messages_icon.gif) no-repeat left 2px;
+	background:transparent url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/toolbar_messages_icon.gif) no-repeat left 2px;
 	padding:0 0 4px 16px;
 	margin:0 15px 0 5px;
 	cursor:pointer;
 }
 #elgg_topbar_container_left a.privatemessages:hover {
 	text-decoration: none;
-	background:transparent url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/toolbar_messages_icon.gif) no-repeat left -36px;
+	background:transparent url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/toolbar_messages_icon.gif) no-repeat left -36px;
 }
 #elgg_topbar_container_left a.privatemessages_new {
-	background:transparent url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/toolbar_messages_icon.gif) no-repeat left -17px;
+	background:transparent url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/toolbar_messages_icon.gif) no-repeat left -17px;
 	padding:0 0 0 18px;
 	margin:0 15px 0 5px;
 	color:white;
@@ -1074,97 +1075,97 @@ p.user_menu_friends_of {
 	min-height:17px;
 }
 .river_user_update {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_profile.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_profile.gif) no-repeat left -1px;
 }
 .river_object_user_profileupdate {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_profile.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_profile.gif) no-repeat left -1px;
 }
 .river_object_user_profileiconupdate {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_profile.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_profile.gif) no-repeat left -1px;
 }
 .river_object_annotate {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
 }
 .river_object_bookmarks_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_bookmarks.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_bookmarks.gif) no-repeat left -1px;
 }
 .river_object_bookmarks_comment {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
 }
 .river_object_status_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_status.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_status.gif) no-repeat left -1px;
 }
 .river_object_file_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_files.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_files.gif) no-repeat left -1px;
 }
 .river_object_file_update {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_files.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_files.gif) no-repeat left -1px;
 }
 .river_object_file_comment {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
 }
 .river_object_widget_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_plugin.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_plugin.gif) no-repeat left -1px;
 }
 .river_object_forums_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
 }
 .river_object_forums_update {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
 }
 .river_object_widget_update {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_plugin.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_plugin.gif) no-repeat left -1px;
 }
 .river_object_blog_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_blog.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_blog.gif) no-repeat left -1px;
 }
 .river_object_blog_update {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_blog.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_blog.gif) no-repeat left -1px;
 }
 .river_object_blog_comment {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
 }
 .river_object_forumtopic_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
 }
 .river_user_friend {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_friends.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_friends.gif) no-repeat left -1px;
 }
 .river_object_relationship_friend_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_friends.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_friends.gif) no-repeat left -1px;
 }
 .river_object_relationship_member_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
 }
 .river_object_thewire_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_thewire.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_thewire.gif) no-repeat left -1px;
 }
 .river_group_join {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
 }
 .river_object_groupforumtopic_annotate {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
 }
 .river_object_groupforumtopic_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_forum.gif) no-repeat left -1px;
 }
 .river_object_sitemessage_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_blog.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_blog.gif) no-repeat left -1px;
 }
 .river_user_messageboard {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
 }
 .river_object_page_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_pages.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_pages.gif) no-repeat left -1px;
 }
 .river_object_page_top_create {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_pages.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_pages.gif) no-repeat left -1px;
 }
 .river_object_page_top_comment {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
 }
 .river_object_page_comment {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/river_icons/river_icon_comment.gif) no-repeat left -1px;
 }
 
 /* ***************************************
@@ -1443,25 +1444,25 @@ table.search_gallery {
 	font-size: 90%;
 	color:#999999;
 	padding:0 0 4px 20px;
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/icon_rss.gif) no-repeat left top;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/icon_rss.gif) no-repeat left top;
 }
 #owner_block_odd_feed a {
 	font-size: 90%;
 	color:#999999;
 	padding:0 0 4px 20px;
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/icon_odd.gif) no-repeat left top;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/icon_odd.gif) no-repeat left top;
 }
 #owner_block_bookmark_this a {
 	font-size: 90%;
 	color:#999999;
 	padding:0 0 4px 20px;
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/icon_bookmarkthis.gif) no-repeat left top;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/icon_bookmarkthis.gif) no-repeat left top;
 }
 #owner_block_report_this a {
 	font-size: 90%;
 	color:#999999;
 	padding:0 0 4px 20px;
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/icon_reportthis.gif) no-repeat left top;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/icon_reportthis.gif) no-repeat left top;
 }
 #owner_block_rss_feed a:hover,
 #owner_block_odd_feed a:hover,
@@ -1804,16 +1805,16 @@ ul#friends_collections_accordian {
 	z-index:1;
 }
 .friendsPickerNavigationL {
-	background: url("<?php echo $vars['url']; ?>mod/black_pod_free/graphics/friends_picker_arrows.gif") no-repeat left top;
+	background: url("<?php echo $vars['url']; ?>mod/enlightn/media/graphics/friends_picker_arrows.gif") no-repeat left top;
 }
 .friendsPickerNavigationR {
-	background: url("<?php echo $vars['url']; ?>mod/black_pod_free/graphics/friends_picker_arrows.gif") no-repeat -60px top;
+	background: url("<?php echo $vars['url']; ?>mod/enlightn/media/graphics/friends_picker_arrows.gif") no-repeat -60px top;
 }
 .friendsPickerNavigationL:hover {
-	background: url("<?php echo $vars['url']; ?>mod/black_pod_free/graphics/friends_picker_arrows.gif") no-repeat left -44px;
+	background: url("<?php echo $vars['url']; ?>mod/enlightn/media/graphics/friends_picker_arrows.gif") no-repeat left -44px;
 }
 .friendsPickerNavigationR:hover {
-	background: url("<?php echo $vars['url']; ?>mod/black_pod_free/graphics/friends_picker_arrows.gif") no-repeat -60px -44px;
+	background: url("<?php echo $vars['url']; ?>mod/enlightn/media/graphics/friends_picker_arrows.gif") no-repeat -60px -44px;
 }
 .friends_collections_controls a.delete_collection {
 	display:block;
@@ -1821,7 +1822,7 @@ ul#friends_collections_accordian {
 	width:14px;
 	height:14px;
 	margin:2px 3px 0 0;
-	background: url("<?php echo $vars['url']; ?>mod/black_pod_free/graphics/icon_customise_remove.png") no-repeat 0 0;
+	background: url("<?php echo $vars['url']; ?>mod/enlightn/media/graphics/icon_customise_remove.png") no-repeat 0 0;
 }
 .friends_collections_controls a.delete_collection:hover {
 	background-position: 0 -16px;
@@ -2002,11 +2003,11 @@ a.toggle_customise_edit_panel:hover {
 	padding:4px;
 }
 #customise_editpanel img.more_info {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/icon_customise_info.gif) no-repeat top left;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/icon_customise_info.gif) no-repeat top left;
 	cursor:pointer;
 }
 #customise_editpanel img.drag_handle {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/icon_customise_drag.gif) no-repeat top left;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/icon_customise_drag.gif) no-repeat top left;
 	cursor:move;
 }
 #customise_editpanel img {
@@ -2121,7 +2122,7 @@ a.collapsibleboxlink {
 
 /* tag icon */
 .object_tag_string {
-	background: url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/icon_tag.gif) no-repeat left 2px;
+	background: url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/icon_tag.gif) no-repeat left 2px;
 	padding:0 0 0 14px;
 	margin:0;
 }
@@ -2276,7 +2277,7 @@ a.toggle_editor {
 }
 
 div.ajax_loader {
-	background: white url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/ajax_loader.gif) no-repeat center 30px;
+	background: white url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/ajax_loader.gif) no-repeat center 30px;
 	width:auto;
 	height:100px;
 	margin:0 10px 0 10px;
@@ -2378,17 +2379,17 @@ border-top:none;
 
 }
 #messageTop a.privatemessages {
-	background:transparent url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/toolbar_messages_icon.gif) no-repeat left 2px;
+	background:transparent url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/toolbar_messages_icon.gif) no-repeat left 2px;
 	padding:0 0 4px 16px;
 	margin:0 15px 0 5px;
 	cursor:pointer;
 }
 #messageTop a.privatemessages:hover {
 	text-decoration: none;
-	background:transparent url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/toolbar_messages_icon.gif) no-repeat left -36px;
+	background:transparent url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/toolbar_messages_icon.gif) no-repeat left -36px;
 }
 #messageTop a.privatemessages_new {
-	background:transparent url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/toolbar_messages_icon.gif) no-repeat left -17px;
+	background:transparent url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/toolbar_messages_icon.gif) no-repeat left -17px;
 	padding:0 0 0 18px;
 	margin:0 15px 0 5px;
 	color:white;
@@ -2454,7 +2455,7 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 }
 
 #navBar {
-	width:300px;
+	width:auto;
 	padding:0px 0px 0px 0px;
 	height:45px;
 	float:right;
@@ -2472,7 +2473,7 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	padding: 5px 5px;
 	color:#fff;
 	display:block;
-	background:url(<?php echo $vars['url']; ?>mod/black_pod_free/graphics/shows-grid-bg.gif) repeat-y top right;
+	background:url(<?php echo $vars['url']; ?>mod/enlightn/media/graphics/shows-grid-bg.gif) repeat-y top right;
 }
 
 #nav a:hover {

@@ -24,6 +24,7 @@ function enlightn_init() {
 	register_action("enlightn/addpost",false, $CONFIG->pluginspath . "enlightn/actions/addpost.php");
 	register_action("enlightn/join",false, $CONFIG->pluginspath . "enlightn/actions/join.php");
 	register_action("enlightn/invite",false, $CONFIG->pluginspath . "enlightn/actions/discussion_invite.php");
+	register_action("enlightn/follow",false, $CONFIG->pluginspath . "enlightn/actions/follow.php");
     // Replace the default index page
     //register_plugin_hook('index','system','new_index');
 }
