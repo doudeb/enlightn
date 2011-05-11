@@ -2678,12 +2678,19 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	float:left;
 	height:250px;
 }
+
+.media_preview{
+	float:left;
+}
+
+
 #fetch_results {
 	width: 500px;
 }
 
-.video{
+.view{
 	float:left;
+	display:none;
 }
 .info{
 	width:auto;

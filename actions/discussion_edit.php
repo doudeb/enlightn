@@ -10,7 +10,8 @@
 if (!isloggedin()) forward();
 // Get input data
 $title = strip_tags(get_input('title'));
-$message = get_input('description',null,false);
+$message = get_input('description');
+$embeded = get_input('embedContent',null,false);
 $tags = get_input('interests');
 $access = get_input('membership');
 $user = $_SESSION['user']->getGUID(); // you need to be logged in to comment on a group forum
@@ -18,7 +19,9 @@ $userto = get_input('invite');
 global $CONFIG;
 // Convert string of tags into a preformatted array
 $tagarray = string_to_tag_array($tags);
-
+if (!is_null($embeded)) {
+	$message .= $embeded;
+}
 // Make sure the title / message aren't blank
 if (empty($title) || empty($message)) {
 	register_error(elgg_echo("grouptopic:blank"));

@@ -5,7 +5,6 @@
 	 *
 	 * @package ElggGroups
 	 */
-
 ?>
 <div id="elgg_topbar_container_search"><?php echo elgg_view('page_elements/searchbox'); ?></div>
 <div class="clearfloat"></div>
@@ -80,7 +79,7 @@ $(document).ready(function() {
         echo "<p>" . elgg_echo("groups:topiccloseddesc") . "</p>";
 
     }
-    foreach($vars['entity']->getAnnotations('group_topic_post', 50, $offset, "desc") as $post) {
+    foreach($vars['entity']->getAnnotations(ENLIGHTN_DISCUSSION, 50, $offset, "desc") as $post) {
     	if(!check_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$post->id)) {
     		add_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$post->id);
     	}

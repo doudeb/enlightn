@@ -1,6 +1,7 @@
 <div id="fetch_results">
 	<?php if ($vars['type'] == 'media') { ?>
-		<div class="video"><?php echo $vars['entity']->html; ?></div>
+	<div class="media_preview"><a href="" onclick="javascript:$(this).fadeOut();$('#view<?php echo $vars['media_uid']; ?>').fadeIn();return false;"><img src="<?php echo $vars['entity']->thumbnail_url; ?>" width="100px"></a></div>
+	<div class="view" id="view<?php echo $vars['media_uid']; ?>"><?php echo $vars['entity']->html; ?></div>
 	<?php } elseif ($vars['type'] == 'url') { ?>
 <script>
 // next image
@@ -39,15 +40,16 @@
 			<?php  echo $vars['entity']->title; ?>
 		</label>
 		<br />
-		<label class="url">
+		<!--<label class="url">
 			<?php  echo $vars['entity']->url; ?>
-		</label>
+		</label>-->
 		<br /><br />
 		<label class="desc">
 			<?php  echo $vars['entity']->description; ?>
 		</label>
 	</div>
 	<?php if ($vars['type'] == 'url') { ?>
+		<?php if(count($vars['entity']->sortedImage) > 1) { ?>
 	<div>
 		<br /><br />
 			<input type="hidden" name="cur_image" id="cur_image" value="0" />
@@ -55,6 +57,7 @@
 			<label style="float:left"><img src="<?php echo $vars['url'];?>mod/enlightn/media/graphics/prev.png" id="prev" alt="<<" /><img src="<?php echo $vars['url'];?>mod/enlightn/media/graphics/next.png" id="next" alt=">>" /></label>
 		<br />
 	</div>
+		<?php } ?>
 	<script>refreshInput('url');</script>
 	<?php } elseif ($vars['type'] == 'media') { ?>
 	<script>refreshInput('media');</script>

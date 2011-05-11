@@ -30,7 +30,7 @@ if (isset($vars['value'])) {
 }
 ?>
 <script type="text/javascript">
-	/*$().ready(function() {
+	$().ready(function() {
 		$('textarea.<?php echo $class?>').tinymce({
 			// Location of TinyMCE script
 			script_url : '<?php echo $vars['url']; ?>mod/enlightn/media/js/tinymce/tiny_mce.js',
@@ -43,16 +43,12 @@ if (isset($vars['value'])) {
 			theme_advanced_buttons3 : "",
 			theme_advanced_toolbar_location : "top",
 			theme_advanced_toolbar_align : "left",
-			theme_advanced_statusbar_location : "bottom",
+			theme_advanced_statusbar_location : "none",
 			theme_advanced_resizing : true,
 			extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]"
 		});
-	});*/
-</script>
-<!-- /TinyMCE -->
-
-<script type="text/javascript">
-
+	});
+	
 	function getCurrentImage() {
 		return $('#imagePreview').attr('src');
 	}
@@ -63,8 +59,7 @@ if (isset($vars['value'])) {
 		} else if (mediaType == 'media') {
 			var strPut = $('#fetch_results').html();
 		}
-		$('#<?php echo $vars['internalid'] ?>').val(strPut);
-
+		$('#embedContent').val(strPut);
 	}
 
 	function changePublishSettings (currElement, destElement) {
@@ -98,8 +93,23 @@ if (isset($vars['value'])) {
 			loadContent("#result_embed",'<?php echo $vars['url'] ?>/mod/enlightn/ajax/fetch_url.php?url='+ $("#url").val());
 		});
 	});
-
+	
+function extractUrl(s) {
+	var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+	var url =  s.match(regexp);
+	return url;
+}	
+	
+	var refreshId = setInterval(function() {
+		url = extractUrl($('#<?php echo $vars['internalid']?>').val());
+    	if(url && url[0] != $('#lastExtractedUrl').val()) {
+    		$('#lastExtractedUrl').val(url[0]);
+    		loadContent("#result_embed",'<?php echo $vars['url'] ?>/mod/enlightn/ajax/fetch_media.php?url='+ url[0]);
+    	}
+	}, 3000);	
+	
 </script>
+<!--
 <div id="elgg_horizontal_tabbed_nav">
 	<ul id="publish_selector">
 		<li id="publish_text" class="selected"><a onclick="changePublishSettings('#publish_text','#publish_text_input'); return false;" href="?display="><?php echo elgg_echo('enlightn:publishtext'); ?></a></li>
@@ -107,17 +117,20 @@ if (isset($vars['value'])) {
 		<li id="publish_media"><a onclick="changePublishSettings('#publish_media','#publish_media_input'); return false;" href="?display=friends"><?php echo elgg_echo('enlightn:publishmedia'); ?></a></li>
 	</ul>
 </div>
+-->
 <div id="publish_input">
 	<div id="publish_text_input">
 		<textarea class="<?php echo $class; ?>" name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> <?php if ($disabled) echo ' disabled="yes" '; ?> <?php echo $vars['js']; ?>><?php echo htmlentities($value, ENT_QUOTES, 'UTF-8'); ?></textarea>
+		<input type="hidden" name="lastExtractedUrl" id="lastExtractedUrl" value="">
+		<input type="hidden" name="embedContent" id="embedContent" value="">
 	</div>
-	<div id="publish_url_input" style="display:none">
+	<!--<div id="publish_url_input" style="display:none">
 		<input type="text" name="url" size="64" id="url" />
 		<input type="button" name="attach_url"  class="submit_button" value="<?php echo elgg_echo("enlightn:attachtopost") ?>" id="attach_url" />
 	</div>
 	<div id="publish_media_input" style="display:none">
 		<input type="text" name="url" size="64" id="url_media" />
 		<input type="button" name="attach" class="submit_button" value="<?php echo elgg_echo("enlightn:attachtopost") ?>" id="attach_media" />
-	</div>
+	</div>-->
 </div>
 <div id="result_embed"></div>

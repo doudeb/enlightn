@@ -11,6 +11,7 @@ class Embed_url {
 	var $tags;
 	var $images;
 	var $sortedImage;
+	var $dom;
 
 	function __construct($args = array()) {
 
@@ -18,6 +19,7 @@ class Embed_url {
         	$this->url = $this->checkValues($args['url']);
 		}
        	$this->hostname = $this->getDomainName($args['url']);
+       	$this->dom		= new DOMDocument();
 	}
 
 	public function embed () {
@@ -27,7 +29,6 @@ class Embed_url {
 		$this->getDescription();
 		$this->getImages();
 		$this->sortImages();
-		//var_dump($this->tags);
 	}
 
 	private function checkValues($value) {
@@ -74,12 +75,26 @@ class Embed_url {
 	}
 
 	private function getImages () {
+		$this->dom->loadHTML($this->html);
+		$elements = $this->dom->getElementsByTagName('meta');
+		if (!is_null($elements)) {
+			foreach ($elements as $element) {
+				if($element->getAttribute('property') == 'og:image') {
+					$this->images['image'] = $element->getAttribute('content');
+					return;
+				}
+			}
+		 }		
 		$image_regex = '/<img[^>]*'.'src=[\"|\'](.*)[\"|\']/Ui';
 		preg_match_all($image_regex, $this->html, $img, PREG_PATTERN_ORDER);
 		$this->images = $img[1];
 	}
 
 	private function sortImages () {
+		if (isset($this->images['image'])) {
+			$this->sortedImage[] =$this->images['image'];
+			return;
+		}
 		$c=sizeof($this->images);
 		for ($i=0;$i<=$c;$i++) {
 			$this->images[$i] = $this->chroot($this->images[$i]);

@@ -14,8 +14,12 @@ elgg_get_access_object()->set_ignore_access(true);
 // Get input
 $topic_guid = (int) get_input('topic_guid');
 $group_guid = (int) get_input('group_guid');
-$post = get_input('topic_post',null,false);
+$post = get_input('topic_post');
+$embeded = get_input('embedContent',null,false);
 
+if (!is_null($embeded)) {
+	$post .= $embeded;
+}
 
 // make sure we have text in the post
 if (!$post) {
@@ -38,7 +42,7 @@ $topic = get_entity($topic_guid);
 
 
 // add the post to the forum topic
-$post_id = $topic->annotate('group_topic_post', $post, $topic->access_id, $user->guid);
+$post_id = $topic->annotate(ENLIGHTN_DISCUSSION, $post, $topic->access_id, $user->guid);
 if ($post_id == false) {
 	system_message(elgg_echo("groupspost:failure"));
 	forward($_SERVER['HTTP_REFERER']);

@@ -121,7 +121,7 @@
 	    alert('About to submit: \n\n' + queryString);
 	    // here we could return false to prevent the form from being submitted;
 	    // returning anything other than false will allow the form submit to continue
-	    return false;
+	    return true;
 	}
 
 	// post-submit callback
