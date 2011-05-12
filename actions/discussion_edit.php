@@ -92,7 +92,8 @@ if (empty($title) || empty($message)) {
 }
 ?>
 <script language="javascript">
-	var discussion_id = <?php echo $enlightndiscussion->guid ?>;
+	var discussion_id = <?php echo $enlightndiscussion->guid?$enlightndiscussion->guid:'false' ?>;
+	console.log('discussion_id inserted:: ' + discussion_id);
 </script>
 
 <?php

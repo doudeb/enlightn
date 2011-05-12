@@ -1,6 +1,5 @@
 <script language="javascript">
 $(document).ready(function() {
-	var discussion_id = false;
 	$("a.popin-discussion").popin({
 		width:800,
 		height:500,
@@ -14,6 +13,7 @@ $(document).ready(function() {
 
 		},
 		onExit: function() {
+			console.log('discussion_id popin:: ' + discussion_id);
 			if (discussion_id) {
 				loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/discussion_short.php?discussion_type=1&discussion_id=' + discussion_id);
 			}

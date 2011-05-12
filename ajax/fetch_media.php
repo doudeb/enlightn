@@ -11,7 +11,7 @@ $user_guid = get_loggedin_userid();
 //tying with embedly
 $url = get_input('url');
 $media_uid = md5($url);
-$oembed = $api->oembed(array('url' => $url, 'maxwidth' => 350)); //, 'maxwidth' => 200));
+$oembed = $api->oembed(array('url' => $url)); //, 'maxwidth' => 200));
 if (!isset($oembed[0]->error_code)) {
 	echo elgg_view('enlightn/fetched',array('type' => 'media'
 									,'entity' => $oembed[0]

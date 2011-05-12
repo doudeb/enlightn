@@ -31,7 +31,7 @@ if (isset($vars['value'])) {
 ?>
 <script type="text/javascript">
 	$().ready(function() {
-		$('textarea.<?php echo $class?>').tinymce({
+		$('#<?php echo $vars['internalid']?>').tinymce({
 			// Location of TinyMCE script
 			script_url : '<?php echo $vars['url']; ?>mod/enlightn/media/js/tinymce/tiny_mce.js',
 			mode : "specific_textareas",
@@ -101,11 +101,13 @@ function extractUrl(s) {
 }	
 	
 	var refreshId = setInterval(function() {
-		url = extractUrl($('#<?php echo $vars['internalid']?>').val());
-    	if(url && url[0] != $('#lastExtractedUrl').val()) {
-    		$('#lastExtractedUrl').val(url[0]);
-    		loadContent("#result_embed",'<?php echo $vars['url'] ?>/mod/enlightn/ajax/fetch_media.php?url='+ url[0]);
-    	}
+		if ($('#<?php echo $vars['internalid']?>').val()) {
+			url = extractUrl($('#<?php echo $vars['internalid']?>').val());
+	    	if(url && url[0] != $('#lastExtractedUrl').val()) {
+	    		$('#lastExtractedUrl').val(url[0]);
+	    		loadContent("#result_embed",'<?php echo $vars['url'] ?>/mod/enlightn/ajax/fetch_media.php?url='+ url[0]);
+	    	}			
+		}
 	}, 3000);	
 	
 </script>
