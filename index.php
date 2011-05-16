@@ -17,6 +17,10 @@ unset($discussion_new);
 //Retreive request
 $discussion_request = elgg_view('enlightn/discussion_request',array('requests' => get_invitations($user_guid, true)));
 $body .= $discussion_request;
+//search filters
+$search_filters = elgg_view('enlightn/search_filters',array());
+$body .= $search_filters;
+unset($search_filters);
 //retreive last discussion subject
 $discussion_list = elgg_view('enlightn/discussion_list',array('user_guid' => $user_guid
 																, 'discussion_id' => $discussion_id));

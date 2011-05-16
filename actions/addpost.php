@@ -16,6 +16,7 @@ $topic_guid = (int) get_input('topic_guid');
 $group_guid = (int) get_input('group_guid');
 $post = get_input('topic_post');
 $embeded = get_input('embedContent',null,false);
+$discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
 
 if (!is_null($embeded)) {
 	$post .= $embeded;
@@ -42,7 +43,7 @@ $topic = get_entity($topic_guid);
 
 
 // add the post to the forum topic
-$post_id = $topic->annotate(ENLIGHTN_DISCUSSION, $post, $topic->access_id, $user->guid);
+$post_id = $topic->annotate($discussion_subtype, $post, $topic->access_id, $user->guid);
 if ($post_id == false) {
 	system_message(elgg_echo("groupspost:failure"));
 	forward($_SERVER['HTTP_REFERER']);

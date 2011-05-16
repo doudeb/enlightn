@@ -16,6 +16,7 @@ $tags = get_input('interests');
 $access = get_input('membership');
 $user = $_SESSION['user']->getGUID(); // you need to be logged in to comment on a group forum
 $userto = get_input('invite');
+$discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
 global $CONFIG;
 // Convert string of tags into a preformatted array
 $tagarray = string_to_tag_array($tags);
@@ -31,8 +32,8 @@ if (empty($title) || empty($message)) {
 } else {
 	// Initialise a new ElggObject
 	$enlightndiscussion = new ElggObject();
-	// Tell the system it's a group forum topic
-	$enlightndiscussion->subtype = "enlightndiscussion";
+	// Tell the system it's a simple post, url link, media,etc.
+	$enlightndiscussion->subtype = ENLIGHTN_DISCUSSION;
 	// Set its owner to the current user
 	$enlightndiscussion->owner_guid = $user;
 	// Set the group it belongs to
@@ -52,7 +53,7 @@ if (empty($title) || empty($message)) {
 	}
 
 	// now add the topic message as an annotation
-	$annotationid = $enlightndiscussion->annotate(ENLIGHTN_DISCUSSION,$message,$access, $user);
+	$annotationid = $enlightndiscussion->annotate($discussion_type,$message,$access, $user);
 	// add to river
 	add_to_river('enlightn/river/create','create',$_SESSION['user']->guid,$enlightndiscussion->guid,$access, 0, $post_id);
 	// Success message

@@ -14,23 +14,39 @@
 	if(!check_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$vars['entity']->guid)) {
 		add_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$vars['entity']->guid);
 	}
+	$is_favorite 	= check_entity_relationship($vars['user_guid'], ENLIGHTN_FAVORITE,$vars['entity']->guid);
+	$url_favorite	= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/favorite?discussion_guid={$vars['entity']->guid}");
+	$is_owner		= $vars['user_guid'] == $vars['entity']->owner_guid; 
     //display follow up comments
-    $count = $vars['entity']->countAnnotations('group_topic_post');
-    $offset = (int) get_input('offset',0);
+    $count 			= $vars['entity']->countAnnotations('group_topic_post');
+    $offset 		= (int) get_input('offset',0);
 
-    $baseurl = $vars['entity']->getURL();
+    $baseurl 		= $vars['entity']->getURL();
     echo elgg_view('navigation/pagination',array(
     												'limit' => 50,
     												'offset' => $offset,
     												'baseurl' => $baseurl,
     												'count' => $count,
-    											));
-
-?>
+    											));?>
 <!-- grab the topic title -->
     <div id="topic_header">
     	<h2><?php echo $vars['entity']->title; ?></h2>
+    	<img src="<?php echo $vars['url']; ?>/mod/enlightn/media/graphics/cleardot.gif" class="<?php echo $is_favorite?'favorite':'add_to_favorite'?>" id="favorite<?php echo $vars['entity']->id; ?>"/>
+    	<div id="load_favorite<?php echo $vars['entity']->id; ?>"></div>
 <script language="javascript">
+$("#favorite<?php echo $vars['entity']->id; ?>").click( function(){
+	if ($("#favorite<?php echo $vars['entity']->id; ?>").hasClass("favorite")) {
+		loadContent('#load_favorite<?php echo $vars['entity']->id; ?>','<?php echo $url_favorite?>');
+		$("#favorite<?php echo $vars['entity']->id; ?>").addClass("add_to_favorite");
+		$("#favorite<?php echo $vars['entity']->id; ?>").removeClass("favorite");
+	} else {
+		loadContent('#load_favorite<?php echo $vars['entity']->id; ?>','<?php echo $url_favorite?>');
+		$("#favorite<?php echo $vars['entity']->id; ?>").addClass("favorite");	
+		$("#favorite<?php echo $vars['entity']->id; ?>").removeClass("add_to_favorite");	
+	}
+});
+
+
 $(document).ready(function() {
 	$("a.popin-discussion-invite").popin({
 		width:800,
@@ -49,9 +65,11 @@ $(document).ready(function() {
 		}
 	});
 });
+
 </script>
+<?php if ($is_owner) { ?>
 <a href="<?php echo $vars['url']; ?>/mod/enlightn/ajax/discussion_invite.php?discussion_guid=<?php echo $vars['entity']->guid ?>" class="popin-discussion-invite"><?php echo elgg_echo('enlightn:discussioninvite');?></a>
-<?php
+<?php } 
     $members = get_discussion_members($vars['entity']->guid,12);
     foreach($members as $mem) {
 
@@ -59,9 +77,6 @@ $(document).ready(function() {
 
     }
 	echo "<div class=\"clearfloat\"></div>";
-	/*$more_url = "{$vars['url']}pg/groups/memberlist/{$vars['entity']->guid}/";
-	echo "<div id=\"groups_member_link\"><a href=\"{$more_url}\">" . elgg_echo('groups:members:more') . "</a></div>";*/
-
 ?>
     </div>
 <?php
@@ -79,11 +94,15 @@ $(document).ready(function() {
         echo "<p>" . elgg_echo("groups:topiccloseddesc") . "</p>";
 
     }
-    foreach($vars['entity']->getAnnotations(ENLIGHTN_DISCUSSION, 50, $offset, "desc") as $post) {
+
+	//must add this view, in order to make facebox reading...
+	echo elgg_view('metatags',$vars);
+    foreach($vars['entity']->getAnnotations('', 50, $offset, "desc") as $post) {
     	if(!check_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$post->id)) {
     		add_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$post->id);
     	}
     	//var_dump($post);
+
 	    echo elgg_view("enlightn/topicpost",array('entity' => $post));
 	}
 ?>

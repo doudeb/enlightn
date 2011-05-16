@@ -36,7 +36,7 @@
                 <td width="70%">
                     <?php
                         //display the actual message posted
-                       echo elgg_view("output/longtext",array("value" => $vars['entity']->value));
+						echo elgg_view("output/longtext",array("value" => $vars['entity']->value));
                     ?>
                 </td>
             </tr>

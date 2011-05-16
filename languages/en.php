@@ -17,6 +17,12 @@
 			,'enlightn:discussioninvite' => "Invite to follow"
 			,'enlightn:membershiprequest' => "Request"
 			,'enlightn:follow' => "Follow"
+			,'enlightn:favorite' => "Favorite"
+			,'enlightn:search' => "Search"
+			,'enlightn:searchfilters' => "Filters"
+			,'enlightn:searchfavourite' => "Favorites"
+			,'enlightn:seemore' => "See more"
+			,'item:object:enlightndiscussion' => "Elightn discussion"
 	);
 
 	add_translation("en",$english);

@@ -8,8 +8,12 @@
 
 
 //retreive the last comment
-$post = $vars['entity']->getAnnotations('', 1, 0, "desc");
-$post = $post[0];
+if ($vars['entity'] instanceof ElggAnnotation) {
+	$post = $vars['entity'];
+} else {
+	$post = $vars['entity']->getAnnotations('', 1, 0, "desc");
+	$post = $post[0];
+}
 $flag_readed = check_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$post->id);
 $post_owner = get_entity($post->owner_guid);
 ?>
@@ -30,7 +34,11 @@ $post_owner = get_entity($post->owner_guid);
     													, 'user_guid' => $vars['user_guid']));
                     }
                    //display the actual message posted
-                   echo parse_urls(elgg_view("output/longtext",array("value" => elgg_get_excerpt($post->value, 200))));
+                   if (isset($vars['query'])) {
+                   		echo elgg_view("output/longtext",array("value" => search_get_highlighted_relevant_substrings($post->value,$vars['query'])));
+                   } else {
+                   		echo parse_urls(elgg_view("output/longtext",array("value" => elgg_get_excerpt($post->value, 200))));
+                   }
                 ?>
 </div><!-- end the topic_post -->
 <?php

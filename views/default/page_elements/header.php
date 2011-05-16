@@ -58,10 +58,12 @@ $release = get_version(true);
 	<title><?php echo $title; ?></title>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery-ui-1.7.2.custom.min.js"></script>
+	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery-ui-1.7.2.min.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery.form.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>_css/js.php?lastcache=<?php echo $vars['config']->lastcache; ?>&amp;js=initialise_elgg&amp;viewtype=<?php echo $vars['view']; ?>"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.popin.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/tinymce/jquery.tinymce.js"></script>			
+	<script src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.fcbkcomplete.js" type="text/javascript" charset="utf-8"></script>
 <?php
 	global $pickerinuse;
 	if (isset($pickerinuse) && $pickerinuse == true) {
@@ -74,7 +76,7 @@ $release = get_version(true);
 ?>
 	<!-- include the default css file -->
 	<link rel="stylesheet" href="<?php echo $vars['url']; ?>_css/css.css?lastcache=<?php echo $vars['config']->lastcache; ?>&amp;viewtype=<?php echo $vars['view']; ?>" type="text/css" />
-
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 	<?php
 		echo $feedref;
 		echo elgg_view('metatags',$vars);
@@ -2406,17 +2408,17 @@ border-top:none;
 /* Copyright: Guillermo Rauch <http://devthought.com/> - Distributed under MIT - Keep this message! */
 
 /* TextboxList sample CSS */
-ul.holder { margin: 0; border: 1px solid #999; overflow: hidden; height: auto !important; height: 1%; padding: 4px 5px 0; }
+ul.holder { margin: 0; border: 1px solid #999; overflow: hidden; height: auto; height: 1%; padding: 1px 1px 0; }
 *:first-child+html ul.holder { padding-bottom: 2px; } * html ul.holder { padding-bottom: 2px; } /* ie7 and below */
-ul.holder li { float: left; list-style-type: none; margin: 0 5px 4px 0; white-space:nowrap;}
-ul.holder li.bit-box, ul.holder li.bit-input input { font: 11px "Lucida Grande", "Verdana"; }
+ul.holder li { float: left; list-style-type: none; margin: 0 1px 1px 0; white-space:nowrap;}
+ul.holder li.bit-box, ul.holder li.bit-input input { font: 9px "Lucida Grande", "Verdana"; }
 ul.holder li.bit-box { -moz-border-radius: 6px; -webkit-border-radius: 6px; border-radius: 6px; border: 1px solid #CAD8F3; background: #DEE7F8; padding: 1px 5px 2px; }
 ul.holder li.bit-box-focus { border-color: #598BEC; background: #598BEC; color: #fff; }
 ul.holder li.bit-input input { width: auto; overflow:visible; margin: 0; border: 0px; outline: 0; padding: 3px 0px 2px; } /* no left/right padding here please */
 ul.holder li.bit-input input.smallinput { width: 20px; }
 
 /* Facebook demo CSS */
-ul.holder { width: 500px; }
+ul.holder { width: 120px; }
 ul.holder { margin: 0 !important }
 ul.holder li.bit-box, #apple-list ul.holder li.bit-box { padding-right: 15px; position: relative; z-index:1000;}
 #apple-list ul.holder li.bit-input { margin: 0; }
@@ -2429,10 +2431,10 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 
 /* Autocompleter */
 
-.facebook-auto { display: none; position: absolute; width: 512px; background: #eee; z-index:1001;}
-.facebook-auto .default { padding: 5px 7px; border: 1px solid #ccc; border-width: 0 1px 1px;font-family:"Lucida Grande","Verdana"; font-size:11px; }
+.facebook-auto { display: none; position: absolute; width: 250px; background: #eee; z-index:1001;}
+.facebook-auto .default { padding: 5px 7px; border: 1px solid #ccc; border-width: 0 1px 1px;font-family:"Lucida Grande","Verdana"; font-size:9px; }
 .facebook-auto ul { display: none; margin: 0; padding: 0; overflow: auto; position:absolute; z-index:9999}
-.facebook-auto ul li { padding: 5px 12px; z-index: 1000; cursor: pointer; margin: 0; list-style-type: none; border: 1px solid #ccc; border-width: 0 1px 1px; font: 11px "Lucida Grande", "Verdana"; background-color: #eee }
+.facebook-auto ul li { padding: 5px 12px; z-index: 1000; cursor: pointer; margin: 0; list-style-type: none; border: 1px solid #ccc; border-width: 0 1px 1px; font: 9px "Lucida Grande", "Verdana"; background-color: #eee }
 .facebook-auto ul li em { font-weight: bold; font-style: normal; background: #ccc; }
 .facebook-auto ul li.auto-focus { background: #4173CC; color: #fff; }
 .facebook-auto ul li.auto-focus em { background: none; }
@@ -2771,10 +2773,116 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	padding-right: 9px;
 	padding-top: 5px;
 }
+
+.box_wrapper {
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: #dddddd;
+	background-origin: padding-box;
+	background-position: 0px 0px;
+	background-repeat: repeat-x;
+	background-size: auto;
+	border-bottom-color: #999999;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-left-color: #bbbbbb;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #bbbbbb;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top-color: #bbbbbb;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-top-style: solid;
+	border-top-width: 1px;
+	box-shadow: 0px 1px 0px;
+	color: #333333 !important;
+	display: inline-block;
+	line-height: 15px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	padding-bottom: 5px;
+	padding-left: 9px;
+	padding-right: 9px;
+	padding-top: 5px;
+}
+
+.floating .mini-close { 
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: -3px;
+	margin-top: -3px;
+	position: relative;
+}
+.mini-close { 
+	background-image: url("<?php echo $vars['url'] ?>mod/enlightn/media/graphics/default.png");
+	background-origin: padding-box;
+	background-position: -40px -100px;
+	background-repeat: no-repeat;
+	background-size: auto;
+	cursor: pointer;
+	display: block;
+	float: right;
+	height: 16px;
+	width: 16px;
+}
+
+#search_filter {
+	display:none;
+}
+
+
+.add_to_favorite {
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: transparent;
+	background-image: url("<?php echo $vars['url'] ?>mod/enlightn/media/graphics/default.png");
+	background-origin: padding-box;
+	background-position: 0px -20px;
+	background-repeat: no-repeat;
+	background-size: auto;
+	height: 15px;
+	width: 15px;
+	float:left;	
+	cursor: pointer;
+}
+
+.favorite {
+	background-attachment: scroll;
+	background-clip: border-box;
+	background-color: transparent;
+	background-image: url("<?php echo $vars['url'] ?>mod/enlightn/media/graphics/default.png");
+	background-origin: padding-box;
+	background-position: -20px -20px;
+	background-repeat: no-repeat;
+	background-size: auto;
+	height: 15px;
+	width: 15px;
+	float:left;	
+	cursor: pointer;
+}
+
 </style>
 <script language="javascript">
-function loadContent (divId,dataTo) {
-	javascript:$(divId).prepend('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
-	javascript:$(divId).load(dataTo);
+function loadContent (divId,dataTo,method) {
+	if (method == undefined || method == 'load') {
+		if ($(divId).html().indexOf('loading.gif') == -1) {
+			$(divId).prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif" alt="loading">');
+		}
+ 		$(divId).load(dataTo, function() {
+	  		return true;
+		});
+	} else if (method == 'append') {		
+		$.get(dataTo, function(data){
+			$(divId).append(data);
+		});		
+	}
 }
 </script>

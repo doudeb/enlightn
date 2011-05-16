@@ -7,11 +7,15 @@
 function enlightn_init() {
 	global $CONFIG;
 	define('ENLIGHTN_DISCUSSION', 'enlightndiscussion');
+	define('ENLIGHTN_LINK', 'enlightnlink');
+	define('ENLIGHTN_MEDIA', 'enlightnmedia');
+	define('ENLIGHTN_DOCUMENT', 'document');
 	define('ENLIGHTN_FOLLOW', 'member');
 	define('ENLIGHTN_READED', 'readed');
+	define('ENLIGHTN_FAVORITE', 'favorite');
 	//Disable rights
 	//elgg_get_access_object()->set_ignore_access(true);
-	//require_once("model/enlightn.php");
+	require_once("model/enlightn.php");
     // Extend system CSS with our own styles
     //extend_view('css','enlightn/css');
     elgg_extend_view('css', 'enlightn/css');
@@ -25,8 +29,12 @@ function enlightn_init() {
 	register_action("enlightn/join",false, $CONFIG->pluginspath . "enlightn/actions/join.php");
 	register_action("enlightn/invite",false, $CONFIG->pluginspath . "enlightn/actions/discussion_invite.php");
 	register_action("enlightn/follow",false, $CONFIG->pluginspath . "enlightn/actions/follow.php");
+	register_action("enlightn/favorite",false, $CONFIG->pluginspath . "enlightn/actions/favorite.php");
     // Replace the default index page
     //register_plugin_hook('index','system','new_index');
+    // Register entity type
+    register_entity_type('object',ENLIGHTN_DISCUSSION);
+
 }
 
 register_elgg_event_handler('init','system','enlightn_init');
@@ -86,12 +94,13 @@ function enlightn_page_handler($page) {
 	 * 	7 all (like linux....)
 	 * @return unknown_type
 	 */	
-	function get_discussion ($user_guid, $discussiontype) {
+	function get_discussion ($user_guid, $discussiontype, $offset = 0) {
 		$discussions = array();
 		$discussion_options = array();
 		$discussion_options['limit'] = "10";
+		$discussion_options['offset'] = $offset;
 		$discussion_options['types'] = "object";
-		$discussion_options['subtypes'] = ENLIGHTN_DISCUSSION;		
+		$discussion_options['subtypes'] = array(ENLIGHTN_DISCUSSION, ENLIGHTN_DOCUMENT,ENLIGHTN_LINK,ENLIGHTN_MEDIA);		
 		switch ($discussiontype) {
 			case 1:
 				$discussions = elgg_get_entities($discussion_options);				
@@ -104,6 +113,14 @@ function enlightn_page_handler($page) {
 				$discussions = elgg_get_entities_from_relationship($discussion_options);
 				elgg_get_access_object()->set_ignore_access(false);
 				break;
+			case 3:
+				$discussion_options['relationship'] = ENLIGHTN_FAVORITE;
+				$discussion_options['relationship_guid'] = $user_guid;
+				$discussion_options['inverse_relationship'] = false;
+				elgg_get_access_object()->set_ignore_access(true);
+				$discussions = elgg_get_entities_from_relationship($discussion_options);
+				elgg_get_access_object()->set_ignore_access(false);
+				break;				
 			default:
 				$discussions += get_discussion($user_guid,1);
 				$discussions += get_discussion($user_guid,2);
