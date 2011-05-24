@@ -22,26 +22,5 @@ if (function_exists('mb_convert_encoding')) {
 }
 
 ?>
-<script>
-	$(document).ready(function(){
-		$('#searchInput').click( function(){
-			$('#activity_container').fadeOut();
-			$('#new_discussion').fadeOut();
-			$('#requests').fadeOut();
-			$('#search_filter').fadeIn();
-		});
-	});
-	
-	$(document).ready(function(){
-		$('#searchInput').keyup( function(){
-			if ($('#searchInput').val().length >= 3) {
-				$('#discussion_selector_search').css('display','block');
-				changeMessageList('#discussion_selector_search');
-				if(loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php?q=' + $('#searchInput').val())) {
-					return true;
-				}
-			}
-		});
-	});	
-</script>
 <input id="searchInput" type="text" size="21" name="q" value="<?php echo $display_query; ?>" onclick="if (this.value=='<?php echo elgg_echo('search'); ?>') { this.value='' }" class="search_input" />
+<input type="hidden" name="last_search" value="" id="last_search">

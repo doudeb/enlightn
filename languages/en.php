@@ -16,6 +16,7 @@
 			,'enlightn:newdiscussion' => "Create a new discussion"
 			,'enlightn:discussioninvite' => "Invite to follow"
 			,'enlightn:membershiprequest' => "Request"
+			,'enlightn:public' => "Public"
 			,'enlightn:follow' => "Follow"
 			,'enlightn:favorite' => "Favorite"
 			,'enlightn:search' => "Search"

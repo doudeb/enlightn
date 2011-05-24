@@ -33,6 +33,7 @@ function enlightn_init() {
     // Replace the default index page
     //register_plugin_hook('index','system','new_index');
     // Register entity type
+    // ALTER TABLE annotations ORDER BY id DESC
     register_entity_type('object',ENLIGHTN_DISCUSSION);
 
 }
@@ -100,7 +101,7 @@ function enlightn_page_handler($page) {
 		$discussion_options['limit'] = "10";
 		$discussion_options['offset'] = $offset;
 		$discussion_options['types'] = "object";
-		$discussion_options['subtypes'] = array(ENLIGHTN_DISCUSSION, ENLIGHTN_DOCUMENT,ENLIGHTN_LINK,ENLIGHTN_MEDIA);		
+		$discussion_options['subtypes'] = ENLIGHTN_DISCUSSION;		
 		switch ($discussiontype) {
 			case 1:
 				$discussions = elgg_get_entities($discussion_options);				

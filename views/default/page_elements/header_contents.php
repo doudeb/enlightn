@@ -15,7 +15,17 @@
 <div id="layout_header">
 	<div id="logo"><a href="<?php echo $vars['url']; ?>"><img src="<?php echo $vars['url']; ?>mod/enlightn/media/graphics/logo.gif" alt="<?php echo $vars['config']->sitename; ?>" title="<?php echo $vars['config']->sitename; ?>" /></a></div>
 	<?php if (isloggedin()) { ?>
-	<div id="top_search_box"><br /><?php echo elgg_view('page_elements/searchbox'); ?></div>
+	<div id="top_search_box"><br />
+	<?php echo elgg_view('page_elements/searchbox');
+		echo elgg_view('input/pulldown', array('internalname' => 'discussion_type_filter'
+													, 'internalid' => 'discussion_type_filter'
+													, 'value' => ''
+													, 'options_values' => array(4=>elgg_echo('enlightn:all')
+																				, 1=>elgg_echo('enlightn:public')
+																				, 2=>elgg_echo('enlightn:follow')
+																				, 3=>elgg_echo('enlightn:favorite')										
+																				)
+										)); ?></div>
 	<div class="clearFloat"></div>
 	<div id="navBar">
 		<br />

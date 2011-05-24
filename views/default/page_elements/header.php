@@ -2871,12 +2871,13 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 
 </style>
 <script language="javascript">
-function loadContent (divId,dataTo,method) {
+function loadContent (divId,dataTo,method,anchor) {
 	if (method == undefined || method == 'load') {
 		if ($(divId).html().indexOf('loading.gif') == -1) {
 			$(divId).prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif" alt="loading">');
 		}
  		$(divId).load(dataTo, function() {
+ 			//window.scrollTo(0, $(anchor).position().top);
 	  		return true;
 		});
 	} else if (method == 'append') {		
@@ -2885,4 +2886,45 @@ function loadContent (divId,dataTo,method) {
 		});		
 	}
 }
+
+function get_search_criteria () {
+	if ($('input:radio[name=subtype]:checked').val() == undefined) {
+		var subtype = '';
+	} else {
+		var subtype = $('input:radio[name=subtype]:checked').val();
+	}
+	
+	if ($('#searchInput').val() == 'Search') {
+		var words = '';
+	} else {
+		var words = $('#searchInput').val();
+	}
+	
+	var search_criteria = '?q=' + encodeURIComponent(words)
+							+ '&date_begin=' + $('#date_begin').val() 
+							+ '&date_end=' + $('#date_end').val() 
+							+ '&from_users=' + $('#from_users').val() 
+							+ '&offset=' + $('#see_more_discussion_list_offset').val()
+							+ '&subtype=' + subtype
+							+ '&discussion_type=' + $('#discussion_type').val();
+	return search_criteria;
+}
+
+	$(document).ready(function(){
+		$('#searchInput').click( function(){
+			$('#activity_container').fadeOut();
+			$('#new_discussion').fadeOut();
+			$('#requests').fadeOut();
+			$('#search_filter').fadeIn();
+		});
+	});
+	
+	var refreshSearch = setInterval(function() {
+		if ($('#searchInput').val() != '<?php echo elgg_echo('search')?>' && $('#searchInput').val().length > 2) {
+	    	if($('#searchInput').val() != $('#last_search').val()) {
+	    		$('#last_search').val($('#searchInput').val());
+				changeMessageList('#discussion_selector_search',$('#discussion_type_filter').val());
+	    	}		
+		}
+	}, 1500);	
 </script>

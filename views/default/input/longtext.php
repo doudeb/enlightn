@@ -45,7 +45,7 @@ if (isset($vars['value'])) {
 			theme_advanced_toolbar_align : "left",
 			theme_advanced_statusbar_location : "none",
 			theme_advanced_resizing : true,
-			extended_valid_elements : "a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]"
+			extended_valid_elements : "a[name|href|target|title|onclick|class|rel],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]"
 		});
 	});
 	
@@ -56,8 +56,11 @@ if (isset($vars['value'])) {
 	function refreshInput(mediaType) {
 		if (mediaType == 'url') {
 			var strPut = '<div class="images"><img src="' + getCurrentImage()+ '" width="100"></div><div class="info">'+ $('#fetchResult').html() + '</div>';
+			$("#discussion_subtype").val("<?php echo ENLIGHTN_LINK?>");
 		} else if (mediaType == 'media') {
 			var strPut = $('#fetch_results').html();
+			$("#discussion_subtype").val("<?php echo ENLIGHTN_MEDIA?>");
+			alert($("#discussion_subtype").val());
 		}
 		$('#embedContent').val(strPut);
 	}
@@ -125,6 +128,7 @@ function extractUrl(s) {
 		<textarea class="<?php echo $class; ?>" name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> <?php if ($disabled) echo ' disabled="yes" '; ?> <?php echo $vars['js']; ?>><?php echo htmlentities($value, ENT_QUOTES, 'UTF-8'); ?></textarea>
 		<input type="hidden" name="lastExtractedUrl" id="lastExtractedUrl" value="">
 		<input type="hidden" name="embedContent" id="embedContent" value="">
+		<input type="hidden" name="discussion_subtype" id="discussion_subtype" value="<?php echo ENLIGHTN_DISCUSSION?>">
 	</div>
 	<!--<div id="publish_url_input" style="display:none">
 		<input type="text" name="url" size="64" id="url" />

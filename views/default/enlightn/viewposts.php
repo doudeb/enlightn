@@ -80,6 +80,7 @@ $(document).ready(function() {
 ?>
     </div>
 <?php
+
 	// check to find out the status of the topic and act
     if($vars['entity']->status != "closed" /*&& page_owner_entity()->isMember($vars['user'])*/){
 
@@ -102,7 +103,6 @@ $(document).ready(function() {
     		add_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$post->id);
     	}
     	//var_dump($post);
-
 	    echo elgg_view("enlightn/topicpost",array('entity' => $post));
 	}
 ?>

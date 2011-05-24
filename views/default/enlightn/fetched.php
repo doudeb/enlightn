@@ -59,9 +59,7 @@
 	</div>
 		<?php } ?>
 	<script>refreshInput('url');</script>
-	<input type="hidden" name="discussion_subtype" value="<?php echo ENLIGHTN_LINK?>">
 	<?php } elseif ($vars['type'] == 'media') { ?>
 	<script>refreshInput('media');</script>
-	<input type="hidden" name="discussion_subtype" value="<?php echo ENLIGHTN_MEDIA?>">
 	<?php } ?>
 </div>

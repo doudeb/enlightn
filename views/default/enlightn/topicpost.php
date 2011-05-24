@@ -8,12 +8,12 @@
 	 * @uses $vars['entity'] The posted comment to view
 	 */
 ?>
+<a id="discussion_post<?php echo $vars['entity']->id; ?>"></a>
 	<div class="topic_post"><!-- start the topic_post -->
 
 	    <table width="100%">
             <tr>
                 <td>
-                	<a name="<?php echo $vars['entity']->id; ?>"></a>
                     <?php
                         //get infomation about the owner of the comment
                         if ($post_owner = get_user($vars['entity']->owner_guid)) {

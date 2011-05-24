@@ -11,6 +11,16 @@
 																'internalname' => 'from_users',
 																'internalid' => 'from_users',
 																)); ?></p>
+		<?php
+			foreach (array(ENLIGHTN_DISCUSSION,ENLIGHTN_DOCUMENT,ENLIGHTN_LINK,ENLIGHTN_MEDIA) as $key => $subtype) {
+				$subtype_radio_option[elgg_echo('enlightn:'.$subtype)] = $subtype;
+				
+			}
+			echo elgg_view('input/radio', array('internalname' => 'subtype'
+													, 'internalid' => 'subtype'
+													, 'value' => ''
+													, 'options' => $subtype_radio_option));
+		?>
 		<input type="submit" id="search_submit" value="<?php echo elgg_echo('enlightn:filter') ?>" class="submit_button">
 	</div>
 </div>
@@ -26,9 +36,6 @@
 			//if ($('#searchInput').val().length >= 3) {
 				$('#discussion_selector_search').css('display','block');
 				changeMessageList('#discussion_selector_search');
-				if(loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php?q=' + $('#searchInput').val() + '&date_begin=' + $('#date_begin').val() + '&date_end=' + $('#date_end').val() + '&from_users=' + $('#from_users').val())) {
-					return true;
-				}
 			//}
 		});
 </script>

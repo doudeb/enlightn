@@ -23,32 +23,60 @@ Order By e.time_created desc";
 		return  get_data($query, 'entity_row_to_elggstar');
 	}
 	
-	function search ($user_guid, $words, $users_guid = '', $date_begin = '""', $date_end = '""') {
+	function search ($user_guid, $access_level = 0, $words, $users_guid = '', $date_begin = '""', $date_end = '""', $subtype = '', $offset = 0, $limit = 10) {
 		
 		$query = "Select a.*
 					, msn.string as name
 					, msv.string as value
 					, ent_title.title
-					, ent_title.guid
+					, ent.guid
 From entities ent
 Inner Join objects_entity ent_title On ent.guid = ent_title.guid
 Inner Join annotations a on ent.guid = a.entity_guid
 Inner Join metastrings msn on a.name_id = msn.id
 Inner Join metastrings msv on a.value_id = msv.id
-Where ((Exists( 
-			Select id 
-			From entity_relationships As rel 
-			Where ent.guid = rel.guid_two 
-			And rel.guid_one = $user_guid
-			And rel.relationship = '". ENLIGHTN_FOLLOW . "')
-		And ent.access_id = 0)
-	Or ent.access_id = 2)
+Where 
+	Case
+		When $access_level = 1 Then #Public Only 
+			ent.access_id = " . ACCESS_PUBLIC ."
+		When $access_level = 2 Then #Private Followed And Public Folowed 
+			(
+				Exists( 
+					Select id 
+					From entity_relationships As rel 
+					Where ent.guid = rel.guid_two 
+					And rel.guid_one = $user_guid
+					And rel.relationship = '". ENLIGHTN_FOLLOW . "'
+				) And ent.access_id IN(" . ACCESS_PRIVATE ."," . ACCESS_PUBLIC .")
+			)
+		When $access_level = 3 Then #Favorite Private an Public
+			Exists( 
+				Select id 
+				From entity_relationships As rel 
+				Where ent.guid = rel.guid_two 
+				And rel.guid_one = $user_guid
+				And rel.relationship = '". ENLIGHTN_FAVORITE . "'
+				And ent.access_id IN(" . ACCESS_PRIVATE ."," . ACCESS_PUBLIC .")
+			)
+		When $access_level = 4 Then #Private Folowed or Public
+			(
+				Exists( 
+					Select id 
+					From entity_relationships As rel 
+					Where ent.guid = rel.guid_two 
+					And rel.guid_one = $user_guid
+					And rel.relationship = '". ENLIGHTN_FOLLOW . "'
+					And ent.access_id  = " . ACCESS_PRIVATE ."
+				)
+			) Or ent.access_id  = " . ACCESS_PUBLIC ."			
+		Else false
+	End
 And
 	Case 
 		When length('$words') > 2 And length('$words') <= @@ft_min_word_len Then 
 			ent_title.title Like '%$words%' Or msv.string Like '%$words%'
 		When length('$words') > @@ft_min_word_len Then 
-			(MATCH (ent_title.title,msv.string) AGAINST ('+$words' IN BOOLEAN MODE))
+			(MATCH (ent_title.title,msv.string) AGAINST ('$words' IN BOOLEAN MODE))
 		Else true
 	End
 And
@@ -65,17 +93,30 @@ And
 			ent.time_created Between $date_begin And $date_end
 		Else true
 	End
-Order By
-Case
+And
+	Case 
+		When length('$subtype') > 0 Then 
+			Exists(Select mst.string 
+						From metastrings mst
+						Where a.name_id = mst.id
+						And mst.string = '$subtype')
+		Else true
+	End
+Group By 
+	Case 
+		When length('$words')  = 0 Then
+	 		ent.guid
+	 	Else a.id
+	End
+Order By a.time_created Desc
+,Case
 	When locate('$words',ent_title.title) Then 1
 	When locate('$words',msv.string) Then 2
 	Else false
 End
-,ent.time_created Desc;";
-		//echo $query;
+Limit $offset, $limit";
+		//echo "<pre>" . $query;die();
 		return  get_data($query, 'row_to_elggannotation');
 	}	
 }
-
-
 ?>

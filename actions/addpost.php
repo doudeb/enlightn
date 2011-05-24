@@ -17,7 +17,6 @@ $group_guid = (int) get_input('group_guid');
 $post = get_input('topic_post');
 $embeded = get_input('embedContent',null,false);
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
-
 if (!is_null($embeded)) {
 	$post .= $embeded;
 }
