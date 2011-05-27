@@ -26,49 +26,46 @@ Order By e.time_created desc";
 	function search ($user_guid, $access_level = 0, $words, $users_guid = '', $date_begin = '""', $date_end = '""', $subtype = '', $offset = 0, $limit = 10) {
 		
 		$query = "Select a.*
-					, msn.string as name
 					, msv.string as value
 					, ent_title.title
-					, ent.guid
-From entities ent
-Inner Join objects_entity ent_title On ent.guid = ent_title.guid
-Inner Join annotations a on ent.guid = a.entity_guid
-Inner Join metastrings msn on a.name_id = msn.id
+					, a.entity_guid as guid
+From annotations a
+Inner Join objects_entity ent_title On a.entity_guid = ent_title.guid
 Inner Join metastrings msv on a.value_id = msv.id
 Where 
 	Case
 		When $access_level = 1 Then #Public Only 
-			ent.access_id = " . ACCESS_PUBLIC ."
+			a.access_id = " . ACCESS_PUBLIC ."
 		When $access_level = 2 Then #Private Followed And Public Folowed 
 			(
 				Exists( 
 					Select id 
 					From entity_relationships As rel 
-					Where ent.guid = rel.guid_two 
+					Where a.entity_guid = rel.guid_two 
 					And rel.guid_one = $user_guid
 					And rel.relationship = '". ENLIGHTN_FOLLOW . "'
-				) And ent.access_id IN(" . ACCESS_PRIVATE ."," . ACCESS_PUBLIC .")
+				) And a.access_id IN(" . ACCESS_PRIVATE ."," . ACCESS_PUBLIC .")
 			)
 		When $access_level = 3 Then #Favorite Private an Public
 			Exists( 
 				Select id 
 				From entity_relationships As rel 
-				Where ent.guid = rel.guid_two 
+				Where a.entity_guid = rel.guid_two 
 				And rel.guid_one = $user_guid
 				And rel.relationship = '". ENLIGHTN_FAVORITE . "'
-				And ent.access_id IN(" . ACCESS_PRIVATE ."," . ACCESS_PUBLIC .")
+				And a.access_id IN(" . ACCESS_PRIVATE ."," . ACCESS_PUBLIC .")
 			)
 		When $access_level = 4 Then #Private Folowed or Public
 			(
 				Exists( 
 					Select id 
 					From entity_relationships As rel 
-					Where ent.guid = rel.guid_two 
+					Where a.entity_guid = rel.guid_two 
 					And rel.guid_one = $user_guid
 					And rel.relationship = '". ENLIGHTN_FOLLOW . "'
-					And ent.access_id  = " . ACCESS_PRIVATE ."
+					And a.access_id  = " . ACCESS_PRIVATE ."
 				)
-			) Or ent.access_id  = " . ACCESS_PUBLIC ."			
+			) Or a.access_id  = " . ACCESS_PUBLIC ."			
 		Else false
 	End
 And
@@ -90,7 +87,7 @@ And
 And
 	Case
 		When length($date_begin) > 0 And length($date_end) > 0 Then
-			ent.time_created Between $date_begin And $date_end
+			a.time_created Between $date_begin And $date_end
 		Else true
 	End
 And
@@ -105,7 +102,7 @@ And
 Group By 
 	Case 
 		When length('$words')  = 0 Then
-	 		ent.guid
+	 		a.entity_guid
 	 	Else a.id
 	End
 Order By a.time_created Desc
