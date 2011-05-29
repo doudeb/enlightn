@@ -9,11 +9,12 @@
 
 ?>
 <div id="pop_container_advanced">
+	<span id="close_new_discussion" class="mini-close"/></span>
 	<form id="discussion_edit" action="<?php echo $vars['url']; ?>action/enlightn/edit" enctype="multipart/form-data" method="post">
 	<div class="contentWrapper">
 		<ul>
 		<?php echo elgg_view('input/securitytoken'); ?>
-			<li><?php echo elgg_echo('groups:visibility'); ?>
+			<li><?php echo elgg_echo('enlightn:visibility'); ?>
 				<?php
 
 				$this_owner = $vars['entity']->owner_guid;
@@ -37,20 +38,20 @@
 
 
 				?></li>
-				<li><?php echo elgg_echo("groups:name") ?>
+				<li><?php echo elgg_echo("enlightn:title") ?>
 				<?php echo elgg_view("input/text",array(
 																'internalname' => 'title',
 																'internalid' => 'title',
 																'value' => $vars['entity']->name,
 																)); ?></li>
-				<li><?php echo elgg_echo("groups:description") ?>
+				<li><?php echo elgg_echo("enlightn:description") ?>
 				<?php echo elgg_view("input/longtext",array(
 																'internalname' => 'description',
 																'internalid' => 'description',
 																'value' => $vars['entity']->description,
 																)); ?></li>
 
-				<li><?php echo elgg_echo("groups:interests") ?>
+				<li><?php echo elgg_echo("enlightn:tags") ?>
 				<?php echo elgg_view("input/tags",array(
 																'internalname' => 'interests',
 																'internalid' => 'interests',
@@ -70,8 +71,8 @@
 			<?php
 				}
 			?>
-			<div id="discussion_close" style="float: right;"><input type="button" class="submit_button popin-close" value="<?php echo elgg_echo("close"); ?>" /></div>
-			<div id="submission"><input type="submit" class="submit_button" value="<?php echo elgg_echo("save"); ?>" /></div>
+			<div id="submission"></div>
+			<input type="submit" class="submit_button" value="<?php echo elgg_echo("post"); ?>" />
 	</form>
 	<script type="text/javascript">
 	// prepare the form when the DOM is ready
@@ -79,14 +80,14 @@
 	    var options = {
 	        target:        '#submission',   // target element(s) to be updated with server response
 	        beforeSubmit:  showLoading,  // pre-submit callback
-	        success:       showClose,  // post-submit callback
+	        success:       autoClose,  // post-submit callback
 
 	        // other available options:
 	        //url:       url         // override for form's 'action' attribute
-	      	type:      'post'        // 'get' or 'post', override for form's 'method' attribute
+	      	type:      'post',        // 'get' or 'post', override for form's 'method' attribute
 	        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type)
-	        //clearForm: true        // clear all form fields after successful submit
-	        //resetForm: true        // reset the form after successful submit
+	        clearForm: true,        // clear all form fields after successful submit
+	        resetForm: true        // reset the form after successful submit
 
 	        // $.ajax options can be used here too, for example:
 	        //timeout:   3000
@@ -142,11 +143,12 @@
 	    popin.PPNclose();
 		//return false;
 	}
-	function showClose () {
-		//$("#submission").append('<span class="popin-close">Sur un span</span>');
+	function autoClose () {
+		loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
+		$('#edit_discussion').fadeOut();
+		$('#fake_input').fadeIn();
 	}
-
-	    </script>
+    </script>
 	</div>
 	<?php
 	if ($vars['entity']) {

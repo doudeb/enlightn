@@ -14,9 +14,10 @@ elgg_get_access_object()->set_ignore_access(true);
 // Get input
 $topic_guid = (int) get_input('topic_guid');
 $group_guid = (int) get_input('group_guid');
-$post = get_input('topic_post');
+$post = get_input('new_post');
 $embeded = get_input('embedContent',null,false);
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
+//var_dump($_POST);die();
 if (!is_null($embeded)) {
 	$post .= $embeded;
 }
@@ -52,6 +53,7 @@ if ($post_id == false) {
 add_to_river('enlightn/river/comment', 'create', $user->guid, $topic_guid, "", 0, $post_id);
 //Mark as read
 add_entity_relationship($_SESSION['user']->guid, ENLIGHTN_READED, $post_id);
-system_message(elgg_echo("groupspost:success"));
+system_message(elgg_echo("enlightn:success"));
+system_message(elgg_echo("enlightn:success"));
 elgg_get_access_object()->set_ignore_access(false);
-forward($url . '?discussion_id=' . $topic_guid);
+exit();

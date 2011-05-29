@@ -52,13 +52,16 @@ function enlightn_page_handler($page) {
 	if (!isset($page[0])) {
 		$page[0] = 'home';
 	}
-
 	switch ($page[0]) {
 		case "home":
-			include($CONFIG->pluginspath . "enlightn/index.php");
+			include($CONFIG->pluginspath . "enlightn/home.php");
 			break;
 		case "invitations":
 			include($CONFIG->pluginspath . "enlightn/invitations.php");
+			break;
+		case "discuss":
+			set_input('discussion_id', $page[1]);
+			include($CONFIG->pluginspath . "enlightn/discuss.php");
 			break;
 	}
 }

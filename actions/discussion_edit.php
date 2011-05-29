@@ -66,17 +66,17 @@ if (empty($title) || empty($message)) {
 		foreach ($userto as $key => $usertoid) {
 			$usertoid = get_entity($usertoid);
 			if ($usertoid->guid) {
-				if (!$usertoid->isFriend()) {
+				/*if (!$usertoid->isFriend()) {
 					add_entity_relationship($_SESSION['user']->guid, 'friend', $usertoid->guid);
-				}
+				}*/
 				if(add_entity_relationship($enlightndiscussion->guid, 'invited', $usertoid->guid)) {
 					// Add membership requested
 					add_entity_relationship($usertoid->guid, 'membership_request', $enlightndiscussion->guid);
 					// Send email
 					$url = "{$CONFIG->url}pg/enlightn";
 					if (notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
-							sprintf(elgg_echo('groups:invite:subject'), $usertoid->name, $enlightndiscussion->name),
-							sprintf(elgg_echo('groups:invite:body'), $usertoid->name, $_SESSION['user']->name, $enlightndiscussion->name, $url),
+							sprintf(elgg_echo('enlightn:invite:subject'), $usertoid->name, $enlightndiscussion->name),
+							sprintf(elgg_echo('enlightn:invite:body'), $usertoid->name, $_SESSION['user']->name, $enlightndiscussion->name, $url),
 							NULL))
 						system_message(elgg_echo("groups:userinvited"));
 					else

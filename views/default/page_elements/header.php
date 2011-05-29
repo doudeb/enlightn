@@ -62,7 +62,7 @@ $release = get_version(true);
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery.form.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>_css/js.php?lastcache=<?php echo $vars['config']->lastcache; ?>&amp;js=initialise_elgg&amp;viewtype=<?php echo $vars['view']; ?>"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.popin.js"></script>
-	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/tinymce/jquery.tinymce.js"></script>			
+	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/ueditor.js"></script>			
 	<script src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.fcbkcomplete.js" type="text/javascript" charset="utf-8"></script>
 <?php
 	global $pickerinuse;
@@ -353,12 +353,6 @@ blockquote p {
 	font-size:11px;
 	line-height:13px;
 	color:#fff;margin-bottom:5px;
-}
-
-.contentWrapper {
-	background:white;
-    padding:10px;
-    margin:0 10px 10px 10px;
 }
 span.contentIntro p {
 	margin:0 0 0 0;
@@ -773,17 +767,7 @@ input {
 
 	color:#666666;
 }
-textarea {
-	font: 100% Arial, Helvetica, sans-serif;
-	border: solid 1px #DFDFDF;
-	padding: 5px;
-	color:#666666;
-}
-textarea:focus, input[type="text"]:focus {
-	border: solid 1px #4690d6;
-	background: #e4ecf5;
-	color:#333333;
-}
+
 .submit_button {
 	font: 12px/100% Arial, Helvetica, sans-serif;
 	font-weight: bold;
@@ -2555,35 +2539,49 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 /* Enlightn elements */
 #activity_container {
 	background:#eee999;
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-	border : 2px solid  #cccccc;
-}
-#left_container {
-	width: 300px;
-	float : left;
-	margin-right : 10px;
+
 }
 #discussion_list_container {
 	#border-bottom: 2px solid #cccccc;
 	#border-left: 2px solid #cccccc;
-	border-right: 2px solid #cccccc;
+	#border-right: 2px solid #cccccc;
 }
 
 #short_post_view {
-	padding:5px 10px 5px 10px;
+	padding:0px 10px 5px 110px;
 	#margin:4px 4px 4px 4px;
 	border-bottom: 2px solid #cccccc;
 }
 
 #short_post_view_unread {
-	padding:5px 10px 5px 10px;
+	padding:0px 10px 5px 10px;
 	#margin:4px 4px 4px 4px;
 	border-bottom: 2px solid #cccccc;
 	background:#cccccc;
+	
 }
 
+.discussion_short_container {
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	height: auto;
 
+}
+.post_container {
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	height: auto;
+
+}
+#short_friendly_time{
+	width:110px;
+	overflow:auto;
+	float:left;
+}
 
 #discussion {
 	background:#cccccc;
@@ -2595,19 +2593,6 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	min-height: 600px;
 	margin : 0px 0px 0px 0px;
 }
-#topic_header {
-	background:#FFFFFF;
-	-webkit-border-radius: 8px;
-	-moz-border-radius: 8px;
-	#padding:5px 10px 5px 10px;
-	margin:4px 4px 4px 4px;
-	border: 1px solid #000000;
-}
-#short_friendly_time{
-	float:left;
-	width:110px;
-}
-
 .input-text,
 .input-tags,
 .input-url,
@@ -2722,14 +2707,14 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	background-position: 0% 0%;
 	background-repeat: repeat;
 	background-size: auto;
-	border-bottom-left-radius: 8px;
-	border-bottom-right-radius: 8px;
-	border-top-left-radius: 8px;
-	border-top-right-radius: 8px;
-	padding-bottom: 10px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 10px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	padding-bottom: 3px;
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-top: 3px;
 }
 
 .button {
@@ -2798,22 +2783,27 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	border-top-right-radius: 4px;
 	border-top-style: solid;
 	border-top-width: 1px;
-	box-shadow: 0px 1px 0px;
 	color: #333333 !important;
-	display: inline-block;
 	line-height: 15px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
-	margin-top: 0px;
+	margin-bottom: 4px;
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-top: 4px;
 	overflow-x: hidden;
 	overflow-y: hidden;
 	padding-bottom: 5px;
-	padding-left: 9px;
-	padding-right: 9px;
+	padding-left: 5px;
+	padding-right: 5px;
 	padding-top: 5px;
+	width:auto;
 }
 
+
+.contentWrapper {
+	background:white;
+    padding:1px;
+    margin:0 1px 1px 1px;
+}
 .floating .mini-close { 
 	margin-bottom: 0px;
 	margin-left: 0px;
@@ -2833,11 +2823,6 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	height: 16px;
 	width: 16px;
 }
-
-#search_filter {
-	display:none;
-}
-
 
 .add_to_favorite {
 	background-attachment: scroll;
@@ -2868,6 +2853,75 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	float:left;	
 	cursor: pointer;
 }
+.floating_left {
+	float:right;
+	padding-bottom: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 10px;
+}
+
+.floating_left input[type="text"] {
+	width:500px;
+}
+#edit_discussion {
+	display:none;
+}
+/* vertical nav
+*/
+#vertical_tabbed_nav {
+	padding: 0px 0px 0px 0px;
+}
+#vertical_tabbed_nav ul {
+	padding: 0px 0px 0px 0px;
+}
+#vertical_tabbed_nav li {
+	border: 2px solid #DFDFDF;
+	background: #eeeeee;
+	margin: 5px 5px 5px 5px;
+	padding: 5px 5px 5px 5px;
+	cursor: pointer;
+} 
+#vertical_tabbed_nav a {
+	text-decoration: none;
+	color: #999999;
+	text-align: center;
+}
+/* IE6 fix */
+* html #vertical_tabbed_nav a { display: inline; }
+
+#vertical_tabbed_nav a:hover {
+	color: #4690d6;
+	background: #F3F3F3;
+}
+#vertical_tabbed_nav .selected {
+	border-color: #DFDFDF;
+	background: white;
+}
+#vertical_tabbed_nav .selected a {
+	background: white;
+	color: #4690d6;
+}
+/* IE6 fix */
+* html #vertical_tabbed_nav .selected a { top: 3px; }
+/*ueditor*/
+.uEditor{background-color:#fff;border:1px solid #ccc;margin:10px 0;padding:0;width:500px}
+.uEditor ul.uEditorToolbar{background:#eee url(<?php echo $vars['url'] ?>mod/enlightn/media/graphics/sprite-flat.png) no-repeat scroll -319px -875px;border-bottom:1px solid #ccc;list-style:none;height:16px;margin:0;padding:5px;margin:0}
+.uEditor ul.uEditorToolbar li{display:inline;margin:0 5px 0 0;float:left;clear:none;cursor:pointer}
+.uEditor ul.uEditorToolbar li a{color:#999;display:inline;margin:0;padding:0;float:left;cursor:pointer;text-indent:-1000px;width:16px;height:16px;background-image:url(<?php echo $vars['url'] ?>mod/enlightn/media/graphics/customIcons.gif);opacity:0.6}
+.uEditor ul.uEditorToolbar li a.uEditorButtonBold{background-position:0 -16px}
+.uEditor ul.uEditorToolbar li a.uEditorButtonItalic{background-position:-16px -16px}
+.uEditor ul.uEditorToolbar li a.uEditorButtonStrike{background-position:-32px -16px}
+.uEditor ul.uEditorToolbar li a.uEditorButtonOrderedList{background-position:-32px -48px}
+.uEditor ul.uEditorToolbar li a.uEditorButtonUnorderedList{background-position:-16px -48px}
+.uEditor ul.uEditorToolbar li a.uEditorButtonHyperlink{background-position:-80px -48px}
+.uEditor ul.uEditorToolbar li a.uEditorButtonImage{background-position:-80px -80px}
+.uEditor ul.uEditorToolbar li a.uEditorButtonHTML{background-position:-48px -48px}
+.uEditor ul.uEditorToolbar li a.myButtonClass,.uEditor ul.uEditorToolbar li a.mySecondButtonClass{background:url(img/plugin.png)}
+.uEditor ul.uEditorToolbar li a:hover,.uEditor ul.uEditorToolbar li a.on,.uEditor ul.uEditorToolbar.uEditorSource li a.uEditorButtonHTML{opacity:1}
+.uEditor ul.uEditorToolbar li.uEditorEditSelect{float:right;margin:0;padding:0}
+.uEditor .uEditorIframe{clear:both;width:100%;height:200px;border:none}
+.uEditor textarea.uEditorTextarea{clear:both;margin:2%;padding:0;width:96%;height:200px;border:none;font-family:monospace}
 
 </style>
 <script language="javascript">
@@ -2899,23 +2953,38 @@ function get_search_criteria () {
 	} else {
 		var words = $('#searchInput').val();
 	}
-	
+	if ($('#from_users').val() == undefined) {
+		var from_users = '';
+	} else {
+		var from_users = $('#from_users').val();
+	}
+	if ($('#date_end').val() == undefined) {
+		var date_end = '';
+	} else {
+		var date_end = $('#date_end').val();
+	}	
+	if ($('#date_begin').val() == undefined) {
+		var date_begin = '';
+	} else {
+		var date_begin = $('#date_begin').val();
+	}
+	if ($('#discussion_type').val() == undefined) {
+		var discussion_type = 1;
+	} else {
+		var discussion_type = $('#discussion_type').val();
+	}		
 	var search_criteria = '?q=' + encodeURIComponent(words)
-							+ '&date_begin=' + $('#date_begin').val() 
-							+ '&date_end=' + $('#date_end').val() 
-							+ '&from_users=' + $('#from_users').val() 
+							+ '&date_begin=' + date_begin
+							+ '&date_end=' + date_end 
+							+ '&from_users=' + from_users
 							+ '&offset=' + $('#see_more_discussion_list_offset').val()
 							+ '&subtype=' + subtype
-							+ '&discussion_type=' + $('#discussion_type').val();
+							+ '&discussion_type=' + discussion_type;
 	return search_criteria;
 }
 
 	$(document).ready(function(){
 		$('#searchInput').click( function(){
-			$('#activity_container').fadeOut();
-			$('#new_discussion').fadeOut();
-			$('#requests').fadeOut();
-			$('#search_filter').fadeIn();
 		});
 	});
 	
@@ -2926,5 +2995,20 @@ function get_search_criteria () {
 				changeMessageList('#discussion_selector_search',$('#discussion_type_filter').val());
 	    	}		
 		}
-	}, 1500);	
+	}, 1500);
+	function changeMessageList (currElement, discussion_type) {
+		if(discussion_type == undefined) {
+			discussion_type = 1;
+		}
+		$('#discussion_type').val(discussion_type);
+		$('#see_more_discussion_list_offset').val(0);
+		loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria());		
+		$(currElement).addClass('selected');
+		$("#list_selector li").each(function () {
+			if($(this).attr('id') != $(currElement).attr('id')) {
+				$(this).removeClass('selected');
+			}
+      	});
+      	return false;
+	}
 </script>

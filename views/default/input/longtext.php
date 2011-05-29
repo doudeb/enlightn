@@ -14,7 +14,7 @@
  * @uses $vars['disabled'] Is the input field disabled?
  */
 
-$class = "input-textarea";
+$class = "uEditor";
 if (isset($vars['class'])) {
 	$class = $vars['class'];
 }
@@ -30,25 +30,21 @@ if (isset($vars['value'])) {
 }
 ?>
 <script type="text/javascript">
-	$().ready(function() {
-		$('#<?php echo $vars['internalid']?>').tinymce({
-			// Location of TinyMCE script
-			script_url : '<?php echo $vars['url']; ?>mod/enlightn/media/js/tinymce/tiny_mce.js',
-			mode : "specific_textareas",
-			editor_selector : "mceEditor",
-			theme : "advanced",
-			relative_urls : false,
-			theme_advanced_buttons1 : "bold,italic,underline,separator,strikethrough,bullist,numlist,undo,redo,link,unlink,image,blockquote,code",
-			theme_advanced_buttons2 : "",
-			theme_advanced_buttons3 : "",
-			theme_advanced_toolbar_location : "top",
-			theme_advanced_toolbar_align : "left",
-			theme_advanced_statusbar_location : "none",
-			theme_advanced_resizing : true,
-			extended_valid_elements : "a[name|href|target|title|onclick|class|rel],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style],hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]"
-		});
-	});
-	
+$(document).ready(function(){
+	var uEditor = initEditor();
+	var refreshId = setInterval(function() {
+		var editor_value = $('[name=<?php echo $vars['internalid']?>]').val();
+		console.log(editor_value);
+		if (editor_value) {
+			url = extractUrl(editor_value);
+	    	if(url && url[0] != $('#lastExtractedUrl').val()) {
+	    		$('#lastExtractedUrl').val(url[0]);
+	    		loadContent("#result_embed",'<?php echo $vars['url'] ?>/mod/enlightn/ajax/fetch_media.php?url='+ url[0]);
+	    	}			
+		}
+	}, 3000);	
+
+});
 	function getCurrentImage() {
 		return $('#imagePreview').attr('src');
 	}
@@ -102,27 +98,7 @@ function extractUrl(s) {
 	var url =  s.match(regexp);
 	return url;
 }	
-	
-	var refreshId = setInterval(function() {
-		if ($('#<?php echo $vars['internalid']?>').val()) {
-			url = extractUrl($('#<?php echo $vars['internalid']?>').val());
-	    	if(url && url[0] != $('#lastExtractedUrl').val()) {
-	    		$('#lastExtractedUrl').val(url[0]);
-	    		loadContent("#result_embed",'<?php echo $vars['url'] ?>/mod/enlightn/ajax/fetch_media.php?url='+ url[0]);
-	    	}			
-		}
-	}, 3000);	
-	
 </script>
-<!--
-<div id="elgg_horizontal_tabbed_nav">
-	<ul id="publish_selector">
-		<li id="publish_text" class="selected"><a onclick="changePublishSettings('#publish_text','#publish_text_input'); return false;" href="?display="><?php echo elgg_echo('enlightn:publishtext'); ?></a></li>
-		<li id="publish_url"><a onclick="changePublishSettings('#publish_url','#publish_url_input'); return false;" href="#"><?php echo elgg_echo('enlightn:publishurl'); ?></a></li>
-		<li id="publish_media"><a onclick="changePublishSettings('#publish_media','#publish_media_input'); return false;" href="?display=friends"><?php echo elgg_echo('enlightn:publishmedia'); ?></a></li>
-	</ul>
-</div>
--->
 <div id="publish_input">
 	<div id="publish_text_input">
 		<textarea class="<?php echo $class; ?>" name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> <?php if ($disabled) echo ' disabled="yes" '; ?> <?php echo $vars['js']; ?>><?php echo htmlentities($value, ENT_QUOTES, 'UTF-8'); ?></textarea>
@@ -130,13 +106,5 @@ function extractUrl(s) {
 		<input type="hidden" name="embedContent" id="embedContent" value="">
 		<input type="hidden" name="discussion_subtype" id="discussion_subtype" value="<?php echo ENLIGHTN_DISCUSSION?>">
 	</div>
-	<!--<div id="publish_url_input" style="display:none">
-		<input type="text" name="url" size="64" id="url" />
-		<input type="button" name="attach_url"  class="submit_button" value="<?php echo elgg_echo("enlightn:attachtopost") ?>" id="attach_url" />
-	</div>
-	<div id="publish_media_input" style="display:none">
-		<input type="text" name="url" size="64" id="url_media" />
-		<input type="button" name="attach" class="submit_button" value="<?php echo elgg_echo("enlightn:attachtopost") ?>" id="attach_media" />
-	</div>-->
 </div>
 <div id="result_embed"></div>
