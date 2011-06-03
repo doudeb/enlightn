@@ -2392,17 +2392,17 @@ border-top:none;
 /* Copyright: Guillermo Rauch <http://devthought.com/> - Distributed under MIT - Keep this message! */
 
 /* TextboxList sample CSS */
-ul.holder { margin: 0; border: 1px solid #999; overflow: hidden; height: auto; height: 1%; padding: 1px 1px 0; }
+ul.holder { margin: 0; border: 1px solid #999; overflow: hidden; height: auto; height: 1%; padding: 1px 1px 0; background: #FFFFFF;}
 *:first-child+html ul.holder { padding-bottom: 2px; } * html ul.holder { padding-bottom: 2px; } /* ie7 and below */
 ul.holder li { float: left; list-style-type: none; margin: 0 1px 1px 0; white-space:nowrap;}
 ul.holder li.bit-box, ul.holder li.bit-input input { font: 9px "Lucida Grande", "Verdana"; }
-ul.holder li.bit-box { -moz-border-radius: 6px; -webkit-border-radius: 6px; border-radius: 6px; border: 1px solid #CAD8F3; background: #DEE7F8; padding: 1px 5px 2px; }
-ul.holder li.bit-box-focus { border-color: #598BEC; background: #598BEC; color: #fff; }
+ul.holder li.bit-box { -moz-border-radius: 6px; -webkit-border-radius: 6px; border-radius: 6px; border: 1px solid #CAD8F3; padding: 1px 5px 2px; }
+ul.holder li.bit-box-focus { border-color: #598BEC; color: #fff; }
 ul.holder li.bit-input input { width: auto; overflow:visible; margin: 0; border: 0px; outline: 0; padding: 3px 0px 2px; } /* no left/right padding here please */
 ul.holder li.bit-input input.smallinput { width: 20px; }
 
 /* Facebook demo CSS */
-ul.holder { width: 120px; }
+ul.holder { width: 230px; }
 ul.holder { margin: 0 !important }
 ul.holder li.bit-box, #apple-list ul.holder li.bit-box { padding-right: 15px; position: relative; z-index:1000;}
 #apple-list ul.holder li.bit-input { margin: 0; }
@@ -2415,7 +2415,7 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 
 /* Autocompleter */
 
-.facebook-auto { display: none; position: absolute; width: 250px; background: #eee; z-index:1001;}
+.facebook-auto { display: none; position: absolute; width: 230px; background: #eee; z-index:1001;}
 .facebook-auto .default { padding: 5px 7px; border: 1px solid #ccc; border-width: 0 1px 1px;font-family:"Lucida Grande","Verdana"; font-size:9px; }
 .facebook-auto ul { display: none; margin: 0; padding: 0; overflow: auto; position:absolute; z-index:9999}
 .facebook-auto ul li { padding: 5px 12px; z-index: 1000; cursor: pointer; margin: 0; list-style-type: none; border: 1px solid #ccc; border-width: 0 1px 1px; font: 9px "Lucida Grande", "Verdana"; background-color: #eee }
@@ -2425,7 +2425,6 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 .deleted { background-color:#4173CC !important; color:#ffffff !important;}
 .hidden { display:none;}
 
-#demo ul.holder li.bit-input input { padding: 2px 0 1px; border: 1px solid #999; }
 .ie6fix {height:1px;width:1px; position:absolute;top:0px;left:0px;z-index:1;}
 
 
@@ -2904,8 +2903,9 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 }
 /* IE6 fix */
 * html #vertical_tabbed_nav .selected a { top: 3px; }
+
 /*ueditor*/
-.uEditor{background-color:#fff;border:1px solid #ccc;margin:10px 0;padding:0;width:500px}
+.uEditor{background-color:#fff;border:1px solid #ccc;margin:10px 0;padding:0;width:auto}
 .uEditor ul.uEditorToolbar{background:#eee url(<?php echo $vars['url'] ?>mod/enlightn/media/graphics/sprite-flat.png) no-repeat scroll -319px -875px;border-bottom:1px solid #ccc;list-style:none;height:16px;margin:0;padding:5px;margin:0}
 .uEditor ul.uEditorToolbar li{display:inline;margin:0 5px 0 0;float:left;clear:none;cursor:pointer}
 .uEditor ul.uEditorToolbar li a{color:#999;display:inline;margin:0;padding:0;float:left;cursor:pointer;text-indent:-1000px;width:16px;height:16px;background-image:url(<?php echo $vars['url'] ?>mod/enlightn/media/graphics/customIcons.gif);opacity:0.6}
@@ -2920,9 +2920,18 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 .uEditor ul.uEditorToolbar li a.myButtonClass,.uEditor ul.uEditorToolbar li a.mySecondButtonClass{background:url(img/plugin.png)}
 .uEditor ul.uEditorToolbar li a:hover,.uEditor ul.uEditorToolbar li a.on,.uEditor ul.uEditorToolbar.uEditorSource li a.uEditorButtonHTML{opacity:1}
 .uEditor ul.uEditorToolbar li.uEditorEditSelect{float:right;margin:0;padding:0}
-.uEditor .uEditorIframe{clear:both;width:100%;height:200px;border:none}
-.uEditor textarea.uEditorTextarea{clear:both;margin:2%;padding:0;width:96%;height:200px;border:none;font-family:monospace}
+.uEditor .uEditorIframe{clear:both;width:100%;height:100px;border:none}
+.uEditor textarea.uEditorTextarea{clear:both;margin:2%;padding:0;width:96%;height:100px;border:none;font-family:monospace}
 
+.left {
+	overflow:auto;
+	float: left;
+}
+
+.right {
+	width: 90%;
+	float: right;
+}
 </style>
 <script language="javascript">
 function loadContent (divId,dataTo,method,anchor) {
@@ -2972,6 +2981,11 @@ function get_search_criteria () {
 		var discussion_type = 1;
 	} else {
 		var discussion_type = $('#discussion_type').val();
+	}	
+	if ($('#entity_guid').val() == undefined) {
+		var entity_guid = 0;
+	} else {
+		var entity_guid = $('#entity_guid').val();
 	}		
 	var search_criteria = '?q=' + encodeURIComponent(words)
 							+ '&date_begin=' + date_begin
@@ -2979,7 +2993,8 @@ function get_search_criteria () {
 							+ '&from_users=' + from_users
 							+ '&offset=' + $('#see_more_discussion_list_offset').val()
 							+ '&subtype=' + subtype
-							+ '&discussion_type=' + discussion_type;
+							+ '&discussion_type=' + discussion_type
+							+ '&entity_guid=' + entity_guid;
 	return search_criteria;
 }
 
@@ -2996,6 +3011,7 @@ function get_search_criteria () {
 	    	}		
 		}
 	}, 1500);
+	
 	function changeMessageList (currElement, discussion_type) {
 		if(discussion_type == undefined) {
 			discussion_type = 1;
@@ -3011,4 +3027,23 @@ function get_search_criteria () {
       	});
       	return false;
 	}
+	
+	function reloader (url_to_check, element_id) {
+		var last_modified = '0'; 
+		setInterval(function() {
+			$.getJSON(url_to_check,{fetch_modified: "1"}, function(data) {
+				$.each(data, function(i,item){
+					if (i == 'last-modified') {
+						if (last_modified != item) {
+							if (last_modified != '0') {
+								loadContent (element_id, url_to_check);						
+							}
+							last_modified = item;
+						}
+					}
+				});
+			});
+		}, 5000);
+	}
+	
 </script>

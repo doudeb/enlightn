@@ -34,7 +34,6 @@ $(document).ready(function(){
 	var uEditor = initEditor();
 	var refreshId = setInterval(function() {
 		var editor_value = $('[name=<?php echo $vars['internalid']?>]').val();
-		console.log(editor_value);
 		if (editor_value) {
 			url = extractUrl(editor_value);
 	    	if(url && url[0] != $('#lastExtractedUrl').val()) {
@@ -56,7 +55,6 @@ $(document).ready(function(){
 		} else if (mediaType == 'media') {
 			var strPut = $('#fetch_results').html();
 			$("#discussion_subtype").val("<?php echo ENLIGHTN_MEDIA?>");
-			alert($("#discussion_subtype").val());
 		}
 		$('#embedContent').val(strPut);
 	}

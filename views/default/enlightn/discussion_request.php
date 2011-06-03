@@ -18,5 +18,5 @@ $(document).ready(function() {
 	});
 });
 </script>
-<div id="requests"><a href="<?php echo $vars['url']; ?>/mod/enlightn/ajax/invitations.php" class="popin-request"><?php echo elgg_echo('enlightn:membershiprequest');?> (<?php echo count($vars['requests']);?>)</a></div>
+<a href="<?php echo $vars['url']; ?>/mod/enlightn/ajax/invitations.php" class="popin-request">(<?php echo count($vars['requests']);?>)</a>
 <?php } ?>

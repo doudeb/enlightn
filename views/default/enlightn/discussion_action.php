@@ -6,7 +6,7 @@ if (!check_entity_relationship($vars['user_guid'], ENLIGHTN_FOLLOW, $vars['entit
 }
 echo elgg_view("enlightn/favorite", array('entity' => $vars['entity']
 									, 'user_guid' => $vars['user_guid']));
-echo elgg_view("enlightn/invite", array('entity' => $vars['entity']
-									, 'user_guid' => $vars['user_guid']));
+/*echo elgg_view("enlightn/invite", array('entity' => $vars['entity']
+									, 'user_guid' => $vars['user_guid']));*/
 ?>	                    
 </div>

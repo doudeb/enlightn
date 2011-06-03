@@ -6,7 +6,6 @@
 	 * @package ElggGroups
 	 */
 //display follow up comments
-$count 			= $vars['entity']->countAnnotations('group_topic_post');
 $offset 		= (int) get_input('offset',0);
 ?>
 <div id="topic_posts"><!-- open the topic_posts div -->

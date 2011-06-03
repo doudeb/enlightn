@@ -11,7 +11,7 @@ if (!$user_guid || !$user_ent) {
 	forward();
 }
 elgg_get_access_object()->set_ignore_access(true);
-$topic 				= get_entity(get_input('discussion_id'));
+$topic 				= get_entity(get_input('entity_guid'));
 if (!$topic) forward();
 
 /**

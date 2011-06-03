@@ -27,7 +27,7 @@ function enlightn_init() {
 	register_action("enlightn/edit",false, $CONFIG->pluginspath . "enlightn/actions/discussion_edit.php");
 	register_action("enlightn/addpost",false, $CONFIG->pluginspath . "enlightn/actions/addpost.php");
 	register_action("enlightn/join",false, $CONFIG->pluginspath . "enlightn/actions/join.php");
-	register_action("enlightn/invite",false, $CONFIG->pluginspath . "enlightn/actions/discussion_invite.php");
+	register_action("enlightn/invite",false, $CONFIG->pluginspath . "enlightn/actions/invite.php");
 	register_action("enlightn/follow",false, $CONFIG->pluginspath . "enlightn/actions/follow.php");
 	register_action("enlightn/favorite",false, $CONFIG->pluginspath . "enlightn/actions/favorite.php");
     // Replace the default index page
@@ -60,7 +60,7 @@ function enlightn_page_handler($page) {
 			include($CONFIG->pluginspath . "enlightn/invitations.php");
 			break;
 		case "discuss":
-			set_input('discussion_id', $page[1]);
+			set_input('entity_guid', $page[1]);
 			include($CONFIG->pluginspath . "enlightn/discuss.php");
 			break;
 	}

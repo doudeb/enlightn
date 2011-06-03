@@ -23,16 +23,24 @@ Order By e.time_created desc";
 		return  get_data($query, 'entity_row_to_elggstar');
 	}
 	
-	function search ($user_guid, $access_level = 0, $words, $users_guid = '', $date_begin = '""', $date_end = '""', $subtype = '', $offset = 0, $limit = 10) {
+	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $words, $users_guid = '', $date_begin = '""', $date_end = '""', $subtype = '', $offset = 0, $limit = 10) {
 		
-		$query = "Select a.*
+		$query = "Select * From (
+				Select a.*
 					, msv.string as value
 					, ent_title.title
 					, a.entity_guid as guid
+					, FROM_UNIXTIME(a.time_created) as created
 From annotations a
 Inner Join objects_entity ent_title On a.entity_guid = ent_title.guid
 Inner Join metastrings msv on a.value_id = msv.id
-Where 
+Where 	
+	Case
+		When $entity_guid != 0 Then
+			a.entity_guid = $entity_guid
+		Else true
+	End
+And
 	Case
 		When $access_level = 1 Then #Public Only 
 			a.access_id = " . ACCESS_PUBLIC ."
@@ -99,18 +107,19 @@ And
 						And mst.string = '$subtype')
 		Else true
 	End
-Group By 
-	Case 
-		When length('$words')  = 0 Then
-	 		a.entity_guid
-	 	Else a.id
-	End
 Order By a.time_created Desc
 ,Case
 	When locate('$words',ent_title.title) Then 1
 	When locate('$words',msv.string) Then 2
 	Else false
-End
+End) as p
+Group By 
+	Case 
+		When length('$words')  = 0 And $entity_guid = 0 Then
+	 		p.guid
+	 	Else p.id
+	End
+Order By p.created Desc
 Limit $offset, $limit";
 		//echo "<pre>" . $query;die();
 		return  get_data($query, 'row_to_elggannotation');

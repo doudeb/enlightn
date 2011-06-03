@@ -14,14 +14,11 @@
 	<div class="contentWrapper">
 		<ul>
 		<?php echo elgg_view('input/securitytoken'); ?>
-			<li><?php echo elgg_echo('enlightn:visibility'); ?>
-				<?php
-
+			<li><?php echo elgg_echo('enlightn:visibility');
 				$this_owner = $vars['entity']->owner_guid;
 				if (!$this_owner) {
 					$this_owner = get_loggedin_userid();
 				}
-
 				$access = array(ACCESS_PUBLIC => elgg_echo("PUBLIC"), ACCESS_PRIVATE => elgg_echo("PRIVATE"));
 				$collections = get_user_access_collections($vars['entity']->guid);
 				if (is_array($collections)) {
