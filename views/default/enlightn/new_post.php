@@ -46,8 +46,8 @@ $(document).ready(function(){
 	        //url:       url         // override for form's 'action' attribute
 	      	type:      'post',        // 'get' or 'post', override for form's 'method' attribute
 	        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type)
-	        clearForm: true,        // clear all form fields after successful submit
-	        resetForm: true        // reset the form after successful submit
+	        clearForm: false,        // clear all form fields after successful submit
+	        resetForm: false        // reset the form after successful submit
 	        // $.ajax options can be used here too, for example:
 	        //timeout:   3000
 	    };
@@ -69,8 +69,9 @@ $(document).ready(function(){
 	}
 
 	function autoClose () {
-		loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
 		$('#edit_discussion').fadeOut();
 		$('#fake_input').fadeIn();
+		$(".rte-zone").contents().find(".frameBody").html('');
+		return true;
 	}
 </script>

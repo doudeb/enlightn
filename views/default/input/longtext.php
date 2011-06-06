@@ -36,9 +36,10 @@ $(document).ready(function(){
     	content_css_url: "<?php echo $vars['url']; ?>mod/enlightn/media/css/rte.css",
     	media_url: "<?php echo $vars['url']; ?>mod/enlightn/media/graphics/",
 	});
-
+});
+$(document).ready(function(){
 	var refreshId = setInterval(function() {
-		var editor_value = $('[name=<?php echo $vars['internalid']?>]').val();
+		var editor_value = $(".rte-zone").contents().find(".frameBody").html();
 		if (editor_value) {
 			url = extractUrl(editor_value);
 	    	if(url && url[0] != $('#lastExtractedUrl').val()) {

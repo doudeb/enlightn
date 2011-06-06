@@ -54,6 +54,6 @@ add_to_river('enlightn/river/comment', 'create', $user->guid, $topic_guid, "", 0
 //Mark as read
 add_entity_relationship($_SESSION['user']->guid, ENLIGHTN_READED, $post_id);
 system_message(elgg_echo("enlightn:success"));
-system_message(elgg_echo("enlightn:success"));
+echo elgg_echo('enlightn:discussion_sucessfully_created');
 elgg_get_access_object()->set_ignore_access(false);
 exit();
