@@ -23,7 +23,10 @@
 			,'enlightn:searchfilters' => "Filters"
 			,'enlightn:searchfavourite' => "Favorites"
 			,'enlightn:seemore' => "See more"
+			,'enlightn:river:posted' => '%s has posted a new comment'
+            ,'enlightn:river:postedtopic' => '%s has started a new discussion topic titled'
 			,'item:object:enlightndiscussion' => "Elightn discussion"
+			,'enlightn:river:annotate:create' => 'on this discussion topic'
 	);
 
 	add_translation("en",$english);

@@ -30,7 +30,8 @@
 	<div id="navBar">
 		<br />
 		<ul id="nav">
-			<li><a href="<?php echo $vars['url']; ?>pg/enlightn/"><?php echo elgg_echo("home"); ?></a><?php echo elgg_view('enlightn/discussion_request',array('requests' => get_invitations($vars['user']->guid, true)));?></li>
+			<li><a href="<?php echo $vars['url']; ?>pg/enlightn/"><?php echo elgg_echo("home"); ?></a><li>
+			<?php echo elgg_view('enlightn/discussion_request',array('requests' => get_invitations($vars['user']->guid, true)));?>
 			<li><a href="<?php echo $vars['url']; ?>pg/profile/<?php echo $vars['user']->username;?>" title=""><?php echo $vars['user']->username;?></a></li>
 			<li><a href="<?php echo $vars['url']; ?>pg/members/" title=""><?php echo elgg_echo("members"); ?></a></li>
 			<li><a href="<?php echo $vars['url']; ?>pg/settings/" title=""><?php echo elgg_echo("settings"); ?></a></li>

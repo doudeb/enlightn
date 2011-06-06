@@ -14,7 +14,7 @@
  * @uses $vars['disabled'] Is the input field disabled?
  */
 
-$class = "uEditor";
+$class = "rte-zone";
 if (isset($vars['class'])) {
 	$class = $vars['class'];
 }
@@ -31,7 +31,12 @@ if (isset($vars['value'])) {
 ?>
 <script type="text/javascript">
 $(document).ready(function(){
-	var uEditor = initEditor();
+	//var uEditor = initEditor();
+	$(".rte-zone").rte({
+    	content_css_url: "<?php echo $vars['url']; ?>mod/enlightn/media/css/rte.css",
+    	media_url: "<?php echo $vars['url']; ?>mod/enlightn/media/graphics/",
+	});
+
 	var refreshId = setInterval(function() {
 		var editor_value = $('[name=<?php echo $vars['internalid']?>]').val();
 		if (editor_value) {

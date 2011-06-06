@@ -14,7 +14,7 @@ function enlightn_init() {
 	define('ENLIGHTN_READED', 'readed');
 	define('ENLIGHTN_FAVORITE', 'favorite');
 	//Disable rights
-	//elgg_get_access_object()->set_ignore_access(true);
+	elgg_get_access_object()->set_ignore_access(true);
 	require_once("model/enlightn.php");
     // Extend system CSS with our own styles
     //extend_view('css','enlightn/css');
@@ -169,6 +169,15 @@ From river r
 Left Join entity_relationships As rel On rel.guid_two In(r.object_guid, r.annotation_id) And rel.guid_one = $user_guid And rel.relationship = '" . ENLIGHTN_READED . "'
 Where r.subject_guid != $user_guid
 And rel.id Is Null
+And 
+	Case When r.access_id = " . ACCESS_PRIVATE . " Then 
+		Exists (Select id 
+					From entity_relationships As rel 
+					Where r.object_guid = rel.guid_two 
+					And rel.guid_one = $user_guid
+					And rel.relationship = '" . ENLIGHTN_FOLLOW . "')
+		Else True
+	End
 Order By r.posted Desc
 Limit $offset, $limit";
 	return get_data($sql);

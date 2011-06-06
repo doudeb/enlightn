@@ -50,7 +50,7 @@ if (is_array($searchResults)) {
 		if ((int)$entity_guid > 0) {
 			$flag_readed = check_entity_relationship($user_guid, ENLIGHTN_READED,$topic->id);
 			if(!$flag_readed) {
-				//add_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$post->id);
+				add_entity_relationship($user_guid, ENLIGHTN_READED,$topic->id);
 			}
 		    echo elgg_view("enlightn/topicpost",array('entity' => $topic
 		    											, 'query' => $words

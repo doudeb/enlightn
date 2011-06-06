@@ -1,10 +1,6 @@
-<select id="<?php echo $vars['internalname']; ?>" name="<?php echo $vars['internalname']; ?>"></select>
+<input type="text" id="<?php echo $vars['internalname']; ?>" name="<?php echo $vars['internalname']; ?>">
 <script type="text/javascript">
-    $(document).ready(function(){                
-        $("#<?php echo $vars['internalname']; ?>").fcbkcomplete({
-            json_url: "<?php echo $vars['url']; ?>mod/enlightn/ajax/members.php",
-            addontab: true,                   
-            height: 5                  
-        });
-    });
+	$(document).ready(function() {
+		$("#<?php echo $vars['internalname']; ?>").tokenInput("<?php echo $vars['url']; ?>mod/enlightn/ajax/members.php");
+	});
 </script>

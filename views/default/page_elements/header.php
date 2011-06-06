@@ -56,14 +56,14 @@ $release = get_version(true);
 	<meta name="ElggRelease" content="<?php echo $release; ?>" />
 	<meta name="ElggVersion" content="<?php echo $version; ?>" />
 	<title><?php echo $title; ?></title>
-	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery-1.6.1.min.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery-ui-1.7.2.custom.min.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery-ui-1.7.2.min.js"></script>
-	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery.form.js"></script>
+	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.form.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>_css/js.php?lastcache=<?php echo $vars['config']->lastcache; ?>&amp;js=initialise_elgg&amp;viewtype=<?php echo $vars['view']; ?>"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.popin.js"></script>
-	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/ueditor.js"></script>			
-	<script src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.fcbkcomplete.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.rte.js"></script>			
+	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.tokeninput.js"></script>
 <?php
 	global $pickerinuse;
 	if (isset($pickerinuse) && $pickerinuse == true) {
@@ -77,6 +77,9 @@ $release = get_version(true);
 	<!-- include the default css file -->
 	<link rel="stylesheet" href="<?php echo $vars['url']; ?>_css/css.css?lastcache=<?php echo $vars['config']->lastcache; ?>&amp;viewtype=<?php echo $vars['view']; ?>" type="text/css" />
 	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="<?php echo $vars['url']; ?>mod/enlightn/media/css/token-input.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo $vars['url']; ?>mod/enlightn/media/css/token-input-facebook.css" type="text/css" />
+
 	<?php
 		echo $feedref;
 		echo elgg_view('metatags',$vars);
@@ -2922,6 +2925,47 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 .uEditor ul.uEditorToolbar li.uEditorEditSelect{float:right;margin:0;padding:0}
 .uEditor .uEditorIframe{clear:both;width:100%;height:100px;border:none}
 .uEditor textarea.uEditorTextarea{clear:both;margin:2%;padding:0;width:96%;height:100px;border:none;font-family:monospace}
+
+/**
+RTE EDITOR
+**/
+.frameBody
+{
+    font-family:sans-serif;
+    font-size:12px;
+    margin:0;
+    width:100%;
+    height:100%;
+}
+
+.frameBody p
+{
+    border:1px #bbb solid;
+    padding:2px;
+}
+
+.rte-zone
+{
+    width:500px;
+    margin:0;
+    padding:0;
+    border:1px #999 solid;
+    clear:both;
+    height:200px;
+    display:block;
+}
+
+.rte-toolbar{ overflow:hidden; }
+
+.rte-toolbar a, .rte-toolbar a img {
+	border:0;
+}
+
+.rte-toolbar p {
+    float:left;
+    margin:0;
+    padding-right:5px;
+}
 
 .left {
 	overflow:auto;

@@ -9,14 +9,14 @@ $user_guid = get_loggedin_userid();
 /**
  * @todo set it to cache
  */
-$username = get_input('tag');
+$username = get_input('q');
 
 set_context('search');
 $userfound = (search_for_user($username));
 if (is_array($userfound)) {
 	foreach ($userfound as $key => $user) {
-		$usertojson[$key]['value'] 	= $user->guid;
-		$usertojson[$key]['key'] 	= $user->name;
+		$usertojson[$key]['id'] 	= $user->guid;
+		$usertojson[$key]['name'] 	= $user->name;
 	}
 }
 echo json_encode($usertojson);

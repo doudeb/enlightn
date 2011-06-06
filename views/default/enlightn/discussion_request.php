@@ -1,4 +1,5 @@
-<?php if (count($vars['requests']) > 0) { ?><script language="javascript">
+<?php if (count($vars['requests']) > 0) { ?>
+<script language="javascript">
 $(document).ready(function() {
 	$("a.popin-request").popin({
 		width:700,
@@ -18,5 +19,5 @@ $(document).ready(function() {
 	});
 });
 </script>
-<a href="<?php echo $vars['url']; ?>/mod/enlightn/ajax/invitations.php" class="popin-request">(<?php echo count($vars['requests']);?>)</a>
+<li><a href="<?php echo $vars['url']; ?>/mod/enlightn/ajax/invitations.php" class="popin-request"><?php echo elgg_echo('enlightn:membershiprequest')?>(<?php echo count($vars['requests']);?>)</a></li>
 <?php } ?>

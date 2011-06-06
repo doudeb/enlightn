@@ -9,13 +9,14 @@
 // Make sure we're logged in; forward to the front page if not
 if (!isloggedin()) forward();
 // Get input data
-$title = strip_tags(get_input('title'));
-$message = get_input('description');
-$embeded = get_input('embedContent',null,false);
-$tags = get_input('interests');
-$access = get_input('membership');
-$user = $_SESSION['user']->getGUID(); // you need to be logged in to comment on a group forum
-$userto = get_input('invite');
+$title 				= strip_tags(get_input('title'));
+$message 			= get_input('description');
+$embeded 			= get_input('embedContent',null,false);
+$tags 				= get_input('interests');
+$access 			= get_input('membership');
+$user 				= $_SESSION['user']->getGUID(); // you need to be logged in to comment on a group forum
+$userto 			= get_input('invite');
+$userto				= explode(",", $userto);
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
 global $CONFIG;
 // Convert string of tags into a preformatted array
@@ -64,7 +65,7 @@ if (empty($title) || empty($message)) {
 	//Invited user
 	if (is_array($userto)) {
 		foreach ($userto as $key => $usertoid) {
-			$usertoid = get_entity($usertoid);
+			$usertoid = get_entity((int)$usertoid);
 			if ($usertoid->guid) {
 				/*if (!$usertoid->isFriend()) {
 					add_entity_relationship($_SESSION['user']->guid, 'friend', $usertoid->guid);
