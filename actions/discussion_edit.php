@@ -7,14 +7,16 @@
 	 */
 
 // Make sure we're logged in; forward to the front page if not
+gatekeeper();
 if (!isloggedin()) forward();
+global $enlightn;
 // Get input data
 $title 				= strip_tags(get_input('title'));
 $message 			= get_input('description');
 $embeded 			= get_input('embedContent',null,false);
 $tags 				= get_input('interests');
 $access 			= get_input('membership');
-$user 				= $_SESSION['user']->getGUID(); // you need to be logged in to comment on a group forum
+$user_guid			= get_loggedin_userid(); // you need to be logged in to comment on a group forum
 $userto 			= get_input('invite');
 $userto				= explode(",", $userto);
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
@@ -36,7 +38,7 @@ if (empty($title) || empty($message)) {
 	// Tell the system it's a simple post, url link, media,etc.
 	$enlightndiscussion->subtype = ENLIGHTN_DISCUSSION;
 	// Set its owner to the current user
-	$enlightndiscussion->owner_guid = $user;
+	$enlightndiscussion->owner_guid = $user_guid;
 	// Set the group it belongs to
 	$enlightndiscussion->container_guid = $group_guid;
 	// For now, set its access to public (we'll add an access dropdown shortly)
@@ -54,17 +56,26 @@ if (empty($title) || empty($message)) {
 	}
 
 	// now add the topic message as an annotation
-	$annotationid = $enlightndiscussion->annotate($discussion_type,$message,$access, $user);
+	$annotationid = $enlightndiscussion->annotate($discussion_type,$message,$access, $user_guid);
 	// add to river
-	add_to_river('enlightn/river/create','create',$_SESSION['user']->guid,$enlightndiscussion->guid,$access, 0, $post_id);
+	add_to_river('enlightn/river/create','create',$user_guid,$enlightndiscussion->guid,$access, 0, $post_id);
 	// Success message
 	system_message(elgg_echo("grouptopic:created"));
+	// Remove cache for public access
+	$enlightn->flush_cache(array('access_level' => ENLIGHTN_ACCESS_PU),'search');
+	$enlightn->flush_cache(array('user_guid' => $user_guid,'access_level' => ENLIGHTN_ACCESS_PR),'search');
 	// Add users membership to the discussion
 	//Current user
-	add_entity_relationship($_SESSION['user']->guid, 'member', $enlightndiscussion->guid);
+	add_entity_relationship($user_guid, 'member', $enlightndiscussion->guid);
 	//Invited user
 	if (is_array($userto)) {
 		foreach ($userto as $key => $usertoid) {
+			// Remove cache for private acces, need to be deployed on user side
+			if ($access == ACCESS_PRIVATE) {
+				$enlightn->flush_cache(array('user_guid' => $usertoid),'unreaded');
+				$enlightn->flush_cache(array('user_guid' => $usertoid,'access_level' => ENLIGHTN_ACCESS_PR),'search');
+				$enlightn->flush_cache(array('user_guid' => $usertoid,'access_level' => ENLIGHTN_ACCESS_IN),'search');
+			}			
 			$usertoid = get_entity((int)$usertoid);
 			if ($usertoid->guid) {
 				/*if (!$usertoid->isFriend()) {
@@ -88,8 +99,8 @@ if (empty($title) || empty($message)) {
 		}
 	}
 	//Mark the message as read
-	add_entity_relationship($_SESSION['user']->guid, ENLIGHTN_READED, $enlightndiscussion->guid);
-	add_entity_relationship($_SESSION['user']->guid, ENLIGHTN_READED, $annotationid);
+	//add_entity_relationship($user_guid, ENLIGHTN_READED, $enlightndiscussion->guid);
+	add_entity_relationship($user_guid, ENLIGHTN_READED, $annotationid);
 	echo elgg_echo('enlightn:discussion_sucessfully_created');
 }
 ?>

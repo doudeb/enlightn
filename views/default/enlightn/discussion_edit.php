@@ -141,9 +141,10 @@
 		//return false;
 	}
 	function autoClose () {
-		loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
 		$('#edit_discussion').fadeOut();
 		$('#fake_input').fadeIn();
+		$("#embedContent").val('');
+
 	}
     </script>
 	</div>

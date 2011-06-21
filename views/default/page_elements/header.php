@@ -62,7 +62,7 @@ $release = get_version(true);
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.form.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>_css/js.php?lastcache=<?php echo $vars['config']->lastcache; ?>&amp;js=initialise_elgg&amp;viewtype=<?php echo $vars['view']; ?>"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.popin.js"></script>
-	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.rte.js"></script>			
+	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.rte.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.tokeninput.js"></script>
 <?php
 	global $pickerinuse;
@@ -2560,7 +2560,7 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	#margin:4px 4px 4px 4px;
 	border-bottom: 2px solid #cccccc;
 	background:#cccccc;
-	
+
 }
 
 .discussion_short_container {
@@ -2800,20 +2800,23 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	width:auto;
 }
 
+#discussion_invite {
+	width:auto;
+}
 
 .contentWrapper {
 	background:white;
     padding:1px;
     margin:0 1px 1px 1px;
 }
-.floating .mini-close { 
+.floating .mini-close {
 	margin-bottom: 0px;
 	margin-left: 0px;
 	margin-right: -3px;
 	margin-top: -3px;
 	position: relative;
 }
-.mini-close { 
+.mini-close {
 	background-image: url("<?php echo $vars['url'] ?>mod/enlightn/media/graphics/default.png");
 	background-origin: padding-box;
 	background-position: -40px -100px;
@@ -2837,7 +2840,7 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	background-size: auto;
 	height: 15px;
 	width: 15px;
-	float:left;	
+	float:left;
 	cursor: pointer;
 }
 
@@ -2852,7 +2855,7 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	background-size: auto;
 	height: 15px;
 	width: 15px;
-	float:left;	
+	float:left;
 	cursor: pointer;
 }
 .floating_left {
@@ -2883,7 +2886,7 @@ ul.holder li.bit-box-focus a.closebutton, ul.holder li.bit-box-focus a.closebutt
 	margin: 5px 5px 5px 5px;
 	padding: 5px 5px 5px 5px;
 	cursor: pointer;
-} 
+}
 #vertical_tabbed_nav a {
 	text-decoration: none;
 	color: #999999;
@@ -2976,6 +2979,34 @@ RTE EDITOR
 	width: 90%;
 	float: right;
 }
+
+.jewelCount {
+	background-color: #00376a;
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	color: #ffffff;
+	#display: none;
+	font-size: 9px;
+	font-weight: 700;
+	padding-bottom: 1px;
+	position: absolute;
+	right: -1px;
+	top: -1px;
+	z-index: 101;
+}
+
+.fbJewel {
+	float: left;
+	margin-right: -1px;
+}
+
+.nav_unreaded {
+	padding:0px 2px 0px 2px;
+	cursor:pointer;
+}
+
 </style>
 <script language="javascript">
 function loadContent (divId,dataTo,method,anchor) {
@@ -2987,10 +3018,10 @@ function loadContent (divId,dataTo,method,anchor) {
  			//window.scrollTo(0, $(anchor).position().top);
 	  		return true;
 		});
-	} else if (method == 'append') {		
+	} else if (method == 'append') {
 		$.get(dataTo, function(data){
 			$(divId).append(data);
-		});		
+		});
 	}
 }
 
@@ -3000,7 +3031,7 @@ function get_search_criteria () {
 	} else {
 		var subtype = $('input:radio[name=subtype]:checked').val();
 	}
-	
+
 	if ($('#searchInput').val() == 'Search') {
 		var words = '';
 	} else {
@@ -3015,7 +3046,7 @@ function get_search_criteria () {
 		var date_end = '';
 	} else {
 		var date_end = $('#date_end').val();
-	}	
+	}
 	if ($('#date_begin').val() == undefined) {
 		var date_begin = '';
 	} else {
@@ -3025,20 +3056,26 @@ function get_search_criteria () {
 		var discussion_type = 1;
 	} else {
 		var discussion_type = $('#discussion_type').val();
-	}	
+	}
 	if ($('#entity_guid').val() == undefined) {
 		var entity_guid = 0;
 	} else {
 		var entity_guid = $('#entity_guid').val();
-	}		
+	}
+	if ($('#unreaded_only').val() == undefined) {
+		var unreaded_only = 0;
+	} else {
+		var unreaded_only = $('#unreaded_only').val();
+	}
 	var search_criteria = '?q=' + encodeURIComponent(words)
 							+ '&date_begin=' + date_begin
-							+ '&date_end=' + date_end 
+							+ '&date_end=' + date_end
 							+ '&from_users=' + from_users
 							+ '&offset=' + $('#see_more_discussion_list_offset').val()
 							+ '&subtype=' + subtype
 							+ '&discussion_type=' + discussion_type
-							+ '&entity_guid=' + entity_guid;
+							+ '&entity_guid=' + entity_guid
+							+ '&unreaded_only=' + unreaded_only;
 	return search_criteria;
 }
 
@@ -3046,23 +3083,23 @@ function get_search_criteria () {
 		$('#searchInput').click( function(){
 		});
 	});
-	
+
 	var refreshSearch = setInterval(function() {
 		if ($('#searchInput').val() != '<?php echo elgg_echo('search')?>' && $('#searchInput').val().length > 2) {
 	    	if($('#searchInput').val() != $('#last_search').val()) {
 	    		$('#last_search').val($('#searchInput').val());
 				changeMessageList('#discussion_selector_search',$('#discussion_type_filter').val());
-	    	}		
+	    	}
 		}
 	}, 1500);
-	
+
 	function changeMessageList (currElement, discussion_type) {
 		if(discussion_type == undefined) {
 			discussion_type = 1;
 		}
 		$('#discussion_type').val(discussion_type);
 		$('#see_more_discussion_list_offset').val(0);
-		loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria());		
+		loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria());
 		$(currElement).addClass('selected');
 		$("#list_selector li").each(function () {
 			if($(this).attr('id') != $(currElement).attr('id')) {
@@ -3071,16 +3108,17 @@ function get_search_criteria () {
       	});
       	return false;
 	}
-	
+
 	function reloader (url_to_check, element_id) {
-		var last_modified = '0'; 
+		var last_modified = '0';
 		setInterval(function() {
-			$.getJSON(url_to_check,{fetch_modified: "1"}, function(data) {
+			var offset = $('#see_more_discussion_list_offset').val();
+			$.getJSON(url_to_check + get_search_criteria(),{fetch_modified: "1"}, function(data) {
 				$.each(data, function(i,item){
-					if (i == 'last-modified') {
+					if (i == 'last-modified' && offset == '0') {
 						if (last_modified != item) {
 							if (last_modified != '0') {
-								loadContent (element_id, url_to_check);						
+								loadContent (element_id, url_to_check + get_search_criteria());
 							}
 							last_modified = item;
 						}
@@ -3089,5 +3127,4 @@ function get_search_criteria () {
 			});
 		}, 5000);
 	}
-	
 </script>

@@ -7,25 +7,28 @@
 
 	// Load configuration
 	gatekeeper();
-	global $CONFIG;
-	$url = $CONFIG->wwwroot . "pg/enlightn";
-	$user_guid = get_loggedin_userid();
-	$discussion_guid = get_input('discussion_guid');
+	global $CONFIG,$enlightn;
+	$url 				= $CONFIG->wwwroot . "pg/enlightn";
+	$user_guid 			= get_loggedin_userid();
+	$discussion_guid 	= get_input('discussion_guid');
 
 	// @todo fix for #287
 	// disable access to get entity.
-	$discussion = get_entity($discussion_guid);
-	if ($discussion->access_id == ACCESS_PUBLIC) 	{ // only public discussion can be followed
+	$discussion 		= get_entity($discussion_guid);
+	$is_follow			= check_entity_relationship($user_guid, ENLIGHTN_FOLLOW, $discussion_guid);
+	if ($is_follow) {
+		remove_entity_relationship($user_guid, ENLIGHTN_FOLLOW, $discussion_guid);
+		add_to_river('river/relationship/member/create','quit',$user->guid,$discussion->guid);
+	} else {
 		if (add_entity_relationship($user_guid, 'member', $discussion->guid)) {
-			system_message(elgg_echo("groups:joined"));
+			remove_entity_relationship($discussion->guid, 'invited', $user_guid);
+			system_message(elgg_echo("enlightn:joined"));
 			add_to_river('river/relationship/member/create','join',$user->guid,$discussion->guid);
-			exit;
 		}
-		else
-			register_error(elgg_echo("groups:cantjoin"));
-
 	}
-	else
-		register_error(elgg_echo("groups:cantjoin"));
+	$enlightn->flush_cache(array('user_guid' => $user_guid),'unreaded');
+	$enlightn->flush_cache(array('user_guid' => $user_guid,'access_level' => ENLIGHTN_ACCESS_PR),'search');
+	$enlightn->flush_cache(array('user_guid' => $user_guid,'access_level' => ENLIGHTN_ACCESS_PU),'search');
+	$enlightn->flush_cache(array('user_guid' => $user_guid,'access_level' => ENLIGHTN_ACCESS_IN),'search');
 exit;
 ?>

@@ -84,7 +84,7 @@ class Embed_url {
 					return;
 				}
 			}
-		 }		
+		 }
 		$image_regex = '/<img[^>]*'.'src=[\"|\'](.*)[\"|\']/Ui';
 		preg_match_all($image_regex, $this->html, $img, PREG_PATTERN_ORDER);
 		$this->images = $img[1];
@@ -117,7 +117,7 @@ class Embed_url {
 	}
 
 	private function isRelatedImage ($image) {
-		similar_text($this->url,$image, $is_image_related);
+		similar_text($this->hostname,$this->getDomainName($image), $is_image_related);
 		return $is_image_related;
 	}
 

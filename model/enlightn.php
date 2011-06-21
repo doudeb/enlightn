@@ -3,6 +3,15 @@
 
 class enlightn {
 	
+	var $cache;
+	
+	function __construct() {
+		static $cache;
+		if ((!$cache) && (is_memcache_available())) {
+			$this->cache = new ElggMemcache('enlightn_cache');
+		}		
+	}
+	
 	function get_discussion ($user_guid, $discussion_type = 0) {
 		
 		if (!$user_guid) {
@@ -23,8 +32,8 @@ Order By e.time_created desc";
 		return  get_data($query, 'entity_row_to_elggstar');
 	}
 	
-	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $words, $users_guid = '', $date_begin = '""', $date_end = '""', $subtype = '', $offset = 0, $limit = 10) {
-		
+	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $unreaded_only = 0,$words, $from_users = '', $date_begin = '""', $date_end = '""', $subtype = '', $offset = 0, $limit = 10) {
+		$key_cache = $this->generate_key_cache(get_defined_vars(), 'search');
 		$query = "Select * From (
 				Select a.*
 					, msv.string as value
@@ -73,9 +82,29 @@ And
 					And rel.relationship = '". ENLIGHTN_FOLLOW . "'
 					And a.access_id  = " . ACCESS_PRIVATE ."
 				)
-			) Or a.access_id  = " . ACCESS_PUBLIC ."			
+			) Or a.access_id  = " . ACCESS_PUBLIC ."
+		When $access_level = " . ENLIGHTN_ACCESS_IN . " Then #Invited aka request
+			Exists( 
+				Select id 
+				From entity_relationships As rel 
+				Where a.entity_guid = rel.guid_one 
+				And rel.guid_two = $user_guid
+				And rel.relationship = '". ENLIGHTN_INVITED . "'
+			)
 		Else false
 	End
+And
+	Case
+		When 1 = $unreaded_only Then #Unreaded Only
+                        Not Exists( 
+                                Select id 
+                                From entity_relationships As rel 
+                                Where a.id = rel.guid_two 
+                                And rel.guid_one = 2
+                                And rel.relationship = 'readed'
+                        )
+                Else true
+        End
 And
 	Case 
 		When length('$words') > 2 And length('$words') <= @@ft_min_word_len Then 
@@ -86,18 +115,13 @@ And
 	End
 And
 	Case
-		When length('$users_guid') > 0 And locate(',','$users_guid') = 0 Then
-			a.owner_guid = '$users_guid'
-		When length('$users_guid') > 0 And locate(',','$users_guid') > 0 Then
-			a.owner_guid in ('$users_guid')
+		When length('$from_users') > 0 And locate(',','$from_users') = 0 Then
+			a.owner_guid = '$from_users'
+		When length('$from_users') > 0 And locate(',','$from_users') > 0 Then
+			a.owner_guid in ('$from_users')
 		Else true
 	End
-And
-	Case
-		When length($date_begin) > 0 And length($date_end) > 0 Then
-			a.time_created Between $date_begin And $date_end
-		Else true
-	End
+And a.time_created Between $date_begin And $date_end
 And
 	Case 
 		When length('$subtype') > 0 Then 
@@ -122,7 +146,143 @@ Group By
 Order By p.created Desc
 Limit $offset, $limit";
 		//echo "<pre>" . $query;die();
-		return  get_data($query, 'row_to_elggannotation');
-	}	
+		return  $this->get_data($query, $key_cache, 'row_to_elggannotation');
+	}
+	
+	public function count_unreaded_discussion ($user_guid, $entity_guid = 0) {
+		$key_cache = $this->generate_key_cache(get_defined_vars(), 'unreaded');
+		if (!$user_guid) {
+			return false;
+		}
+		$query = "Select a.entity_guid as guid
+		,Count(a.id) as unreaded
+		,If(Exists(Select rel.id 
+					From entity_relationships As rel 
+					Where a.entity_guid = rel.guid_two 
+					And rel.guid_one = $user_guid
+					And rel.relationship = '" . ENLIGHTN_FAVORITE ."'),1,0) as Favorite
+		,If(Exists(Select rel.id 
+					From entity_relationships As rel 
+					Where a.entity_guid = rel.guid_one 
+					And rel.guid_two = $user_guid
+					And rel.relationship = '". ENLIGHTN_INVITED ."'),1,0) as Invited
+		,Case
+			When a.access_id = ". ACCESS_PRIVATE . " Then ". ENLIGHTN_ACCESS_PR . "
+			When a.access_id = ". ACCESS_PUBLIC . " Then ". ENLIGHTN_ACCESS_PU . "
+			Else 0
+		End As access_level
+From annotations a
+Where Not Exists (Select rel.id 
+					From entity_relationships As rel 
+					Where a.id = rel.guid_two 
+					And rel.guid_one = $user_guid
+					And rel.relationship = '" . ENLIGHTN_READED ."')
+And (Exists( 
+		Select id 
+		From entity_relationships As rel 
+		Where a.entity_guid = rel.guid_two 
+		And rel.guid_one = $user_guid
+		And rel.relationship IN ('". ENLIGHTN_FOLLOW . "')
+		And a.access_id  = " . ACCESS_PRIVATE .")
+	Or Exists( 
+		Select id 
+		From entity_relationships As rel 
+		Where a.entity_guid = rel.guid_one
+		And rel.guid_two = $user_guid
+		And rel.relationship IN ('". ENLIGHTN_INVITED ."'))
+	Or a.access_id  = " . ACCESS_PUBLIC ."
+	)
+And
+	Case
+		When $entity_guid != 0 Then
+			a.entity_guid = $entity_guid
+		Else
+			True
+	End
+Group By a.entity_guid";
+		//echo $query;
+		return  $this->get_data($query, $key_cache);
+	}
+	
+	private function generate_key_cache ($args = false, $prefix = 'enlightn') {
+		//by default, always use cache, some criteria will change that
+		$use_cache			= true;
+		$key_cache			= false;
+		if (!is_array($args)) {
+			return false;
+		}
+		if(isset($args['words']) && $args['words'] != '') {
+			$use_cache		= false;
+		}
+		
+		if (isset($args['subtype']) && $args['subtype'] != '') {
+			$use_cache		= false;
+		}
+		
+		if (isset($args['offset']) && $args['offset'] > 0) {
+			$use_cache		= false;
+		}
+		if(isset($args['from_users']) && $args['from_users'] != '') {
+			$use_cache		= false;
+		}
+		if (isset($args['date_begin']) && $args['date_begin'] != strtotime("-5 week")) {
+			$use_cache		= false;
+		}
+
+		if (isset($args['date_end']) && $args['date_end'] != strtotime("now")) {
+			$use_cache		= false;
+		}
+		if ($args['unreaded_only'] == '1') {
+			$use_cache		= false;
+		}
+		if ($use_cache) {
+			if ($args['access_level'] == ENLIGHTN_ACCESS_PU) {
+				$key_cache = $args['access_level'];
+			}
+			if (in_array($args['access_level'],array(ENLIGHTN_ACCESS_PR,ENLIGHTN_ACCESS_FA,ENLIGHTN_ACCESS_IN))) {
+				$key_cache = $args['user_guid'] . $args['access_level'];
+			}
+			if ($args['entity_guid'] != 0) {
+				if ($prefix == 'search') {
+					$key_cache = $args['entity_guid'];	
+				}
+			}
+			if ($prefix == 'unreaded') {
+				$key_cache = $args['user_guid'];	
+			}
+			return $prefix . $key_cache;
+		}
+		return false;
+	}
+	
+	public function flush_cache ($args, $prefix = 'default') {
+		$key_cache = $this->generate_key_cache($args,$prefix);
+		if ($this->cache->load($key_cache)) {
+			$this->cache->delete($key_cache);
+			elgg_log('enlightn:cache:keydeleted => ' . $key_cache);
+		} else {
+			elgg_log('enlightn:cache:miss => ' . $key_cache);
+		}
+		return true;
+	}
+	
+	private function get_data ($query, $key_cache, $call_back) {
+		if ($key_cache) {
+			$results = $this->cache->load($key_cache);
+			if ($results) {
+				elgg_log('enlightn:cache:loaded => ' . $key_cache);
+				return $results;
+			}
+		}
+		$results = get_data($query, $call_back);
+		if ($key_cache) {
+			if(!$this->cache->save($key_cache,$results)) {
+				elgg_log('enlightn:cache:error:save => ' . $key_cache);
+			} else {
+				elgg_log('enlightn:cache:saved => ' . $key_cache);
+			}
+		}
+		return  $results;
+	}
 }
 ?>

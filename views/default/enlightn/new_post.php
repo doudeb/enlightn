@@ -1,4 +1,6 @@
-<?php echo elgg_view('metatags',$vars);?>
+<?php echo elgg_view('metatags',$vars);
+if (check_entity_relationship($vars['user_guid'], ENLIGHTN_FOLLOW, $vars['entity']->guid)) {
+?>
 <div id="new_discussion" class="box_wrapper">
 		<div class="left" style="border:1px solid"><a href="<?php echo $vars['user_ent']->getURL(); ?>"><?php echo elgg_view("profile/icon",array('entity' => $vars['user_ent'], 'size' => 'small', 'override' => 'true')) ?></a></div>
 		<div class="right"><?php echo elgg_view("input/text",array(
@@ -72,6 +74,10 @@ $(document).ready(function(){
 		$('#edit_discussion').fadeOut();
 		$('#fake_input').fadeIn();
 		$(".rte-zone").contents().find(".frameBody").html('');
+		$("#embedContent").val('');
 		return true;
 	}
 </script>
+<?php
+}
+?>

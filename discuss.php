@@ -31,11 +31,11 @@ $new_post			=  elgg_view("enlightn/new_post", array('entity' => $topic
 $left 				.= $new_post;
 unset($new_post);
 //posts
-$posts			=  elgg_view("enlightn/posts", array('entity' => $topic
+$posts				=  elgg_view("enlightn/posts", array('entity' => $topic
 												,'user_ent' => $user_ent
 												,'user_guid' => $user_guid));
 $left 				.= $posts;
-unset($new_post);
+unset($post);
 /**
  * Right part
  */

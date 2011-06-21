@@ -5,17 +5,26 @@
  */
 
 function enlightn_init() {
-	global $CONFIG;
+	global $CONFIG,$enlightn;
 	define('ENLIGHTN_DISCUSSION', 'enlightndiscussion');
 	define('ENLIGHTN_LINK', 'enlightnlink');
 	define('ENLIGHTN_MEDIA', 'enlightnmedia');
 	define('ENLIGHTN_DOCUMENT', 'document');
 	define('ENLIGHTN_FOLLOW', 'member');
 	define('ENLIGHTN_READED', 'readed');
+	define('ENLIGHTN_INVITED', 'invited');
 	define('ENLIGHTN_FAVORITE', 'favorite');
+	define('ENLIGHTN_ACCESS_PU', '1');//Public access
+	define('ENLIGHTN_ACCESS_PR', '2');//Private
+	define('ENLIGHTN_ACCESS_FA', '3');//Favorite
+	define('ENLIGHTN_ACCESS_AL', '4');//All ( Pu + Pr
+	define('ENLIGHTN_ACCESS_IN', '5');//Invited aka requests
+	define('ENLIGHTN_ACCESS_UN', '6');//Unreaded
 	//Disable rights
-	elgg_get_access_object()->set_ignore_access(true);
+	//elgg_get_access_object()->set_ignore_access(true);
+	
 	require_once("model/enlightn.php");
+	$enlightn		= new enlightn();
     // Extend system CSS with our own styles
     //extend_view('css','enlightn/css');
     elgg_extend_view('css', 'enlightn/css');
@@ -47,7 +56,7 @@ register_elgg_event_handler('init','system','enlightn_init');
  * @param array $page Array of page elements, forwarded by the page handling mechanism
  */
 function enlightn_page_handler($page) {
-	global $CONFIG;
+	global $CONFIG,$enlightn;
 
 	if (!isset($page[0])) {
 		$page[0] = 'home';
@@ -205,6 +214,78 @@ Limit $offset, $limit";
 		$activity_items = get_activity_items($user_guid,$limit,$offset+$limit);
 	}*/
 	return $activity_items;
+}
+
+function sort_unreaded_for_nav ($discussion_unreaded) {
+	$discussion_unreaded_nav = array();
+	$discussion_unreaded_nav[ENLIGHTN_ACCESS_PU] = 0;
+	$discussion_unreaded_nav[ENLIGHTN_ACCESS_PR] = 0;
+	$discussion_unreaded_nav[ENLIGHTN_ACCESS_FA] = 0;
+	$discussion_unreaded_nav[ENLIGHTN_INVITED]	 = 0;
+	if (is_array($discussion_unreaded)) {
+		foreach ($discussion_unreaded as $key => $discussion) {
+			$discussion_unreaded_nav[$discussion->access_level] += $discussion->unreaded;
+			if ($discussion->Favorite == 1) {
+				$discussion_unreaded_nav[ENLIGHTN_ACCESS_FA]	+= $discussion->unreaded;
+			}
+			if ($discussion->Invited == 1) {
+				$discussion_unreaded_nav[ENLIGHTN_INVITED]		+= 1;
+			}
+		}
+	}
+	return  $discussion_unreaded_nav;
+}
+
+function echo_unreaded ($discussion_unreaded_nav,$type) {
+	echo '<span id="nav_unreaded_'. $type .'" class="nav_unreaded">';
+	if (isset($discussion_unreaded_nav[$type]) && $discussion_unreaded_nav[$type] != 0) {
+		echo '(' . $discussion_unreaded_nav[$type] . ')';
+	}
+	echo '</span>';
+	switch ($type) {
+		case ENLIGHTN_ACCESS_PU:
+			$js_to_call = "'#discussion_selector_all', 1";
+			break;
+		case ENLIGHTN_ACCESS_PR:
+			$js_to_call = "'#discussion_selector_follow',2";
+			break;
+		case ENLIGHTN_INVITED:
+			$js_to_call = "'#discussion_selector_invited',5";
+			break;
+		case ENLIGHTN_ACCESS_FA:
+			$js_to_call = "'#discussion_selector_favorite',3";
+			break;
+		default:
+			break;
+	}
+	echo '<script>$("#nav_unreaded_' . $type . '").click(function () {$("#unreaded_only").val(1);changeMessageList(' . $js_to_call . ');});</script>';
+}
+
+function sort_entity_activities ($activities) {
+	$sorted_activities = array();
+	if (!is_array($activities)) {
+		return false;
+	}
+	foreach ($activities as $activity) {
+		if (in_array($activity->relationship, array('member','membership_request'))) {
+			$sorted_activities[][$activity->time_created] = $activity;
+		}
+	}
+	return $sorted_activities;
+}
+
+function get_activities_by_time ($activities,$time_created_max) {
+	$sorted_activities = array();
+	if (!is_array($activities)) {
+		return false;
+	}
+	foreach ($activities as $time_created=>$activity) {
+		if (key($activity) >= $time_created_max) {
+			$sorted_activities[] = $activity;
+			unset($activities[$time_created]);
+		}
+	}
+	return $sorted_activities;
 }
 
 ?>

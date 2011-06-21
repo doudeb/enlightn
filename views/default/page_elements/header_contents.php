@@ -20,18 +20,17 @@
 		echo elgg_view('input/pulldown', array('internalname' => 'discussion_type_filter'
 													, 'internalid' => 'discussion_type_filter'
 													, 'value' => ''
-													, 'options_values' => array(4=>elgg_echo('enlightn:all')
-																				, 1=>elgg_echo('enlightn:public')
-																				, 2=>elgg_echo('enlightn:follow')
-																				, 3=>elgg_echo('enlightn:favorite')										
+													, 'options_values' => array(ENLIGHTN_ACCESS_AL=>elgg_echo('enlightn:all')
+																				, ENLIGHTN_ACCESS_PU=>elgg_echo('enlightn:public')
+																				, ENLIGHTN_ACCESS_PR=>elgg_echo('enlightn:follow')
+																				, ENLIGHTN_ACCESS_FA=>elgg_echo('enlightn:favorite')										
 																				)
 										)); ?></div>
 	<div class="clearFloat"></div>
 	<div id="navBar">
 		<br />
 		<ul id="nav">
-			<li><a href="<?php echo $vars['url']; ?>pg/enlightn/"><?php echo elgg_echo("home"); ?></a><li>
-			<?php echo elgg_view('enlightn/discussion_request',array('requests' => get_invitations($vars['user']->guid, true)));?>
+			<li><a href="<?php echo $vars['url']; ?>pg/enlightn/"><?php echo elgg_echo("home"); ?></a></li>
 			<li><a href="<?php echo $vars['url']; ?>pg/profile/<?php echo $vars['user']->username;?>" title=""><?php echo $vars['user']->username;?></a></li>
 			<li><a href="<?php echo $vars['url']; ?>pg/members/" title=""><?php echo elgg_echo("members"); ?></a></li>
 			<li><a href="<?php echo $vars['url']; ?>pg/settings/" title=""><?php echo elgg_echo("settings"); ?></a></li>

@@ -4,8 +4,10 @@ include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 
 //Some basic var
 gatekeeper();
-$user_guid 			= get_loggedin_userid();
-$user_ent			= get_user($user_guid);
+global $enlightn;
+$user_guid 				= get_loggedin_userid();
+$user_ent				= get_user($user_guid);
+$discussion_unreaded	= $enlightn->count_unreaded_discussion($user_guid);
 if (!$user_guid || !$user_ent) {
 	forward();
 }
@@ -14,9 +16,9 @@ if (!$user_guid || !$user_ent) {
  */
 $left 				= '';
 //Activity
-$activity 			= elgg_view('enlightn/activity',array());
-$left 				.= $activity;
-unset($activity);
+//$activity 			= elgg_view('enlightn/activity',array());
+//$left 				.= $activity;
+//unset($activity);
 //New discussion
 $new_discussion		= elgg_view('enlightn/new_discussion',array(
 																'user_ent' => $user_ent
@@ -38,7 +40,7 @@ $search_filters = elgg_view('enlightn/search_filters',array());
 $right .= $search_filters;
 unset($search_filters);
 //search filters
-$discussion_type_selector = elgg_view('enlightn/discussion_type_selector',array());
+$discussion_type_selector = elgg_view('enlightn/discussion_type_selector',array('discussion_unreaded' => $discussion_unreaded));
 $right .= $discussion_type_selector;
 unset($discussion_type_selector);
 //online people

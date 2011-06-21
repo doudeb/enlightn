@@ -27,6 +27,9 @@
             ,'enlightn:river:postedtopic' => '%s has started a new discussion topic titled'
 			,'item:object:enlightndiscussion' => "Elightn discussion"
 			,'enlightn:river:annotate:create' => 'on this discussion topic'
+			,'enlightn:activity:member' => ' became a follower'
+			,'enlightn:activity:membership_request' => ' has been invited'
+			,'enlightn:unfollow' => 'unfollow'
 	);
 
 	add_translation("en",$english);
