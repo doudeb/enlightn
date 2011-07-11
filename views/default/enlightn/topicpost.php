@@ -15,6 +15,6 @@ $post_owner = get_user($vars['entity']->owner_guid);
 	<div id="<?php echo false===$vars['flag_readed']?'short_post_view_unread':'short_post_view'?>">
 		<b><?php echo $post_owner->name?></b>
 		<small><?php echo elgg_view_friendly_time($vars['entity']->time_created)?></small>
-		<p><?php echo elgg_view("output/longtext",array("value" => $vars['entity']->value)); ?></p>
+		<p><?php echo $vars['entity']->value; ?></p>
 	</div>
 </div>

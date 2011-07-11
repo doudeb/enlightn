@@ -31,6 +31,12 @@ class Embed_url {
 		$this->sortImages();
 	}
 
+	public function get_page_title () {
+		$this->fetchRecord();
+		$this->getTags();
+		$this->getTitle();
+	}
+
 	private function checkValues($value) {
 		$value = trim($value);
 		if (get_magic_quotes_gpc()) {
@@ -52,7 +58,11 @@ class Embed_url {
 
 
 	private function fetchRecord () {
-		$data = file_get_contents($this->url);
+		$ch = curl_init($this->url);
+        $this->setCurlOptions($ch, array(
+                sprintf('Host: %s', $this->hostname),
+                sprintf('User-Agent: %s', 'Mozilla/5.0 (compatible;')));
+        $data = $this->curlExec($ch);
 		$this->html =  $data;
 	}
 
@@ -104,7 +114,7 @@ class Embed_url {
 				$image_data = @getimagesize(@$this->images[$i]);
 				if(@$image_data) {
 					list($width, $height, $type, $attr) = $image_data;
-					if($width >= 50 && $height >= 50 ){
+					if($width >= 300){
 						$this->sortedImage[] = $this->images[$i];
 					}
 				}
@@ -129,5 +139,24 @@ class Embed_url {
 		}
 		return $image;
 	}
+
+	private function setCurlOptions(&$ch, $headers = array())
+    {
+    	curl_setopt($ch, CURLOPT_URL, $this->url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_BUFFERSIZE, 4096);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    }
+
+    private function curlExec(&$ch) {
+        $res = curl_exec($ch);
+        if (false === $res) {
+            var_dump(curl_error($ch));
+            var_dump(curl_errno($ch));
+        }
+        curl_close($ch);
+        return $res;
+    }
 }
 ?>

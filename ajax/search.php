@@ -21,8 +21,10 @@ $entity_guid	= get_input('entity_guid', 0);
 $fetch_modified	= get_input('fetch_modified', 0);
 $unreaded_only	= get_input('unreaded_only', 0);
 
-//var_dump($unreaded_only,$access_level,$subtype,$from_users,$date_begin,$date_end);
+//var_dump($subtype);
 //Filtering some datas and disable the cache in some case.
+
+$last_search	= serialize(array('user_guid' => $user_guid,'entity_guid' => $entity_guid,'access_level' => $access_level,'unreaded_only' => $unreaded_only,'words' => $words,'from_users' => $from_users,'date_begin' => $date_begin,'date_end' => $date_end,'subtype' => $subtype,'offset' => $offset,'limit' => $limit));
 
 if (empty($date_begin) || $date_begin == $date_end) {
 	$date_begin = strtotime("-5 week");
@@ -35,12 +37,16 @@ if (empty($date_end)) {
 } else {
 	$date_end 		= strtotime($date_end);
 }
+
 $search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
 $discussion_unreaded	= $enlightn->count_unreaded_discussion($user_guid);
 if ($entity_guid > 0) {
 	$discussion_activities = get_entity_relationships($entity_guid,true);
 	$discussion_activities = array_reverse($discussion_activities);
 	$discussion_activities = sort_entity_activities($discussion_activities);
+	echo elgg_view('enlightn/post_header', array());
+} else {
+	$_SESSION['last_search'] = $last_search;
 }
 $nb_results = count($search_results);
 if ($nb_results > 0) {
@@ -65,7 +71,7 @@ if ($nb_results > 0) {
 			}
 		    echo elgg_view("enlightn/topicpost",array('entity' => $topic
 		    											, 'query' => $words
-		    											, 'flag_readed' => $flag_readed));	
+		    											, 'flag_readed' => $flag_readed));
 		} else {
 			echo  elgg_view("enlightn/discussion_short", array('entity' => $topic
 												, 'current' => $key===0?true:false

@@ -16,18 +16,12 @@ elgg_get_access_object()->set_ignore_access(true);
 $topic_guid 		= (int) get_input('topic_guid');
 $group_guid 		= (int) get_input('group_guid');
 $post 				= get_input('new_post');
-$embeded 			= get_input('embedContent',null,false);
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
 //var_dump($_POST);die();
 if (!is_null($embeded)) {
 	$post 			.= $embeded;
 }
 
-// make sure we have text in the post
-if (!$post) {
-	register_error(elgg_echo("grouppost:nopost"));
-	forward($_SERVER['HTTP_REFERER']);
-}
 
 
 // Check that user is a group member
@@ -37,12 +31,20 @@ $topic 				= get_entity($topic_guid);
 
 
 // add the post to the forum topic
+$message 	= create_embeded_entities($post,$topic);
+$post		= $message['message'];
+
+
 $post_id = $topic->annotate($discussion_subtype, $post, $topic->access_id, $user->guid);
 if ($post_id == false) {
 	system_message(elgg_echo("groupspost:failure"));
 	forward($_SERVER['HTTP_REFERER']);
 }
-
+if (is_array($message['guids'])) {
+	foreach ($message['guids'] as $embeded_guids) {
+		add_entity_relationship($embeded_guids,ENLIGHTN_EMBEDED,$post_id);
+	}
+}
 // add to river
 add_to_river('enlightn/river/comment', 'create', $user->guid, $topic_guid, "", 0, $post_id);
 //Mark as read

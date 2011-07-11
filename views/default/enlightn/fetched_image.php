@@ -1,0 +1,1 @@
+<a href="<?php echo $vars['url']?>" target="_blank"><img src="<?php echo $vars['url']?>"  class="image_preview"/></a>

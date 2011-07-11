@@ -35,12 +35,6 @@ if (empty($vars['title'])) {
 
 
 <!-- canvas -->
-<div id="layout_canvas">
-
 <?php echo $vars['body']; ?>
-
-<div class="clearfloat"></div>
-</div><!-- /#layout_canvas -->
-
 <!-- footer -->
 <?php echo elgg_view('page_elements/footer', $vars); ?>

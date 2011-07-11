@@ -26,7 +26,7 @@
 						$access[$c->id] = $c->name;
 				}
 
-				$current_access = ($vars['entity']->access_id ? $vars['entity']->access_id : ACCESS_PUBLIC);
+				$current_access = ($vars['entity']->access_id ? $vars['entity']->access_id : ACCESS_PRIVATE);
 				echo elgg_view('input/access', array(
 													'internalid' => 'membership',
 													'internalname' => 'membership',

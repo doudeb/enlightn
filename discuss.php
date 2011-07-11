@@ -1,7 +1,6 @@
 <?php
 include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 
-
 //Some basic var
 gatekeeper();
 $user_guid 			= get_loggedin_userid();
@@ -10,14 +9,13 @@ $discussion_id		= get_input('discussion_id');
 if (!$user_guid || !$user_ent) {
 	forward();
 }
-elgg_get_access_object()->set_ignore_access(true);
 $topic 				= get_entity(get_input('entity_guid'));
 if (!$topic) forward();
-
+//var_dump($CONFIG->site_guid);
 /**
- * Left part 
+ * Left part
  */
-$left 				= ''; // Display them
+$left 				= '';
 //Title
 $title				=  elgg_view("enlightn/title", array('entity' => $topic
 												,'user_guid' => $user_guid));
@@ -43,11 +41,15 @@ unset($post);
 $discussion_action	= elgg_view("enlightn/discussion_action", array('entity' => $topic
 									, 'user_guid' => $user_guid));
 $right 				.= $discussion_action;
-unset($discussion_action);									
+unset($discussion_action);
 //search filters
 $search_filters 	= elgg_view('enlightn/search_filters',array());
 $right 				.= $search_filters;
 unset($search_filters);
+//discussion type
+$discussion_shortcut = elgg_view('enlightn/discussion_shortcut',array('discussion_unreaded' => $discussion_unreaded));
+$right .= $discussion_shortcut;
+unset($discussion_shortcut);
 //followers
 $followers	 		= elgg_view('enlightn/followers',array('entity' => $topic));
 $right 				.= $followers;

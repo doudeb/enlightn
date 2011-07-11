@@ -29,8 +29,14 @@
 			,'enlightn:river:annotate:create' => 'on this discussion topic'
 			,'enlightn:activity:member' => ' became a follower'
 			,'enlightn:activity:membership_request' => ' has been invited'
+			,'enlightn:andothers' => ' and %s others'
 			,'enlightn:unfollow' => 'unfollow'
+			,'enlightn:directory' => 'Directory'
+			,'enlightn:datefrom' => 'From'
+			,'enlightn:dateto' => 'To'
+			,'enlightn:fromuser' => 'By'
+			,'enlightn:newpost' => 'Post a new topic...'
+			,'enlightn:readmore' => 'Read more'
 	);
-
 	add_translation("en",$english);
 ?>

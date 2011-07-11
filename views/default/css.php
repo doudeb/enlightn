@@ -1,0 +1,816 @@
+/*@charset "utf-8";*/
+/* CSS Document */
+
+* {
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+body, #body {
+	color: #333;
+	font-size: 13px;
+}
+
+a, a:link, a:hover, a:visited {
+	color: #2c75e2;
+	outline:none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a {
+	text-decoration: none;
+}
+
+img {
+	border:none;
+}
+
+li {
+	list-style-type: none;
+}
+
+/* backgrounds */
+.ico,
+.arrow,
+.notif,
+#header  .logo,
+#header  .tabs li a,
+#post .status-box,
+#search .search-field .submit,
+#search .dates .date {
+    background: url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/sprite.png') no-repeat scroll 0 0 transparent;
+}
+
+.follow,
+#header,
+#header  .menus li.submenu:hover,
+#search .filters,
+#search .filters li:hover,
+#search .filters li.checked,
+#feed .actions,
+#feed .actions ul li:hover,
+#feed .more {
+    background: url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/sprite-x.png') repeat-x scroll 0 0 transparent;
+}
+
+#page {
+    background: url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/sprite-y.png') repeat-y scroll 0 0 transparent;
+}
+
+/* generic rules */
+.photo {
+    border: 1px solid #ccc;
+    height:50px;
+    padding:3px;
+    width:50px
+}
+
+.thumb-photo {
+    border: 1px solid #ccc;
+    height:30px;
+    padding:1px;
+    width:30px
+}
+
+.follow {
+    background-position:0 -321px;
+    border:1px solid #8eac15;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    -khtml-border-radius:2px;
+    border-radius:2px;
+    color:#43520a;
+    cursor:pointer;
+    display:inline-block;
+    font-size: 87%;
+    height: 18px;
+    line-height: 18px;
+    padding: 0 6px 0 0;
+}
+
+span.follow:hover {
+    background-color:#bbdc03;
+    background-image:none;
+}
+
+.follow .ico {
+    background-position: -198px -126px;
+    display: inline-block;
+    height: 15px;
+    vertical-align: middle;
+    width: 15px;
+}
+
+
+/** HEADER */
+#header {
+    border-bottom:1px solid #000;
+}
+
+#header .nav {
+    height:40px;
+    margin:0 auto;
+    position: relative;
+    width:980px;
+}
+
+#header .logo {
+    background-position:-16px -16px;
+    float:left;
+    height:40px;
+    margin: 0 25px 0 20px;
+    text-indent:-999px;
+    width:117px;
+}
+
+#header .menus, #header .tabs {
+    border-left:1px solid #999;
+    border-right:1px solid #000;
+    *border-left:none;
+    *border-right:1px solid #999;
+}
+
+#header .menus li, #header .tabs li {
+    border-left:1px solid #000;
+    border-right:1px solid #999;
+    *border-left:1px solid #999;
+    *border-right:none;
+}
+
+#header .menus {
+    float: right;
+    height: 40px;
+    position: absolute;
+    right: 5px;
+}
+
+#header .menus li {
+    float:right;
+}
+
+#header .menus li .link, #header  .menus li .user {
+    color:#fff;
+    display:block;
+    height:40px;
+    line-height:40px;
+    padding:0 10px;
+}
+
+#header .menus li.directory .ico {
+    background-position:-392px -30px;
+    display:inline-block;
+    height:15px;
+    margin:-3px 7px 0 0;
+    vertical-align:middle;
+    width:15px;
+}
+
+#header .menus li.account {
+    cursor:default;
+    padding:0 7px;
+}
+
+#header .menus li.account .arrow {
+    background-position:-358px -30px;
+    display:inline-block;
+    height:5px;
+    margin:0 2px 0 0;
+    vertical-align:middle;
+    width:10px;
+}
+
+#header .menus li .user {
+    padding:0;
+}
+
+#header .menus li .user img {
+    border: 1px solid #ccc;
+    display: inline-block;
+    margin: -3px 5px 0 0;
+    height:20px;
+    vertical-align: middle;
+    width:20px;
+}
+
+#header .menus li.submenu:hover {
+    background-color:#000;
+    background-position:0 -50px;
+    border-bottom:1px solid #000;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+}
+
+#header .menus .submenu ul {
+    display:none;
+    padding:0 0 3px;
+}
+
+#header .menus li.submenu:hover ul {
+    display:block;
+}
+
+#header .menus .submenu ul li {
+    border:none;
+    border-top:1px solid #999;
+    float:none;
+    font-size:93%;
+}
+
+#header .menus .submenu ul li  a{
+    color:#fff;
+    display:block;
+    padding:3px 0;
+}
+
+#header .tabs {
+    float:left;
+}
+
+#header .tabs li {
+    float:left;
+}
+
+#header .tabs li.current {
+    background-color:#666;
+}
+
+#header .tabs li:hover {
+    background-color:#444;
+}
+
+#header .tabs li a {
+    display:block;
+    height:40px;
+    text-indent:-999px;
+    width:50px
+}
+
+#header .tabs li.current a, #header  .tabs li:hover a{
+    border-color:#494949;
+    border-style:solid;
+    border-width:0 1px 1px 0;
+    height:39px;
+    width:49px
+}
+
+#header .tabs li.home a {
+    background-position:-147px -16px;
+}
+
+#header .tabs li.alert a {
+    background-position:-196px -16px;
+}
+
+#header .tabs li.favorites a {
+    background-position:-242px -16px;
+}
+
+#header .tabs li.replies a {
+    background-position:-292px -16px;
+}
+
+/** FOOTER */
+#footer {
+    border-top:1px solid #ddd;
+    clear:both;
+    margin-top:-1px;
+}
+
+/** PAGE */
+#page {
+    background-position:100% 0;
+    border-left:1px solid #ddd;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 980px;
+}
+
+/** MAIN */
+#main {
+    background-color:#fff;
+    float:left;
+    min-height:600px;
+    padding: 30px 10px 30px 20px;
+    width: 630px;
+}
+
+#post {
+    margin-bottom:25px;
+}
+
+#post .photo {
+    float:left;
+    margin-right:10px;
+}
+
+#post .status-box {
+    background-position:-460px -17px;
+    border:1px solid #bbb;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    -moz-box-shadow:inset 1px 1px 4px #ccc;
+    -webkit-box-shadow:inset 1px 1px 4px #ccc;
+    box-shadow:inset 1px 1px 4px #ccc;
+    height: 36px;
+    overflow:hidden;
+    padding:10px 10px 10px 40px;
+}
+
+#feed .actions {
+    background-position:0 -241px;
+    border:1px solid #ccc;
+    height:22px;
+}
+
+#feed .actions ul {
+    border-right:1px solid #ccc;
+    float: left;
+    margin-left:-1px;
+}
+
+#feed .actions ul li {
+    border-left:1px solid #ccc;
+    border-right:1px solid #fff;
+    cursor:default;
+    float:left;
+    font-size:93%;
+    height:22px;
+    line-height:22px;
+    padding:0 5px;
+	*position:relative;
+	*z-index: 2;
+}
+
+#feed .actions ul.right {
+    border-left:1px solid #fff;
+    *border-left:none;
+    border-right:none;
+    float:right;
+    margin:0;
+}
+
+#feed .actions ul.right li {
+    float:right;
+}
+
+#feed .actions ul li:hover {
+    background-color:#e2e2e2;
+    background-position:0 -280px;
+}
+
+#feed .actions ul li ul {
+	background-color:#e2e2e2;
+    border-bottom: 1px solid #ccc;
+    display:none;
+    float:none;
+	*left:5px;
+    margin: 0 -7px 0 -6px;
+    position: absolute;
+	*top:20px;
+    z-index: 2;
+}
+
+#feed .actions ul li:hover ul {
+    display:block;
+}
+
+#feed .actions ul li ul li {
+    border-bottom: 1px solid #fff;
+	*border:none;
+    float:none;
+}
+
+#feed .actions ul li ul li:hover {
+    background:none;
+    background-color:#eee;
+}
+
+#feed .actions .arrow {
+    background-position:-358px -41px;
+    display:inline-block;
+    height:6px;
+    margin: -2px 0 0 4px;
+    vertical-align: middle;
+    width:10px
+}
+
+#feed .actions .checkbox {
+    height:15px;
+    margin-top: -3px;
+    vertical-align: middle;
+    width:15px;
+}
+
+#feed h2 {
+    border-bottom:1px solid #666;
+    font-size:87%;
+    font-weight:normal;
+    margin:5px 0 10px;
+    text-transform:uppercase;
+}
+
+#feed h2 span {
+    background-color:#fff;
+    display:inline-block;
+    padding-right: 5px;
+    position: relative;
+    top: 7px;
+}
+
+#feed .msg {
+    border-top:1px solid #ccc;
+    padding:10px 0;
+}
+
+#feed .first-msg, #feed ol .msg:first-child {
+    border:none;
+}
+
+#feed .msg .toolbar {
+    float:right;
+    margin-left: 10px;
+    width:70px;
+}
+
+#feed .msg .statusbar {
+    float:left;
+    margin-right: 10px;
+}
+
+#feed .msg .excerpt {
+    overflow:hidden;
+}
+
+#feed .msg .follow {
+    float:right;
+    margin-bottom: 5px;
+}
+
+#feed .followed .follow {
+    display:none;
+}
+
+#feed .msg .star {
+    background-position:-164px -123px;
+    clear:right;
+    display:inline-block;
+    float:right;
+    height:18px;
+    width:18px;
+}
+
+#feed .starred .star {
+    background-position:-132px -123px;
+}
+
+#feed .msg .checkbox {
+    height:15px;
+    margin-bottom:5px;
+    width:15px;
+}
+
+#feed .msg .read {
+    background-position:-50px -127px;
+    display:block;
+    height:12px;
+    width:12px;
+}
+
+#feed .unread .read {
+    background-position:-74px -127px;
+}
+
+#feed .msg .inclosed {
+    background-position:-100px -125px;
+    display:block;
+    height:16px;
+    margin: 10px 0 0 -2px;
+    width:17px;
+}
+
+#feed .msg .thumb-photo {
+    float:left;
+    margin-right:10px;
+}
+
+#feed .msg h3 {
+    font-size: 108%;
+    font-weight: normal;
+    overflow:hidden;
+    white-space: nowrap;
+}
+
+#feed .unread h3 {
+    font-weight: bold;
+}
+
+#feed .msg .participants {
+    display: block;
+    font-size: 93%;
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+#feed .msg .participants strong {
+    font-weight:bold;
+}
+
+#feed .msg .excerpt p {
+    color: #999;
+    font-size: 87%;
+    height: 30px;
+    margin-top:5px;
+}
+
+#feed .msg .date {
+    color: #999999;
+    float: right;
+    font-size: 87%;
+    font-weight: bold;
+    margin-top: -15px;
+}
+
+#feed .more {
+    background-position:0 -241px;
+    border:1px solid #ccc;
+    color:#666;
+    cursor:pointer;
+    font-weight:bold;
+    height:25px;
+    line-height:25px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+#feed div.more:hover {
+    background-color:#e2e2e2;
+    background-position:0 -280px;
+    border-color:#aaa;
+}
+
+#feed .more .ico {
+    background-position:-273px -128px;
+    display:inline-block;
+    height:8px;
+    vertical-align:middle;
+    width:10px;
+}
+
+
+/** SEARCH */
+#search {
+    overflow: hidden;
+    padding:20px 15px;
+}
+
+#search .search-field {
+    background-color:#fff;
+    border:1px solid #bbb;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    -moz-box-shadow:inset 1px 1px 4px #ccc;
+    -webkit-box-shadow:inset 1px 1px 4px #ccc;
+    box-shadow:inset 1px 1px 4px #ccc;
+    font-size:108%;
+    overflow:hidden;
+    padding:4px 6px;
+}
+
+#search .search-field input {
+    border:1px solid #fff;
+    padding:2px;
+    vertical-align: middle;
+    width:88%;
+}
+
+#search .search-field .submit {
+    background-color:transparent;
+    background-position:-14px -81px;
+    border:none;
+    cursor:pointer;
+    height:20px;
+    vertical-align: middle;
+    width:20px;
+}
+
+#search .filters {
+    background-position:0 -191px;
+    border:1px solid #ccc;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    -khtml-border-radius:4px;
+    border-radius:4px;
+    float: right;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+#search .filters li {
+    border-right:1px solid #ccc;
+    cursor:pointer;
+    float:left;
+    height:32px;
+    width:35px;
+}
+
+#search .filters li input {
+    display:none;
+}
+
+#search .filters li label {
+    cursor:pointer;
+    display:block;
+    padding: 8px 10px 0;
+}
+
+#search .filters li .ico {
+    height: 23px;
+    margin: 5px 3px;
+    padding: 0;
+    text-indent: -999px;
+    width: 30px;
+}
+
+#search .filters li .text {
+    background-position:-43px -81px;
+}
+
+#search .filters li .link {
+    background-position:-80px -81px;
+}
+
+#search .filters li .video {
+    background-position:-115px -81px;
+}
+
+#search .filters li .pict {
+    background-position:-152px -81px;
+}
+
+#search .filters li .doc {
+    background-position:-192px -81px;
+}
+
+#search .filters li:hover, #search .filters li.checked {
+    background-color:#e2e2e2;
+    background-position:0 -280px;
+}
+
+#search .dates, #search .author  {
+    clear:both;
+    float: right;
+    margin: 12px 0 0;
+    white-space:nowrap;
+}
+
+#search .dates label, #search .author label  {
+    display:inline;
+    font-size: 87%;
+    padding: 5px 3px;
+    vertical-align: middle;
+}
+
+#search .dates .date {
+    background-color: #fff;
+    background-position: 46px -122px;
+    border:1px solid #999;
+    display:inline;
+    margin: 0 5px;
+    padding:3px 23px 3px 3px;
+    vertical-align: middle;
+    width:56px;
+}
+
+#search .author input {
+    background-color: #fff;
+    border:1px solid #999;
+    display:inline;
+    margin: 0 5px;
+    padding:3px;
+    vertical-align: middle;
+    width:185px;
+}
+
+
+/** SIDEBAR */
+#sidebar {
+    overflow: hidden;
+    padding: 0 7px 0 16px;
+}
+
+#sidebar .folders {
+    border-bottom:1px solid #fff;
+    border-top:1px solid #ccc;
+}
+
+#sidebar .folders li {
+    border-bottom:1px solid #ccc;
+    border-top:1px solid #fff;
+}
+
+#sidebar .folders li a {
+    color: #2D87E1;
+    display: block;
+    font-size: 124%;
+    font-weight: bold;
+    padding: 12px 10px;
+}
+
+#sidebar .folders li a:hover {
+    background-color:#f7f7f7;
+    text-decoration:none;
+}
+
+#sidebar .folders li.current a {
+    background-color:#fff;
+    color:#000;
+}
+
+#sidebar .folders li.current .arrow {
+    background-position:-490px -73px;
+    display:block;
+    float: left;
+    height:40px;
+    width:10px;
+    left:-10px;
+    position:relative;
+}
+
+#sidebar .folders .notif {
+    color:#fff;
+    background-position:-233px -78px;
+    display:inline-block;
+    font-size: 75%;
+    font-weight: normal;
+    height: 16px;
+    margin:-4px 0 0 10px;
+    padding:5px 0;
+    text-align: center;
+    vertical-align: middle;
+    width:27px;
+}
+
+#sidebar .folders .lnotif {
+    background-position:-272px -78px;
+    width:30px;
+}
+
+
+/**
+RTE EDITOR
+**/
+.frameBody
+{
+    font-family:sans-serif;
+    font-size:12px;
+    margin:0;
+    width:100%;
+    height:100%;
+}
+
+.frameBody p
+{
+    border:1px #bbb solid;
+    padding:2px;
+}
+
+.rte-zone
+{
+    width:500px;
+    margin:0;
+    padding:0;
+    border:1px #999 solid;
+    clear:both;
+    height:200px;
+    display:block;
+}
+
+.rte-toolbar{ overflow:hidden; }
+
+.rte-toolbar a, .rte-toolbar a img {
+	border:0;
+}
+
+.rte-toolbar p {
+    float:left;
+    margin:0;
+    padding-right:5px;
+}
+
+
+#edit_discussion {
+	display:none;
+}
+.view {
+	display:none;
+}

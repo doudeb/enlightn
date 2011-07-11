@@ -3,7 +3,7 @@
 	/**
 	 * Elgg header contents
 	 * This file holds the header output that a user will see
-	 * 
+	 *
 	 * @package Elgg
 	 * @subpackage Core
 	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -12,35 +12,35 @@
 	 * @link http://elgg.org/  and  http://juipo.com/
 	 **/
 ?>
-<div id="layout_header">
-	<div id="logo"><a href="<?php echo $vars['url']; ?>"><img src="<?php echo $vars['url']; ?>mod/enlightn/media/graphics/logo.gif" alt="<?php echo $vars['config']->sitename; ?>" title="<?php echo $vars['config']->sitename; ?>" /></a></div>
-	<?php if (isloggedin()) { ?>
-	<div id="top_search_box"><br />
-	<?php echo elgg_view('page_elements/searchbox');
-		echo elgg_view('input/pulldown', array('internalname' => 'discussion_type_filter'
-													, 'internalid' => 'discussion_type_filter'
-													, 'value' => ''
-													, 'options_values' => array(ENLIGHTN_ACCESS_AL=>elgg_echo('enlightn:all')
-																				, ENLIGHTN_ACCESS_PU=>elgg_echo('enlightn:public')
-																				, ENLIGHTN_ACCESS_PR=>elgg_echo('enlightn:follow')
-																				, ENLIGHTN_ACCESS_FA=>elgg_echo('enlightn:favorite')										
-																				)
-										)); ?></div>
-	<div class="clearFloat"></div>
-	<div id="navBar">
-		<br />
-		<ul id="nav">
-			<li><a href="<?php echo $vars['url']; ?>pg/enlightn/"><?php echo elgg_echo("home"); ?></a></li>
-			<li><a href="<?php echo $vars['url']; ?>pg/profile/<?php echo $vars['user']->username;?>" title=""><?php echo $vars['user']->username;?></a></li>
-			<li><a href="<?php echo $vars['url']; ?>pg/members/" title=""><?php echo elgg_echo("members"); ?></a></li>
-			<li><a href="<?php echo $vars['url']; ?>pg/settings/" title=""><?php echo elgg_echo("settings"); ?></a></li>
-			<?php if ($vars['user']->admin || $vars['user']->siteadmin) { ?>
-			<li><a href="<?php echo $vars['url']; ?>pg/admin/" class="usersettings"><?php echo elgg_echo("admin"); ?></a></li>
-			<?php } ?>			
-			<li><?php echo elgg_view('output/url', array('href' => "{$vars['url']}action/logout", 'text' => elgg_echo('logout'), 'is_action' => TRUE)); ?></li></ul>
-	</div>
-	<?php } ?>	
-</div>
-<div id="page_container">
-<div id="page_wrapper">
-<br />
+    <div id="header">
+        <div class="nav">
+            <h1 class="logo">enlightn</h1>
+			<?php if (isloggedin()) { ?>
+            <ul class="menus">
+                <li class="directory"><a class="link" href="<?php echo $vars['url']; ?>pg/members/"><span class="ico"></span><?php echo elgg_echo('enlightn:directory')?></a></li>
+                <li class="account submenu">
+                    <span class="user">
+                        <img src="<?php echo $vars['user']->getIcon('small')?>" />
+                        <?php echo $vars['user']->username;?>
+                        <span class="arrow"></span>
+                    </span>
+                    <ul>
+                        <li><a href="<?php echo $vars['url']; ?>pg/profile/<?php echo $vars['user']->username;?>"><?php echo elgg_echo('profil')?></a></li>
+                        <li><a href="<?php echo $vars['url']; ?>pg/settings/"><?php echo elgg_echo('settings')?></a></li>
+						<?php if ($vars['user']->admin || $vars['user']->siteadmin) { ?>
+						<li><a href="<?php echo $vars['url']; ?>pg/admin/" ><?php echo elgg_echo("admin"); ?></a></li>
+						<?php } ?>
+                    </ul>
+                </li>
+            </ul>
+			<?php } ?>
+
+            <ul class="tabs">
+                <li class="home current"><a href="<?php echo $vars['url']; ?>pg/enlightn/"><?php echo elgg_echo("home"); ?></a></li>
+                <li class="alert"><a href="/alert">Alert</a></li>
+                <li class="favorites"><a href="/favorites">Favorites</a></li>
+                <li class="replies"><a href="/replies">Replies</a></li>
+            </ul>
+        </div>
+    </div>
+

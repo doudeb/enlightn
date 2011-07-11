@@ -1,15 +1,18 @@
-<div id="new_discussion" class="box_wrapper">
-	<div class="left"><a href="<?php echo $vars['user_ent']->getURL(); ?>"><?php echo elgg_view("profile/icon",array('entity' => $vars['user_ent'], 'size' => 'small', 'override' => 'true')) ?></a></div>
-	<div class="right" id="fake_input"><?php echo elgg_view("input/text",array(
-									'internalname' => 'fake_input',
-									'internalid' => 'fake_input'
-									)); ?></div>
-	<div class="right" id="edit_discussion"><?php echo elgg_view('enlightn/discussion_edit',array()); ?></div>
-</div>
+   <div id="page">
+        <div id="main">
+
+            <div id="post">
+                <img class="photo" src="<?php echo $vars['user_ent']->getIcon('small')?>" />
+                <div class="status-box">
+                	<div id="fake_input"><?php echo elgg_echo('enlightn:newpost')?></div>
+                	<div id="edit_discussion"><?php echo elgg_view('enlightn/discussion_edit',array()); ?></div>
+                </div>
+            </div>
 <script>
 $(document).ready(function(){
 	$('#fake_input').click( function(){
 		$('#fake_input').fadeOut();
+		$(".status-box").css('height','350px');
 		$('#edit_discussion').fadeIn();
 	});
 });
