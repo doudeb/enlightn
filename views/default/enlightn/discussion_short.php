@@ -22,11 +22,9 @@ $post_owner 		= get_entity($post->owner_guid);
 $entity				= get_entity($post->entity_guid);
 ?>
 <!-- grab the topic title -->
-                    <li class="msg <?php echo false===$flag_readed?'unread':'read'?> <?php echo false===$flag_folowed?'':'followed'?> <?php echo false===$flag_favorite?'':'starred'?>">
+                    <li class="msg <?php echo false===$flag_readed?'unread':'read'. false===$flag_folowed?'':'followed'. false===$flag_favorite?'':'starred'?>">
                         <div class="toolbar">
-                            <span class="follow">
-                                <span class="ico"></span> Follow
-                            </span>
+							<?php echo elgg_view("enlightn/follow", array('entity' => $vars['entity'], 'user_guid' => $vars['user_guid']));?>
                             <span class="star ico"></span>
                         </div>
                         <div class="statusbar">

@@ -44,6 +44,7 @@ function enlightn_init() {
 	register_action("enlightn/invite",false, $CONFIG->pluginspath . "enlightn/actions/invite.php");
 	register_action("enlightn/follow",false, $CONFIG->pluginspath . "enlightn/actions/follow.php");
 	register_action("enlightn/favorite",false, $CONFIG->pluginspath . "enlightn/actions/favorite.php");
+	register_action("enlightn/upload",false, $CONFIG->pluginspath . "enlightn/actions/upload.php");
     // Replace the default index page
     //register_plugin_hook('index','system','new_index');
     // Register entity type

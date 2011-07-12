@@ -226,12 +226,15 @@ public function get_my_cloud ($user_guid, $simpletype = 'simpletype', $limit = 1
 From entities ent
 Where ent.subtype = $file_subtype_id #File type
 And ( #Get all file for *the current user or *public or *private and embeded
-		Exists( Select rel_follow.id
-                From entity_relationships As rel_follow
-                Inner join entity_relationships As rel_embed  On rel_embed.guid_two = rel_follow.guid_one And rel_embed.relationship = 'embeded'
-                Where rel_follow.guid_one = " . $user_guid ."
-                And rel_follow.relationship = '" . ENLIGHTN_FOLLOW ."'
-                And ent.access_id = " . ACCESS_PRIVATE ."
+		Exists( Select distinct rel_embed.guid_one
+				From entity_relationships As rel_follow
+				Inner join entity_relationships As rel_embed
+					On rel_embed.guid_two = rel_follow.guid_two
+					And rel_embed.relationship = '" . ENLIGHTN_EMBEDED ."'
+				Where ent.guid = rel_embed.guid_one
+					And rel_follow.guid_one = " . $user_guid ."
+					And rel_follow.relationship = '" . ENLIGHTN_FOLLOW ."'
+					And ent.access_id = " . ACCESS_PRIVATE ."
 		)
 		Or ent.access_id  = " . ACCESS_PUBLIC ."
 		Or ent.owner_guid = " . $user_guid ."

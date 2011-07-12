@@ -28,3 +28,8 @@
 																)); ?>
                 </div>
             </form>
+<script type="text/javascript">
+jQuery(document).ready(function () {
+	$('input.date').simpleDatepicker({x: -55, y: 20});
+});
+</script>

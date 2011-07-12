@@ -5,7 +5,7 @@
 	} else {
 		$action = 'file/upload';
 ?>
-	<form id="mediaUpload" action="<?php echo $vars['url']; ?>action/file/upload" method="post" enctype="multipart/form-data">
+	<form id="mediaUpload" action="<?php echo $vars['url']; ?>action/enlightn/upload" method="post" enctype="multipart/form-data">
 		<p>
 			<label for="upload"><?php echo elgg_echo("file:file"); ?><br />
 		<?php
@@ -60,13 +60,19 @@
 		</p>
 	</form>
 	<script type="text/javascript">
+		if (typeof $('#entity_access_id') != undefined) {
+			$('#access_id').val($('#entity_access_id').val());
+		}
+		if (typeof $('#membership') != undefined) {
+			$('#access_id').val($('#membership').val());
+		}
         // wait for the DOM to be loaded
         //$(document).ready(function() {
             // bind 'myForm' and provide a simple callback function
             $('#mediaUpload').submit(function() {
 	            var options = {
 				    success:    function() {
-				        //$('.popup .content').load('<?php echo $vars['url'] . 'pg/enlightn/cloud'; ?>?internalname=<?php echo $vars['internalname']; ?>');
+				        $('.popup .content').load('<?php echo $vars['url'] . 'pg/enlightn/cloud'; ?>');
 				    }
 				};
             	$(this).ajaxSubmit(options);

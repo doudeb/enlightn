@@ -1,6 +1,5 @@
 <?php
 include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
-
 //Some basic var
 gatekeeper();
 $user_guid 			= get_loggedin_userid();
@@ -55,6 +54,6 @@ $followers	 		= elgg_view('enlightn/followers',array('entity' => $topic));
 $right 				.= $followers;
 unset($followers);
 //Compile into a layout
-$body 				= elgg_view_layout("two_column_right_sidebar", '', $left, $right);
+$body 				= $left . $right;
 // Display page
 page_draw(elgg_echo('enlightn:main'),$body);

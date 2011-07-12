@@ -12,8 +12,7 @@ if (!isloggedin()) forward();
 global $enlightn;
 // Get input data
 $title 				= strip_tags(get_input('title'));
-$message 			= get_input('description');
-$embeded 			= get_input('embedContent',null,false);
+$message 			= get_input('description',null,false);
 $tags 				= get_input('interests');
 $access 			= get_input('membership');
 $user_guid			= get_loggedin_userid(); // you need to be logged in to comment on a group forum
@@ -23,9 +22,6 @@ $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
 global $CONFIG;
 // Convert string of tags into a preformatted array
 $tagarray = string_to_tag_array($tags);
-if (!is_null($embeded)) {
-	$message .= $embeded;
-}
 // Make sure the title / message aren't blank
 if (empty($title) || empty($message)) {
 	register_error(elgg_echo("grouptopic:blank"));
@@ -54,9 +50,16 @@ if (empty($title) || empty($message)) {
 	if (is_array($tagarray)) {
 		$enlightndiscussion->tags = $tagarray;
 	}
-
+	$message 	= create_embeded_entities($message,$enlightndiscussion);
+	$post		= $message['message'];
 	// now add the topic message as an annotation
-	$annotationid = $enlightndiscussion->annotate($discussion_type,$message,$access, $user_guid);
+	$annotationid = $enlightndiscussion->annotate($discussion_type,$post,$access, $user_guid);
+	//link attachement
+	if (is_array($message['guids'])) {
+		foreach ($message['guids'] as $embeded_guids) {
+			add_entity_relationship($embeded_guids,ENLIGHTN_EMBEDED,$annotationid);
+		}
+	}
 	// add to river
 	add_to_river('enlightn/river/create','create',$user_guid,$enlightndiscussion->guid,$access, 0, $post_id);
 	// Success message
@@ -75,7 +78,7 @@ if (empty($title) || empty($message)) {
 				$enlightn->flush_cache(array('user_guid' => $usertoid),'unreaded');
 				$enlightn->flush_cache(array('user_guid' => $usertoid,'access_level' => ENLIGHTN_ACCESS_PR),'search');
 				$enlightn->flush_cache(array('user_guid' => $usertoid,'access_level' => ENLIGHTN_ACCESS_IN),'search');
-			}			
+			}
 			$usertoid = get_entity((int)$usertoid);
 			if ($usertoid->guid) {
 				/*if (!$usertoid->isFriend()) {

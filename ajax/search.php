@@ -44,7 +44,6 @@ if ($entity_guid > 0) {
 	$discussion_activities = get_entity_relationships($entity_guid,true);
 	$discussion_activities = array_reverse($discussion_activities);
 	$discussion_activities = sort_entity_activities($discussion_activities);
-	echo elgg_view('enlightn/post_header', array());
 } else {
 	$_SESSION['last_search'] = $last_search;
 }
@@ -62,6 +61,9 @@ if ($nb_results > 0) {
 				$topic_activities = $discussion_activities;
 			} else {
 				$topic_activities = get_activities_by_time(&$discussion_activities,$topic->time_created);
+			}
+			if ($key === 0) {
+				echo elgg_view('enlightn/post_header', array());
 			}
 			echo elgg_view("enlightn/topic_activities",array('entity' => $topic
 														, 'activities' => $topic_activities));

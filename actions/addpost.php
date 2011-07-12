@@ -15,7 +15,7 @@ elgg_get_access_object()->set_ignore_access(true);
 // Get input
 $topic_guid 		= (int) get_input('topic_guid');
 $group_guid 		= (int) get_input('group_guid');
-$post 				= get_input('new_post');
+$post 				= get_input('new_post',null,false);
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
 //var_dump($_POST);die();
 if (!is_null($embeded)) {
@@ -32,6 +32,7 @@ $topic 				= get_entity($topic_guid);
 
 // add the post to the forum topic
 $message 	= create_embeded_entities($post,$topic);
+var_dump($message);
 $post		= $message['message'];
 
 
@@ -48,6 +49,7 @@ if (is_array($message['guids'])) {
 // add to river
 add_to_river('enlightn/river/comment', 'create', $user->guid, $topic_guid, "", 0, $post_id);
 //Mark as read
+add_entity_relationship($user->guid, ENLIGHTN_FOLLOW, $topic_guid);
 add_entity_relationship($user->guid, ENLIGHTN_READED, $post_id);
 system_message(elgg_echo("enlightn:success"));
 // Remove cache

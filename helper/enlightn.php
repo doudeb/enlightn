@@ -242,7 +242,7 @@ function regenerate_cache ($entity,$user_guid,$action_type) {
 }
 
 function get_http_link($message) {
-	$regexp = "#\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#";
+	$regexp = "#\b(https|file|ftp|http)?(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#";
 	if (preg_match_all($regexp, $message, $http_link)) {
 		return $http_link[0];
 	}
@@ -256,13 +256,17 @@ function get_embeded_type ($links) {
 	}
 	$links_type = array();
 	foreach ($links as $key=>$link) {
+		$link = html_entity_decode($link);
 		switch ($link) {
 			/**
 			 * Remove enlightn internal doc
 			 * And don't transform clouded docs...
 			 */
 			case false !== strstr($link,$CONFIG->url):
-			case false !== strstr($link,'fetched=1'):
+				break;
+			//already in entities, we just have to link it
+			case false !== strstr($link,'?fetched=1'):
+				$links_type[ENLIGHTN_EMBEDED][]['link'] = str_replace('?fetched=1',$link);
 				break;
 			case preg_match("/\.(bmp|jpeg|gif|png|jpg)$/i", $link) > 0:
 				$links_type[ENLIGHTN_IMAGE][]['link'] = $link;
@@ -352,13 +356,13 @@ function create_embeded_entities ($message,$entity) {
 			}
 			if ($guid) {
 				$new_link = elgg_view('enlightn/new_link', array('guid'=>$file->guid,'type'=>$type,'link'=>$link["link"], 'title'=>$title));
-				if($new_link) {
+				if($new_link && $type != ENLIGHTN_EMBEDED) {
 					$new_message['message'] = str_replace($link["link"],$new_link,$new_message['message']);
-					$new_message['guids'][] = $file->guid;
-					$guid = false;
 					$new_link = '';
-					add_entity_relationship($file->guid,ENLIGHTN_EMBEDED,$entity->guid);
 				}
+				$guid = false;
+				$new_message['guids'][] = $file->guid;
+				add_entity_relationship($file->guid,ENLIGHTN_EMBEDED,$entity->guid);
 			}
 
 		}
