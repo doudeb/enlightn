@@ -19,6 +19,7 @@ $(document).ready(function(){
 $(document).ready(function(){
 	$('#close_new_discussion').click( function(){
 		$('#edit_discussion').fadeOut();
+		$(".status-box").css('height','36px');
 		$('#fake_input').fadeIn();
 	});
 });

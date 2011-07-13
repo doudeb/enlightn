@@ -69,6 +69,7 @@ function enlightn_page_handler($page) {
 	}
 	switch ($page[0]) {
 		case "home":
+			set_input('discussion_type', $page[1]);
 			include($CONFIG->pluginspath . "enlightn/home.php");
 			break;
 		case "invitations":

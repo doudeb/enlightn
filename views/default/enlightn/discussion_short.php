@@ -22,7 +22,7 @@ $post_owner 		= get_entity($post->owner_guid);
 $entity				= get_entity($post->entity_guid);
 ?>
 <!-- grab the topic title -->
-                    <li class="msg <?php echo false===$flag_readed?'unread':'read'. false===$flag_folowed?'':'followed'. false===$flag_favorite?'':'starred'?>">
+                    <li class="msg <?php echo false===$flag_readed?'unread':'read' ?> <?php echo false===$flag_folowed?'':'followed'  ?><?php echo  false===$flag_favorite?'':'starred'?>">
                         <div class="toolbar">
 							<?php echo elgg_view("enlightn/follow", array('entity' => $vars['entity'], 'user_guid' => $vars['user_guid']));?>
                             <span class="star ico"></span>
@@ -36,7 +36,7 @@ $entity				= get_entity($post->entity_guid);
                             <h3><a href="<?php echo $vars['url'] ?>/pg/enlightn/discuss/<?php echo $vars['entity']->guid; ?>"><?php echo $vars['entity']->title?></a></h3>
                             <span class="participants"><strong><?php echo $post_owner->username?></strong> <?php echo elgg_view("enlightn/discussion_members",array('entity' => $post
 														, 'limit' => 5));?></span>
-                            <p><?php echo $post->value?></p>
+                            <p><?php echo strip_tags($post->value)?></p>
                         </div>
                         <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>
                     </li>

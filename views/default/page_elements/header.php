@@ -110,13 +110,6 @@ function loadContent (divId,dataTo,method,anchor) {
 	}
 }
 
-$('#search_submit').click( function(){
-	//if ($('#searchInput').val().length >= 3) {
-		$('#discussion_selector_search').css('display','block');
-		changeMessageList('#discussion_selector_search');
-	//}
-});
-
 function get_search_criteria () {
 	if ($('#subtype_checked').val() == undefined) {
 		var subtype = '';
@@ -177,7 +170,9 @@ function get_search_criteria () {
 }
 
 	$(document).ready(function(){
-		$('#searchInput').click( function(){
+		$('#search_submit').click( function(){
+			changeMessageList('#discussion_selector_search',<?php echo ENLIGHTN_ACCESS_AL?>);
+			return false;
 		});
 	});
 
@@ -191,16 +186,25 @@ function get_search_criteria () {
 	}, 1500);
 
 	function changeMessageList (currElement, discussion_type) {
-		if(discussion_type == undefined) {
+		if (typeof $('#discussion_list_container') == undefined) {
+			window.location.replace("<?php echo $vars['url']; ?>home/" + discussion_type);
+			return false;
+		}
+		if(typeof discussion_type == undefined) {
 			discussion_type = 1;
 		}
 		$('#discussion_type').val(discussion_type);
 		$('#see_more_discussion_list_offset').val(0);
 		loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria());
 		$(currElement).addClass('current');
+		$(currElement + '_tabs').addClass('current');
 		$(".folders li").each(function () {
 			if($(this).attr('id') != $(currElement).attr('id')) {
 				$(this).removeClass('current');
+				tabElement = '#' + $(this).attr('id') + '_tabs';
+				if (typeof $(tabElement) != undefined) {
+					$(tabElement).removeClass('current');
+				}
 			}
       	});
       	return false;

@@ -142,9 +142,8 @@
 	}
 	function autoClose () {
 		$('#edit_discussion').fadeOut();
+		$(".status-box").css('height','36px');
 		$('#fake_input').fadeIn();
-		$("#embedContent").val('');
-
 	}
     </script>
 	</div>

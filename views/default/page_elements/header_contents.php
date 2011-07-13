@@ -36,9 +36,9 @@
 			<?php } ?>
 
             <ul class="tabs">
-                <li class="home current"><a href="<?php echo $vars['url']; ?>pg/enlightn/" alt="<?php echo elgg_echo('PUBLIC')?>"><?php echo elgg_echo("home"); ?></a></li>
-                <li class="alert"><a href="/alert">Alert</a></li>
-                <li class="favorites"><a href="/favorites">Favorites</a></li>
+                <li class="home current" id="discussion_selector_all_tabs"><a href="<?php echo $vars['url']; ?>pg/enlightn/" alt="<?php echo elgg_echo('PUBLIC')?>"><?php echo elgg_echo("home"); ?></a></li>
+                <li class="alert" id="discussion_selector_follow_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_follow', <?php echo ENLIGHTN_ACCESS_PR?>);return false;">Alert</a></li>
+                <li class="favorites" id="discussion_selector_favorite_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_favorite', <?php echo ENLIGHTN_ACCESS_FA?>);return false;">Favorites</a></li>
                 <li class="replies"><a href="/replies">Replies</a></li>
             </ul>
         </div>
