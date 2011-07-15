@@ -46,18 +46,19 @@ if (empty($offset)) {
 if (empty($access_level)) {
 	$access_level = $last_search['access_level'];
 }
+$results['access_level'] = $access_level;
 
 
 $search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
 $nb_results = count($search_results);
 if ($nb_results > 0) {
-	header("Last-Modified: " . gmdate("D, d M Y H:i:s",$search_results[0]->time_created) . " GMT");
+	header("Last-Modified: " . gmdate("D, d M Y H:i:s",$search_results[0]->created) . " GMT");
 	if ($fetch_modified === '1') {
-		echo json_encode(array('last-modified' => $search_results[0]->time_created));
+		echo json_encode(array('last-modified' => $search_results[0]->created));
 		return;
 	}
-	$results['access_level'] = $search_results[0]->access_id;
 	foreach ($search_results as $key => $topic) {
+		$topic = get_entity($topic->guid);
 		$results[$key] = array('guid'=>$topic->guid
 							, 'time_created' => elgg_view_friendly_time($topic->time_created)
 							, 'title' => $topic->title);

@@ -1,4 +1,4 @@
-/*@charset "utf-8";*/
+/*@charset "utf-8";*//*@charset "utf-8";*/
 /* CSS Document */
 
 * {
@@ -814,6 +814,44 @@ RTE EDITOR
 .view {
 	display:none;
 }
+
+.floating .mini-close {
+        margin-bottom: 0px;
+        margin-left: 0px;
+        margin-right: -3px;
+        margin-top: -3px;
+        position: relative;
+}
+.mini-close {
+        background-image: url("<?php echo $vars['url'] ?>mod/enlightn/media/graphics/default.png");
+        background-origin: padding-box;
+        background-position: -40px -100px;
+        background-repeat: no-repeat;
+        background-size: auto;
+        cursor: pointer;
+        display: block;
+        float: right;
+        height: 16px;
+        width: 16px;
+}
+
+/**
+* Calendar
+**/
+
+.datepicker { border-collapse: collapse; border: 2px solid #999; position: absolute; }
+.datepicker tr.controls th { height: 22px; font-size: 11px; }
+.datepicker select { font-size: 11px; }
+.datepicker tr.days th { height: 18px; }
+.datepicker tfoot td { height: 18px; text-align: center; text-transform: capitalize; }
+.datepicker th, .datepicker tfoot td { background: #eee; font: 10px/18px Verdana, Arial, Helvetica, sans-serif; }
+.datepicker th span, .datepicker tfoot td span { font-weight: bold; }
+
+.datepicker tbody td { width: 24px; height: 24px; border: 1px solid #ccc; font: 11px/22px Arial, Helvetica, sans-serif; text-align: center; background: #fff; }
+.datepicker tbody td.date { cursor: pointer; }
+.datepicker tbody td.date.over { background-color: #99ffff; }
+.datepicker tbody td.date.chosen { font-weight: bold; background-color: #ccffcc; }
+
 <?php
 
 	/**
@@ -1023,12 +1061,546 @@ label a.embed_media {
 	color:white;
 }
 
+/* canvas layout: 2 column left sidebar */
+#two_column_left_sidebar {
+        width:210px;
+        margin:0 20px 0 0;
+        min-height:360px;
+        float:left;
+        background: #dedede;
+        padding:0px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-bottom:1px solid #cccccc;
+        border-right:1px solid #cccccc;
+}
+#two_column_left_sidebar_maincontent_boxes {
+        margin:0 0px 20px 20px;
+        padding:0 0 5px 0;
+        width:718px;
+        background: #dedede;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        float:left;
+}
+
+#two_column_left_sidebar_maincontent {
+        width:718px;
+        margin:0;
+        min-height: 360px;
+        float:left;
+        background: #dedede;
+        padding:0 0 5px 0;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+}
+#two_column_left_sidebar_boxes {
+        width:210px;
+        margin:0px 0 20px 0px;
+        min-height:360px;
+        float:left;
+        padding:0;
+}
+#two_column_left_sidebar_boxes .sidebarBox {
+        margin:0px 0 22px 0;
+        background: #dedede;
+        padding:4px 10px 10px 10px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-bottom:1px solid #cccccc;
+        border-right:1px solid #cccccc;
+}
+#two_column_left_sidebar_boxes .sidebarBox h3 {
+        padding:0 0 5px 0;
+        font-size:1.25em;
+        line-height:1.2em;
+        color:#0054A7;
+}
+.contentWrapper {
+        background:white;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        padding:10px;
+        margin:0 10px 10px 10px;
+}
 
 
+/* general page titles in main content area */
+#content_area_user_title h2 {
+        margin:0 0 0 8px;
+        padding:5px;
+        color:#0054A7;
+        font-size:1.35em;
+        line-height:1.2em;
+}
+
+/* ***************************************
+PAGE-OWNER BLOCK
+*************************************** */
+#owner_block {
+        padding:10px;
+}
+#owner_block_icon {
+        float:left;
+        margin:0 10px 0 0;
+}
+#owner_block_rss_feed,
+#owner_block_odd_feed {
+        padding:5px 0 0 0;
+}
+#owner_block_rss_feed a {
+        font-size: 90%;
+        color:#999999;
+        padding:0 0 4px 20px;
+        background: url(<?php echo $vars['url']; ?>_graphics/icon_rss.gif) no-repeat left top;
+}
+#owner_block_odd_feed a {
+        font-size: 90%;
+        color:#999999;
+        padding:0 0 4px 20px;
+        background: url(<?php echo $vars['url']; ?>_graphics/icon_odd.gif) no-repeat left top;
+}
+#owner_block_rss_feed a:hover,
+#owner_block_odd_feed a:hover {
+        color: #0054a7;
+}
+#owner_block_desc {
+        padding:4px 0 4px 0;
+        margin:0 0 0 0;
+        line-height: 1.2em;
+        border-bottom:1px solid #cccccc;
+        color:#666666;
+}
+#owner_block_content {
+        margin:0 0 4px 0;
+        padding:3px 0 0 0;
+        min-height:35px;
+        font-weight: bold;
+}
+#owner_block_content {
+        margin:0 0 4px 0;
+        padding:3px 0 0 0;
+        min-height:35px;
+        font-weight: bold;
+}
+#owner_block_content a {
+        line-height: 1em;
+}
+.ownerblockline {
+        padding:0;
+        margin:0;
+        border-bottom:1px solid #cccccc;
+        height:1px;
+}
+#owner_block_submenu {
+        margin:20px 0 20px 0;
+        padding: 0;
+        width:100%;
+}
+#owner_block_submenu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+}
+#owner_block_submenu ul li.selected a {
+        background: #4690d6;
+        color:white;
+}
+#owner_block_submenu ul li.selected a:hover {
+        background: #4690d6;
+        color:white;
+}
+#owner_block_submenu ul li a {
+        text-decoration: none;
+        display: block;
+        margin: 2px 0 0 0;
+        color:#4690d6;
+        padding:4px 6px 4px 10px;
+        font-weight: bold;
+        line-height: 1.1em;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+}
+#owner_block_submenu ul li a:hover {
+        color:white;
+        background: #0054a7;
+}
+/* ***************************************
+        SETTINGS & ADMIN
+*************************************** */
+.admin_statistics,
+.admin_users_online,
+.usersettings_statistics,
+.admin_adduser_link,
+#add-box,
+#search-box,
+#logbrowser_search_area {
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        background:white;
+        margin:0 10px 10px 10px;
+        padding:10px;
+}
+
+.usersettings_statistics h3,
+.admin_statistics h3,
+.admin_users_online h3,
+.user_settings h3,
+.notification_methods h3 {
+        background:#e4e4e4;
+        color:#333333;
+        font-size:1.1em;
+        line-height:1em;
+        margin:0 0 10px 0;
+        padding:5px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+}
+h3.settings {
+        background:#e4e4e4;
+        color:#333333;
+        font-size:1.1em;
+        line-height:1em;
+        margin:10px 0 4px 0;
+        padding:5px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+}
+.admin_users_online .profile_status {
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        background:#bbdaf7;
+        line-height:1.2em;
+        padding:2px 4px;
+}
+.admin_users_online .profile_status span {
+        font-size:90%;
+        color:#666666;
+}
+.admin_users_online  p.owner_timestamp {
+        padding-left:3px;
+}
 
 
+.admin_debug label,
+.admin_usage label {
+        color:#333333;
+        font-size:100%;
+        font-weight:normal;
+}
+
+.admin_usage {
+        border-bottom:1px solid #cccccc;
+        padding:0 0 20px 0;
+}
+.usersettings_statistics .odd,
+.admin_statistics .odd {
+
+}
+.usersettings_statistics .even,
+.admin_statistics .even {
+
+}
+.usersettings_statistics td,
+.admin_statistics td {
+        padding:2px 4px 2px 4px;
+        border-bottom:1px solid #cccccc;
+}
+.usersettings_statistics td.column_one,
+.admin_statistics td.column_one {
+        width:200px;
+}
+.usersettings_statistics table,
+.admin_statistics table {
+        width:100%;
+}
+.usersettings_statistics table,
+.admin_statistics table {
+        border-top:1px solid #cccccc;
+}
+.usersettings_statistics table tr:hover,
+.admin_statistics table tr:hover {
+        background: #E4E4E4;
+}
+.admin_users_online .search_listing {
+        margin:0 0 5px 0;
+        padding:5px;
+        border:2px solid #cccccc;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+}
+/* ***************************************
+        ADMIN AREA - PLUGIN SETTINGS
+*************************************** */
+.plugin_details {
+        margin:0 10px 5px 10px;
+        padding:0 7px 4px 10px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+}
+.admin_plugin_reorder {
+        float:right;
+        width:200px;
+        text-align: right;
+}
+.admin_plugin_reorder a {
+        padding-left:10px;
+        font-size:80%;
+        color:#999999;
+}
+.plugin_details a.pluginsettings_link {
+        cursor:pointer;
+        font-size:80%;
+}
+.active {
+        border:1px solid #999999;
+        background:white;
+}
+.not-active {
+        border:1px solid #999999;
+        background:#dedede;
+}
+.plugin_details p {
+        margin:0;
+        padding:0;
+}
+.plugin_details a.manifest_details {
+        cursor:pointer;
+        font-size:80%;
+}
+.manifest_file {
+        background:#dedede;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        padding:5px 10px 5px 10px;
+        margin:4px 0 4px 0;
+        display:none;
+}
+.admin_plugin_enable_disable {
+        width:150px;
+        margin:10px 0 0 0;
+        float:right;
+        text-align: right;
+}
+.contentIntro .enableallplugins,
+.contentIntro .disableallplugins {
+        float:right;
+}
+.contentIntro .enableallplugins {
+        margin-left:10px;
+}
+.contentIntro .enableallplugins,
+.not-active .admin_plugin_enable_disable a {
+        font: 12px/100% Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        color: #ffffff;
+        background:#4690d6;
+        border: 1px solid #4690d6;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        width: auto;
+        padding: 4px;
+        cursor: pointer;
+}
+.contentIntro .enableallplugins:hover,
+.not-active .admin_plugin_enable_disable a:hover {
+        background: #0054a7;
+        border: 1px solid #0054a7;
+        text-decoration: none;
+}
+.contentIntro .disableallplugins,
+.active .admin_plugin_enable_disable a {
+        font: 12px/100% Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        color: #ffffff;
+        background:#999999;
+        border: 1px solid #999999;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        width: auto;
+        padding: 4px;
+        cursor: pointer;
+}
+.contentIntro .disableallplugins:hover,
+.active .admin_plugin_enable_disable a:hover {
+        background: #333333;
+        border: 1px solid #333333;
+        text-decoration: none;
+}
+.pluginsettings {
+        margin:15px 0 5px 0;
+        background:#bbdaf7;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        padding:10px;
+        display:none;
+}
+.pluginsettings h3 {
+        padding:0 0 5px 0;
+        margin:0 0 5px 0;
+        border-bottom:1px solid #999999;
+}
+#updateclient_settings h3 {
+        padding:0;
+        margin:0;
+        border:none;
+}
+.input-access {
+        margin:5px 0 0 0;
+}
+/* ***************************************
+        MISC.
+*************************************** */
+/* general page titles in main content area */
+#content_area_user_title h2 {
+        margin:0 0 0 8px;
+        padding:5px;
+        color:#0054A7;
+        font-size:1.35em;
+        line-height:1.2em;
+}
+/* reusable generic collapsible box */
+.collapsible_box {
+        background:#dedede;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        padding:5px 10px 5px 10px;
+        margin:4px 0 4px 0;
+        display:none;
+}
+a.collapsibleboxlink {
+        cursor:pointer;
+}
+
+/* tag icon */
+.object_tag_string {
+        background: url(<?php echo $vars['url']; ?>_graphics/icon_tag.gif) no-repeat left 2px;
+        padding:0 0 0 14px;
+        margin:0;
+}
+
+/* profile picture upload n crop page */
+#profile_picture_form {
+        height:145px;
+}
+#current_user_avatar {
+        float:left;
+        width:160px;
+        height:130px;
+        border-right:1px solid #cccccc;
+        margin:0 20px 0 0;
+}
+#profile_picture_croppingtool {
+        border-top: 1px solid #cccccc;
+        margin:20px 0 0 0;
+        padding:10px 0 0 0;
+}
+#profile_picture_croppingtool #user_avatar {
+        float: left;
+        margin-right: 20px;
+}
+#profile_picture_croppingtool #applycropping {
+
+}
+#profile_picture_croppingtool #user_avatar_preview {
+        float: left;
+        position: relative;
+        overflow: hidden;
+        width: 100px;
+        height: 100px;
+}
+/* reusable elgg horizontal tabbed navigation
+(used on friends collections, external pages, & riverdashboard mods)
+*/
+#elgg_horizontal_tabbed_nav {
+        margin:0 0 5px 0;
+        padding: 0;
+        border-bottom: 2px solid #cccccc;
+        display:table;
+        width:100%;
+}
+#elgg_horizontal_tabbed_nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+}
+#elgg_horizontal_tabbed_nav li {
+        float: left;
+        border: 2px solid #cccccc;
+        border-bottom-width: 0;
+        background: #eeeeee;
+        margin: 0 0 0 10px;
+        -moz-border-radius-topleft:5px;
+        -moz-border-radius-topright:5px;
+        -webkit-border-top-left-radius:5px;
+        -webkit-border-top-right-radius:5px;
+}
+#elgg_horizontal_tabbed_nav a {
+        text-decoration: none;
+        display: block;
+        padding:3px 10px 0 10px;
+        color: #999999;
+        text-align: center;
+        height:21px;
+}
+
+<?php
+
+	/**
+	 * Elgg Members
+	 *
+	 * @package Members
+	 */
+
+?>
+
+/* new members page */
+.members .search_listing {
+	border:2px solid #cccccc;
+	margin:0 0 5px 0;
+}
+.members .search_listing:hover {
+	background:#dedede;
+}
+.members .group_count {
+	font-weight: bold;
+	color: #666666;
+	margin:0 0 5px 4px;
+}
+.members .search_listing_info {
+	color:#666666;
+}
+
+.members .profile_status {
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	background:#bbdaf7;
+	line-height:1.2em;
+	padding:2px 4px;
+}
+.members .profile_status span {
+	font-size:90%;
+	color:#666666;
+}
+.members  p.owner_timestamp {
+	padding-left:3px;
+}
+.members .pagination {
+	border:2px solid #cccccc;
+	margin:5px 0 5px 0;
+}
 
 
-
-
+#memberssearchform {
+	border-bottom: 1px solid #cccccc;
+	margin-bottom: 10px;
+}
+#memberssearchform input[type="submit"] {
+	padding:2px;
+	height:auto;
+	margin:4px 0 5px 0;
+}
+#memberssearchform .search_input {
+	width:176px;
+}
 

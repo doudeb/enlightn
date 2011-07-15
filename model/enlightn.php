@@ -34,127 +34,96 @@ Order By e.time_created desc";
 
 	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $unreaded_only = 0,$words, $from_users = '', $date_begin = '""', $date_end = '""', $subtype = '', $offset = 0, $limit = 10) {
 		$key_cache = $this->generate_key_cache(get_defined_vars(), 'search');
-		$query = "Select * From (
-				Select a.*
-					, msv.string as value
-					, ent_title.title
-					, a.entity_guid as guid
-					, FROM_UNIXTIME(a.time_created) as created
-From annotations a
-Inner Join objects_entity ent_title On a.entity_guid = ent_title.guid
-Inner Join metastrings msv on a.value_id = msv.id
-Where
-	Case
-		When $entity_guid != 0 Then
-			a.entity_guid = $entity_guid
-		Else true
-	End
-And
-	Case
-		When $access_level = 1 Then #Public Only
-			a.access_id = " . ACCESS_PUBLIC ."
-		When $access_level = 2 Then #Private Followed And Public Folowed
-			(
-				Exists(
-					Select id
-					From entity_relationships As rel
-					Where a.entity_guid = rel.guid_two
-					And rel.guid_one = $user_guid
-					And rel.relationship = '". ENLIGHTN_FOLLOW . "'
-				) And a.access_id IN(" . ACCESS_PRIVATE ."," . ACCESS_PUBLIC .")
-			)
-		When $access_level = 3 Then #Favorite Private an Public
-			Exists(
-				Select id
-				From entity_relationships As rel
-				Where a.entity_guid = rel.guid_two
-				And rel.guid_one = $user_guid
-				And rel.relationship = '". ENLIGHTN_FAVORITE . "'
-				And a.access_id IN(" . ACCESS_PRIVATE ."," . ACCESS_PUBLIC .")
-			)
-		When $access_level = 4 Then #Private Folowed or Public
-			(
-				Exists(
-					Select id
-					From entity_relationships As rel
-					Where a.entity_guid = rel.guid_two
-					And rel.guid_one = $user_guid
-					And rel.relationship = '". ENLIGHTN_FOLLOW . "'
-					And a.access_id  = " . ACCESS_PRIVATE ."
-				)
-			) Or a.access_id  = " . ACCESS_PUBLIC ."
-		When $access_level = " . ENLIGHTN_ACCESS_IN . " Then #Invited aka request
-			Exists(
-				Select id
-				From entity_relationships As rel
-				Where a.entity_guid = rel.guid_one
-				And rel.guid_two = $user_guid
-				And rel.relationship = '". ENLIGHTN_INVITED . "'
-			)
-		Else false
-	End
-And
-	Case
-		When 1 = $unreaded_only Then #Unreaded Only
-                        Not Exists(
-                                Select id
-                                From entity_relationships As rel
-                                Where a.id = rel.guid_two
-                                And rel.guid_one = 2
-                                And rel.relationship = 'readed'
-                        )
-                Else true
-        End
-And
-	Case
-		When length('$words') > 2 And length('$words') <= @@ft_min_word_len Then
-			ent_title.title Like '%$words%' Or msv.string Like '%$words%'
-		When length('$words') > @@ft_min_word_len Then
-			(MATCH (ent_title.title,msv.string) AGAINST ('$words' IN BOOLEAN MODE))
-		Else true
-	End
-And
-	Case
-		When length('$from_users') > 0 And locate(',','$from_users') = 0 Then
-			a.owner_guid = '$from_users'
-		When length('$from_users') > 0 And locate(',','$from_users') > 0 Then
-			a.owner_guid in ('$from_users')
-		Else true
-	End
-And a.time_created Between $date_begin And $date_end
-And
-	Case
-		When length(\"$subtype\") > 0 Then
-			(Exists(Select mst.string
-							From entity_relationships rel_embeded
-							Inner Join metadata mtd On rel_embeded.guid_one = mtd.entity_guid
-							Inner Join metastrings mst On mtd.value_id = mst.id
-							Where rel_embeded.guid_two = a.id
-							And rel_embeded.relationship = '" . ENLIGHTN_EMBEDED . "'
-							And mst.string In('$subtype'))
-			Or Exists(Select mst.string
-                            From metastrings mst
-                            Where a.name_id = mst.id
-                            And mst.string In('$subtype')))
-		Else true
-	End
-Order By a.time_created Desc
-,Case
-	When locate('$words',ent_title.title) Then 1
-	When locate('$words',msv.string) Then 2
-	Else false
-End
-Limit $offset,50) as p
-Group By
-	Case
-		When length('$words')  = 0 And $entity_guid = 0 Then
-	 		p.guid
-	 	Else p.id
-	End
-Order By p.created Desc
-Limit $offset, $limit";
+		#Access
+		switch ($access_level) {
+			case 1:#Public Only 1
+				//$force[] = "Force Index (idx_annotations_time)";
+				$where[] = "And a.access_id = " . ACCESS_PUBLIC;
+				break;
+			case 2:#Private Followed And Public Folowed 2
+				$force[] = "Force Index (idx_annotations_time)";
+				$join[] = "Inner Join entity_relationships As rel_follow On a.entity_guid = rel_follow.guid_two";
+				$where[] = "And rel_follow.guid_one = $user_guid
+							And rel_follow.relationship = '". ENLIGHTN_FOLLOW . "'";
+				break;
+			case 3:#Favorite
+				//$force[] = "Force Index (idx_annotations_time)";
+				$join[] = "Inner Join entity_relationships rel_favorite On a.entity_guid = rel_favorite.guid_two";
+				$where[] = "And rel_favorite.guid_one = $user_guid
+							And rel_favorite.relationship = '". ENLIGHTN_FAVORITE . "'";
+				break;
+			case 4:#Private Folowed or Public 4
+				$join[] = "Inner Join entity_relationships As rel_all On a.entity_guid = rel_all.guid_two";
+				$where[] = "And ((rel_all.guid_one = $user_guid
+							And rel_all.relationship = '". ENLIGHTN_FOLLOW . "'
+							And a.access_id  = " . ACCESS_PRIVATE .")
+						Or a.access_id  = " . ACCESS_PUBLIC . ')';
+				break;#Invited aka request 5
+			case 5:
+				$force[] = "Force Index (idx_annotations_time)";
+				$join[] = "Inner Join entity_relationships As rel_req On a.entity_guid = rel_req.guid_two";
+				$where[] = "And a.entity_guid = rel_req.guid_one
+							And rel_req.guid_two = $user_guid
+							And rel_req.relationship = '". ENLIGHTN_INVITED . "'";
+				break;
+			default:
+				break;
+		}
+		if ($unreaded_only) {
+			#Unreaded
+			$where[] = "And Not Exists(Select id
+		    	                        From entity_relationships As rel
+		                                Where a.id = rel.guid_two
+		                                And rel.guid_one = 2
+		                                And rel.relationship = '". ENLIGHTN_READED . "')";
+		}
+		#From user
+		if ($from_users) {
+			$where[] = "And a.owner_guid in ('$from_users')";
+
+		}
+		#Subtype
+		if ($subtype) {
+			$where[] = "And (Exists(Select mst.string
+									From entity_relationships rel_embeded
+									Inner Join metadata mtd On rel_embeded.guid_one = mtd.entity_guid
+									Inner Join metastrings mst On mtd.value_id = mst.id
+									Where rel_embeded.guid_two = a.id
+									And rel_embeded.relationship = '" . ENLIGHTN_EMBEDED . "'
+									And mst.string In('$subtype'))
+					Or Exists(Select mst.string
+		                            From metastrings mst
+		                            Where a.name_id = mst.id
+		                            And mst.string In('$subtype')))";
+		}
+		#Words
+		if ($words) {
+			$join [] = "#Inner Join objects_entity ent_title On a.entity_guid = ent_title.guid
+							Inner Join metastrings mvs On mvs.id = a.value_id";
+			$where[] = "And MATCH (mvs.string) AGAINST ('$words' IN BOOLEAN MODE)";
+		}
+		#Entity guid
+		if ($entity_guid) {
+			$where[] = "And a.entity_guid = $entity_guid";
+		}
+		$force 	= implode(' ',$force);
+		$join	= implode(' ',$join);
+		$where	= implode(' ',$where);
+		$query 	= "Select * From (
+						Select a.entity_guid as guid
+						, a.time_created as created
+						, a.id
+				From annotations a $force
+				$join
+				Where a.time_created Between $date_begin And $date_end
+				$where
+				Order By a.time_created Desc
+				Limit $offset,50) as p
+				Group By p.guid
+				Order By p.created Desc
+				Limit $offset, $limit";
 		//echo "<pre>" . $query;die();
-		return  $this->get_data($query, $key_cache, 'row_to_elggannotation');
+		return  $this->get_data($query, $key_cache, null);
 	}
 
 	public function count_unreaded_discussion ($user_guid, $entity_guid = 0) {
@@ -162,52 +131,54 @@ Limit $offset, $limit";
 		if (!$user_guid) {
 			return false;
 		}
-		$query = "Select a.entity_guid as guid
-		,Count(a.id) as unreaded
-		,If(Exists(Select rel.id
-					From entity_relationships As rel
-					Where a.entity_guid = rel.guid_two
-					And rel.guid_one = $user_guid
-					And rel.relationship = '" . ENLIGHTN_FAVORITE ."'),1,0) as Favorite
-		,If(Exists(Select rel.id
-					From entity_relationships As rel
-					Where a.entity_guid = rel.guid_one
-					And rel.guid_two = $user_guid
-					And rel.relationship = '". ENLIGHTN_INVITED ."'),1,0) as Invited
-		,Case
-			When a.access_id = ". ACCESS_PRIVATE . " Then ". ENLIGHTN_ACCESS_PR . "
-			When a.access_id = ". ACCESS_PUBLIC . " Then ". ENLIGHTN_ACCESS_PU . "
-			Else 0
-		End As access_level
+		$query = "Select " . ENLIGHTN_ACCESS_PU . "
+		,count(a.id)
 From annotations a
-Where Not Exists (Select rel.id
+Where a.access_id  = " . ACCESS_PUBLIC . "
+And Not Exists (Select rel.id
 					From entity_relationships As rel
 					Where a.id = rel.guid_two
 					And rel.guid_one = $user_guid
-					And rel.relationship = '" . ENLIGHTN_READED ."')
-And (Exists(
-		Select id
-		From entity_relationships As rel
-		Where a.entity_guid = rel.guid_two
-		And rel.guid_one = $user_guid
-		And rel.relationship IN ('". ENLIGHTN_FOLLOW . "')
-		And a.access_id  = " . ACCESS_PRIVATE .")
-	Or Exists(
-		Select id
-		From entity_relationships As rel
-		Where a.entity_guid = rel.guid_one
-		And rel.guid_two = $user_guid
-		And rel.relationship IN ('". ENLIGHTN_INVITED ."'))
-	Or a.access_id  = " . ACCESS_PUBLIC ."
-	)
-And
-	Case
-		When $entity_guid != 0 Then
-			a.entity_guid = $entity_guid
-		Else
-			True
-	End
-Group By a.entity_guid";
+					And rel.relationship = '" . ENLIGHTN_READED . "')
+Union
+#unreaded follow
+Select " . ENLIGHTN_ACCESS_PR . "
+		,count(a.id)
+From annotations a
+Inner Join entity_relationships As rel On a.entity_guid = rel.guid_two
+								And rel.guid_one = $user_guid
+								And rel.relationship = '" . ENLIGHTN_FOLLOW . "'
+Left Join entity_relationships As rel_readed On a.id = rel_readed.guid_two
+												And rel_readed.guid_one = $user_guid
+												And rel_readed.relationship = '" . ENLIGHTN_READED . "'
+Where a.access_id  = " . ACCESS_PRIVATE . "
+And rel_readed.id Is Null
+Union
+#Favorite
+Select " . ENLIGHTN_ACCESS_FA . "
+		,count(a.id)
+From annotations a
+Inner Join entity_relationships As rel On a.entity_guid = rel.guid_two
+								And rel.guid_one = $user_guid
+								And rel.relationship = '" . ENLIGHTN_FAVORITE . "'
+Left Join entity_relationships As rel_readed On a.id = rel_readed.guid_two
+												And rel_readed.guid_one = $user_guid
+												And rel_readed.relationship = '" . ENLIGHTN_READED . "'
+Where a.access_id  in (" . ACCESS_PRIVATE . "," . ACCESS_PUBLIC . ")
+And rel_readed.id Is Null
+Union
+#request
+Select " . ENLIGHTN_ACCESS_IN . "
+		,count(a.id)
+From annotations a
+Inner Join entity_relationships As rel_req On a.entity_guid = rel_req.guid_two
+											And rel_req.guid_two = $user_guid
+											And rel_req.relationship = '" . ENLIGHTN_INVITED . "'
+Left Join entity_relationships As rel_readed On a.id = rel_readed.guid_two
+												And rel_readed.guid_one = $user_guid
+												And rel_readed.relationship = '" . ENLIGHTN_READED . "'
+Where a.access_id  in ('" . ACCESS_PRIVATE . "','" . ACCESS_PUBLIC . "')
+And rel_readed.id Is Null";
 		//echo $query;
 		return  $this->get_data($query, $key_cache);
 	}
@@ -336,4 +307,3 @@ Limit $offset,$limit";
 		return  $results;
 	}
 }
-?>
