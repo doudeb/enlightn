@@ -39,7 +39,7 @@ if (empty($date_end)) {
 }
 
 $search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
-//$discussion_unreaded	= $enlightn->count_unreaded_discussion($user_guid);
+$discussion_unreaded	= $enlightn->count_unreaded_discussion($user_guid);
 if ($entity_guid > 0) {
 	$discussion_activities = get_entity_relationships($entity_guid,true);
 	$discussion_activities = array_reverse($discussion_activities);
@@ -50,8 +50,9 @@ if ($entity_guid > 0) {
 $nb_results = count($search_results);
 if ($nb_results > 0) {
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s",$search_results[0]->created) . " GMT");
+	header("Query-uid: " . md5($last_search));
 	if ($fetch_modified === '1') {
-		echo json_encode(array('last-modified' => $search_results[0]->created));
+		//echo json_encode(array('last-modified' => $search_results[0]->created));
 		return;
 	}
 	foreach ($search_results as $key => $topic) {

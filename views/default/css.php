@@ -717,9 +717,8 @@ span.follow:hover {
     border-bottom:1px solid #ccc;
     border-top:1px solid #fff;
 }
-
 #sidebar .folders li a {
-    color: #2D87E1;
+    color: <?php echo ($css_sidebar_folders = get_plugin_setting('css_sidebar_folders','enlightn'))?$css_sidebar_folders:'#2D87E1';?>;
     display: block;
     font-size: 124%;
     font-weight: bold;
@@ -1604,3 +1603,213 @@ a.collapsibleboxlink {
 	width:176px;
 }
 
+/* ***************************************
+	FRIENDS COLLECTIONS ACCORDIAN
+*************************************** */
+ul#friends_collections_accordian {
+	margin: 0 0 0 0;
+	padding: 0;
+}
+#friends_collections_accordian li {
+	margin: 0 0 0 0;
+	padding: 0;
+	list-style-type: none;
+	color: #666666;
+}
+#friends_collections_accordian li h2 {
+	background:#4690d6;
+	color: white;
+	padding:4px 2px 4px 6px;
+	margin:10px 0 10px 0;
+	font-size:1.2em;
+	cursor:pointer;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+}
+#friends_collections_accordian li h2:hover {
+	background:#333333;
+	color:white;
+}
+#friends_collections_accordian .friends_picker {
+	background:white;
+	padding:0;
+	display:none;
+}
+#friends_collections_accordian .friends_collections_controls {
+	font-size:70%;
+	float:right;
+}
+#friends_collections_accordian .friends_collections_controls a {
+	color:#999999;
+	font-weight:normal;
+}
+
+
+/* ***************************************
+	FRIENDS PICKER SLIDER
+*************************************** */
+.friendsPicker_container h3 {
+	font-size:4em !important;
+	text-align: left;
+	margin:0 0 10px 0 !important;
+	color:#999999 !important;
+	background: none !important;
+	padding:0 !important;
+}
+.friendsPicker .friendsPicker_container .panel ul {
+	text-align: left;
+	margin: 0;
+	padding:0;
+}
+.friendsPicker_wrapper {
+	margin: 0;
+	padding:0;
+	position: relative;
+	width: 100%;
+}
+.friendsPicker {
+	position: relative;
+	overflow: hidden;
+	margin: 0;
+	padding:0;
+	width: 678px;
+
+	height: auto;
+	background: #dedede;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+}
+.friendspicker_savebuttons {
+	background: white;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	margin:0 10px 10px 10px;
+}
+.friendsPicker .friendsPicker_container { /* long container used to house end-to-end panels. Width is calculated in JS  */
+	position: relative;
+	left: 0;
+	top: 0;
+	width: 100%;
+	list-style-type: none;
+}
+.friendsPicker .friendsPicker_container .panel {
+	float:left;
+	height: 100%;
+	position: relative;
+	width: 678px;
+	margin: 0;
+	padding:0;
+}
+.friendsPicker .friendsPicker_container .panel .wrapper {
+	margin: 0;
+	padding:4px 10px 10px 10px;
+	min-height: 230px;
+}
+.friendsPickerNavigation {
+	margin: 0 0 10px 0;
+	padding:0;
+}
+.friendsPickerNavigation ul {
+	list-style: none;
+	padding-left: 0;
+}
+.friendsPickerNavigation ul li {
+	float: left;
+	margin:0;
+	background:white;
+}
+.friendsPickerNavigation a {
+	font-weight: bold;
+	text-align: center;
+	background: white;
+	color: #999999;
+	text-decoration: none;
+	display: block;
+	padding: 0;
+	width:20px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+}
+.tabHasContent {
+	background: white; color:#333333 !important;
+}
+.friendsPickerNavigation li a:hover {
+	background: #333333;
+	color:white !important;
+}
+.friendsPickerNavigation li a.current {
+	background: #4690D6;
+	color:white !important;
+}
+.friendsPickerNavigationAll {
+	margin:0px 0 0 20px;
+	float:left;
+}
+.friendsPickerNavigationAll a {
+	font-weight: bold;
+	text-align: left;
+	font-size:0.8em;
+	background: white;
+	color: #999999;
+	text-decoration: none;
+	display: block;
+	padding: 0 4px 0 4px;
+	width:auto;
+}
+.friendsPickerNavigationAll a:hover {
+	background: #4690D6;
+	color:white;
+}
+.friendsPickerNavigationL, .friendsPickerNavigationR {
+	position: absolute;
+	top: 46px;
+	text-indent: -9000em;
+}
+.friendsPickerNavigationL a, .friendsPickerNavigationR a {
+	display: block;
+	height: 43px;
+	width: 43px;
+}
+.friendsPickerNavigationL {
+	right: 48px;
+	z-index:1;
+}
+.friendsPickerNavigationR {
+	right: 0;
+	z-index:1;
+}
+.friendsPickerNavigationL {
+	background: url("<?php echo $vars['url']; ?>_graphics/friends_picker_arrows.gif") no-repeat left top;
+}
+.friendsPickerNavigationR {
+	background: url("<?php echo $vars['url']; ?>_graphics/friends_picker_arrows.gif") no-repeat -60px top;
+}
+.friendsPickerNavigationL:hover {
+	background: url("<?php echo $vars['url']; ?>_graphics/friends_picker_arrows.gif") no-repeat left -44px;
+}
+.friendsPickerNavigationR:hover {
+	background: url("<?php echo $vars['url']; ?>_graphics/friends_picker_arrows.gif") no-repeat -60px -44px;
+}
+.friends_collections_controls a.delete_collection {
+	display:block;
+	cursor: pointer;
+	width:14px;
+	height:14px;
+	margin:2px 3px 0 0;
+	background: url("<?php echo $vars['url']; ?>_graphics/icon_customise_remove.png") no-repeat 0 0;
+}
+.friends_collections_controls a.delete_collection:hover {
+	background-position: 0 -16px;
+}
+.friendspicker_savebuttons .submit_button,
+.friendspicker_savebuttons .cancel_button {
+	margin:5px 20px 5px 5px;
+}
+
+#collectionMembersTable {
+	background: #dedede;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	margin:10px 0 0 0;
+	padding:10px 10px 0 10px;
+}

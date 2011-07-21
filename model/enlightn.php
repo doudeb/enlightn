@@ -28,7 +28,6 @@ And Case
 	Else Null
 End
 Order By e.time_created desc";
-		elgg_get_access_object()->set_ignore_access(true);
 		return  get_data($query, 'entity_row_to_elggstar');
 	}
 
@@ -37,7 +36,7 @@ Order By e.time_created desc";
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1
-				//$force[] = "Force Index (idx_annotations_time)";
+				$force[] = "#Force Index (idx_annotations_time)";
 				$where[] = "And a.access_id = " . ACCESS_PUBLIC;
 				break;
 			case 2:#Private Followed And Public Folowed 2
@@ -53,7 +52,7 @@ Order By e.time_created desc";
 							And rel_favorite.relationship = '". ENLIGHTN_FAVORITE . "'";
 				break;
 			case 4:#Private Folowed or Public 4
-				$join[] = "Inner Join entity_relationships As rel_all On a.entity_guid = rel_all.guid_two";
+				$join[] = "Left Join entity_relationships As rel_all On a.entity_guid = rel_all.guid_two";
 				$where[] = "And ((rel_all.guid_one = $user_guid
 							And rel_all.relationship = '". ENLIGHTN_FOLLOW . "'
 							And a.access_id  = " . ACCESS_PRIVATE .")
@@ -79,6 +78,7 @@ Order By e.time_created desc";
 		}
 		#From user
 		if ($from_users) {
+			$force   = array();
 			$where[] = "And a.owner_guid in ('$from_users')";
 
 		}
@@ -98,17 +98,25 @@ Order By e.time_created desc";
 		}
 		#Words
 		if ($words) {
-			$join [] = "#Inner Join objects_entity ent_title On a.entity_guid = ent_title.guid
-							Inner Join metastrings mvs On mvs.id = a.value_id";
-			$where[] = "And MATCH (mvs.string) AGAINST ('$words' IN BOOLEAN MODE)";
+			$force   = array();
+			$join [] = "Inner Join sphinx_search sphinx On a.id = sphinx.id And a.entity_guid = sphinx.guid";
+			$where[] = "And sphinx.query='@(title,content) $words;mode=extended;offset=$offset;limit=50;sort=extended:@weight desc'";
+			//remove offset when going throught sphinx... not needed as it's the main data source.
+			if ($offset > 0) {
+				$offset = 0;
+			}
 		}
 		#Entity guid
 		if ($entity_guid) {
 			$where[] = "And a.entity_guid = $entity_guid";
+			$group[] = "Group By p.id";
+		} else {
+			$group[] = "Group By p.guid";
 		}
 		$force 	= implode(' ',$force);
 		$join	= implode(' ',$join);
 		$where	= implode(' ',$where);
+		$group	= implode(' ',$group);
 		$query 	= "Select * From (
 						Select a.entity_guid as guid
 						, a.time_created as created
@@ -119,7 +127,7 @@ Order By e.time_created desc";
 				$where
 				Order By a.time_created Desc
 				Limit $offset,50) as p
-				Group By p.guid
+				$group
 				Order By p.created Desc
 				Limit $offset, $limit";
 		//echo "<pre>" . $query;die();
@@ -131,8 +139,8 @@ Order By e.time_created desc";
 		if (!$user_guid) {
 			return false;
 		}
-		$query = "Select " . ENLIGHTN_ACCESS_PU . "
-		,count(a.id)
+		$query = "(Select " . ENLIGHTN_ACCESS_PU . "  as access_level
+		,a.id
 From annotations a
 Where a.access_id  = " . ACCESS_PUBLIC . "
 And Not Exists (Select rel.id
@@ -140,10 +148,11 @@ And Not Exists (Select rel.id
 					Where a.id = rel.guid_two
 					And rel.guid_one = $user_guid
 					And rel.relationship = '" . ENLIGHTN_READED . "')
+Limit 150)
 Union
 #unreaded follow
-Select " . ENLIGHTN_ACCESS_PR . "
-		,count(a.id)
+(Select " . ENLIGHTN_ACCESS_PR . " as access_level
+		,a.id
 From annotations a
 Inner Join entity_relationships As rel On a.entity_guid = rel.guid_two
 								And rel.guid_one = $user_guid
@@ -153,10 +162,11 @@ Left Join entity_relationships As rel_readed On a.id = rel_readed.guid_two
 												And rel_readed.relationship = '" . ENLIGHTN_READED . "'
 Where a.access_id  = " . ACCESS_PRIVATE . "
 And rel_readed.id Is Null
+Limit 150)
 Union
 #Favorite
-Select " . ENLIGHTN_ACCESS_FA . "
-		,count(a.id)
+(Select " . ENLIGHTN_ACCESS_FA . " as access_level
+		,a.id
 From annotations a
 Inner Join entity_relationships As rel On a.entity_guid = rel.guid_two
 								And rel.guid_one = $user_guid
@@ -166,10 +176,11 @@ Left Join entity_relationships As rel_readed On a.id = rel_readed.guid_two
 												And rel_readed.relationship = '" . ENLIGHTN_READED . "'
 Where a.access_id  in (" . ACCESS_PRIVATE . "," . ACCESS_PUBLIC . ")
 And rel_readed.id Is Null
+Limit 150)
 Union
 #request
-Select " . ENLIGHTN_ACCESS_IN . "
-		,count(a.id)
+(Select " . ENLIGHTN_ACCESS_IN . " as access_level
+		,a.id
 From annotations a
 Inner Join entity_relationships As rel_req On a.entity_guid = rel_req.guid_two
 											And rel_req.guid_two = $user_guid
@@ -178,8 +189,8 @@ Left Join entity_relationships As rel_readed On a.id = rel_readed.guid_two
 												And rel_readed.guid_one = $user_guid
 												And rel_readed.relationship = '" . ENLIGHTN_READED . "'
 Where a.access_id  in ('" . ACCESS_PRIVATE . "','" . ACCESS_PUBLIC . "')
-And rel_readed.id Is Null";
-		//echo $query;
+And rel_readed.id Is Null
+Limit 150)";
 		return  $this->get_data($query, $key_cache);
 	}
 

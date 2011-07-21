@@ -8,11 +8,9 @@
 
 
 //retreive the last comment
-if ($vars['entity'] instanceof ElggAnnotation) {
-	$post = $vars['entity'];
-} else {
-	$post = get_annotation($vars['entity']->id);
-}
+elgg_get_access_object()->set_ignore_access(true);
+$post 				= get_annotation($vars['entity']->id);
+elgg_get_access_object()->set_ignore_access(false);
 $post_owner 		= get_user($post->owner_guid);
 $flag_readed 		= check_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$post->id);
 $flag_folowed 		= check_entity_relationship($vars['user_guid'], ENLIGHTN_FOLLOW,$post->entity_guid);

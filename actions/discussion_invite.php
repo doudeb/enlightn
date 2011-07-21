@@ -2,7 +2,7 @@
 
     /**
 	 * Elgg groups plugin add topic action.
-	 * 
+	 *
 	 * @package ElggGroups
 	 */
 
@@ -10,8 +10,8 @@
 		if (!isloggedin()) forward();
 	// Forward to the group forum page
 	        global $CONFIG;
-	        $url = $CONFIG->wwwroot . "pg/enlightn";		
-    
+	        $url = $CONFIG->wwwroot . "pg/enlightn";
+
 	// Get input data
 		$userto = get_input('invite');
 	    $user = $_SESSION['user']->getGUID(); // you need to be logged in to comment on a group forum
@@ -19,8 +19,9 @@
 		if (!$enlightndiscussion->guid) {
 			forward($url);
 		}
-			
+
 		//Invited user
+			$userto = parse_user_to($userto);
 			if (is_array($userto)) {
 				foreach ($userto as $key => $usertoid) {
 					$usertoid = get_entity($usertoid);
@@ -42,9 +43,9 @@
 								register_error(elgg_echo("groups:usernotinvited"));
 
 						}
-					}			
-				}		
+					}
+				}
 			}
-			forward($url);		
+			forward($url);
 ?>
 

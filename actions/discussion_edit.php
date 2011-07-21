@@ -17,7 +17,6 @@ $tags 				= get_input('interests');
 $access 			= get_input('membership');
 $user_guid			= get_loggedin_userid(); // you need to be logged in to comment on a group forum
 $userto 			= get_input('invite');
-$userto				= explode(",", $userto);
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
 global $CONFIG;
 // Convert string of tags into a preformatted array
@@ -71,9 +70,10 @@ if (empty($title) || empty($message)) {
 	//Current user
 	add_entity_relationship($user_guid, 'member', $enlightndiscussion->guid);
 	//Invited user
+	$userto = parse_user_to($userto);
 	if (is_array($userto)) {
 		foreach ($userto as $key => $usertoid) {
-			// Remove cache for private acces, need to be deployed on user side
+			// Remove cache for private access, need to be deployed on user side
 			if ($access == ACCESS_PRIVATE) {
 				$enlightn->flush_cache(array('user_guid' => $usertoid),'unreaded');
 				$enlightn->flush_cache(array('user_guid' => $usertoid,'access_level' => ENLIGHTN_ACCESS_PR),'search');

@@ -30,6 +30,7 @@
 						<?php if ($vars['user']->admin || $vars['user']->siteadmin) { ?>
 						<li><a href="<?php echo $vars['url']; ?>pg/admin/" ><?php echo elgg_echo("admin"); ?></a></li>
 						<?php } ?>
+                        <li><a href="<?php echo $vars['url']; ?>action/logout"><?php echo elgg_echo('logout')?></a></li>
                     </ul>
                 </li>
             </ul>

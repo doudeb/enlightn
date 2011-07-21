@@ -32,7 +32,6 @@ $topic 				= get_entity($topic_guid);
 
 // add the post to the forum topic
 $message 	= create_embeded_entities($post,$topic);
-var_dump($message);
 $post		= $message['message'];
 
 

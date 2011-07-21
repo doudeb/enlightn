@@ -146,16 +146,10 @@ function sort_unreaded_for_nav ($discussion_unreaded) {
 	$discussion_unreaded_nav[ENLIGHTN_ACCESS_PU] = 0;
 	$discussion_unreaded_nav[ENLIGHTN_ACCESS_PR] = 0;
 	$discussion_unreaded_nav[ENLIGHTN_ACCESS_FA] = 0;
-	$discussion_unreaded_nav[ENLIGHTN_INVITED]	 = 0;
+	$discussion_unreaded_nav[ENLIGHTN_ACCESS_IN] = 0;
 	if (is_array($discussion_unreaded)) {
 		foreach ($discussion_unreaded as $key => $discussion) {
-			$discussion_unreaded_nav[$discussion->access_level] += $discussion->unreaded;
-			if ($discussion->Favorite == 1) {
-				$discussion_unreaded_nav[ENLIGHTN_ACCESS_FA]	+= $discussion->unreaded;
-			}
-			if ($discussion->Invited == 1) {
-				$discussion_unreaded_nav[ENLIGHTN_INVITED]		+= 1;
-			}
+			$discussion_unreaded_nav[$discussion->access_level]++;
 		}
 	}
 	return  $discussion_unreaded_nav;
@@ -368,4 +362,57 @@ function create_embeded_entities ($message,$entity) {
 		}
 	}
 	return $new_message;
+}
+
+/**
+ * Adds collection submenu items
+ *
+ */
+function enlightn_collections_submenu_items() {
+        global $CONFIG;
+        $user = get_loggedin_user();
+        add_submenu_item(elgg_echo('friends:collections'), $CONFIG->wwwroot . "pg/enlightn/collection/" . $user->username);
+        add_submenu_item(elgg_echo('friends:collections:add'), $CONFIG->wwwroot . "pg/enlightn/collection/add");
+}
+
+/**
+ * Displays a user's access collections, using the friends/collections view
+ *
+ * @param int $owner_guid The GUID of the owning user
+ * @return string A formatted rendition of the collections
+ */
+function enlightn_view_access_collections($owner_guid) {
+	if ($collections = get_user_access_collections($owner_guid)) {
+		foreach($collections as $key => $collection) {
+			$collections[$key]->members = get_members_of_access_collection($collection->id, true);
+			$collections[$key]->entities = get_site_members($CONFIG->site_guid,100000);
+		}
+	}
+
+	return elgg_view('friends/collections',array('collections' => $collections));
+}
+
+function parse_user_to ($user_to) {
+	$parsed_user_to = array();
+	if (!strstr($user_to,',')) {
+		return $parsed_user_to[] = $user_to;
+	}
+	$user_to	= explode(",", $user_to);
+	if (is_array($user_to)) {
+		foreach ($user_to as $user_id) {
+			if (strstr($user_id,'C_')) {
+				$user_id = str_replace('C_','',$user_id);
+				$collection = get_members_of_access_collection((int)$user_id,true);
+				if (is_array($collection)) {
+					foreach ($collection as $key => $val_id) {
+						$parsed_user_to[] = $val_id;
+					}
+				}
+			} else {
+				$parsed_user_to[] = $user_id;
+			}
+		}
+		return $parsed_user_to;
+	}
+	return false;
 }
