@@ -395,7 +395,7 @@ function enlightn_view_access_collections($owner_guid) {
 function parse_user_to ($user_to) {
 	$parsed_user_to = array();
 	if (!strstr($user_to,',')) {
-		return $parsed_user_to[] = $user_to;
+		return $parsed_user_to = array(0=>$user_to);
 	}
 	$user_to	= explode(",", $user_to);
 	if (is_array($user_to)) {

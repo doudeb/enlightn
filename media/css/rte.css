@@ -1,3 +1,7 @@
+.ico {
+
+}
+
 
 .frameBody
 {
@@ -37,5 +41,103 @@
     padding-right:5px;
 }
 
+.textarea {
+    background-color:#fff;
+    border:1px solid #ccc;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    margin-bottom: 10px;
+    overflow:hidden;
+    padding:7px 9px;
+}
 
+.toolbar {
+    background-color:#e5e5e5;
+    border:1px solid #ccc;
+    -moz-border-radius:5px 5px 0 0;
+    -webkit-border-radius:5px 5px 0 0;
+    -khtml-border-radius:5px 5px 0 0;
+    border-radius:5px 5px 0 0;
+    margin:-8px -10px 7px;
+    overflow:hidden;
+    padding: 4px;
+}
 
+.toolbar li {
+    background-color:#fff;
+    background-position: 0 -381px;
+    border:1px solid #bbb;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    -khtml-border-radius:3px;
+    border-radius:3px;
+    cursor:pointer;
+    display:block;
+    float: left;
+    height: 22px;
+    margin: 0 1px;
+    width: 24px;
+}
+
+li .ico {
+    display:block;
+    height: 22px;
+    width: 24px;
+}
+
+.textarea .toolbar .bold .ico { background-position:-11px -177px; }
+.textarea .toolbar .italic .ico { background-position:-39px -177px; }
+.textarea .toolbar .stroke .ico { background-position:-67px -177px; }
+
+.textarea .toolbar .ul .ico { background-position:-105px -177px; }
+.textarea .toolbar .ol .ico { background-position:-133px -177px; }
+.textarea .toolbar .quote .ico { background-position:-161px -177px; }
+
+.textarea .toolbar .a-left .ico { background-position:-194px -177px; }
+.textarea .toolbar .a-center .ico { background-position:-222px -177px; }
+.textarea .toolbar .a-right .ico { background-position:-250px -177px; }
+
+.textarea .toolbar .link .ico { background-position:-284px -177px; }
+.textarea .toolbar .video .ico { background-position:-309px -177px; }
+.textarea .toolbar .pict .ico { background-position:-335px -177px; }
+.textarea .toolbar .doc .ico { background-position:-362px -177px; }
+
+.textarea .toolbar li:hover {
+    background-image:none;
+}
+
+.textarea .toolbar li.new-gp {
+    margin-left:7px;
+}
+
+.textarea .toolbar .form-open  {
+    background-image: none;
+}
+
+.textarea .toolbar .video .form {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    display:none;
+    margin: -1px;
+    padding: 4px 6px;
+    position: absolute;
+}
+
+.textarea .toolbar .form-open .form {
+    display:block;
+}
+
+.textarea .toolbar .video .form .caption {
+    color: #666666;
+    font-size: 93%;
+}
+
+.textarea .toolbar .video .form input {
+    color: #666;
+    display: block;
+    font-size: 87%;
+    margin: 7px 0 3px;
+    width: 150px;
+}

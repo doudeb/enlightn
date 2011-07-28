@@ -36,11 +36,6 @@ unset($post);
 /**
  * Right part
  */
-//discussion action
-$discussion_action	= elgg_view("enlightn/discussion_action", array('entity' => $topic
-									, 'user_guid' => $user_guid));
-$right 				.= $discussion_action;
-unset($discussion_action);
 //search filters
 $search_filters 	= elgg_view('enlightn/search_filters',array());
 $right 				.= $search_filters;
@@ -49,10 +44,6 @@ unset($search_filters);
 $discussion_shortcut = elgg_view('enlightn/discussion_shortcut',array('discussion_unreaded' => $discussion_unreaded));
 $right .= $discussion_shortcut;
 unset($discussion_shortcut);
-//followers
-$followers	 		= elgg_view('enlightn/followers',array('entity' => $topic));
-$right 				.= $followers;
-unset($followers);
 //Compile into a layout
 $body 				= $left . $right;
 // Display page

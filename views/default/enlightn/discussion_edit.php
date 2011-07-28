@@ -8,68 +8,48 @@
 	// new groups default to open membership
 
 ?>
-<div id="pop_container_advanced">
-	<span id="close_new_discussion" class="mini-close"/></span>
 	<form id="discussion_edit" action="<?php echo $vars['url']; ?>action/enlightn/edit" enctype="multipart/form-data" method="post">
-	<div class="contentWrapper">
-		<ul>
+		<span id="close_new_discussion" class="mini-close"/></span>
 		<?php echo elgg_view('input/securitytoken'); ?>
-			<li><?php echo elgg_echo('enlightn:visibility');
-				$this_owner = $vars['entity']->owner_guid;
-				if (!$this_owner) {
-					$this_owner = get_loggedin_userid();
-				}
-				$access = array(ACCESS_PUBLIC => elgg_echo("PUBLIC"), ACCESS_PRIVATE => elgg_echo("PRIVATE"));
-				$collections = get_user_access_collections($vars['entity']->guid);
-				if (is_array($collections)) {
-					foreach ($collections as $c)
-						$access[$c->id] = $c->name;
-				}
+		<div class="privacy private">
+			<span class="private-val value"><span class="ico"></span><?php echo elgg_echo('private') ?></span>
 
-				$current_access = ($vars['entity']->access_id ? $vars['entity']->access_id : ACCESS_PRIVATE);
-				echo elgg_view('input/access', array(
-													'internalid' => 'membership',
-													'internalname' => 'membership',
-													'value' =>  $current_access,
-													'options' => $access));
-
-
-				?></li>
-				<li><?php echo elgg_echo("enlightn:title") ?>
-				<?php echo elgg_view("input/text",array(
-																'internalname' => 'title',
-																'internalid' => 'title',
-																'value' => $vars['entity']->name,
-																)); ?></li>
-				<li><?php echo elgg_echo("enlightn:description") ?>
-				<?php echo elgg_view("input/longtext",array(
-																'internalname' => 'description',
-																'internalid' => 'description',
-																'value' => $vars['entity']->description,
-																)); ?></li>
-
-				<li><?php echo elgg_echo("enlightn:tags") ?>
-				<?php echo elgg_view("input/tags",array(
-																'internalname' => 'interests',
-																'internalid' => 'interests',
-																'value' => $vars['entity']->interests,
-																)); ?></li>
-				<li><?php echo elgg_echo("enlightn:to") ?>
-				<?php echo elgg_view("enlightn/helper/adduser",array(
+			<span class="cursor" id="privacy_cursor"></span>
+			<span class="public-val value"><?php echo elgg_echo('public') ?></span>
+			<?php echo elgg_view("input/hidden",array(
+									'internalname' => 'membership',
+									'internalid' => 'membership',
+									'value' => ACCESS_PRIVATE)); ?>
+		</div>
+		<input class="title" type="text" name="title" id="title" placeholder="<?php echo elgg_echo("enlightn:title") ?>" value="" />
+		<?php echo elgg_view("input/longtext",array(
+								'internalname' => 'description',
+								'internalid' => 'description',
+								'value' => $vars['entity']->description)); ?>
+        <div class="dest">
+            <label><?php echo elgg_echo("enlightn:to") ?> :</label>
+            <?php echo elgg_view("enlightn/helper/adduser",array(
 																'internalname' => 'invite',
 																'internalid' => 'invite',
 																'value' => $vars['entity']->invite,
-																)); ?></li>
-			<?php
-				if ($vars['entity'])
-				{
-			?>
-			<input type="hidden" name="group_guid" value="<?php echo $vars['entity']->getGUID(); ?>" />
-			<?php
-				}
-			?>
-			<div id="submission"></div>
-			<input type="submit" class="submit_button" value="<?php echo elgg_echo("post"); ?>" />
+																)); ?>
+        </div>
+        <div class="tags">
+            <span class="add">
+                <span class="ico"></span>
+                <span class="caption"><?php echo elgg_echo("enlightn:tags") ?></span>
+                <?php echo elgg_view("input/tags",array(
+													'internalname' => 'interests',
+													'internalid' => 'interests',
+													'value' => $vars['entity']->interests,
+													)); ?>
+            </span>
+        </div>
+        <div class="sending">
+
+            <button type="submit" class="submit"><?php echo elgg_echo("post"); ?></button>
+        </div>
+		<div id="submission"></div>
 	</form>
 	<script type="text/javascript">
 	// prepare the form when the DOM is ready
@@ -83,8 +63,8 @@
 	        //url:       url         // override for form's 'action' attribute
 	      	type:      'post',        // 'get' or 'post', override for form's 'method' attribute
 	        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type)
-	        clearForm: true,        // clear all form fields after successful submit
-	        resetForm: true        // reset the form after successful submit
+	        clearForm: true        // clear all form fields after successful submit
+	        //resetForm: true        // reset the form after successful submit
 
 	        // $.ajax options can be used here too, for example:
 	        //timeout:   3000
@@ -141,28 +121,6 @@
 		//return false;
 	}
 	function autoClose () {
-		$('#edit_discussion').fadeOut();
-		$(".status-box").css('height','36px');
-		$('#fake_input').fadeIn();
+		$('#post').removeClass('open');
 	}
     </script>
-	</div>
-	<?php
-	if ($vars['entity']) {
-	?>
-	<div class="contentWrapper">
-	<div id="delete_group_option">
-		<form action="<?php echo $vars['url'] . "action/groups/delete"; ?>">
-			<?php
-				echo elgg_view('input/securitytoken');
-					$warning = elgg_echo("groups:deletewarning");
-				?>
-				<input type="hidden" name="group_guid" value="<?php echo $vars['entity']->getGUID(); ?>" />
-				<input type="submit" name="delete" value="<?php echo elgg_echo('groups:delete'); ?>" onclick="javascript:return confirm('<?php echo $warning; ?>')"/>
-		</form>
-	</div><div class="clearfloat"></div>
-	</div>
-	<?php
-	}
-	?>
-</div>

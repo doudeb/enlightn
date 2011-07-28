@@ -44,4 +44,5 @@
             </ul>
         </div>
     </div>
-
+	<div id="page">
+	<div id="loader"></div>

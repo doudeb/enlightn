@@ -47,7 +47,7 @@ if (empty($access_level)) {
 	$access_level = $last_search['access_level'];
 }
 $results['access_level'] = $access_level;
-
+//var_dump($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
 
 $search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
 $nb_results = count($search_results);

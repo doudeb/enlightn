@@ -61,7 +61,7 @@ if ($nb_results > 0) {
 			if ($nb_results-1 == $key) {
 				$topic_activities = $discussion_activities;
 			} else {
-				$topic_activities = get_activities_by_time(&$discussion_activities,$topic->time_created);
+				$topic_activities = get_activities_by_time(&$discussion_activities,$topic->created);
 			}
 			if ($key === 0) {
 				echo elgg_view('enlightn/post_header', array());

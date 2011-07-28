@@ -7,15 +7,38 @@
 	 *
 	 * @uses $vars['entity'] The posted comment to view
 	 */
-$post_owner = get_user($vars['entity']->owner_guid);
 $discussion = get_annotation($vars['entity']->id);
+$post_owner = get_user($discussion->owner_guid);
+$url_invite	= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/read?discussion_guid={$discussion->id}");
+
 ?>
-<div class="post_container">
-	<a id="discussion_post<?php echo $discussion->id; ?>"></a>
-	<div id="short_friendly_time"><div class="post_icon"><?php echo elgg_view("profile/icon",array('entity' => $post_owner, 'size' => 'small')) ?></div></div>
-	<div id="<?php echo false===$vars['flag_readed']?'short_post_view_unread':'short_post_view'?>">
-		<b><?php echo $post_owner->name?></b>
-		<small><?php echo elgg_view_friendly_time($discussion->time_created)?></small>
-		<p><?php echo $discussion->value; ?></p>
-	</div>
-</div>
+                    <li class="msg <?php echo false===$flag_readed?'read open-msg':'' ?>">
+                        <div class="toolbar">
+							<span class="inclosed ico"></span>
+                            <span class="date"><?php echo elgg_view_friendly_time($discussion->time_created)?></span>
+                        </div>
+                        <div class="statusbar">
+                            <!--<span class="star ico"></span>-->
+                            <span id="read<?php echo $discussion->id?>" class="read ico"></span>
+                        </div>
+                        <div class="excerpt">
+                            <img class="thumb-photo" src="<?php echo $post_owner->getIcon('small')?>" />
+
+                            <span class="participants"><strong><?php echo $post_owner->name?></strong></span>
+                            <p><?php echo strip_tags($discussion->value); ?></p>
+                        </div>
+                        <div class="content">
+                        	<?php echo $discussion->value; ?>
+                        </div>
+                    </li>
+<script>
+		$("#read<?php echo $discussion->id; ?>").click( function(){
+			if ($("#read<?php echo $discussion->id; ?>").hasClass("unread open-msg")) {
+				$("#read<?php echo $discussion->id; ?>").removeClass("unread open-msg");
+			} else {
+				$("#read<?php echo $discussion->id; ?>").addClass("unread");
+				$("#read<?php echo $discussion->id; ?>").addClass("open-msg");
+			}
+			loadContent('#loader','<?php echo $url_read?>');
+		});
+</script>

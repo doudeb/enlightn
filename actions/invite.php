@@ -2,7 +2,7 @@
 
     /**
 	 * Elgg groups plugin add topic action.
-	 * 
+	 *
 	 * @package ElggGroups
 	 */
 
@@ -11,12 +11,12 @@ gatekeeper();
 if (!isloggedin()) forward();
 // Forward to the group forum page
 global $CONFIG;
-$url = $CONFIG->wwwroot . "pg/enlightn";		
+$url = $CONFIG->wwwroot . "pg/enlightn";
 
 // Get input data
 $userto 			= get_input('invite');
-$userto				= explode(",", $userto);
-$user 				= $_SESSION['user']->getGUID(); // you need to be logged in to comment on a group forum
+$userto				= parse_user_to($userto);
+$user 				= $_SESSION['user']->getGUID();
 $enlightndiscussion = get_entity(get_input('discussion_guid'));
 if (!$enlightndiscussion->guid || $enlightndiscussion->owner_guid != $user) {
 forward($url);
@@ -29,22 +29,22 @@ foreach ($userto as $key => $usertoid) {
 		if (!$usertoid->isFriend()) {
 			//add_entity_relationship($_SESSION['user']->guid, 'friend', $usertoid->guid);
 		}
-		if(add_entity_relationship($enlightndiscussion->guid, 'invited', $usertoid->guid)) {
-			// Add membership requested
-			add_entity_relationship($usertoid->guid, 'membership_request', $enlightndiscussion->guid);
-			// Send email
-			$url = "{$CONFIG->url}pg/groups/invitations/{$usertoid->username}";
-			if (notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
-					sprintf(elgg_echo('groups:invite:subject'), $usertoid->name, $enlightndiscussion->name),
-					sprintf(elgg_echo('groups:invite:body'), $usertoid->name, $_SESSION['user']->name, $enlightndiscussion->name, $url),
-					NULL)) {
-				system_message(elgg_echo("enlightn:userinvited"));
-					} else {
-						register_error(elgg_echo("groups:usernotinvited"));
-					}
+		add_entity_relationship($enlightndiscussion->guid, 'invited', $usertoid->guid);
+		// Add membership requested
+		add_entity_relationship($usertoid->guid, 'membership_request', $enlightndiscussion->guid);
+		$enlightn->flush_cache(array('user_guid' => $usertoid->guid),'unreaded');
+
+		// Send email
+		$url = "{$CONFIG->url}pg/groups/invitations/{$usertoid->username}";
+		if (notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
+			sprintf(elgg_echo('groups:invite:subject'), $usertoid->name, $enlightndiscussion->name),
+			sprintf(elgg_echo('groups:invite:body'), $usertoid->name, $_SESSION['user']->name, $enlightndiscussion->name, $url),NULL)) {
+			system_message(elgg_echo("enlightn:userinvited"));
+		} else {
+			register_error(elgg_echo("groups:usernotinvited"));
 		}
-	}			
-}		
+	}
+}
 }
 echo elgg_echo("enlightn:userinvited");
 exit();

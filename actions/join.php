@@ -17,7 +17,7 @@
 	$discussion = get_entity($discussion_guid);
 	if (($user instanceof ElggUser)) 	{
 		// Remove any invite or join request flags
-		remove_entity_relationship($discussion->guid, 'invited', $user->guid);
+		remove_entity_relationship($discussion->guid, ENLIGHTN_INVITED, $user->guid);
 		//remove_entity_relationship($user->guid, 'membership_request', $discussion->guid);
 		if (add_entity_relationship($user->guid, 'member', $discussion->guid)) {
 			system_message(elgg_echo("enlightn:joined"));

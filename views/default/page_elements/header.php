@@ -272,4 +272,27 @@ $(document).ready(function(){
 			});
 		}, 5000);
 	}
+	$(document).ready(function(){
+		$('#expandAll').click( function(){
+			$("#discussion_list_container li").each(function () {
+				$(this).addClass('open-msg');
+			});
+		});
+		$('#collapseAll').click( function(){
+			$("#discussion_list_container li").each(function () {
+				$(this).removeClass('open-msg');
+			});
+		});
+		$('#privacy_cursor').click( function(){
+			if($(this).parent().hasClass('private')) {
+				$(this).parent().removeClass('private');
+				$(this).parent().addClass('public');
+				$('#membership').val(<?php echo ACCESS_PUBLIC?>);
+			} else {
+				$(this).parent().removeClass('public');
+				$(this).parent().addClass('private');
+				$('#membership').val(<?php echo ACCESS_PRIVATE?>);
+			}
+		});
+	});
 </script>

@@ -22,6 +22,14 @@ $(document).ready(function(){
 		loadContent('#preview' + $(this).attr('id'),'<?php echo $vars['url']; ?>mod/enlightn/ajax/embed_preview.php?guid=' + $(this).attr('id'));
 		return false;
 	});
+	$('#discussion_list_container li').click( function(){
+		if(!$(this).hasClass('open-msg')) {
+			$(this).addClass('open-msg');
+
+		} else {
+			$(this).removeClass('open-msg');
+		}
+	});
 });
 
 </script>

@@ -1,14 +1,5 @@
-<div id="new_discussion" class="box_wrapper">
-		<div class="left" style="border:1px solid"><a href="<?php echo $vars['user_ent']->getURL(); ?>"><?php echo elgg_view("profile/icon",array('entity' => $vars['user_ent'], 'size' => 'small', 'override' => 'true')) ?></a></div>
-		<div class="right"><?php echo elgg_view("input/text",array(
-									'internalname' => 'fake_input',
-									'internalid' => 'fake_input'
-									)); ?></div>
-		<div class="right" id="edit_discussion">
-			<div id="pop_container_advanced">
-				<div class="contentWrapper">
-					<span id="close_new_discussion" class="mini-close"/></span>
-					<form id="add_post" action="<?php echo $vars['url']; ?>action/enlightn/addpost" enctype="multipart/form-data" method="post">
+			<div id="post" class="open">
+				<form id="add_post" action="<?php echo $vars['url']; ?>action/enlightn/addpost" enctype="multipart/form-data" method="post">
 					<?php
 					$url_cloud = $vars['url'] . 'pg/enlightn/cloud/' . $vars['entity']->guid . '/new_post';
 					echo elgg_view('input/longtext',array('internalname' => 'new_post',
@@ -19,12 +10,12 @@
 					<?php echo elgg_view('input/securitytoken'); ?>
 					<!-- display the post button -->
 					<div id="submission"></div>
-					<input type="submit" class="submit_button" value="<?php echo elgg_echo('post'); ?>" />
-					</form>
-				</div>
+                    <div class="sending">
+                        <input class="checkbox" type="checkbox" /><span class="reply ico"></span>
+                        <button type="submit" class="submit">Post</button>
+                    </div>
+				</form>
 			</div>
-		</div>
-</div>
 <script>
 $(document).ready(function(){
 	$('#fake_input').click( function(){

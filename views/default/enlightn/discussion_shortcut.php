@@ -1,27 +1,25 @@
 <?php
 $unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
 ?>
-<div id="vertical_tabbed_nav">
-	<div class="box_wrapper">
-		<ul id="list_selector">
-			<li class="selected" id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PU?>"><a onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_PU?>);return false;" href="#"><?php echo elgg_echo('PUBLIC'); ?></a><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_PU)?></li>
-			<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PR?>"><a onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_PR?>);return false;" href="#"><?php echo elgg_echo('enlightn:follow'); ?></a><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_PR)?></li>
-			<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_IN?>"><a onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_IN?>);return false;" href="#"><?php echo elgg_echo('enlightn:membershiprequest'); ?></a><?php echo echo_unreaded($unreaded, ENLIGHTN_INVITED)?></li>
-			<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_FA?>"><a onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_FA?>);return false;" href="#"><?php echo elgg_echo('enlightn:favorite'); ?></a><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_FA)?></li>
-			<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>"><a onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_AL?>);return false;" href="#"><?php echo elgg_echo('enlightn:search'); ?></a></li>
-		</ul>
-	</div>
+			<ol class="folders" id="list_selector">
+				<li class="current" id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PU?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_PU?>);return false;" href="#"><?php echo elgg_echo('PUBLIC'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_PU)?></a></li>
+				<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PR?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_PR?>);return false;" href="#"><?php echo elgg_echo('enlightn:follow'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_PR)?></a></li>
+				<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_IN?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_IN?>);return false;" href="#"><?php echo elgg_echo('enlightn:membershiprequest'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_INVITED)?></a></li>
+				<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_FA?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_FA?>);return false;" href="#"><?php echo elgg_echo('enlightn:favorite'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_FA)?></a></li>
+				<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_AL?>);return false;" href="#"><?php echo elgg_echo('enlightn:search'); ?></a></li>
+  			</ol>
+        </div>
+    </div>
 </div>
 <input type="hidden" name="discussion_type" id="discussion_type" value="1">
-<div id="shortcuted_messages"></div>
 <script language="javascript">
 setInterval(function() {
 	$.getJSON('<?php echo $vars['url']; ?>mod/enlightn/ajax/discussion_unreaded.php', function(data) {
 		$.each(data, function(i,item){
-			var received_value = '(' + item + ')';
+			var received_value = item;
 			var nav_element = $("#nav_unreaded_" + i);
 			if(typeof nav_element == 'object') {
-				if (received_value != '(0)' && nav_element.html() != received_value) {
+				if (received_value != '0' && nav_element.html() != received_value) {
 					nav_element.html(received_value);
 					//changeShortCutList(i);
 				}
@@ -49,7 +47,7 @@ function changeShortCutList (accessLevel,offset) {
 			toElement.fadeOut();
 			toElement.remove();
 		}
-		items.push('<a id="shortcuted_messages_previous">-</a>');
+		items.push('<div class="menu"><span class="up" id="shortcuted_messages_previous"><span class="arrow"></span></span><ol>');
 		$.each(data, function(i,item){
 			if (item.readed) {
 				classReaded = 'readed';
@@ -57,21 +55,21 @@ function changeShortCutList (accessLevel,offset) {
 				classReaded = 'unreaded';
 			}
 			if (i != 'access_level') {
-				items.push('<li id="' + item.guid + '" class="' + classReaded + '"><a href="<?php echo $vars['url']; ?>pg/enlightn/discuss/' + item.guid +'">' + item.time_created + ' - ' +  item.title + '</li>');
+				items.push('<li id="' + item.guid + '"><a href="<?php echo $vars['url']; ?>pg/enlightn/discuss/' + item.guid +'">' +  item.title + '</li>');
 			} else {
 				accessLevel = item;
 			}
 		});
 		currElement 	= $('#discussion_selector_' + accessLevel);
-		items.push('<a id="shortcuted_messages_next">+</a>');
+		items.push('</ol><span class="down" id="shortcuted_messages_next"><span class="arrow"></span></span></div>');
 		$('<ul/>', {
 			'id' : 'shortcuted_messages',
     		'class': 'shortcuted_messages',
     		html: items.join('')}).appendTo(currElement);
-		$(currElement).addClass('selected');
+		$(currElement).addClass('current');
 		$("#list_selector li").each(function () {
 			if($(this).attr('id') != $(currElement).attr('id')) {
-				$(this).removeClass('selected');
+				$(this).removeClass('current');
 			}
       	});
 		$('#shortcuted_messages_next').click( function(){

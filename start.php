@@ -45,6 +45,7 @@ function enlightn_init() {
 	register_action("enlightn/join",false, $CONFIG->pluginspath . "enlightn/actions/join.php");
 	register_action("enlightn/invite",false, $CONFIG->pluginspath . "enlightn/actions/invite.php");
 	register_action("enlightn/follow",false, $CONFIG->pluginspath . "enlightn/actions/follow.php");
+	register_action("enlightn/read",false, $CONFIG->pluginspath . "enlightn/actions/read.php");
 	register_action("enlightn/favorite",false, $CONFIG->pluginspath . "enlightn/actions/favorite.php");
 	register_action("enlightn/upload",false, $CONFIG->pluginspath . "enlightn/actions/upload.php");
 	//collection
@@ -116,7 +117,13 @@ function enlightn_page_handler($page) {
 			$action = $page[1];
 			include($CONFIG->pluginspath . "enlightn/collection.php");
 			break;
-	}
+		case "directory":
+	        if ($user = get_user_by_username($page[0])) {
+                set_page_owner($user->getGUID());
+	        }
+			$action = $page[1];
+			include($CONFIG->pluginspath . "enlightn/directory.php");
+			break;	}
 }
 
 ?>

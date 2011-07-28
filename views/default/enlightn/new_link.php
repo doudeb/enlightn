@@ -1,1 +1,1 @@
-<span class="ico_<?php echo $vars['type']?>"></span><a href="<?php echo $vars['link']?>" class="<?php echo $vars['type']?>" id="<?php echo $vars['guid']?>"><?php echo $vars['title']?></a>
+<span class="<?php echo $vars['type']?>" id="<?php echo $vars['guid']?>"><?php echo $vars['title']?></span>
