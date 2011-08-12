@@ -1435,12 +1435,12 @@ span.unfollow:hover {
     border-radius:5px;
     color:#666;
     cursor:default;
-    display:none;
+    #display:none;
     margin: 22px 0 0 -20px;
     padding: 10px;
     position: absolute;
     text-decoration:none;
-    width: 150px;
+    width: 170px;
 }
 
 #feed .open-msg .content span:hover .bubble {
@@ -1463,7 +1463,7 @@ span.unfollow:hover {
 }
 
 .bubble .icon {
-    width:40px;
+    width:60px;
 }
 
 .bubble .icon .spec {
@@ -1674,7 +1674,9 @@ span.unfollow:hover {
     padding:20px 0 0;
 }
 
-
+.embeded_preview {
+	overflow: hidden;
+}
 
 /**
 * directory
@@ -1740,6 +1742,10 @@ RTE EDITOR
         float: right;
         height: 16px;
         width: 16px;
+}
+
+.loader {
+	overflow: auto;
 }
 
 /**
