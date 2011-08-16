@@ -6,27 +6,21 @@
  * @subpackage Core
  */
 
-$collection_name = get_input('collection_name');
-$friends = get_input('friends_collection');
+$collection_name 		= get_input('listName');
+$friends 				= get_input('userIds');
+$owner_guid				= get_input('isPrivate')=='true'?get_loggedin_userid():'-1';
 
 if (!$collection_name) {
 	register_error(elgg_echo("friends:nocollectionname"));
-	forward(REFERER);
+	//forward(REFERER);
 }
 
-$id = create_access_collection($collection_name);
+$id = create_access_collection($collection_name,$owner_guid);
 
 if ($id) {
 	$result = update_access_collection($id, $friends);
 	if ($result) {
-		system_message(elgg_echo("friends:collectionadded"));
-		// go to the collections page
-		forward("pg/enlightn/collection/" . get_loggedin_user()->username);
-	} else {
-		register_error(elgg_echo("friends:nocollectionname"));
-		forward(REFERER);
+		echo json_encode(array('id'=>$id));
 	}
-} else {
-	register_error(elgg_echo("friends:nocollectionname"));
-	forward(REFERER);
 }
+exit();

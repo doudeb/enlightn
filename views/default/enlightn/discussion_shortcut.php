@@ -4,7 +4,7 @@ $unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
 			<ol class="folders" id="list_selector">
 				<li class="current" id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PU?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_PU?>);return false;" href="#"><?php echo elgg_echo('PUBLIC'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_PU)?></a></li>
 				<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PR?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_PR?>);return false;" href="#"><?php echo elgg_echo('enlightn:follow'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_PR)?></a></li>
-				<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_IN?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_IN?>);return false;" href="#"><?php echo elgg_echo('enlightn:membershiprequest'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_INVITED)?></a></li>
+				<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_IN?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_IN?>);return false;" href="#"><?php echo elgg_echo('enlightn:membershiprequest'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_IN)?></a></li>
 				<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_FA?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_FA?>);return false;" href="#"><?php echo elgg_echo('enlightn:favorite'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_FA)?></a></li>
 				<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_AL?>);return false;" href="#"><?php echo elgg_echo('enlightn:search'); ?></a></li>
   			</ol>
@@ -28,7 +28,7 @@ setInterval(function() {
 	});
 }, 15000);
 
-function changeShortCutList (accessLevel,offset) {
+function changeShortCutList (accessLevel,offset,discussionId) {
 	toElement		= $('#shortcuted_messages');
 	if (typeof accessLevel == 'undefined') {
 		accessLevel = '';
@@ -55,7 +55,12 @@ function changeShortCutList (accessLevel,offset) {
 				classReaded = 'unreaded';
 			}
 			if (i != 'access_level') {
-				items.push('<li id="' + item.guid + '"><a href="<?php echo $vars['url']; ?>pg/enlightn/discuss/' + item.guid +'">' +  item.title + '</li>');
+				if(discussionId == item.guid) {
+					liClass = ' class="selected"';
+				} else {
+					liClass = '';
+				}
+				items.push('<li id="' + item.guid + '"' + liClass + '><a href="<?php echo $vars['url']; ?>pg/enlightn/discuss/' + item.guid +'">' +  item.title + '</li>');
 			} else {
 				accessLevel = item;
 			}
@@ -73,24 +78,24 @@ function changeShortCutList (accessLevel,offset) {
 			}
       	});
 		$('#shortcuted_messages_next').click( function(){
-			alert(offset);
 			if (offset == '') {
 				nextOffset = 10;
-				changeShortCutList(accessLevel,nextOffset);
+				changeShortCutList(accessLevel,nextOffset,discussionId);
 			} else if (parseInt(offset) >= 0) {
 				nextOffset = parseInt(offset) + 10;
-				changeShortCutList(accessLevel,nextOffset);
+				changeShortCutList(accessLevel,nextOffset,discussionId);
 			}
+			return false;
 		});
 		$('#shortcuted_messages_previous').click( function(){
-			alert(offset);
 			if (parseInt(offset) > 0) {
 				nextOffset = parseInt(offset) - 10;
-				changeShortCutList(accessLevel,nextOffset);
+				changeShortCutList(accessLevel,nextOffset,discussionId);
 			}
+			return false;
 		});
 	});
 }
-changeShortCutList();
+changeShortCutList(undefined,undefined,<?php echo $vars['discussion_id']?>);
 
 </script>

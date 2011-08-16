@@ -243,6 +243,14 @@ function get_http_link($message) {
 	return false;
 }
 
+function get_embeded_src ($message) {
+	$regexp = "#(<span.*.id=\"(\d{1,15})\">)#";
+	if (preg_match_all($regexp, $message, $http_link)) {
+		return $http_link;
+	}
+	return false;
+}
+
 function get_embeded_type ($links) {
 	global $CONFIG;
 	if (!is_array($links)) {
@@ -260,7 +268,7 @@ function get_embeded_type ($links) {
 				break;
 			//already in entities, we just have to link it
 			case false !== strstr($link,'?fetched=1'):
-				$links_type[ENLIGHTN_EMBEDED][]['link'] = str_replace('?fetched=1',$link);
+				$links_type[ENLIGHTN_EMBEDED][]['link'] = str_replace('?fetched=1','',$link);
 				break;
 			case preg_match("/\.(bmp|jpeg|gif|png|jpg)$/i", $link) > 0:
 				$links_type[ENLIGHTN_IMAGE][]['link'] = $link;
@@ -273,6 +281,9 @@ function get_embeded_type ($links) {
 				break;
 		}
 	}
+							var_dump($links_type);
+die();
+
 	return $links_type;
 }
 
@@ -297,6 +308,11 @@ function get_embeded_title ($links) {
 					$embedUrl = new Embed_url(array('url' => $link['link']));
 					$embedUrl->get_page_title();
 					$links[$type][$key]['title'] = $embedUrl->title;
+				}
+				break;
+			case ENLIGHTN_EMBEDED:
+				foreach ($links_by_type as $key=>$link) {
+					$links[$type][$key]['title'] = false;
 				}
 				break;
 			default:
@@ -328,7 +344,7 @@ function create_embeded_entities ($message,$entity) {
 		foreach ($links_by_type as $key=>$link) {
 			$title 				= $link["title"];
 			$desc 				= $link["link"];
-			$file				= elgg_get_entities_from_metadata(array('metadata_names' => 'originalfilename', 'metadata_values' => $link["link"]));
+			$file				= elgg_get_entities_from_metadata(array('metadata_names' => 'filename', 'metadata_values' => $link["link"]));
 			if (!$file) {
 				$access_id 			= $entity->access_id;
 				$container_guid 	= get_loggedin_userid();

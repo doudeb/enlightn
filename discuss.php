@@ -41,7 +41,7 @@ $search_filters 	= elgg_view('enlightn/search_filters',array());
 $right 				.= $search_filters;
 unset($search_filters);
 //discussion type
-$discussion_shortcut = elgg_view('enlightn/discussion_shortcut',array('discussion_unreaded' => $discussion_unreaded));
+$discussion_shortcut = elgg_view('enlightn/discussion_shortcut',array('discussion_unreaded' => $discussion_unreaded, 'discussion_id' => $topic->guid));
 $right .= $discussion_shortcut;
 unset($discussion_shortcut);
 //Compile into a layout

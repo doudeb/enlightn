@@ -89,6 +89,18 @@ foreach ($users as $letter => $letter_users) {
 	$users[$letter] = $letter_users;
 }
 
+$my_collection_members = array();
+if (is_array($vars['collections'])) {
+	foreach ($vars['collections'] as $collection) {
+		$members = array();
+		foreach (get_members_of_access_collection($collection->id) as $user) {
+			$members[] = $user->guid;
+		}
+		$my_collection_members[$collection->id] = $members;
+	}
+}
+
+
 if (!$callback) {
 	?>
 
@@ -141,38 +153,6 @@ if (!isset($vars['replacement'])) {
 ?>
 
 <div class="friendsPicker_wrapper">
-<script>
-$(function() {
-    $(".memberDraggable").draggable({
-		revert: true,
-		appendTo: 'body',
-		containment: 'window',
-		helper: 'clone'
-    });
-	$("#memberDrop").droppable({
-                tolerance: 'touch',
-                over: function() {
-                       $(this).parent().addClass('current');
-                },
-                out: function() {
-                        $(this).removeClass('current');
-                },
-                drop: function(ev,ui) {
-                	var fromElm = $(ui.draggable);
-                	var toElm   = $(ev.draggable);
-					if (typeof $('#listName') == 'undefined') {
-				 		$('<input />', {
-		            		'id' : 'listName'
-		    				,'name': 'listName'
-		    				,'type': 'text'
-		    				,'placeholder': '<?php echo elgg_echo('enlightn:listname')?>'
-				 			,'class' : 'listName'}).after($(this));
-				 	}
-                    $(this).append($(ui.draggable).html());
-                }
-     });
-});
-</script>
 
 <div id="friendsPicker<?php echo $friendspicker; ?>">
 	<div class="friendsPicker_container">
@@ -196,55 +176,33 @@ $(function() {
 		if (isset($users[$letter])) {
 			ksort($users[$letter]);
 
-			echo "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">";
-			$col = 0;
-
+			echo "<ol>";
 			foreach($users[$letter] as $friend) {
-				if ($col == 0) {
-					echo "<tr>";
+ 				echo '<li id="user' . $friend->getGUID() . '" class="user" data-userId="' . $friend->getGUID() . '">
+                            <img class="photo" src="' . $friend->getIcon() . '" />
+                            <a href="' . $vars['url'] . 'pg/profile/' . $friend->username .'">' . $friend->name . '</a>
+                            <p>Job title</p>
+                            <!--<span class="follow send-msg">
+                                <span class="ico"></span> Envoyer un message
+                            </span>-->';
+				$member_collection = array();
+				if (is_array($my_collection_members)) {
+					foreach ($my_collection_members as $collection_id=>$collection_members) {
+						if (in_array($friend->getGUID(),$collection_members)) {
+							$collection = get_access_collection($collection_id);
+							echo '<span class="tag tag' . $collection->id .'" data-tagId="' . $collection->id .'">' . $collection->name . ' <span class="del">&times;</span></span>';
+						}
+					}
 				}
-
-				//echo "<p>" . $user->name . "</p>";
-				$label = elgg_view("profile/icon",array('entity' => $friend, 'size' => 'tiny', 'override' => true));
-				$options[$label] = $friend->getGUID();
-
+                echo '</li>';
 				if ($vars['highlight'] == 'all'
 					&& !in_array($letter,$activeletters)) {
 
 					$activeletters[] = $letter;
 				}
-
-
-				if (in_array($friend->getGUID(),$vars['value'])) {
-					$checked = "checked = \"checked\"";
-					if (!in_array($letter,$activeletters) && $vars['highlight'] == 'default') {
-						$activeletters[] = $letter;
-					}
-				} else {
-					$checked = "";
-				}
-				?>
-
-				<td>
-					<div style="width: 25px; margin-bottom: 15px;" class="memberDraggable" id="<?php echo $friend->getGUID(); ?>"><?php echo $label;?>	</div>
-				</td>
-				<td style="width: 200px; padding: 5px;">
-					<?php echo $friend->name; ?>
-				</td>
-				<?php
-				$col++;
-				if ($col == 3){
-					echo "</tr>";
-					$col = 0;
-				}
 			}
-			if ($col < 3) {
-				echo "</tr>";
-			}
-
-			echo "</table>";
+			echo "</ol>";
 		}
-
 ?>
 			</div>
 		</div>

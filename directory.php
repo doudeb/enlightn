@@ -8,6 +8,9 @@ $user_ent				= get_user($user_guid);
 
 $site_members			= get_site_members($CONFIG->site_guid,100000);
 
+$collections			= array();
+$collections			= get_user_access_collections($user_ent->guid);
+$collections			= array_merge($collections,get_user_access_collections(0));
 $directory_top			= elgg_view('enlightn/directory/top',array(
 																'user_ent' => $user_ent
 																));
@@ -17,6 +20,7 @@ unset($directory_top);
 $directory_picker 		= elgg_view('enlightn/directory/picker',array(
 																'user_ent' => $user_ent
 																, 'entities' => $site_members
+															, 'collections' => $collections
 																));
 
 $left					.= $directory_picker;
@@ -24,6 +28,7 @@ unset($directory_top);
 
 $collection_list		= elgg_view('enlightn/directory/collection_list',array(
 															'user_ent' => $user_ent
+															, 'collections' => $collections
 															));
 $right					= $collection_list;
 unset($collection_list);

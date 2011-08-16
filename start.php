@@ -34,7 +34,7 @@ function enlightn_init() {
     elgg_extend_view('js/initialise_elgg','enlightn/cloud/js');
 	// Try to remove the dashboard page
     register_plugin_hook('index','system','new_index');
-    register_plugin_hook('siteid','system','set_site_id');
+    //register_plugin_hook('siteid','system','set_site_id');
 	// register for search
 	register_entity_type('enlightn','');
 	// Register a page handler, so we can have nice URLs
@@ -50,6 +50,8 @@ function enlightn_init() {
 	register_action("enlightn/upload",false, $CONFIG->pluginspath . "enlightn/actions/upload.php");
 	//collection
 	register_action("enlightn/collection/addcollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/addcollection.php");
+	register_action("enlightn/collection/removefromcollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/removefromcollection.php");
+	register_action("enlightn/collection/addtocollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/addtocollection.php");
 
     // Replace the default index page
     //register_plugin_hook('index','system','new_index');

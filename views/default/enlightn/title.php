@@ -13,6 +13,7 @@ $invited_members	= elgg_get_entities_from_relationship(array(
 if (!$invited_members) {
 	$invited_members = array();
 }
+$tags				= $post->getTags();
 $url_favorite		= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/favorite?discussion_guid={$post->guid}");
 $url_follow			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?discussion_guid={$post->guid}");
 $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/invite?discussion_guid={$post->guid}");
@@ -20,10 +21,10 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
 		<div id="main">
 			<div id="detail" class="msg <?php echo false===$flag_readed?'unread':'read' ?> <?php echo  false===$flag_favorite?'':'starred'?>">
                 <div class="header">
-                    <span class="<?php echo false===$flag_readed?'unread':'read' ?> ico"></span>
+                    <span class="read ico"></span>
                     <h2><?php echo $post->title; ?></h2>
                     <span id="favorite<?php echo $post->guid; ?>" class="star ico"></span>
-                    <span class="<?php echo $post->access_id==ACCESS_PRIVATE?'lock':''; ?> ico"></span>
+                    <span class="<?php echo $post->access_id==ACCESS_PRIVATE?'lock':'unlock'; ?> ico"></span>
 
                 </div>
 
@@ -37,8 +38,13 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                     <span class="tags">
 
                         <ul>
-                            <li>mobile</li>
-                            <li>innovation</li>
+                        	<?php
+                        	if (is_array($tags)) {
+                        		foreach ($tags as $tag) {
+                        			echo "<li>$tag</li>";
+                        		}
+                        	}
+                        	?>
                         </ul>
                     </span>
                 </div>

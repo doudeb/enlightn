@@ -1,19 +1,29 @@
-   <div id="feed">
+<?php
+$url_read			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/read?");
+$url_favorite		= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/favorite?");
+$url_follow			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?");
+?>
+	<div id="feed">
                 <div class="actions">
                     <ul>
-                        <li><input class="checkbox" type="checkbox" /><span class="arrow"></span></li>
-                        <li>Label<span class="arrow"></span>
+                        <li><input class="checkbox" type="checkbox" id="selectAll"/><span class="arrow"></span>
                             <ul>
-                                <li>Travail</li>
-                                <li>Perso</li>
-                                <li>Publicit�s</li>
+                                <li id="selectNone"><?php echo elgg_echo("enlightn:none")?></li>
+                                <li id="selectRead"><?php echo elgg_echo("enlightn:read")?></li>
+                                <li id="selectUnread"><?php echo elgg_echo("enlightn:unread")?></li>
                             </ul>
                         </li>
-                        <li>Autres actions<span class="arrow"></span></li>
+                        <li><?php echo elgg_echo("enlightn:action")?><span class="arrow"></span>
+                            <ul>
+                                <li id="setReaded"><?php echo elgg_echo("enlightn:setasreadunread")?></li>
+                                <li id="setFollow"><?php echo elgg_echo("enlightn:setasfollowunfolow")?></li>
+                                <li id="setFavorite"><?php echo elgg_echo("enlightn:setasfavorite")?></li>
+                            </ul>
+                        </li>
                     </ul>
 
                     <ul class="right">
-                        <li>Trier par : date<span class="arrow"></span></li>
+                        <!--<li>Trier par : date<span class="arrow"></span></li>-->
                     </ul>
                 </div>
    				<ol>
@@ -35,5 +45,44 @@ $('#see_more_discussion_list').click(function () {
 
 $(document).ready(function(){
 	reloader("<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php", '#discussion_list_container');
+	$('#setReaded').click(function () {
+		$("#discussion_list_container li").each(function () {
+			elmId = $(this).find('.statusbar').find(':checkbox').is(':checked')?$($(this).find('.statusbar').find(':checkbox')):false;
+			if (elmId) {
+				loadContent("#loader",'<?php echo $url_read ?>&discussion_guid=' + elmId.val());
+				if ($("#read" + elmId.val()).parent().parent().hasClass("unread")) {
+					$("#read" + elmId.val()).parent().parent().removeClass("unread");
+				} else {
+					$("#read" + elmId.val()).parent().parent().addClass("unread");
+				}
+			}
+		});
+	});
+	$('#setFollow').click(function () {
+		$("#discussion_list_container li").each(function () {
+			elmId = $(this).find('.statusbar').find(':checkbox').is(':checked')?$($(this).find('.statusbar').find(':checkbox')):false;
+			if (elmId) {
+				loadContent("#loader",'<?php echo $url_follow ?>&annotation_id=' + elmId.val());
+				if ($(this).hasClass("followed")) {
+					$(this).removeClass("followed");
+				} else {
+					$(this).addClass("followed");
+				}
+			}
+		});
+	});
+	$('#setFavorite').click(function () {
+		$("#discussion_list_container li").each(function () {
+			elmId = $(this).find('.statusbar').find(':checkbox').is(':checked')?$($(this).find('.statusbar').find(':checkbox')):false;
+			if (elmId) {
+				loadContent("#loader",'<?php echo $url_favorite ?>&annotation_id=' + elmId.val());
+				if ($(this).hasClass("starred")) {
+					$(this).removeClass("starred");
+				} else {
+					$(this).addClass("starred");
+				}
+			}
+		});
+	});
 });
 </script>

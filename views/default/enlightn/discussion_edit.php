@@ -84,6 +84,7 @@
 
 	function showLoading () {
 		javascript:$('#submission').prepend('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
+		$('#post').removeClass('open');
 		return true;
 	}
 	// pre-submit callback
@@ -122,5 +123,6 @@
 	}
 	function autoClose () {
 		$('#post').removeClass('open');
+		//changeMessageList('#discussion_selector_all');
 	}
     </script>

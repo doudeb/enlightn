@@ -17,7 +17,7 @@
             <h1 class="logo">enlightn</h1>
 			<?php if (isloggedin()) { ?>
             <ul class="menus">
-                <li class="directory"><a class="link" href="<?php echo $vars['url']; ?>pg/members/"><span class="ico"></span><?php echo elgg_echo('enlightn:directory')?></a></li>
+                <li class="directory"><a class="link" href="<?php echo $vars['url']; ?>pg/enlightn/directory"><span class="ico"></span><?php echo elgg_echo('enlightn:directory')?></a></li>
                 <li class="account submenu">
                     <span class="user">
                         <img src="<?php echo $vars['user']->getIcon('small')?>" />
@@ -45,4 +45,4 @@
         </div>
     </div>
 	<div id="page">
-	<div id="loader"></div>
+	<div class="loader" id="loader"></div>

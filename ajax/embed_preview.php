@@ -9,6 +9,7 @@ $file				= new ElggFile((int)$embed_guid);
 
 //is description already loaded
 $to_fetch = $file->description === $file->originalfilename;
+$to_fetch = 1;
 if ($to_fetch) {
 	switch ($file->simpletype) {
 		case ENLIGHTN_MEDIA :
@@ -39,33 +40,14 @@ if ($to_fetch) {
 			$file->description = elgg_view('enlightn/fetched_image',array('url'=> $file->originalfilename));
 			$file->save();
 			break;
+		case ENLIGHTN_DOCUMENT:
+			$file->description = elgg_view('enlightn/fetched_document',array('url'=> $file->originalfilename, 'entity' => $file));
+			//$file->save();
+			break;
 		default:
 			break;
 	}
 }
 
 
-die($file->description);
-
-
-require_once "../model/Embedly.php";
-$api = new Embedly_API(array(
-  'user_agent' => 'Mozilla/5.0 (compatible; embedly/example-app; support@embed.ly)'
-));
-
-//Some basic var
-$media_uid = md5($url);
-$oembed = $api->oembed(array('url' => $url)); //, 'maxwidth' => 200));
-if (!isset($oembed[0]->error_code)) {
-	echo elgg_view('enlightn/fetched',array('type' => 'media'
-									,'entity' => $oembed[0]
-									,'media_uid' => $media_uid));
-} else {
-	require_once "../model/EmbedUrl.php";
-	$embedUrl = new Embed_url(array('url' => $url));
-	$embedUrl->embed();
-	echo elgg_view('enlightn/fetched',array('type' => 'url'
-											,'entity' => $embedUrl
-											,'media_uid' => $media_uid));
-
-}
+echo $file->description;
