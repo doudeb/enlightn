@@ -244,9 +244,9 @@ function get_http_link($message) {
 }
 
 function get_embeded_src ($message) {
-	$regexp = "#(<span.*.id=\"(\d{1,15})\">)#";
+	$regexp = "#<span.*.id=\"(\d+)\">#";
 	if (preg_match_all($regexp, $message, $http_link)) {
-		return $http_link;
+		return $http_link[1];
 	}
 	return false;
 }
@@ -281,9 +281,6 @@ function get_embeded_type ($links) {
 				break;
 		}
 	}
-							var_dump($links_type);
-die();
-
 	return $links_type;
 }
 
@@ -325,6 +322,7 @@ function get_embeded_title ($links) {
 function create_embeded_entities ($message,$entity) {
 	$new_message = array();
 	$new_message['message'] = $message;
+	$new_message['guids'] = get_embeded_src($new_message['message']);
 	if (!$entity instanceof ElggObject ) {
 		return $new_message;
 	}

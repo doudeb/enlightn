@@ -6,6 +6,7 @@ $unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
 				<li id="discussion_selector_follow"><span class="arrow"></span><a class="cat"  onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_follow',2);" href="#"><?php echo elgg_echo('enlightn:follow'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_PR)?></a></li>
 				<li id="discussion_selector_invited"><span class="arrow"></span><a class="cat"  onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_invited',5)" href="#"><?php echo elgg_echo('enlightn:membershiprequest'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_IN)?></a></li>
 				<li id="discussion_selector_favorite"><span class="arrow"></span><a class="cat"  onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_favorite',3);" href="#"><?php echo elgg_echo('enlightn:favorite'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_FA)?></a></li>
+				<li id="discussion_selector_sent"><span class="arrow"></span><a class="cat"  onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_sent',<?php echo ENLIGHTN_ACCESS_PR?>);" href="#"><?php echo elgg_echo('enlightn:sent'); ?></a></li>
 				<li id="discussion_selector_search" style="display:none"><span class="arrow"></span><a class="cat"  onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_search',4)" href="#"><?php echo elgg_echo('enlightn:search'); ?></a></li>
 
             </ol>

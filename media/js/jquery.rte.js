@@ -128,18 +128,19 @@ if(typeof $.fn.rte === "undefined") {
         // create toolbar and bind events to it's elements
         function toolbar() {
             var tb = $("<ul class='toolbar' id='toolbar-"+ element_id +"'>\
-			<li>\
+			<!--<li>\
 		        <select>\
 		            <option value=''>Block style</option>\
 		            <option value='p'>Paragraph</option>\
 		            <option value='h3'>Title</option>\
 		            <option value='address'>Address</option>\
 		        </select>\
-		    </li>\
+		    </li>-->\
 	        <li class='bold' title='Gras'><span class='ico'></span></li>\
 	        <li class='italic' title='Italique'><span class='ico'></span></li>\
 	        <li class='new-gp ul' title='Liste'><span class='ico'></span></li>\
 		    <li><a href='#' class='disable'><img src='"+opts.media_url+"close.gif' alt='close rte' /></a></li>\
+		    <li id='embedMedia' class='new-gp link' title='Lien'><span class='ico'></span></li>\
 		</ul>");
 
             $('select', tb).change(function(){
@@ -153,10 +154,8 @@ if(typeof $.fn.rte === "undefined") {
             $('.italic', tb).click(function(){ formatText('italic');return false; });
             $('.unorderedlist', tb).click(function(){ formatText('insertunorderedlist');return false; });
             $('.link', tb).click(function(){
-                var p=prompt("URL:");
-                if(p)
-                    formatText('CreateLink', p);
-                return false; });
+            	$('#embedContent').css('display','block');
+            });
 
             $('.image', tb).click(function(){
                 var p=prompt("image URL:");

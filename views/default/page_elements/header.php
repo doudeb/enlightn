@@ -203,6 +203,9 @@ function get_search_criteria () {
 		}
 		$('#discussion_type').val(discussion_type);
 		$('#see_more_discussion_list_offset').val(0);
+		if (currElement == '#discussion_selector_sent') {
+			$('#from_users').val('<?php echo get_loggedin_userid()?>');
+		}
 		loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria());
 		$(currElement).addClass('current');
 		$(currElement + '_tabs').addClass('current');

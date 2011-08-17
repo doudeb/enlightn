@@ -4,7 +4,6 @@
 	 *
 	 * @package ElggFile
 	 */
-
 	global $CONFIG;
 
 	gatekeeper();
@@ -159,7 +158,6 @@
 		}
 
 		$container_user = get_entity($container_guid);
-		forward($CONFIG->wwwroot . "pg/file/owner/" . $container_user->username);
 
 	} else {
 		if ($guid) {
@@ -167,6 +165,6 @@
 		} else {
 			register_error(elgg_echo("file:uploadfailed"));
 		}
-
-		forward($file->getURL());
 	}
+	echo elgg_view('enlightn/new_link', array('type' => $file->simpletype, 'link' => $file->filename . '?fetched=1', 'guid' => $file->guid, 'title'=>$file->title));
+	exit();

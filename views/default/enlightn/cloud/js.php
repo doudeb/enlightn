@@ -21,9 +21,9 @@
  * Copyright 2007, 2008 Chris Wanstrath [ chris@ozmm.org ]
  *
  * Usage:
- *  
+ *
  *  jQuery(document).ready(function() {
- *    jQuery('a[rel*=facebox]').facebox() 
+ *    jQuery('a[rel*=facebox]').facebox()
  *  })
  *
  *  <a href="#terms" rel="facebox">Terms</a>
@@ -37,12 +37,12 @@
  *
  *
  *  You can also use it programmatically:
- * 
+ *
  *    jQuery.facebox('some html')
  *
  *  The above will open a facebox with "some html" as the content.
- *    
- *    jQuery.facebox(function($) { 
+ *
+ *    jQuery.facebox(function($) {
  *      $.get('blah.html', function(data) { $.facebox(data) })
  *    })
  *
@@ -50,7 +50,7 @@
  *  allowing for a better ajaxy experience.
  *
  *  The facebox function can also display an ajax page or image:
- *  
+ *
  *    jQuery.facebox({ ajax: 'remote.html' })
  *    jQuery.facebox({ image: 'dude.jpg' })
  *
@@ -95,15 +95,15 @@
       faceboxHtml  : '\
     <div id="facebox" style="display:none;"> \
       <div class="popup"> \
-	      <div class="body"> \
-		      <div class="footer"> \
-		          <a href="#" class="close"> \
-		            <img src="<?php echo $vars['url']; ?>mod/embed/images/button_spacer.gif" title="close" class="close_image" width="22" height="22" border="0" /> \
-		          </a> \
-		        </div> \
-		        <div class="content"> \
-		        </div> \
-	      </div> \
+              <div class="body"> \
+                      <div class="footer"> \
+                          <a href="#" class="close"> \
+                            <img src="<?php echo $vars['url']; ?>mod/embed/images/button_spacer.gif" title="close" class="close_image" width="22" height="22" border="0" /> \
+                          </a> \
+                        </div> \
+                        <div class="content"> \
+                        </div> \
+              </div> \
       </div> \
     </div>'
     },
@@ -134,19 +134,19 @@
       $(document).trigger('beforeReveal.facebox')
       if (klass) $('#facebox .content').addClass(klass)
       $('#facebox .content').append(data)
-      
+
 	setTimeout(function() {
 	    $('#facebox .loading').remove();
 	    $('#facebox .body').children().fadeIn('slow');
         $('#facebox').css('left', $(window).width() / 2 - ($('#facebox').width() / 2));
         $(document).trigger('reveal.facebox').trigger('afterReveal.facebox');
         }, 1000);
-      
+
       //$('#facebox .loading').remove()
       //$('#facebox .body').children().fadeIn('slow')
       //$('#facebox').css('left', $(window).width() / 2 - ($('#facebox').width() / 2))
       //$(document).trigger('reveal.facebox').trigger('afterReveal.facebox')
-      
+
     },
 
     close: function() {
@@ -158,7 +158,7 @@
   /*
    * Public, $.fn methods
    */
-   
+
    // Curverider addition
 /*
 	$.fn.wait = function(time, type) {
@@ -225,7 +225,7 @@
     $('#facebox .close').click($.facebox.close)
     $('#facebox .close_image').attr('src', $.facebox.settings.closeImage)
   }
-  
+
   // getPageScroll() by quirksmode.com
   function getPageScroll() {
     var xScroll, yScroll;
@@ -237,9 +237,9 @@
       xScroll = document.documentElement.scrollLeft;
     } else if (document.body) {// all other Explorers
       yScroll = document.body.scrollTop;
-      xScroll = document.body.scrollLeft;	
+      xScroll = document.body.scrollLeft;
     }
-    return new Array(xScroll,yScroll) 
+    return new Array(xScroll,yScroll)
   }
 
 	// Adapted from getPageSize() by quirksmode.com
@@ -251,7 +251,7 @@
 	  windowHeight = document.documentElement.clientHeight;
 	} else if (document.body) { // other Explorers
 	  windowHeight = document.body.clientHeight;
-	}	
+	}
 	return windowHeight
 	}
 
@@ -266,7 +266,7 @@
 	    windowWidth = document.body.clientWidth; //IE 4 compatible
 	  }
 	  return windowWidth
-	} 
+	}
 
 
 
@@ -316,13 +316,13 @@
   }
 
   function skipOverlay() {
-    return $.facebox.settings.overlay == false || $.facebox.settings.opacity === null 
+    return $.facebox.settings.overlay == false || $.facebox.settings.opacity === null
   }
 
   function showOverlay() {
     if (skipOverlay()) return
 
-    if ($('facebox_overlay').length == 0) 
+    if ($('facebox_overlay').length == 0)
       $("body").append('<div id="facebox_overlay" class="facebox_hide"></div>')
 
     $('#facebox_overlay').hide().addClass("facebox_overlayBG")
@@ -337,10 +337,10 @@
 
     $('#facebox_overlay').fadeOut(400, function(){
       $("#facebox_overlay").removeClass("facebox_overlayBG")
-      $("#facebox_overlay").addClass("facebox_hide") 
+      $("#facebox_overlay").addClass("facebox_hide")
       $("#facebox_overlay").remove()
     })
-    
+
     return false
   }
 
@@ -356,20 +356,20 @@
       $('#facebox .loading').remove()
     })
   })
-  
-  
-  
-  
+
+
+
+
 	// Curverider addition
 	$(window).resize(function(){
 	  //alert("resized");
-	  
+
     $('#facebox').css({
         top:	getPageScroll()[1] + (getPageHeight() / 10),
         left: ((getPageWidth() / 2) - 365)
       })
-	  
-	  
+
+
 	});
 
 

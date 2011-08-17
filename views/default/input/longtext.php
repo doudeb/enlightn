@@ -29,7 +29,6 @@ if (isset($vars['value'])) {
 	$value = $vars['value'];
 }
 ?>
-<a href="<?php echo $vars['url']; ?>/pg/enlightn/cloud" rel="facebox"><?php echo elgg_echo("enlightn:cloud"); ?></a>
 <script type="text/javascript">
 $(document).ready(function(){
 	//var uEditor = initEditor();

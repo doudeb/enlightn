@@ -37,11 +37,11 @@ if ($to_fetch) {
 			$file->save();
 			break;
 		case ENLIGHTN_IMAGE:
-			$file->description = elgg_view('enlightn/fetched_image',array('url'=> $file->originalfilename));
-			$file->save();
+			$file->description = elgg_view('enlightn/fetched_image',array('entity'=> $file));
+			//$file->save();
 			break;
 		case ENLIGHTN_DOCUMENT:
-			$file->description = elgg_view('enlightn/fetched_document',array('url'=> $file->originalfilename, 'entity' => $file));
+			$file->description = elgg_view('enlightn/fetched_document',array('link'=> $file->originalfilename, 'entity' => $file));
 			//$file->save();
 			break;
 		default:

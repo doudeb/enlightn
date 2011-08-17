@@ -12,7 +12,8 @@
 // Let the system know that the friends picker is in use
 global $pickerinuse;
 $pickerinuse = true;
-$chararray = elgg_echo('friendspicker:chararray');
+$chararray = '*';
+$chararray .= elgg_echo('friendspicker:chararray');
 
 // Initialise internalname
 if (!isset($vars['internalname'])) {
@@ -61,7 +62,7 @@ if (isset($vars['formtarget'])) {
 } else {
 	$formtarget = false;
 }
-
+$users['*'] = $vars['entities'];
 // Sort users by letter
 if (is_array($vars['entities']) && sizeof($vars['entities'])) {
 	foreach($vars['entities'] as $user) {
@@ -159,7 +160,7 @@ if (!isset($vars['replacement'])) {
 <?php
 
 // Initialise letters
-	$chararray .= "*";
+
 	if (is_callable('mb_substr')) {
 		$letter = mb_substr($chararray,0,1);
 	} else {
@@ -170,7 +171,7 @@ if (!isset($vars['replacement'])) {
 		?>
 		<div class="panel" title="<?php	echo $letter; ?>">
 			<div class="wrapper">
-				<h3><?php echo $letter; ?></h3>
+				<h3><?php echo elgg_echo($letter); ?></h3>
 		<?php
 
 		if (isset($users[$letter])) {

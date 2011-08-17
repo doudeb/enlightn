@@ -21,14 +21,15 @@ setInterval(function() {
 			if(typeof nav_element == 'object') {
 				if (received_value != '0' && nav_element.html() != received_value) {
 					nav_element.html(received_value);
-					//changeShortCutList(i);
+					if ($('#discussion_type').val() == i)
+					changeShortCutList(i,undefined,<?php echo $vars['discussion_id']?>);
 				}
 			}
 		});
 	});
 }, 15000);
 
-function changeShortCutList (accessLevel,offset,discussionId) {
+function changeShortCutList  (accessLevel,offset,discussionId) {
 	toElement		= $('#shortcuted_messages');
 	if (typeof accessLevel == 'undefined') {
 		accessLevel = '';

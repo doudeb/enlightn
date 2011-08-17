@@ -120,10 +120,7 @@ function enlightn_page_handler($page) {
 			include($CONFIG->pluginspath . "enlightn/collection.php");
 			break;
 		case "directory":
-	        if ($user = get_user_by_username($page[0])) {
-                set_page_owner($user->getGUID());
-	        }
-			$action = $page[1];
+			$collection_id = $page[1];
 			include($CONFIG->pluginspath . "enlightn/directory.php");
 			break;	}
 }

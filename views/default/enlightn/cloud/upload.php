@@ -6,15 +6,16 @@
 		$action = 'file/upload';
 ?>
 	<form id="mediaUpload" action="<?php echo $vars['url']; ?>action/enlightn/upload" method="post" enctype="multipart/form-data">
-		<p>
-			<label for="upload"><?php echo elgg_echo("file:file"); ?><br />
+		<div class="new-bloc">
+			<span class="caption"><?php echo elgg_echo("file:file"); ?></span>
+		</div>
 		<?php
 			echo elgg_view('input/securitytoken');
 			echo elgg_view("input/file",array('internalname' => 'upload', 'js' => 'id="upload"'));
 		?>
-		</label></p>
-		<p>
-			<label><?php echo elgg_echo("title"); ?><br />
+		<div class="new-bloc">
+			<span class="caption"><?php echo elgg_echo("title"); ?></span>
+		</div>
 			<?php
 
 				echo elgg_view("input/text", array(
@@ -23,41 +24,25 @@
 													));
 
 			?>
-			</label>
-		</p>
-		<p>
-		<label for="filedescription"><?php echo elgg_echo("description"); ?><br />
-		<textarea class="input-textarea" name="description" id="filedescription"></textarea>
-		</label></p>
-
-		<p>
-			<label><?php echo elgg_echo("tags"); ?><br />
+		<div class="new-bloc">
+			<span class="caption"><?php echo elgg_echo("tags"); ?></span>
+		</div>
 			<?php
 				echo elgg_view("input/tags", array(
 									"internalname" => "tags",
 									"value" => $tags,
 													));
 
-			?>
-			</label>
-		</p>
-		<p>
-			<label>
-				<?php echo elgg_view('input/hidden', array('internalname' => 'access_id','value' => $access_id)); ?>
-			</label>
-		</p>
-
-		<p>
-			<?php
-
+			echo elgg_view('input/hidden', array('internalname' => 'access_id','value' => $access_id));
 				if (isset($vars['container_guid']))
 					echo "<input type=\"hidden\" name=\"container_guid\" value=\"{$vars['container_guid']}\" />";
 				if (isset($vars['entity']))
 					echo "<input type=\"hidden\" name=\"file_guid\" value=\"{$vars['entity']->getGUID()}\" />";
 
 			?>
-			<input type="submit" value="<?php echo elgg_echo("save"); ?>" />
-		</p>
+			<div class="new-bloc">
+				<span class="button" id="submitUpload"><?php echo elgg_echo("save"); ?></span>
+			</div>
 	</form>
 	<script type="text/javascript">
 		if (typeof $('#entity_access_id') != undefined) {
@@ -72,7 +57,7 @@
             $('#mediaUpload').submit(function() {
 	            var options = {
 				    success:    function() {
-				        $('.popup .content').load('<?php echo $vars['url'] . 'pg/enlightn/cloud'; ?>');
+				        $('#layer .content').load('<?php echo $vars['url'] . 'pg/enlightn/cloud'; ?>');
 				    }
 				};
             	$(this).ajaxSubmit(options);

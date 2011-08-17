@@ -83,7 +83,13 @@ Order By e.time_created desc";
 		}
 		#Subtype
 		if ($subtype) {
-			$where[] = "And (Exists(Select mst.string
+			$subtype		= str_replace("'","",$subtype);
+			$subtype_names = explode(',',$subtype);
+			foreach ($subtype_names as $key => $subtype_name) {
+				$subtype_ids[] = get_metastring_id($subtype_name);
+			}
+			$subtype_id = implode(',',$subtype_ids);
+			/*$where[] = "And (Exists(Select mst.string
 									From entity_relationships rel_embeded
 									Inner Join metadata mtd On rel_embeded.guid_one = mtd.entity_guid
 									Inner Join metastrings mst On mtd.value_id = mst.id
@@ -93,7 +99,9 @@ Order By e.time_created desc";
 					Or Exists(Select mst.string
 		                            From metastrings mst
 		                            Where a.name_id = mst.id
-		                            And mst.string In('$subtype')))";
+		                            And mst.string In('$subtype')))";*/
+			$join[]	= "Inner Join entity_relationships As rel_embed On a.id = rel_embed.guid_two And rel_embed.relationship = 'embeded'
+						Inner Join metadata mtd On rel_embed.guid_one = mtd.entity_guid And mtd.value_id in ($subtype_id)";
 		}
 		#Words
 		if ($words) {
