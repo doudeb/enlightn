@@ -76,10 +76,11 @@ Order By e.time_created desc";
 		                                And rel.relationship = '". ENLIGHTN_READED . "')";
 		}
 		#From user
-		if ($from_users) {
-			$force   = array();
-			$where[] = "And a.owner_guid in ('$from_users')";
-
+		if (is_array($from_users)) {
+			$from_users = implode(',',$from_users);
+			if (!empty($from_users)) {
+				$where[] = "And a.owner_guid in ($from_users)";
+			}
 		}
 		#Subtype
 		if ($subtype) {
@@ -120,6 +121,16 @@ Order By e.time_created desc";
 		} else {
 			$group[] = "Group By p.guid";
 		}
+		#date
+		if ($date_begin || $date_end) {
+			if (empty($date_begin)) {
+				$date_begin = strtotime("now");
+			}
+			if (empty($date_end)) {
+				$date_end = strtotime("now");
+			}
+			$where[] = "And a.time_created Between $date_begin And $date_end";
+		}
 		$force 	= implode(' ',$force);
 		$join	= implode(' ',$join);
 		$where	= implode(' ',$where);
@@ -130,7 +141,7 @@ Order By e.time_created desc";
 						, a.id
 				From annotations a $force
 				$join
-				Where a.time_created Between $date_begin And $date_end
+				Where 1
 				$where
 				Order By a.time_created Desc
 				Limit $offset,50) as p
@@ -146,8 +157,8 @@ Order By e.time_created desc";
 		if (!$user_guid) {
 			return false;
 		}
-		$query = "(Select " . ENLIGHTN_ACCESS_PU . "  as access_level
-		,a.id
+		$query = "(Select Distinct " . ENLIGHTN_ACCESS_PU . "  as access_level
+		,a.entity_guid
 From annotations a
 Where a.access_id  = " . ACCESS_PUBLIC . "
 And Not Exists (Select rel.id
@@ -158,8 +169,8 @@ And Not Exists (Select rel.id
 Limit 150)
 Union
 #unreaded follow
-(Select " . ENLIGHTN_ACCESS_PR . " as access_level
-		,a.id
+(Select Distinct " . ENLIGHTN_ACCESS_PR . " as access_level
+		,a.entity_guid
 From annotations a
 Inner Join entity_relationships As rel On a.entity_guid = rel.guid_two
 								And rel.guid_one = $user_guid
@@ -172,8 +183,8 @@ And rel_readed.id Is Null
 Limit 150)
 Union
 #Favorite
-(Select " . ENLIGHTN_ACCESS_FA . " as access_level
-		,a.id
+(Select Distinct " . ENLIGHTN_ACCESS_FA . " as access_level
+		,a.entity_guid
 From annotations a
 Inner Join entity_relationships As rel On a.entity_guid = rel.guid_two
 								And rel.guid_one = $user_guid
@@ -186,8 +197,8 @@ And rel_readed.id Is Null
 Limit 150)
 Union
 #request
-(Select " . ENLIGHTN_ACCESS_IN . " as access_level
-		,a.id
+(Select Distinct " . ENLIGHTN_ACCESS_IN . " as access_level
+		,a.entity_guid
 From annotations a
 Inner Join entity_relationships As rel_req On a.entity_guid = rel_req.guid_one
 											And rel_req.guid_two = $user_guid
@@ -197,7 +208,7 @@ Limit 150)";
 		return  $this->get_data($query, $key_cache);
 	}
 
-public function get_my_cloud ($user_guid, $simpletype = 'simpletype', $limit = 10, $offset = 0) {
+public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$from_users = false,$date_begin = false, $date_end = false,$limit = 10, $offset = 0) {
 		$file_subtype_id = get_subtype_id('object','file');
 		if (!$file_subtype_id) {
 			return false;
@@ -207,36 +218,50 @@ public function get_my_cloud ($user_guid, $simpletype = 'simpletype', $limit = 1
 		if (!$user_guid) {
 			return false;
 		}
-		$query = "Select ent.*
+		if ($simpletype) {
+			$join[] = "Inner Join metadata mtd On mtd.entity_guid = ent.guid
+						Inner Join metastrings mst On mtd.value_id = mst.id";
+			$where[] = "And mst.string In ('$simpletype')";
+		}
+		if ($words) {
+			$join [] = "Inner Join objects_entity object_ent On ent.guid = object_ent.guid";
+			$where[] = "And Match (object_ent.title,object_ent.description) Against ('$words' IN BOOLEAN MODE)";
+
+		}
+		#date
+		if ($date_begin || $date_end) {
+			if (empty($date_begin)) {
+				$date_begin = strtotime("now");
+			}
+			if (empty($date_end)) {
+				$date_end = strtotime("now");
+			}
+			$where[] = "And ent.time_created Between $date_begin And $date_end";
+		}
+		#From user
+		if (is_array($from_users)) {
+			$from_users = implode(',',$from_users);
+			if (!empty($from_users)) {
+				$where[] = "And ent.owner_guid in ($from_users)";
+			} else {
+				$user= "Or ent.owner_guid = " . $user_guid;
+			}
+		}
+		$join	= implode(' ',$join);
+		$where	= implode(' ',$where);
+		$query = "Select Distinct ent.*
 From entities ent
+Left Join entity_relationships As rel_embed On ent.guid = rel_embed.guid_one And rel_embed.relationship = '" . ENLIGHTN_EMBEDED ."'
+Left Join annotations a On rel_embed.guid_two = a.id
+Left Join entity_relationships As rel_follow On rel_follow.guid_two = a.entity_guid And rel_follow.guid_one = " . $user_guid ." And rel_follow.relationship = '" . ENLIGHTN_FOLLOW ."'
+$join
 Where ent.subtype = $file_subtype_id #File type
-And ( #Get all file for *the current user or *public or *private and embeded
-		Exists( Select distinct rel_embed.guid_one
-				From entity_relationships As rel_follow
-				Inner join entity_relationships As rel_embed
-					On rel_embed.guid_two = rel_follow.guid_two
-					And rel_embed.relationship = '" . ENLIGHTN_EMBEDED ."'
-				Where ent.guid = rel_embed.guid_one
-					And rel_follow.guid_one = " . $user_guid ."
-					And rel_follow.relationship = '" . ENLIGHTN_FOLLOW ."'
-					And ent.access_id = " . ACCESS_PRIVATE ."
-		)
-		Or ent.access_id  = " . ACCESS_PUBLIC ."
-		Or ent.owner_guid = " . $user_guid ."
-	)
-And
-	Case
-		When 'simpletype' != '$simpletype' Then
-					Exists(Select mst.string
-							From metadata mtd
-							Inner Join metastrings mst On mtd.value_id = mst.id
-							Where mtd.entity_guid = ent.guid
-							And mst.string = '$simpletype')
-		Else true
-	End
+And  (ent.access_id In (" . ACCESS_PUBLIC ."," . ACCESS_PRIVATE .")
+		$user)
+$where
 Order By ent.time_created Desc
 Limit $offset,$limit";
-		echo $query;
+		//echo "<pre>" .$query;
 		return  $this->get_data($query, $key_cache, 'entity_row_to_elggstar');
 	}
 
@@ -261,11 +286,11 @@ Limit $offset,$limit";
 		if(isset($args['from_users']) && $args['from_users'] != '') {
 			$use_cache		= false;
 		}
-		if (isset($args['date_begin']) && $args['date_begin'] != strtotime("-5 week")) {
+		if (isset($args['date_begin'])) {
 			$use_cache		= false;
 		}
 
-		if (isset($args['date_end']) && $args['date_end'] != strtotime("now")) {
+		if (isset($args['date_end'])) {
 			$use_cache		= false;
 		}
 		if ($args['unreaded_only'] == '1') {

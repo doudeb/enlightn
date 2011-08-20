@@ -18,31 +18,36 @@ $post_owner 		= get_entity($post->owner_guid);
 $entity				= get_entity($post->entity_guid);
 $url_read			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/read?discussion_guid={$post->id}");
 $url_favorite		= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/favorite?discussion_guid={$post->entity_guid}");
-
+$short_description	= strip_tags($post->value);
+$short_description	= substr($short_description,0,214);
 ?>
 <!-- grab the topic title -->
-                    <li class="msg <?php echo false===$flag_readed?'unread':'read' ?> <?php echo false===$flag_folowed?'':'followed'  ?> <?php echo  false===$flag_favorite?'':'starred'?>">
+                    <li id="msg<?php echo $post->entity_guid; ?>" class="msg msg_home <?php echo false===$flag_readed?'unread':'read' ?> <?php echo false===$flag_folowed?'':'followed'  ?> <?php echo  false===$flag_favorite?'':'starred'?>">
                         <div class="toolbar">
 							<?php echo elgg_view("enlightn/follow", array('entity' => $vars['entity'], 'user_guid' => $vars['user_guid']));?>
-                            <span class="star ico" id="favorite<?php echo $post->entity_guid; ?>"></span>
                         </div>
                         <div class="statusbar">
                             <input class="checkbox" type="checkbox" value="<?php echo $post->id; ?>"/>
                             <span class="read ico" id="read<?php echo $post->id; ?>"></span>
+                            <span class="star ico" id="favorite<?php echo $post->entity_guid; ?>"></span>
                         </div>
-                        <div class="excerpt">
+                        <div class="excerpt" id="excerpt<?php echo $post->entity_guid; ?>">
                             <img class="thumb-photo" src="<?php echo $post_owner->getIcon('small')?>" />
                             <h3><a href="<?php echo $vars['url'] ?>/pg/enlightn/discuss/<?php echo $vars['entity']->guid; ?>"><?php echo $entity->title?></a></h3>
                             <span class="participants"><strong><?php echo $post_owner->username?></strong> <?php echo elgg_view("enlightn/discussion_members",array('entity' => $post
 														, 'limit' => 5));?></span>
-                            <p><?php echo strip_tags($post->value)?></p>
+	                        <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>
+
+                            <p><?php echo search_highlight_words($vars['query'],$short_description);?></p>
                         </div>
-                        <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>
                     </li>
 	<?php //echo elgg_view("enlightn/count_unreaded", array('entity' => $vars['entity'], 'discussion_unreaded' => $vars['discussion_unreaded']));?>
 
 
 <script>
+		$("#excerpt<?php echo $post->entity_guid; ?>").click( function(){
+			$(location).attr('href','<?php echo $vars['url'] ?>/pg/enlightn/discuss/<?php echo $vars['entity']->guid; ?>');
+		});
 		$("#read<?php echo $post->id; ?>").click( function(){
 			if ($("#read<?php echo $post->id; ?>").parent().parent().hasClass("unread")) {
 				$("#read<?php echo $post->id; ?>").parent().parent().removeClass("unread");

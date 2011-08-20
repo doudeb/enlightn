@@ -1,9 +1,8 @@
-		<?php //echo elgg_view('input/calendar',array('internalname'=>'date_end')); ?>
 		<div id="sidebar">
 
             <form id="search">
                 <div class="search-field">
-                    <input type="text" placeholder="<?php echo elgg_echo("search")?>" id="searchInput" name="q"/>
+                    <input type="text" placeholder="<?php echo elgg_echo("search")?>" id="searchInput" name="q" value="<?php echo get_last_search_value('words')?get_last_search_value('words'):'';?>" />
                     <input type="hidden" id="last_search">
                     <button class="submit" type="submit" id="search_submit"></button>
                 </div>

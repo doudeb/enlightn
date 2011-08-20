@@ -1,25 +1,45 @@
-<div class="cloud navigation">
-	<a href="" id="cloud_previous"><?php echo elgg_echo("enlightn:previous")?></a>
-	<a href id="cloud_next" class="more"><?php echo elgg_echo("enlightn:next")?></a></div>
-</div>
-<input type="hidden" name="more_cloud_offset" id="more_cloud_offset" value="0">
+<div id="main">
+	<div id="cloud">
+	    <div class="header">
+	    	<?php if (get_context() != 'cloud_embed') { ?>
+	        <form id="join" action="" method="post">
+                <span class="join-field"><input type="text" placeholder="<?php echo elgg_echo('enlightn:addadocument');?>" /></span>
+                <button class="submit" type="submit"><?php echo elgg_echo('enlightn:browse');?></button>
+	        </form>
+	        <?php } ?>
+	        <h2><?php echo elgg_echo('enlightn:cloudmain');?></h2>
+	    </div>
+		<input type="hidden" name="see_more_discussion_list_offset" id="see_more_discussion_list_offset" value="0">
+		<div id="feed">
+			<div class="actions">
+				<ul>
+				    <li><?php echo elgg_echo("enlightn:select")?></li>
+				    <li><?php echo elgg_echo("enlightn:join")?></li>
+				</ul>
+
+				<ul class="right">
+				    <li><a href id="cloud_next"><?php echo elgg_echo("enlightn:next")?></a></li>
+				    <li><a href="" id="cloud_previous"><?php echo elgg_echo("enlightn:previous")?></a></li>
+				</ul>
+			</div>
+			<?php echo elgg_view('enlightn/cloud/cloud_content',array('internal_id' => $internal_id));?>
+		</div>
 <script>
 $(document).ready(function(){
 	$("#cloud_previous").click(function(){
-		if ($('#more_cloud_offset').val() > 0) {
-			var simpletype = $('#cloud_simpletype_select').val();
-			$('#more_cloud_offset').val(parseInt($('#more_cloud_offset').val())-10);
-	  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?offset=' + $('#more_cloud_offset').val() + '&simpletype=' + simpletype);
-
+		if ($('#see_more_discussion_list_offset').val() > 0) {
+			$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())-10);
+  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo get_context()?>&' + get_search_criteria());
 		}
 	  	return false;
 	});
 	$("#cloud_next").click(function(){
-		var simpletype = $('#cloud_simpletype_select').val();
-		$('#more_cloud_offset').val(parseInt($('#more_cloud_offset').val())+10);
-  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?offset=' + $('#more_cloud_offset').val() + '&simpletype=' + simpletype);
+		$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())+10);
+  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo get_context()?>&' + get_search_criteria());
 
 	  	return false;
 	});
 });
 </script>
+	</div><!-- end cloud -->
+</div><!-- end main -->

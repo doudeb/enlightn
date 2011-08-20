@@ -6,6 +6,5 @@
 </span>
 <span class="col">
     <strong><?php echo $vars['entity']->title;?></strong>
-    <span class="button download"><span class="ico"></span><?php  echo elgg_echo('download')?></span>
-
+    <span class="button download"><span class="ico"></span><a href="<?php echo $vars['url'] . 'mod/file/download.php?file_guid=' .$vars['entity']->guid;?>" target="_blank"><?php  echo elgg_echo('download')?></a></span>
 </span>

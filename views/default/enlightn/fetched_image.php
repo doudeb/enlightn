@@ -7,4 +7,4 @@ if (strstr($vars['entity']->getFilenameOnFilestore(),'file/')) {
 ?>
     <span class="arrow"></span>
     <img src="<?php echo $imgsrc?>" width="150" />
-    <a class="redirect" href="<?php echo $imgsrc?>" target="_blank"><?php echo elgg_echo('enlightn:view')?></a>
+    <a class="redirect" href="<?php echo $imgsrc?>" target="_blank"><?php echo elgg_echo('enlightn:viewimage')?></a>

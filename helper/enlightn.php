@@ -408,9 +408,6 @@ function enlightn_view_access_collections($owner_guid) {
 
 function parse_user_to ($user_to) {
 	$parsed_user_to = array();
-	if (!strstr($user_to,',')) {
-		return $parsed_user_to = array(0=>$user_to);
-	}
 	$user_to	= explode(",", $user_to);
 	if (is_array($user_to)) {
 		foreach ($user_to as $user_id) {
@@ -422,11 +419,69 @@ function parse_user_to ($user_to) {
 						$parsed_user_to[] = $val_id;
 					}
 				}
-			} else {
+			} elseif (!empty($user_id)) {
 				$parsed_user_to[] = $user_id;
 			}
 		}
 		return $parsed_user_to;
+	}
+	return false;
+}
+
+/**
+ * Safely highlights the words in $words found in $string avoiding recursion
+ *
+ * @param array $words
+ * @param string $string
+ * @return string
+ */
+function search_highlight_words($words, $string) {
+	if (!$words) {
+		return $string;
+	}
+	$i = 1;
+	$replace_html = array(
+		'strong' => rand(10000, 99999),
+		'class' => rand(10000, 99999),
+		'searchMatch' => rand(10000, 99999),
+		'searchMatchColor' => rand(10000, 99999)
+	);
+	$words = explode(' ',$words);
+	foreach ($words as $word) {
+		// remove any boolean mode operators
+		$word = preg_replace("/([\-\+~])([\w]+)/i", '$2', $word);
+
+		// escape the delimiter and any other regexp special chars
+		$word = preg_quote($word, '/');
+
+		$search = "/($word)/i";
+
+		// must replace with placeholders in case one of the search terms is
+		// in the html string.
+		// later, will replace the placeholders with the actual html.
+		// Yeah this is hacky.  I'm tired.
+		$strong = $replace_html['strong'];
+		$class = $replace_html['class'];
+		$searchMatch = $replace_html['searchMatch'];
+		$searchMatchColor = $replace_html['searchMatchColor'];
+
+		$replace = "<$strong $class=\"$searchMatch $searchMatchColor{$i}\">$1</$strong>";
+		$string = preg_replace($search, $replace, $string);
+		$i++;
+	}
+	foreach ($replace_html as $replace => $search) {
+		$string = str_replace($search, $replace, $string);
+	}
+
+	return $string;
+}
+
+function get_last_search_value ($value) {
+	if (isset($_SESSION['last_search'])) {
+		$last_search = unserialize($_SESSION['last_search']);
+		if (isset($last_search[$value])) {
+			return $last_search[$value];
+		}
 	}
 	return false;
 }

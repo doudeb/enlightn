@@ -39,9 +39,9 @@ if(typeof $.fn.rte === "undefined") {
             var content = textarea.val();
 
             // Mozilla needs this to display caret
-            if($.trim(content)=='') {
+            /*if($.trim(content)=='') {
                 content = '<br />';
-            }
+            }*/
 
             // already created? show/hide
             if(iframe) {
@@ -154,6 +154,9 @@ if(typeof $.fn.rte === "undefined") {
             $('.italic', tb).click(function(){ formatText('italic');return false; });
             $('.unorderedlist', tb).click(function(){ formatText('insertunorderedlist');return false; });
             $('.link', tb).click(function(){
+            	pos = $(this).position();
+            	elmTop = pos.top + 'px';
+            	$('#layer').css('top',elmTop);
             	$('#embedContent').css('display','block');
             });
 

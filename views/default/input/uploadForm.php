@@ -2,7 +2,7 @@
 	<form id="mediaUpload" action="<?php echo $vars['url']; ?>action/enlightn/upload" method="post" enctype="multipart/form-data">
 	<div id="layer">
 	    <span class="close" id="closeUploader">&times;</span>
-	    <span class="caption"><?php echo elgg_echo('enlightn:uploadyourfile')?><small> <a href="<?php echo $vars['url']; ?>/pg/enlightn/cloud" rel="facebox" id="cloudLink"><?php echo elgg_echo("enlightn:cloud"); ?></a>
+	    <span class="caption"><?php echo elgg_echo('enlightn:uploadyourfile')?> <a href="<?php echo $vars['url']; ?>/pg/enlightn/cloud/cloud_embed" rel="facebox" id="cloudLink"><?php echo elgg_echo("enlightn:cloud"); ?></a></span>
 	    <input type="file" name="upload" id="upload"/>
 	    <div id="uploader" style="display:none">
 			<input type="text" placeholder="<?php echo elgg_echo('enlightn:title')?>" name="title" id="title"/>
@@ -52,7 +52,12 @@
 		            	$('#filename').val('');
 		            	$('#tags').val('');
 		            	$('#title').val('');
-				       	$(".rte-zone").contents().find(".frameBody").html($(".rte-zone").contents().find(".frameBody").html() + ' ' + data);
+		            	$('#upload').val('');
+		            	if ('cloud_embed' == '<?php echo get_context()?>') {
+					       	$(".rte-zone").contents().find(".frameBody").html($(".rte-zone").contents().find(".frameBody").html() + ' ' + data);
+		            	} else {
+							loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo get_context()?>&' + get_search_criteria());
+		            	}
 				    }
 				};
 

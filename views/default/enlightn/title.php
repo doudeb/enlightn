@@ -26,7 +26,7 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                     <span id="favorite<?php echo $post->guid; ?>" class="star ico"></span>
                     <span class="<?php echo $post->access_id==ACCESS_PRIVATE?'lock':'unlock'; ?> ico"></span>
 
-                </div>
+                </div><!-- header -->
 
                 <div class="actions">
                     <span id="follow" class="follow <?php echo false===$flag_folowed?'':'unfollow' ?>">
@@ -66,7 +66,7 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
 					?>
                     <span class="add">
                         <span class="ico"></span>
-                        <span class="caption" id="invite">Invite</span>
+                        <span class="caption" id="invite"><?php echo elgg_echo('enlightn:discussioninvite');?></span>
                     </span>
                 </div>
 
@@ -93,8 +93,11 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
 	    		'class': 'button'}).appendTo($(this));
 	    		$("#invite_button").click( function(){
 					loadContent($('#loader'),'<?php echo $url_invite?>&invite='+$('#invite_to_folow').val());
-					//$(this).removeClass('add-form');
+					$(this).removeClass('add-form');
 				});
+			} else {
+				$(this).html('<?php echo elgg_echo('enlightn:discussioninvite');?>');
+				$(this).removeClass('add-form');
 			}
 		});
 		$("#favorite<?php echo $post->guid; ?>").click( function(){

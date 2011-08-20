@@ -10,9 +10,8 @@
 gatekeeper();
 if (!isloggedin()) forward();
 // Forward to the group forum page
-global $CONFIG;
+global $CONFIG,$enlightn;
 $url = $CONFIG->wwwroot . "pg/enlightn";
-
 // Get input data
 $userto 			= get_input('invite');
 $userto				= parse_user_to($userto);

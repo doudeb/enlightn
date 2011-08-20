@@ -10,13 +10,14 @@
 $discussion 	= get_annotation($vars['entity']->id);
 $flag_readed	= $vars['flag_readed'];
 $post_owner 	= get_user($discussion->owner_guid);
+$has_words		= stripos($discussion->value,$vars['query']);
 $url_read		= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/read?discussion_guid={$discussion->id}");
 $src_embeded	= elgg_get_entities_from_relationship(array(
 															'relationship' => ENLIGHTN_EMBEDED,
 															'relationship_guid' => $discussion->id,
 															'inverse_relationship' => true));
 ?>
-                    <li class="msg <?php echo false===$flag_readed?'unread open-msg':'' ?>">
+                    <li class="msg <?php echo false===$flag_readed?'unread open-msg':'' ?> <?php echo $has_words?'open-msg':'' ?>">
                         <div class="toolbar">
                         	<?php if (is_array($src_embeded)) {
 								echo '<span class="inclosed ico"></span>';
@@ -34,7 +35,7 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
                             <p><?php echo strip_tags($discussion->value); ?></p>
                         </div>
                         <div class="content">
-                        	<?php echo $discussion->value;
+                        	<?php echo search_highlight_words($vars['query'],$discussion->value);
                         if (is_array($src_embeded)) {
 							echo '<div class="inclosed-list">
                                 <h4>' . count($src_embeded) . ' ' . elgg_echo('enlightn:attachmentlist') . '</h4>

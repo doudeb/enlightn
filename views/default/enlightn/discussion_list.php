@@ -26,9 +26,7 @@ $url_follow			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/fol
                         <!--<li>Trier par : date<span class="arrow"></span></li>-->
                     </ul>
                 </div>
-   				<ol>
-					<div id="discussion_list_container"></div>
-				</ol>
+   				<ol id="discussion_list_container"></ol>
 				<div class="more" id="see_more_discussion_list"><?php echo elgg_echo("enlightn:seemore")?> <span class="ico"></span></div>
 </div>
 
@@ -36,7 +34,7 @@ $url_follow			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/fol
 <input type="hidden" name="see_more_discussion_list_offset" id="see_more_discussion_list_offset" value="0">
 <input type="hidden" name="unreaded_only" id="unreaded_only" value="0">
 <script language="javascript">
-changeMessageList('#discussion_selector_all', 1);
+changeMessageList('#discussion_selector_<?php echo ENLIGHTN_ACCESS_PU?>', '<?php echo ENLIGHTN_ACCESS_PU?>');
 
 $('#see_more_discussion_list').click(function () {
 	$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())+10);

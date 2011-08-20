@@ -27,17 +27,10 @@ $unreaded_only	= $last_search['unreaded_only'];
 
 //Filtering some datas and disable the cache in some case.
 
-if (empty($date_begin) || $date_begin == $date_end) {
-	$date_begin = strtotime("-5 week");
-} else {
-	$date_begin 	= strtotime($date_begin);
-}
+$date_begin 	= strtotime($date_begin);
 
-if (empty($date_end)) {
-	$date_end 		= strtotime("now");
-} else {
-	$date_end 		= strtotime($date_end);
-}
+
+$date_end 		= strtotime($date_end);
 
 if (empty($offset)) {
 	$offset = $last_search['offset'];
@@ -48,7 +41,6 @@ if (empty($access_level)) {
 }
 $results['access_level'] = $access_level;
 //var_dump($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
-
 $search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
 $nb_results = count($search_results);
 if ($nb_results > 0) {

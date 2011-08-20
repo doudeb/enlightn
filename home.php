@@ -42,9 +42,9 @@ $discussion_type_selector = elgg_view('enlightn/discussion_type_selector',array(
 $right .= $discussion_type_selector;
 unset($discussion_type_selector);
 //online people
-$online_people = elgg_view('enlightn/online_people',array());
-$right .= $online_people;
-unset($online_people);
+//$online_people = elgg_view('enlightn/online_people',array());
+//$right .= $online_people;
+//unset($online_people);
 //Compile into a layout
 $body = $left . $right;
 // Display page

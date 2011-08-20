@@ -15,5 +15,5 @@ $url 			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?di
 	});
 </script>
 <span class="follow" id="follow<?php echo $vars['entity']->guid?>">
-    <span class="ico"></span> <?php echo $is_follow?elgg_echo("enlightn:unfollow"):elgg_echo("enlightn:follow")?>
+    <span class="ico"></span> <?php echo $is_follow?elgg_echo("enlightn:buttonunfollow"):elgg_echo("enlightn:buttonfollow")?>
 </span>

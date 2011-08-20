@@ -37,12 +37,11 @@
 			<?php } ?>
 
             <ul class="tabs">
-                <li class="home current" id="discussion_selector_all_tabs"><a href="<?php echo $vars['url']; ?>pg/enlightn/" alt="<?php echo elgg_echo('PUBLIC')?>"><?php echo elgg_echo("home"); ?></a></li>
-                <li class="alert" id="discussion_selector_follow_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_follow', <?php echo ENLIGHTN_ACCESS_PR?>);return false;">Alert</a></li>
-                <li class="favorites" id="discussion_selector_favorite_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_favorite', <?php echo ENLIGHTN_ACCESS_FA?>);return false;">Favorites</a></li>
+                <li class="home current" id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PU?>_tabs"><a href="<?php echo $vars['url']; ?>pg/enlightn/" alt="<?php echo elgg_echo('PUBLIC')?>"><?php echo elgg_echo("home"); ?></a></li>
+                <li class="alert" id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PR?>_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_<?php echo ENLIGHTN_ACCESS_PR?>', <?php echo ENLIGHTN_ACCESS_PR?>);return false;">Alert</a></li>
+                <li class="favorites" id="discussion_selector_<?php echo ENLIGHTN_ACCESS_FA?>_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_<?php echo ENLIGHTN_ACCESS_PR?>', <?php echo ENLIGHTN_ACCESS_FA?>);return false;">Favorites</a></li>
                 <li class="replies" id="discussion_selector_sent_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_sent', <?php echo ENLIGHTN_ACCESS_PR?>);return false;">Replies</a></li>
             </ul>
         </div>
     </div>
-	<div id="page">
 	<div class="loader" id="loader"></div>

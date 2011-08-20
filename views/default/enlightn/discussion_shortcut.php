@@ -11,7 +11,7 @@ $unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
         </div>
     </div>
 </div>
-<input type="hidden" name="discussion_type" id="discussion_type" value="1">
+<input type="hidden" name="discussion_type" id="discussion_type" value="<?php echo get_last_search_value('access_level')?get_last_search_value('access_level'):ENLIGHTN_ACCESS_PU;?>">
 <script language="javascript">
 setInterval(function() {
 	$.getJSON('<?php echo $vars['url']; ?>mod/enlightn/ajax/discussion_unreaded.php', function(data) {
@@ -21,8 +21,9 @@ setInterval(function() {
 			if(typeof nav_element == 'object') {
 				if (received_value != '0' && nav_element.html() != received_value) {
 					nav_element.html(received_value);
-					if ($('#discussion_type').val() == i)
-					changeShortCutList(i,undefined,<?php echo $vars['discussion_id']?>);
+					if ($('#discussion_type').val() == i) {
+						changeShortCutList(i,undefined,<?php echo $vars['discussion_id']?>);
+					}
 				}
 			}
 		});
@@ -47,6 +48,13 @@ function changeShortCutList  (accessLevel,offset,discussionId) {
 		if (typeof toElement != 'undefined') {
 			toElement.fadeOut();
 			toElement.remove();
+		}
+		var count = 0;
+		for ( results in data ) count++;
+		if(count ==1 ) {
+			alert("Larousse est un gros sac....");
+			changeShortCutList(accessLevel,offset-10,discussionId);
+			return false;
 		}
 		items.push('<div class="menu"><span class="up" id="shortcuted_messages_previous"><span class="arrow"></span></span><ol>');
 		$.each(data, function(i,item){
@@ -97,6 +105,6 @@ function changeShortCutList  (accessLevel,offset,discussionId) {
 		});
 	});
 }
-changeShortCutList(undefined,undefined,<?php echo $vars['discussion_id']?>);
+changeShortCutList($('#discussion_type').val(),undefined,<?php echo $vars['discussion_id']?>);
 
 </script>

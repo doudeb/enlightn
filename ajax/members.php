@@ -11,9 +11,13 @@ $user_guid = get_loggedin_userid();
  */
 $username = get_input('q');
 $i = -1;
-$collection_found = get_user_access_collections ($user_guid);
-if (is_array($collection_found)) {
-	foreach ($collection_found as $key => $collection) {
+$collections			= array();
+$public_collection 		= get_user_access_collections(0);
+$private_collection		= get_user_access_collections($user_guid);
+$collections			= array_merge($public_collection?$public_collection:array(),
+										$private_collection?$private_collection:array());
+if (is_array($collections)) {
+	foreach ($collections as $key => $collection) {
 		$usertojson[++$i]['id'] 	= 'C_'.$collection->id;
 		$usertojson[$i]['name'] 	= $collection->name;
 	}

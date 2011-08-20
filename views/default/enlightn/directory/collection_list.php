@@ -13,7 +13,7 @@
         		}
         ?>
 
-                <li id="area0" class="dropable addform"><a class="cat" href="/create"><span class="count"></span>+ create a new list</a>
+                <li id="area0" class="dropable addform"><a class="cat" href="#"><span class="count"></span>+ create a new list</a>
                     <div class="form"><label for="list_name">List name</label><input id="list_name" type="text"><span class="ico private-ico" title="privée/publique"></span></div>
                 </li>
             </ol>

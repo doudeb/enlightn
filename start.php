@@ -32,6 +32,7 @@ function enlightn_init() {
     // Extend system CSS with our own styles
     //elgg_extend_view('css', 'enlightn/css');
     elgg_extend_view('js/initialise_elgg','enlightn/cloud/js');
+    elgg_extend_view('js/initialise_elgg','enlightn/js');
 	// Try to remove the dashboard page
     register_plugin_hook('index','system','new_index');
     //register_plugin_hook('siteid','system','set_site_id');
@@ -64,8 +65,13 @@ function new_index($hook, $type, $return, $params) {
 	if (isloggedin()) {
 		forward('pg/enlightn/');
 		return true;
+	} else {
+		$title = elgg_view_title(elgg_echo('enlightn:login'));
+		set_context('main');
+		$content = elgg_view("account/forms/login");
+        page_draw($title, $content);
+		return true;
 	}
-	return false;
 }
 
 
@@ -103,8 +109,10 @@ function enlightn_page_handler($page) {
 			include($CONFIG->pluginspath . "enlightn/discuss.php");
 			break;
 		case "cloud":
-			set_input('entity_guid', $page[1]);
-			set_input('annotation_id', $page[2]);
+			set_context('cloud');
+			if ($page[1] == 'cloud_embed') {
+				set_context('cloud_embed');
+			}
 			include($CONFIG->pluginspath . "enlightn/cloud.php");
 			break;
 		case "upload":
@@ -122,7 +130,12 @@ function enlightn_page_handler($page) {
 		case "directory":
 			$collection_id = $page[1];
 			include($CONFIG->pluginspath . "enlightn/directory.php");
-			break;	}
+			break;
+		case "profile":
+			set_input('username', $page[1]);
+			include($CONFIG->pluginspath . "enlightn/profile.php");
+			break;
+		}
 }
 
 ?>

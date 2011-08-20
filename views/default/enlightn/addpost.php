@@ -30,7 +30,7 @@
 			echo elgg_view('input/securitytoken');
 	?>
 				<!-- display the post button -->
-				<input type="submit" class="submit_button" value="<?php echo elgg_echo('post'); ?>" />
+				<input type="submit" class="submit_button" value="<?php echo elgg_echo('enlightn:post'); ?>" />
 			</p>
 		</div>
 	</form>

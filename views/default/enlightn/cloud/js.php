@@ -97,12 +97,10 @@
       <div class="popup"> \
               <div class="body"> \
                       <div class="footer"> \
-                          <a href="#" class="close"> \
-                            <img src="<?php echo $vars['url']; ?>mod/embed/images/button_spacer.gif" title="close" class="close_image" width="22" height="22" border="0" /> \
-                          </a> \
+                          <span class="close">&times;</span> \
                         </div> \
-                        <div class="content"> \
-                        </div> \
+	                        <div class="content"> \
+    	                </div> \
               </div> \
       </div> \
     </div>'

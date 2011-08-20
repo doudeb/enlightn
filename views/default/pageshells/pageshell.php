@@ -26,15 +26,22 @@ if (empty($vars['title'])) {
 ?>
 <?php echo elgg_view('page_elements/header', $vars); ?>
 <?php echo elgg_view('page_elements/elgg_topbar', $vars); ?>
-<?php echo elgg_view('page_elements/header_contents', $vars); ?>
 
+<?php
+if (get_context() !== 'cloud_embed') {
+	echo elgg_view('page_elements/header_contents', $vars);
+}
+?>
+<div id="page">
 <!-- main contents -->
-
-<!-- display any system messages -->
-<?php echo elgg_view('messages/list', array('object' => $vars['sysmessages'])); ?>
 
 
 <!-- canvas -->
 <?php echo $vars['body']; ?>
+</div><!-- end div id page-->
 <!-- footer -->
-<?php echo elgg_view('page_elements/footer', $vars); ?>
+<?php
+if (get_context() !== 'cloud_embed') {
+	echo elgg_view('page_elements/footer', $vars);
+}
+?>

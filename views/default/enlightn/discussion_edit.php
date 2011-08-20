@@ -47,7 +47,7 @@
         </div>
         <div class="sending">
 
-            <button type="submit" class="submit"><?php echo elgg_echo("post"); ?></button>
+            <button type="submit" class="submit"><?php echo elgg_echo("enlightn:post"); ?></button>
         </div>
 		<div id="submission"></div>
 	</form>

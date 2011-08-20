@@ -91,7 +91,9 @@
 		$file->setMimeType($_FILES['upload']['type']);
 		$file->originalfilename = $_FILES['upload']['name'];
 		$file->simpletype = get_general_file_type($_FILES['upload']['type']);
-
+		if (!in_array($file->simpletype,(array(ENLIGHTN_LINK,ENLIGHTN_MEDIA,ENLIGHTN_IMAGE,ENLIGHTN_DOCUMENT)))) {
+			$file->simpletype = ENLIGHTN_DOCUMENT;
+		}
 		// Open the file to guarantee the directory exists
 		$file->open("write");
 		$file->close();
