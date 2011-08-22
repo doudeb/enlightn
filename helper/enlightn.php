@@ -435,7 +435,7 @@ function parse_user_to ($user_to) {
  * @param string $string
  * @return string
  */
-function search_highlight_words($words, $string) {
+function enlightn_search_highlight_words($words, $string) {
 	if (!$words) {
 		return $string;
 	}

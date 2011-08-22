@@ -38,7 +38,7 @@ $short_description	= substr($short_description,0,214);
 														, 'limit' => 5));?></span>
 	                        <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>
 
-                            <p><?php echo search_highlight_words($vars['query'],$short_description);?></p>
+                            <p><?php echo enlightn_search_highlight_words($vars['query'],$short_description);?></p>
                         </div>
                     </li>
 	<?php //echo elgg_view("enlightn/count_unreaded", array('entity' => $vars['entity'], 'discussion_unreaded' => $vars['discussion_unreaded']));?>
