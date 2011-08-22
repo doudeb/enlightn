@@ -5,7 +5,7 @@ $members_summary = array(0=>'');
 foreach($members as $mem) {
 	++$i;
 	if ($mem->guid != $vars['entity']->owner_guid && $i <= $vars['limit']) {
-		$members_summary[] =  $mem->username;
+		$members_summary[] =  $mem->name;
 	}
 }
 echo implode(', ',$members_summary);

@@ -951,7 +951,7 @@ span.unfollow:hover {
 
 #feed.detail .msg .participants {
     float:left;
-    margin: 9px 10px 0 0;
+    margin: 9px 10px 0 9px;
 }
 
 #feed .msg .participants strong {
@@ -992,17 +992,18 @@ span.unfollow:hover {
 }
 
 #feed .open-msg .thumb-photo {
-    margin-top: 5px;
+    margin-top: 0px;
 }
 
 #feed .open-msg .content {
     display:block;
-    margin:-10px 0 10px 88px;
+    margin:-20px 0 10px 100px;
 }
 
 #feed .open-msg .content p {
     font-size: 93%;
     margin-bottom: 15px;
+    margin-right: 60px;
 }
 
 #feed .open-msg .content p a {
@@ -1064,8 +1065,14 @@ span.unfollow:hover {
 
 #feed .join {
     border-top:1px solid #ccc;
-    font-size: 87%;
+    font-size: 93%;
     padding:7px;
+    color: #444950;
+}
+
+#feed .join a {
+    color: #444950;
+    font-weight: bold;
 }
 
 #feed .join .ico {
@@ -1397,16 +1404,23 @@ span.unfollow:hover {
 #sidebar .folders .menu li {
     border: none;
     font-size:93%;
-    margin-left: 5px;
+    margin: 1px;
     padding: 2px 5px;
     height: auto;
     overflow:hidden;
     white-space:nowrap;
+}
 
+
+#sidebar .folders .menu li.unreaded {
+    background-color: #FF0000;
+    color: #000;
+    font-weight:bold;
+    padding: 5px 7px;
 }
 
 #sidebar .folders .menu li.selected {
-    background-color:#ffff99;
+    background-color: #e3f3a2;
     color: #000;
     font-weight:bold;
     padding: 5px 7px;
@@ -1447,10 +1461,10 @@ span.unfollow:hover {
 }
 
 #detail .follow {
-    margin-right: 5px;
+    margin-right: 0px;
     text-align: center;
     width: 70px;
-    float:left;
+    float:right;
 }
 
 #detail .tags {

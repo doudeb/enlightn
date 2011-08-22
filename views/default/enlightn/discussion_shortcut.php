@@ -58,14 +58,14 @@ function changeShortCutList  (accessLevel,offset,discussionId) {
 		}
 		items.push('<div class="menu"><span class="up" id="shortcuted_messages_previous"><span class="arrow"></span></span><ol>');
 		$.each(data, function(i,item){
-			if (item.readed) {
-				classReaded = 'readed';
-			} else {
-				classReaded = 'unreaded';
-			}
 			if (i != 'access_level') {
+				if (item.readed) {
+					classReaded = '';
+				} else {
+					classReaded = ' unreaded';
+				}
 				if(discussionId == item.guid) {
-					liClass = ' class="selected"';
+					liClass = ' class="selected' + classReaded +'"';
 				} else {
 					liClass = '';
 				}

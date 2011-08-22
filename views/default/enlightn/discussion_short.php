@@ -34,7 +34,7 @@ $short_description	= substr($short_description,0,214);
                         <div class="excerpt" id="excerpt<?php echo $post->entity_guid; ?>">
                             <img class="thumb-photo" src="<?php echo $post_owner->getIcon('small')?>" />
                             <h3><a href="<?php echo $vars['url'] ?>/pg/enlightn/discuss/<?php echo $vars['entity']->guid; ?>"><?php echo $entity->title?></a></h3>
-                            <span class="participants"><strong><?php echo $post_owner->username?></strong> <?php echo elgg_view("enlightn/discussion_members",array('entity' => $post
+                            <span class="participants"><strong><?php echo $post_owner->name?></strong> <?php echo elgg_view("enlightn/discussion_members",array('entity' => $post
 														, 'limit' => 5));?></span>
 	                        <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>
 

@@ -51,9 +51,10 @@ if ($nb_results > 0) {
 		return;
 	}
 	foreach ($search_results as $key => $topic) {
+		$flag_readed = check_entity_relationship($user_guid, ENLIGHTN_READED,$topic->id);
 		$topic = get_entity($topic->guid);
 		$results[$key] = array('guid'=>$topic->guid
-							, 'time_created' => elgg_view_friendly_time($topic->time_created)
+							, 'readed' => $flag_readed?true:false
 							, 'title' => $topic->title);
 	}
 }
