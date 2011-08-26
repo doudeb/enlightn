@@ -1,8 +1,6 @@
 <?php
 $user		= $vars['user'];
 $settings	= $vars['settings'];
-$jobtitle	= get_plugin_usersetting('jobtitle',$user->guid, 'profile');
-$location	= get_plugin_usersetting('location',$user->guid, 'profile');
 
 ?>
 
@@ -20,12 +18,31 @@ $location	= get_plugin_usersetting('location',$user->guid, 'profile');
 				</ul>
 
 				<ul class="right">
+				    <li><a href="" id="next"><?php echo elgg_echo("enlightn:next")?></a></li>
+				    <li><a href="" id="previous"><?php echo elgg_echo("enlightn:previous")?></a></li>
 				</ul>
 			</div>
    			<ol id="discussion_list_container"></ol>
 		</div><!-- end feed -->
 	</div><!-- end profile -->
 </div><!-- end main -->
+<input type="hidden" name="see_more_discussion_list_offset" id="see_more_discussion_list_offset" value="0" />
+<input type="hidden" name="current_url" id="current_url" value="<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php?" />
 <script language="javascript">
-loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php?from_users=<?php echo $user->guid?>');
+$(document).ready(function(){
+    loadContent('#discussion_list_container',$('#current_url').val() + 'from_users=<?php echo $user->guid?>');
+	$("#previous").click(function(){
+		if ($('#see_more_discussion_list_offset').val() > 0) {
+			$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())-10);
+  		loadContent("#discussion_list_container",$('#current_url').val() + 'from_users=<?php echo $user->guid?>&offset=' + $('#see_more_discussion_list_offset').val());
+		}
+	  	return false;
+	});
+	$("#next").click(function(){
+		$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())+10);
+  		loadContent("#discussion_list_container",$('#current_url').val() + 'from_users=<?php echo $user->guid?>&offset=' + $('#see_more_discussion_list_offset').val());
+
+	  	return false;
+	});
+});
 </script>

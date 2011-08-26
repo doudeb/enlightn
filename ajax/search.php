@@ -29,6 +29,10 @@ $date_begin 	= strtotime($date_begin);
 $date_end 		= strtotime($date_end);
 
 if ($entity_guid > 0) {
+	$flag_member = check_entity_relationship($user_guid, ENLIGHTN_FOLLOW,$entity_guid);
+	if ($flag_member) {
+		elgg_set_ignore_access(true);
+	}
 	$discussion_activities  = get_entity_relationships($entity_guid,true);
 	$discussion_activities  = array_reverse($discussion_activities);
 	$discussion_activities  = sort_entity_activities($discussion_activities);
@@ -49,10 +53,6 @@ if ($nb_results > 0) {
 	if ($fetch_modified === '1') {
 		//echo json_encode(array('last-modified' => $search_results[0]->created));
 		return;
-	}
-	$flag_member = check_entity_relationship($user_guid, ENLIGHTN_FOLLOW,$topic->entity_guid);
-	if ($flag_member) {
-		elgg_set_ignore_access(true);
 	}
 	foreach ($search_results as $key => $topic) {
 		if ((int)$entity_guid > 0) {

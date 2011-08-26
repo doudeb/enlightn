@@ -6,9 +6,7 @@ include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 gatekeeper();
 global $enlightn;
 $user_guid 				= get_loggedin_userid();
-$user_ent				= get_user($user_guid);
-$username				= get_input('username');
-$user 					= get_user_by_username($username);
+$user   				= get_user($user_guid);
 
 $profile_settings		= array();
 //Retrveive all defined profile settings
@@ -16,20 +14,21 @@ foreach ($CONFIG->profile as $key => $fields) {
 	if ($metadata = get_metadata_byname($user->guid, $key)) {
 		$value = $metadata->value;
 		$value_name = elgg_echo('profile:' . $metadata->name);
-		$profile_settings[$value_name] = $value;
+		$profile_settings[$value_name]['value'] = $value;
+		$profile_settings[$value_name]['original_name'] = $key;
 	}
 }
-
-
-if (!$user_guid || !$user_ent) {
+if (!$user_guid || !$user) {
 	forward();
 }
 
-$left  =  elgg_view('enlightn/profile/main',array('user' => $user, 'settings'=>$profile_settings));
+set_page_owner($user_guid);
 
-$search_filters = elgg_view('enlightn/profile/sidebar',array('user' => $user, 'settings'=>$profile_settings));
-$right .= $search_filters;
+$left  =  elgg_view('enlightn/settings/main',array('user' => $user, 'settings'=>$profile_settings));
+
+$search_filters = elgg_view('enlightn/settings/sidebar',array('user' => $user, 'settings'=>$profile_settings));
+$right .= $search_filters ."</div>";
 unset($search_filters);
 $body = $left . $right;
 
-page_draw(elgg_echo('enlightn:profile'),$body);
+page_draw(elgg_echo('enlightn:settings'),$body);

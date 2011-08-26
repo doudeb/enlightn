@@ -5,27 +5,11 @@
  */
 
 function enlightn_init() {
-	global $CONFIG,$enlightn,$site_guid;
-	//$CONFIG->site_guid = $site_guid;
-	define('ENLIGHTN_DISCUSSION', 'enlightndiscussion');
-	define('ENLIGHTN_LINK', 'enlightnlink');
-	define('ENLIGHTN_MEDIA', 'enlightnmedia');
-	define('ENLIGHTN_DOCUMENT', 'document');
-	define('ENLIGHTN_IMAGE', 'image');
-	define('ENLIGHTN_FOLLOW', 'member');
-	define('ENLIGHTN_READED', 'readed');
-	define('ENLIGHTN_EMBEDED', 'embeded');
-	define('ENLIGHTN_INVITED', 'invited');
-	define('ENLIGHTN_FAVORITE', 'favorite');
-	define('ENLIGHTN_ACCESS_PU', '1');//Public access
-	define('ENLIGHTN_ACCESS_PR', '2');//Private
-	define('ENLIGHTN_ACCESS_FA', '3');//Favorite
-	define('ENLIGHTN_ACCESS_AL', '4');//All ( Pu + Pr
-	define('ENLIGHTN_ACCESS_IN', '5');//Invited aka requests
-	define('ENLIGHTN_ACCESS_UN', '6');//Unreaded
+
 	//Disable rights
 	//elgg_get_access_object()->set_ignore_access(true);
 
+	require_once("helper/config.php");
 	require_once("model/enlightn.php");
 	$enlightn		= new enlightn();
 	require_once("helper/enlightn.php");
@@ -33,6 +17,7 @@ function enlightn_init() {
     //elgg_extend_view('css', 'enlightn/css');
     elgg_extend_view('js/initialise_elgg','enlightn/cloud/js');
     elgg_extend_view('js/initialise_elgg','enlightn/js');
+    elgg_extend_view('profile/editicon','enlightn/helper/redirect');
 	// Try to remove the dashboard page
     register_plugin_hook('index','system','new_index');
     //register_plugin_hook('siteid','system','set_site_id');
@@ -54,12 +39,8 @@ function enlightn_init() {
 	register_action("enlightn/collection/removefromcollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/removefromcollection.php");
 	register_action("enlightn/collection/addtocollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/addtocollection.php");
 
-    // Replace the default index page
-    //register_plugin_hook('index','system','new_index');
     // Register entity type
-    // ALTER TABLE annotations ORDER BY id DESC
     register_entity_type('object',ENLIGHTN_DISCUSSION);
-
 }
 function new_index($hook, $type, $return, $params) {
 	if (isloggedin()) {
@@ -97,10 +78,6 @@ function enlightn_page_handler($page) {
 		$page[0] = 'home';
 	}
 	switch ($page[0]) {
-		case "home":
-			set_input('discussion_type', $page[1]);
-			include($CONFIG->pluginspath . "enlightn/home.php");
-			break;
 		case "invitations":
 			include($CONFIG->pluginspath . "enlightn/invitations.php");
 			break;
@@ -135,7 +112,54 @@ function enlightn_page_handler($page) {
 			set_input('username', $page[1]);
 			include($CONFIG->pluginspath . "enlightn/profile.php");
 			break;
+		case "settings":
+            set_context('enlightn:settings');
+            set_input('current', $page[1]);
+			include($CONFIG->pluginspath . "enlightn/settings.php");
+			break;
+        case "home":
+        default:
+			set_input('discussion_type', $page[1]);
+			include($CONFIG->pluginspath . "enlightn/home.php");
+			break;
 		}
 }
+
+function init_enlightn_profile_fields () {
+    $profile_defaults = array (
+				'jobtitle' => 'text',
+				'department' => 'text',
+				'direction' => 'lontext',
+				'location' => 'tags',
+				'phone' => 'text',
+				'cellphone' => 'text',
+                'skype'=> 'text',
+                'linkedin'=> 'text',
+                'twitter'=> 'text',
+                'viadeo'=> 'text',
+                'facebook'=> 'text',
+                'google'=> 'text',
+                'flickr'=> 'text',
+                'youtube'=> 'text',
+                'vimeo'=> 'text',
+                'myspace'=> 'text',
+                'netvibes'=> 'text');
+
+//    global $$profile_defaults;
+    var_dump($profile_defaults);
+    $fields = $profile_defaults;
+    foreach ($fields as $label => $type) {
+        echo $label;
+        while (get_plugin_setting("admin_defined_profile_$n", 'profile')) {$n++;} // find free space
+
+        if ( (set_plugin_setting("admin_defined_profile_$n", $label, 'profile')) &&
+            (set_plugin_setting("admin_defined_profile_type_$n", $type, 'profile'))) {
+                set_plugin_setting('user_defined_fields', TRUE, 'profile');
+        }
+    }
+}
+
+//register_elgg_event_handler('init','system','init_enlightn_profile_fields', 10000); // Ensure this runs after other plugins
+
 
 ?>

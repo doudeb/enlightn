@@ -75,11 +75,13 @@ input, textarea {
 #post form .privacy .value,
 #post .textarea .toolbar li,
 #post button.submit,
+#login-box .submit_button,
 #sidebar .folders .menu .up,
 #sidebar .folders .menu .down,
 #presence .header,
 #layer .close,
 #cloud button.submit,
+#settings_edit .button,
 #facebox .close {
     background: url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/sprite-x.png') repeat-x scroll 0 0 transparent;
 }
@@ -1782,22 +1784,25 @@ span.unfollow:hover {
 	padding-top: 30px;
 }
 
-#profile_sidebar .linker {
-    border:1px solid #ccc;
-    -moz-border-radius:4px;
-    -webkit-border-radius:4px;
-    -khtml-border-radius:4px;
-    border-radius:4px;
-    margin-top: 8px;
-    overflow: hidden;
-    text-align: center;
+#profile_sidebar {
+	text-align:center;
+
 }
 
-#profile_sidebar .linker li {
-    border-right:1px solid #ccc;
-    cursor:pointer;
-    float:right;
-    width:50px;
+
+#profile_sidebar .linker {
+    margin : 8px auto 0 auto;
+	width : 200px;
+    overflow : hidden;
+}
+
+#profile_sidebar .linker a {
+    margin : 0 auto 0 auto;
+}
+
+#profile_sidebar .photo_linker {
+    border: 0px;
+    width: 40px;
 }
 
 #profile_sidebar .details  {
@@ -1813,9 +1818,105 @@ span.unfollow:hover {
     font-size:108%;
     padding:4px 6px;
     margin:25px;
-    text-align:center;
 }
 
+/** SETTINGS */
+
+#settings {
+    background-color : #eeeeee;
+    padding-top : 20px;
+}
+
+#settings .big-photo {
+    border: 1px solid #ccc;
+    height:100px;
+    padding:3px;
+    width:100px;
+    float: left;
+}
+
+#settings .header {
+	height : 130px;
+	padding-left: 130px;
+	padding-top: 10px;
+}
+
+#settings_tabs .settings_tabs {
+    border-bottom : 1px solid #ccc;
+    height : 20px;
+    padding-left : 30px;
+}
+
+#settings_tabs .settings_tabs li {
+    display : inline;
+    border : 1px solid #ccc;
+    border-bottom : 0px;
+    -moz-border-radius:5px 5px 0px 0px;
+    -webkit-border-radius:5px 5px 0px 0px;
+    -khtml-border-radius:5px 5px 0px 0px;
+    border-radius:5px 5px 0px 0px;
+    padding : 8px 8px 6px 8px;
+    cursor : pointer;
+}
+
+#settings_tabs .settings_tabs li:hover {
+    background-color:#f7f7f7;
+    text-decoration:none;
+}
+
+#settings_tabs .settings_tabs li.current {
+    background-color : #ffffff;
+}
+
+
+#settings_edit {
+    background-color : #ffffff;
+    padding : 10px 10px 80px 10px;
+    border-right : 1px solid #ccc;
+}
+
+#settings_edit p {
+    padding-top : 10px;
+    clear : both;
+}
+
+
+#settings_edit label {
+    width : 150px;
+    display : block;
+    float : left;
+    text-align : right;
+    margin : 2px 5px 0px 0;
+    vertical-align : middle;
+}
+
+#settings_edit input[type=text],
+#settings_edit input[type=password],
+#settings_edit select {
+    width : 150px;
+    heigh : 30px;
+    border : 1px solid #ccc;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+}
+
+#settings_edit .button {
+    background-position: 0 -411px;
+    border: 1px solid #8eac15;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    -khtml-border-radius:3px;
+    border-radius:3px;
+    color: #FFFFFF;
+    font-size: 116%;
+    font-weight: bold;
+    margin-left: 10px;
+    outline:none;
+    padding: 3px 15px;
+    text-shadow: 1px 1px 1px #43520A;
+}
 
 /** BUBBLE */
 .bubble {
@@ -2083,6 +2184,70 @@ span.unfollow:hover {
 
 .embeded_preview {
 	overflow: hidden;
+}
+
+/** LOGIN **/
+
+
+#login-box {
+    background-color:#fff;
+    min-height:600px;
+    padding: 30px 10px 30px 20px;
+    width: 630px;
+}
+
+
+#login-box h2 {
+
+}
+
+#login-box .loginbox {
+    margin:10px 100px 10px 100px;
+    text-align: center;
+
+}
+
+
+
+#login-box .loginbox label {
+}
+
+#login-box .loginbox input {
+    background-color:#fff;
+    border:1px solid #bbb;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    -moz-box-shadow:inset 1px 1px 4px #ccc;
+    -webkit-box-shadow:inset 1px 1px 4px #ccc;
+    box-shadow:inset 1px 1px 4px #ccc;
+    font-size:108%;
+    margin : 10px;
+}
+
+#login-box .submit_button {
+    background-position: 0 -411px;
+    border: 1px solid #8eac15;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    -khtml-border-radius:3px;
+    border-radius:3px;
+    color: #FFFFFF;
+    font-size: 116%;
+    font-weight: bold;
+    margin-left: 10px;
+    outline:none;
+    padding: 3px 15px;
+    text-shadow: 1px 1px 1px #43520A;
+}
+
+
+#persistent_login {
+    background-color:#fff;
+    width: 630px;
+    text-align:center;
+    margin-bottom : 30px;
 }
 
 /**
@@ -2805,9 +2970,11 @@ a.collapsibleboxlink {
 /* profile picture upload n crop page */
 #profile_picture_form {
         height:145px;
+        width:360px;
+        margin-top : -130px;
+        margin-left : 160px;
 }
 #current_user_avatar {
-        float:left;
         width:160px;
         height:130px;
         border-right:1px solid #cccccc;

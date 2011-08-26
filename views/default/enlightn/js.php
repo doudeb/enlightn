@@ -470,5 +470,17 @@ $(document).ready(function(){
     	$('#layer').css('z-index',11000);
     	$('#embedContent').css('display','block');
     });
-
+    
+    $("#settings_tabs .settings_tabs li").click(function () {
+        elm = $(this);
+        toShowElm = $('#tab' + $(this).attr('id'));
+        elm.addClass('current');
+        toShowElm.css('display','block');
+        $("#settings_tabs .settings_tabs li").each(function () {
+            if ($(this).attr('id') != elm.attr('id')) {
+                $(this).removeClass('current');
+                $('#tab' + $(this).attr('id')).css('display','none');
+            }
+        });
+    });
 });

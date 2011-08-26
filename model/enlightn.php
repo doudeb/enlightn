@@ -9,7 +9,9 @@ class enlightn {
 		static $cache;
 		if ((!$cache) && (is_memcache_available())) {
 			$this->cache = new ElggMemcache('enlightn_cache');
-		}
+		} else {
+            $this->cache = false;
+        }
 	}
 
 	function get_discussion ($user_guid, $discussion_type = 0) {
@@ -317,6 +319,9 @@ Limit $offset,$limit";
 	}
 
 	public function flush_cache ($args, $prefix = 'default') {
+        if (!$this->cache) {
+            return true;
+        }
 		$key_cache = $this->generate_key_cache($args,$prefix);
 		if ($this->cache->load($key_cache)) {
 			$this->cache->delete($key_cache);
@@ -328,7 +333,7 @@ Limit $offset,$limit";
 	}
 
 	private function get_data ($query, $key_cache, $call_back = false) {
-		if ($key_cache) {
+		if ($key_cache && $this->cache) {
 			$results = $this->cache->load($key_cache);
 			if ($results) {
 				elgg_log('enlightn:cache:loaded => ' . $key_cache);
@@ -336,7 +341,7 @@ Limit $offset,$limit";
 			}
 		}
 		$results = get_data($query, $call_back);
-		if ($key_cache) {
+		if ($key_cache && $this->cache) {
 			if(!$this->cache->save($key_cache,$results)) {
 				elgg_log('enlightn:cache:error:save => ' . $key_cache);
 			} else {

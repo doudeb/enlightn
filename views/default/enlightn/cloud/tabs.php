@@ -1,1 +1,0 @@
-<span class="caption"><?php echo elgg_echo('enlighnt:cloudmain');?></span>

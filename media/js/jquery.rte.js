@@ -73,7 +73,7 @@ if(typeof $.fn.rte === "undefined") {
                 css = "<link type='text/css' rel='stylesheet' href='" + opts.content_css_url + "' />";
             }
 
-            var doc = "<html><head>"+css+"</head><body class='frameBody' id='testH'>"+content+"</body></html>";
+            var doc = "<html><head>"+css+"</head><body class='frameBody' id='ifram" + element_id + "'>"+content+"</body></html>";
             tryEnableDesignMode(doc, function() {
                 $("#toolbar-" + element_id).remove();
                 textarea.before(toolbar());
@@ -204,7 +204,7 @@ if(typeof $.fn.rte === "undefined") {
                 setSelectedType(getSelectionElement(), select);
                 var body = $('body', iframeDoc);
                	var scrollHeight = $('body', iframeDoc)[0].scrollHeight;
-               	//alert(body.css('height'));
+               	//alert('height');
                 if(scrollHeight > parseInt(body.css('height'))-14) {
                     $('.textarea').css('height',scrollHeight+28);
                     $('.rte-zone').css('height',scrollHeight);
@@ -227,7 +227,8 @@ if(typeof $.fn.rte === "undefined") {
         };
 
         function setSelectedType(node, select) {
-            while(node.parentNode) {
+            //disable this part, select removed from the toolbar..
+            /*while(node.parentNode) {
                 var nName = node.nodeName.toLowerCase();
                 for(var i=0;i<select.options.length;i++) {
                     if(nName==select.options[i].value){
@@ -237,7 +238,7 @@ if(typeof $.fn.rte === "undefined") {
                 }
                 node = node.parentNode;
             }
-            select.selectedIndex=0;
+            select.selectedIndex=0;*/
             return true;
         };
 
