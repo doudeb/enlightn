@@ -1,8 +1,16 @@
 <?php
 $user		= $vars['user'];
 $settings	= $vars['settings'];
+global $NOTIFICATION_HANDLERS;
+//var_dump($NOTIFICATION_HANDLERS);
 global $sn_linkers;
-    var_dump($CONFIG->profile);
+$sn_linkers_select[0] = elgg_echo('enlightn:selectasociallink');
+foreach ($sn_linkers as $key => $name) {
+
+    if (isset($settings[$name]['value']) && empty ($settings[$name]['value'])) {
+        $sn_linkers_select[$settings[$name]['original_name']] = $name;
+    }
+}
 
 ?>
 
@@ -18,7 +26,7 @@ global $sn_linkers;
                 <li id="password"><?php echo elgg_echo('enlightn:password'); ?></li>
                 <li id="profile"><?php echo elgg_echo('enlightn:profile'); ?></li>
                 <li id="picture"><?php echo elgg_echo('enlightn:picture'); ?></li>
-                <li id="notification"><?php echo elgg_echo('enlightn:notification'); ?></li>
+                <!--<li id="notification"><?php echo elgg_echo('enlightn:notification'); ?></li>-->
                 <li id="statistics"><?php echo elgg_echo('enlightn:statistics'); ?></li>
             </ul>
         </div>
@@ -57,19 +65,29 @@ global $sn_linkers;
                 <p><label>' . elgg_echo('profile:department') . '</label> <input type="text" name="' . $settings['department']['original_name'] .'"  value="' . $settings['department']['value'] . '" /></p>
                 <p><label>' . elgg_echo('profile:location') . '</label> <input type="text" name="' . $settings['location']['original_name'] .'"  value="' . $settings['location']['value'] . '" /></p>';
 
-                $form_body .= '<p><label>' . elgg_echo('profile:addasociallink') . '</label>' . elgg_view("input/pulldown", array('internalname' => 'language', 'options_values' => $sn_linkers)) . '</p>';
-
+                $form_body .= '<p><label>' . elgg_echo('profile:addasociallink') . '</label>' . elgg_view("input/pulldown", array('internalname' => 'socialLinkAdd','internalid' => 'socialLinkAdd', 'options_values' => $sn_linkers_select)) . '</p>';
+                foreach ($sn_linkers as $key => $name) {
+                    if (isset($settings[$name]['value']) && !empty ($settings[$name]['value'])) {
+                        $form_body .= '<p><label><img class="photo_linker" src="' .  $vars['url'] . 'mod/enlightn/media/graphics/linker/' . $name . '.png"  /></label> <input type="text" name="' . $settings[$name]['original_name'] . '" value="' . $settings[$name]['value'] . '" /></p>';
+                    }
+                }
                 $form_body .= '<p><label>' . elgg_echo('profile:phone') . '</label> <input type="text" name="' . $settings['phone']['original_name'] .'"  value="' . $settings['phone']['value'] . '" /></p>
                 <p><label>' . elgg_echo('profile:cellphone') . '</label> <input type="text" name="' . $settings['cellphone']['original_name'] .'"  value="' . $settings['cellphone']['value'] . '" /></p>
-                <p><label>' . elgg_echo('profile:direction') . '</label> <input type="text" name="' . $settings['direction']['original_name'] .'"  value="' . $settings['direction']['value'] . '" /></p>';
+                <p><label>' . elgg_echo('profile:direction') . '</label> <textarea name="' . $settings['direction']['original_name'] .'">' . $settings['direction']['value'] . '</textarea></p>';
                 $form_body .= '<p><input type="submit" class="button" /></p>';
-
                 echo elgg_view('input/form', array('action' => "{$vars['url']}action/profile/edit", 'body' => $form_body));
                 ?>
             </div>
             <div id="tabpicture" style="display: none;">
                <?php echo elgg_view("profile/editicon", array('user' => $user));?>
             </div>
+            <div id="tabnotification" style="display: none;">
+               <?php echo elgg_echo('enlightn:notifcationheadline'); ?>
+                <p><label><?php echo elgg_echo('enlightn:notifyoninvite'); ?><input type="checkbox" name="notifyoninvite"/></label></p>
+                <p><label><?php echo elgg_echo('enlightn:notifyonnewmsg'); ?><input type="checkbox" name="notifyonnewmsg"/></label></p>
+                <p><input type="submit" class="button" /></p>
+            </div>
+            <div id="tabstatistics" style="display: none;">
+               <?php  echo elgg_view("usersettings/statistics");?>
+            </div>
 	</div><!-- end profile -->
-
-<?php echo elgg_view('input/hidden', array('internalname' => 'guid', 'value' => $user->guid));?>

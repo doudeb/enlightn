@@ -1,27 +1,24 @@
 <?php
 $user		= $vars['user'];
 $settings	= $vars['settings'];
+global $sn_linkers;
 ?>
 		<div id="sidebar">
 			<div id="profile_sidebar">
                 <div class="linker">
-                    <p><?php echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>'skype'));?>
-                    <?php echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>'linkedin'));?>
-                    <?php echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>'twitter'));?>
-                    <?php echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>'viadeo'));?></p>
-                    <?php echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>'facebook'));?>
-                    <?php echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>'google'));?>
-                    <?php echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>'flickr'));?>
-                    <?php echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>'youtube'));?>
-                    <?php echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>'vimeo'));?>
-                    <?php echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>'myspace'));?>
-                    <?php echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>'netvibes'));?>
+                    <?php
+                    foreach ($sn_linkers as $key => $name) {
+                        if (isset($settings[$name]) && !empty ($settings[$name])) {
+                            echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>$name));
+                        }
+                    }
+                    ?>
                 </div>
 				<div class="details">
 					<span class="phone"></span><p><?php echo $settings['phone']?></p>
 					<span class="cellphone"></span><p><?php echo $settings['cellphone']?></p>
 					<span class="mail"></span><p><?php echo $user->email?></p>
-					<span class="address"></span><p><?php echo $settings['address']?></p>
+					<span class="address"></span><p><?php echo $settings['direction']?></p>
 				</div><!-- end details -->
 			</div><!-- end profile_sidebar -->
 			<ol class="folders">

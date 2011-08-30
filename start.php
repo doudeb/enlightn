@@ -10,9 +10,9 @@ function enlightn_init() {
 	//elgg_get_access_object()->set_ignore_access(true);
 
 	require_once("helper/config.php");
+	require_once("helper/enlightn.php");
 	require_once("model/enlightn.php");
 	$enlightn		= new enlightn();
-	require_once("helper/enlightn.php");
     // Extend system CSS with our own styles
     //elgg_extend_view('css', 'enlightn/css');
     elgg_extend_view('js/initialise_elgg','enlightn/cloud/js');
@@ -41,6 +41,7 @@ function enlightn_init() {
 
     // Register entity type
     register_entity_type('object',ENLIGHTN_DISCUSSION);
+
 }
 function new_index($hook, $type, $return, $params) {
 	if (isloggedin()) {
@@ -65,6 +66,8 @@ function set_site_id() {
 }
 
 register_elgg_event_handler('init','system','enlightn_init');
+// Look if required profile fiels have been created
+register_elgg_event_handler('init','system','init_enlightn_profile_fields', 10001); // Ensure this runs after other plugins
 
 /**
  * Group page handler
@@ -126,30 +129,17 @@ function enlightn_page_handler($page) {
 }
 
 function init_enlightn_profile_fields () {
-    $profile_defaults = array (
-				'jobtitle' => 'text',
-				'department' => 'text',
-				'direction' => 'lontext',
-				'location' => 'tags',
-				'phone' => 'text',
-				'cellphone' => 'text',
-                'skype'=> 'text',
-                'linkedin'=> 'text',
-                'twitter'=> 'text',
-                'viadeo'=> 'text',
-                'facebook'=> 'text',
-                'google'=> 'text',
-                'flickr'=> 'text',
-                'youtube'=> 'text',
-                'vimeo'=> 'text',
-                'myspace'=> 'text',
-                'netvibes'=> 'text');
-
-//    global $$profile_defaults;
-    var_dump($profile_defaults);
+    global $profile_defaults,$CONFIG;
+    foreach ($CONFIG->profile as $name=>$value) {
+        $display_name =  elgg_echo('profile:' . $name);
+        if (isset($profile_defaults[$display_name])) {
+            unset($profile_defaults[$display_name]);
+        }
+    }
     $fields = $profile_defaults;
+    $n = 0;
     foreach ($fields as $label => $type) {
-        echo $label;
+        elgg_log("ENLIGHTN: Profile fields created :: " . $label, 'NOTICE');
         while (get_plugin_setting("admin_defined_profile_$n", 'profile')) {$n++;} // find free space
 
         if ( (set_plugin_setting("admin_defined_profile_$n", $label, 'profile')) &&
@@ -158,8 +148,3 @@ function init_enlightn_profile_fields () {
         }
     }
 }
-
-//register_elgg_event_handler('init','system','init_enlightn_profile_fields', 10000); // Ensure this runs after other plugins
-
-
-?>

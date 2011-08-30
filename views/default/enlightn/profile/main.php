@@ -10,7 +10,7 @@ $settings	= $vars['settings'];
 	    <div class="header">
 			<p><h2><?php echo $user->name?></h2></p>
 			<p><h3><?php echo $settings['jobtitle']?></h3></p>
-			<div class="job_location"><?php echo $settings['location']?></div>
+			<div class="job_location"><?php echo $settings['department']?>, <?php echo $settings['location']?></div>
 		</div> <!-- end header -->
 		<div id="feed">
 			<div class="actions">

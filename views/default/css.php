@@ -1876,25 +1876,32 @@ span.unfollow:hover {
 }
 
 #settings_edit p {
-    padding-top : 10px;
     clear : both;
+    height : 30px;
+    vertical-align: middle;
 }
 
+#settings_edit .photo_linker {
+    border: 0px;
+    height: 30px;
+    margin-top : -8px;
+}
 
 #settings_edit label {
     width : 150px;
     display : block;
+    height : 30px;
     float : left;
     text-align : right;
     margin : 2px 5px 0px 0;
-    vertical-align : middle;
+    vertical-align: middle;
 }
 
 #settings_edit input[type=text],
 #settings_edit input[type=password],
-#settings_edit select {
+#settings_edit select,
+#settings_edit textarea {
     width : 150px;
-    heigh : 30px;
     border : 1px solid #ccc;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;

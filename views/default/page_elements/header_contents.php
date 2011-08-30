@@ -26,7 +26,7 @@
                     </span>
                     <ul>
                         <li><a href="<?php echo $vars['url']; ?>pg/profile/<?php echo $vars['user']->username;?>"><?php echo elgg_echo('profil')?></a></li>
-                        <li><a href="<?php echo $vars['url']; ?>pg/settings/"><?php echo elgg_echo('settings')?></a></li>
+                        <li><a href="<?php echo $vars['url']; ?>pg/enlightn/settings/"><?php echo elgg_echo('settings')?></a></li>
 						<?php if ($vars['user']->admin || $vars['user']->siteadmin) { ?>
 						<li><a href="<?php echo $vars['url']; ?>pg/admin/" ><?php echo elgg_echo("admin"); ?></a></li>
 						<?php } ?>

@@ -470,7 +470,7 @@ $(document).ready(function(){
     	$('#layer').css('z-index',11000);
     	$('#embedContent').css('display','block');
     });
-    
+
     $("#settings_tabs .settings_tabs li").click(function () {
         elm = $(this);
         toShowElm = $('#tab' + $(this).attr('id'));
@@ -483,4 +483,24 @@ $(document).ready(function(){
             }
         });
     });
+    $("#socialLinkAdd").change(function () {
+        var linkerUrl = new Array();
+        <?php
+        global $sn_linkers;
+        foreach ($sn_linkers as $key => $name) {
+            echo "\t\tlinkerUrl['" . $name . "'] = '" . elgg_echo('profile:linkhelper:' . $name) . "';\n";
+        }
+        ?>
+        elm = $(this);
+        elmSelected = $('#socialLinkAdd option:selected');
+        newElmId = elm.attr('value');
+        $('<p />',{ 'id' : newElmId}).insertAfter(elm.parent());
+        newElm = $('#' + newElmId);
+        newElm.append('<label><img class="photo_linker" src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/linker/' + elmSelected.text() + '.png"  /></label>');
+        newElm.append($('<input />', {
+	            		'name' : elm.attr('value')
+	    				,'type': 'text'
+			 			,'value' : linkerUrl[elmSelected.text()]}));
+    });
+
 });
