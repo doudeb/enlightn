@@ -35,6 +35,10 @@ Order By e.time_created desc";
 
 	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $unreaded_only = 0,$words, $from_users = '', $date_begin = '""', $date_end = '""', $subtype = '', $offset = 0, $limit = 10) {
 		$key_cache = $this->generate_key_cache(get_defined_vars(), 'search');
+        $force 	= array();
+		$join	= array();
+		$where	= array();
+		$group	= array();
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1
@@ -43,28 +47,23 @@ Order By e.time_created desc";
 				break;
 			case 2:#Private Followed And Public Folowed 2
 				$force[] = "#Force Index (idx_annotations_time)";
-				$join[] = "Inner Join entity_relationships As rel_follow On a.entity_guid = rel_follow.guid_two";
-				$where[] = "And rel_follow.guid_one = $user_guid
-							And rel_follow.relationship = '". ENLIGHTN_FOLLOW . "'";
+				$join[] = "Inner Join entity_relationships As rel_follow On a.entity_guid = rel_follow.guid_two And rel_follow.guid_one = $user_guid And rel_follow.relationship = '". ENLIGHTN_FOLLOW . "'";
+				$where[] = "";
 				break;
 			case 3:#Favorite
 				//$force[] = "Force Index (idx_annotations_time)";
-				$join[] = "Inner Join entity_relationships rel_favorite On a.entity_guid = rel_favorite.guid_two";
-				$where[] = "And rel_favorite.guid_one = $user_guid
-							And rel_favorite.relationship = '". ENLIGHTN_FAVORITE . "'";
+				$join[] = "Inner Join entity_relationships rel_favorite On a.entity_guid = rel_favorite.guid_two And rel_favorite.guid_one = $user_guid And rel_favorite.relationship = '". ENLIGHTN_FAVORITE . "'";
+				$where[] = "";
 				break;
 			case 4:#Private Folowed or Public 4
-				$join[] = "Left Join entity_relationships As rel_all On a.entity_guid = rel_all.guid_two";
-				$where[] = "And ((rel_all.guid_one = $user_guid
-							And rel_all.relationship = '". ENLIGHTN_FOLLOW . "'
-							And a.access_id  = " . ACCESS_PRIVATE .")
-						Or a.access_id  = " . ACCESS_PUBLIC . ')';
-				break;#Invited aka request 5
-			case 5:
+				$join[] = "Left Join entity_relationships As rel_all On a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And a.access_id  = " . ACCESS_PRIVATE;
+                $where[] = "And ( rel_all.id Is Not Null
+                                  Or a.access_id  = " . ACCESS_PUBLIC . ')';
+				break;
+			case 5:#Invited aka request 5
 				#$force[] = "Force Index (idx_annotations_time)";
-				$join[] = "Inner Join entity_relationships As rel_req On a.entity_guid = rel_req.guid_one";
-				$where[] = "And rel_req.guid_two = $user_guid
-							And rel_req.relationship = '". ENLIGHTN_INVITED . "'";
+				$join[] = "Inner Join entity_relationships As rel_req On a.entity_guid = rel_req.guid_one And rel_req.guid_two = $user_guid And rel_req.relationship = '". ENLIGHTN_INVITED . "'";
+				$where[] = "";
 				break;
 			default:
 				break;
@@ -149,7 +148,7 @@ Order By e.time_created desc";
 				Limit $offset,50) as p
 				$group
 				Order By p.created Desc
-				Limit $offset, $limit";
+				Limit 0, $limit";
 		//echo "<pre>" . $query;die();
 		return  $this->get_data($query, $key_cache, null);
 	}

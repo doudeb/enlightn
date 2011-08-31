@@ -398,6 +398,7 @@ span.unfollow:hover {
     height: 36px;
     overflow:hidden;
     padding:10px 10px 10px 40px;
+    cursor : text;
 }
 
 #post form, #post.open .status-box {
@@ -582,11 +583,11 @@ span.unfollow:hover {
 
 #post form .dest {
     margin-bottom: 10px;
-    text-align:right;
 }
 
-#post form .dest input {
-    display: inline;
+#post form .dest input,
+#post form .dest ul {
+    display: inline-block;
     vertical-align: middle;
     width: 370px;
 }
@@ -1805,7 +1806,13 @@ span.unfollow:hover {
     width: 40px;
 }
 
-#profile_sidebar .details  {
+#profile_sidebar h1 {
+    width : 150px;
+    border-bottom:1px solid #bbb;
+    margin-left : 35px;
+}
+
+ .details  {
     background-color:#fff;
     border:1px solid #bbb;
     -moz-border-radius:5px;
@@ -1818,8 +1825,29 @@ span.unfollow:hover {
     font-size:108%;
     padding:4px 6px;
     margin:25px;
+    text-align : left;
 }
 
+#profile_sidebar .ico {
+    font-size : 88%;
+    display: inline-block;
+    height: 20px;
+    padding : 5px 0 5px 35px;
+}
+
+#profile_sidebar .phone {
+    background-position:-472px -344px;
+}
+#profile_sidebar .cellphone {
+    background-position:-468px -371px;
+}
+#profile_sidebar .mail {
+    background-position:-470px -282px;
+}
+#profile_sidebar .address {
+    background-position:-472px -313px;
+    margin-top: 5px;
+}
 /** SETTINGS */
 
 #settings {
@@ -1943,7 +1971,6 @@ span.unfollow:hover {
     padding: 10px;
     position: absolute;
     text-decoration:none;
-    width: 170px;
 }
 
 #feed .open-msg .content span:hover .bubble {
@@ -2296,24 +2323,14 @@ RTE EDITOR
 	display:none;
 }
 
-.floating .mini-close {
-        margin-bottom: 0px;
-        margin-left: 0px;
-        margin-right: -3px;
-        margin-top: -3px;
-        position: relative;
-}
+
 .mini-close {
-        background-image: url("<?php echo $vars['url'] ?>mod/enlightn/media/graphics/default.png");
-        background-origin: padding-box;
-        background-position: -40px -100px;
-        background-repeat: no-repeat;
-        background-size: auto;
         cursor: pointer;
         display: block;
-        float: right;
         height: 16px;
-        width: 16px;
+        width: 100%;
+        text-align:right;
+        margin-bottom : 3px;
 }
 
 .loader {

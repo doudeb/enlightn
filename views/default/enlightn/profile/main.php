@@ -9,8 +9,8 @@ $settings	= $vars['settings'];
 	    <img class="big-photo" src="<?php echo $user->getIcon('large')?>" />
 	    <div class="header">
 			<p><h2><?php echo $user->name?></h2></p>
-			<p><h3><?php echo $settings['jobtitle']?></h3></p>
-			<div class="job_location"><?php echo $settings['department']?>, <?php echo $settings['location']?></div>
+			<p><h3><?php echo $settings['jobtitle']['value']?></h3></p>
+			<div class="job_location"><?php echo $settings['department']['value']?>, <?php echo $settings['location']['value']?></div>
 		</div> <!-- end header -->
 		<div id="feed">
 			<div class="actions">

@@ -236,7 +236,7 @@ function regenerate_cache ($entity,$user_guid,$action_type) {
 }
 
 function get_http_link($message) {
-	$regexp = "#\b(https|file|ftp|http)?(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#";
+	$regexp = "#\b(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#";
 	if (preg_match_all($regexp, $message, $http_link)) {
 		return $http_link[0];
 	}
@@ -258,7 +258,7 @@ function get_embeded_type ($links) {
 	}
 	$links_type = array();
 	foreach ($links as $key=>$link) {
-		$link = html_entity_decode($link);
+		//$link = urlencode($link);
 		switch ($link) {
 			/**
 			 * Remove enlightn internal doc
@@ -294,7 +294,7 @@ function get_embeded_title ($links) {
 		switch ($type) {
 			case ENLIGHTN_IMAGE:
 				foreach ($links_by_type as $key=>$link) {
-					$title = parse_url($link['link'],PHP_URL_PATH);
+					//$title = parse_url($link['link'],PHP_URL_PATH);
 					$title = basename($title);
 					$links[$type][$key]['title'] = $title;
 				}
@@ -484,4 +484,38 @@ function get_last_search_value ($value) {
 		}
 	}
 	return false;
+}
+
+
+
+function get_profile_settings () {
+    global $CONFIG;
+    $user_guid = get_loggedin_userid();
+    //Retrveive all defined profile settings
+    if (!is_array($CONFIG->profile)) {
+        profile_fields_setup();
+    }
+    foreach ($CONFIG->profile as $key => $fields) {
+        if ($metadata = get_metadata_byname($user_guid, $key)) {
+            $value = $metadata->value;
+            $value_name = elgg_echo('profile:' . $metadata->name);
+            $profile_settings[$value_name]['value'] = $value;
+            $profile_settings[$value_name]['original_name'] = $key;
+        }
+    }
+
+    return $profile_settings;
+}
+
+function get_time_zone () {
+    $timezone_identifiers = DateTimeZone::listIdentifiers();
+    $timezone_list = array();
+    foreach( $timezone_identifiers as $value ){
+        if ( preg_match( '/^(America|Antartica|Arctic|Asia|Atlantic|Europe|Indian|Pacific)\//', $value ) ){
+            $ex=explode("/",$value);//obtain continent,city
+            $city=$ex[1];
+            $timezone_list[$value] = $value;
+        }
+    }
+    return $timezone_list;
 }

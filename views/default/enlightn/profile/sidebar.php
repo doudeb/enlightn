@@ -8,17 +8,18 @@ global $sn_linkers;
                 <div class="linker">
                     <?php
                     foreach ($sn_linkers as $key => $name) {
-                        if (isset($settings[$name]) && !empty ($settings[$name])) {
+                        if (isset($settings[$name]['value']) && !empty ($settings[$name]['value'])) {
                             echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>$name));
                         }
                     }
                     ?>
                 </div>
 				<div class="details">
-					<span class="phone"></span><p><?php echo $settings['phone']?></p>
-					<span class="cellphone"></span><p><?php echo $settings['cellphone']?></p>
-					<span class="mail"></span><p><?php echo $user->email?></p>
-					<span class="address"></span><p><?php echo $settings['direction']?></p>
+					<span class="ico phone"><?php echo $settings['phone']['value']?></span>
+					<span class="ico cellphone"><?php echo $settings['cellphone']['value']?></span>
+					<span class="ico mail"><?php echo $user->email?></span>
+                    <h1></h1>
+					<span class="ico address"><?php echo $settings['direction']['value']?></span>
 				</div><!-- end details -->
 			</div><!-- end profile_sidebar -->
 			<ol class="folders">

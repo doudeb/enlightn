@@ -1,7 +1,6 @@
 <?php
 $user		= $vars['user'];
 $settings	= $vars['settings'];
-global $NOTIFICATION_HANDLERS;
 //var_dump($NOTIFICATION_HANDLERS);
 global $sn_linkers;
 $sn_linkers_select[0] = elgg_echo('enlightn:selectasociallink');
@@ -65,6 +64,7 @@ foreach ($sn_linkers as $key => $name) {
                 <p><label>' . elgg_echo('profile:department') . '</label> <input type="text" name="' . $settings['department']['original_name'] .'"  value="' . $settings['department']['value'] . '" /></p>
                 <p><label>' . elgg_echo('profile:location') . '</label> <input type="text" name="' . $settings['location']['original_name'] .'"  value="' . $settings['location']['value'] . '" /></p>';
 
+                $form_body .= '<p><label>' . elgg_echo('profile:timezone') . '</label>' . elgg_view("input/pulldown", array('internalname' =>  $settings['timezone']['original_name'], 'options_values' => get_time_zone(), 'value'=>$settings['timezone']['value'])) . '</p>';
                 $form_body .= '<p><label>' . elgg_echo('profile:addasociallink') . '</label>' . elgg_view("input/pulldown", array('internalname' => 'socialLinkAdd','internalid' => 'socialLinkAdd', 'options_values' => $sn_linkers_select)) . '</p>';
                 foreach ($sn_linkers as $key => $name) {
                     if (isset($settings[$name]['value']) && !empty ($settings[$name]['value'])) {

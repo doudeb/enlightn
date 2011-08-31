@@ -1,5 +1,5 @@
 <?php
-	global $CONFIG,$enlightn,$site_guid,$sn_linkers,$profile_defaults;
+	global $CONFIG,$enlightn,$site_guid,$sn_linkers,$profile_defaults,$profile_settings;
     //$CONFIG->site_guid = $site_guid;
 	define('ENLIGHTN_DISCUSSION', 'enlightndiscussion');
 	define('ENLIGHTN_LINK', 'enlightnlink');
@@ -19,6 +19,7 @@
 	define('ENLIGHTN_ACCESS_UN', '6');//Unreaded
 	define('ENLIGHTN_ACCESS_PUBLIC', ACCESS_LOGGED_IN);
 	define('ENLIGHTN_ACCESS_PRIVATE', ACCESS_PRIVATE);
+	define('LIMIT_ANNOTATION', 50);
 
     $sn_linkers = array('skype','linkedin','twitter','viadeo','facebook','google','flickr','youtube','vimeo','myspace','netvibes');
 
@@ -29,6 +30,7 @@
             'location' => 'tags',
             'phone' => 'text',
             'cellphone' => 'text',
+            'timezone' => 'text',
             'skype'=> 'text',
             'linkedin'=> 'text',
             'twitter'=> 'text',

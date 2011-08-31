@@ -62,7 +62,6 @@
 	}
 
 	$file->title = $title;
-	$file->description = $desc;
 	$file->access_id = $access_id;
 	$file->container_guid = $container_guid;
 
@@ -90,6 +89,7 @@
 		$file->setFilename($prefix.$filestorename);
 		$file->setMimeType($_FILES['upload']['type']);
 		$file->originalfilename = $_FILES['upload']['name'];
+        $file->description = $file->originalfilename;
 		$file->simpletype = get_general_file_type($_FILES['upload']['type']);
 		if (!in_array($file->simpletype,(array(ENLIGHTN_LINK,ENLIGHTN_MEDIA,ENLIGHTN_IMAGE,ENLIGHTN_DOCUMENT)))) {
 			$file->simpletype = ENLIGHTN_DOCUMENT;

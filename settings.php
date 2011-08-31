@@ -4,20 +4,10 @@ include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 
 //Some basic var
 gatekeeper();
-global $enlightn;
+global $enlightn, $profile_settings;
 $user_guid 				= get_loggedin_userid();
 $user   				= get_user($user_guid);
 
-$profile_settings		= array();
-//Retrveive all defined profile settings
-foreach ($CONFIG->profile as $key => $fields) {
-	if ($metadata = get_metadata_byname($user->guid, $key)) {
-		$value = $metadata->value;
-		$value_name = elgg_echo('profile:' . $metadata->name);
-		$profile_settings[$value_name]['value'] = $value;
-		$profile_settings[$value_name]['original_name'] = $key;
-	}
-}
 if (!$user_guid || !$user) {
 	forward();
 }

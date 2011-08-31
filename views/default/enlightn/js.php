@@ -1,4 +1,4 @@
-function loadContent (divId,dataTo,method,anchor) {
+function loadContent (divId,dataTo,method) {
 	if (method == undefined || method == 'load') {
 		if ($(divId).html().indexOf('loading.gif') == -1) {
 			$(divId).prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif" alt="loading">');
@@ -163,21 +163,9 @@ $(document).ready(function(){
 			 	queryUid = jqXHR.getResponseHeader('Query-uid');
 			 	lastCalled = $('#lastModified' + queryUid).val();
 			 	//alert(lastModified + ' != ' + lastCalled);
-			 	if (lastModified != lastCalled) {
+			 	if (lastModified != lastCalled && offset == '0') {
 			 		loadContent (element_id, url_to_check + get_search_criteria());
 			 	}
-
-				/*$.each(data, function(i,item){
-
-					if (i == 'last-modified' && offset == '0') {
-						if (last_modified != item) {
-							if (last_modified != '0') {
-								loadContent (element_id, url_to_check + get_search_criteria());
-							}
-							last_modified = item;
-						}
-					}
-				});*/
 			});
 		}, 5000);
 	}
@@ -502,5 +490,17 @@ $(document).ready(function(){
 	    				,'type': 'text'
 			 			,'value' : linkerUrl[elmSelected.text()]}));
     });
+    $(".player").click(function () {
+        elm = $(this);
+        elm.html(elm.find('input').val()).fadeIn();
 
+    });
+	$('.status-box').click( function(){
+		$('#post').addClass('open').fadeIn();
+        $('#title').focus();
+
+	});
+	$('#close_new_discussion').click( function(){
+		$('#post').removeClass('open');
+	});
 });

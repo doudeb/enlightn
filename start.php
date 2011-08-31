@@ -41,7 +41,14 @@ function enlightn_init() {
 
     // Register entity type
     register_entity_type('object',ENLIGHTN_DISCUSSION);
-
+    // Load profile settings
+    $profile_settings = get_profile_settings();
+    if (!empty($profile_settings['timezone']['value'])) {
+        $timezone = $profile_settings['timezone']['value'];
+    } else {
+        $timezone = 'Europe/Paris';
+    }
+    date_default_timezone_set($timezone);
 }
 function new_index($hook, $type, $return, $params) {
 	if (isloggedin()) {

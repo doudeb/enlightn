@@ -9,7 +9,7 @@
 
 ?>
 	<form id="discussion_edit" action="<?php echo $vars['url']; ?>action/enlightn/edit" enctype="multipart/form-data" method="post">
-		<span id="close_new_discussion" class="mini-close"/></span>
+    	<span id="close_new_discussion" class="mini-close"/><h2>&times;</h2></span>
 		<?php echo elgg_view('input/securitytoken'); ?>
 		<div class="privacy private">
 			<span class="private-val value"><span class="ico"></span><?php echo elgg_echo('private') ?></span>

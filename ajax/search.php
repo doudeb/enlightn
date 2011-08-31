@@ -22,6 +22,7 @@ $entity_guid	= get_input('entity_guid', 0);
 $fetch_modified	= get_input('fetch_modified', 0);
 $unreaded_only	= get_input('unreaded_only', 0);
 
+
 //var_dump($subtype);
 $last_search	= serialize(array('user_guid' => $user_guid,'entity_guid' => $entity_guid,'access_level' => $access_level,'unreaded_only' => $unreaded_only,'words' => $words,'from_users' => $from_users,'date_begin' => $date_begin,'date_end' => $date_end,'subtype' => $subtype,'offset' => $offset,'limit' => $limit));
 
