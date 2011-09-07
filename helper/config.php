@@ -20,6 +20,8 @@
 	define('ENLIGHTN_ACCESS_PUBLIC', ACCESS_LOGGED_IN);
 	define('ENLIGHTN_ACCESS_PRIVATE', ACCESS_PRIVATE);
 	define('LIMIT_ANNOTATION', 50);
+	define('NOTIFICATION_EMAIL_INVITE', 'email_invite');
+	define('NOTIFICATION_EMAIL_MESSAGE_FOLLOWED', 'email_message_followed');
 
     $sn_linkers = array('skype','linkedin','twitter','viadeo','facebook','google','flickr','youtube','vimeo','myspace','netvibes');
 

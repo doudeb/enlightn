@@ -62,13 +62,13 @@ if (empty($title) || empty($message)) {
 	// add to river
 	add_to_river('enlightn/river/create','create',$user_guid,$enlightndiscussion->guid,$access, 0, $post_id);
 	// Success message
-	system_message(elgg_echo("grouptopic:created"));
+	//system_message(elgg_echo("grouptopic:created"));
 	// Remove cache for public access
 	$enlightn->flush_cache(array('access_level' => ENLIGHTN_ACCESS_PU),'search');
 	$enlightn->flush_cache(array('user_guid' => $user_guid,'access_level' => ENLIGHTN_ACCESS_PR),'search');
 	// Add users membership to the discussion
 	//Current user
-	add_entity_relationship($user_guid, 'member', $enlightndiscussion->guid);
+	add_entity_relationship($user_guid, ENLIGHTN_FOLLOW, $enlightndiscussion->guid);
 	//Invited user
 	$userto = parse_user_to($userto);
 	if (is_array($userto)) {
@@ -84,18 +84,17 @@ if (empty($title) || empty($message)) {
 				/*if (!$usertoid->isFriend()) {
 					add_entity_relationship($_SESSION['user']->guid, 'friend', $usertoid->guid);
 				}*/
-				if(add_entity_relationship($enlightndiscussion->guid, 'invited', $usertoid->guid)) {
+				if(add_entity_relationship($enlightndiscussion->guid, ENLIGHTN_INVITED, $usertoid->guid)) {
 					// Add membership requested
 					add_entity_relationship($usertoid->guid, 'membership_request', $enlightndiscussion->guid);
 					// Send email
 					$url = "{$CONFIG->url}pg/enlightn";
-					if (notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
-							sprintf(elgg_echo('enlightn:invite:subject'), $usertoid->name, $enlightndiscussion->name),
-							sprintf(elgg_echo('enlightn:invite:body'), $usertoid->name, $_SESSION['user']->name, $enlightndiscussion->name, $url),
-							NULL))
-						system_message(elgg_echo("groups:userinvited"));
-					else
-						register_error(elgg_echo("groups:usernotinvited"));
+                    if ($usertoid->{"notification:method:".NOTIFICATION_EMAIL_INVITE} == '1') {
+                        notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
+                                sprintf(elgg_echo('enlightn:invite:subject'), $enlightndiscussion->title),
+                                sprintf(elgg_echo('enlightn:invite:body'), $usertoid->name, $_SESSION['user']->name, $enlightndiscussion->title, $url),
+                                NULL);
+                    }
 
 				}
 			}

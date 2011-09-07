@@ -19,7 +19,7 @@ a, a:link, a:hover, a:visited {
 }
 
 a:hover {
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 a {
@@ -217,14 +217,6 @@ span.unfollow:hover {
     padding:0 10px;
 }
 
-#header .menus li.directory .ico {
-    background-position:-392px -30px;
-    display:inline-block;
-    height:15px;
-    margin:-3px 7px 0 0;
-    vertical-align:middle;
-    width:15px;
-}
 
 #header .menus li.account {
     cursor:default;
@@ -332,6 +324,13 @@ span.unfollow:hover {
     background-position:-292px -16px;
 }
 
+#header .tabs li.directory a {
+    background-position:-380px -17px;
+}
+
+#header .tabs li.cloud a {
+    background-position:-196px -16px;
+}
 /** FOOTER */
 #footer {
     background-color: #000;
@@ -351,6 +350,10 @@ span.unfollow:hover {
 
 #footer, #footer a {
     color:#999;
+}
+
+#footer .copyright {
+    float : right;
 }
 
 /** PAGE */
@@ -385,6 +388,24 @@ span.unfollow:hover {
     margin-right:10px;
 }
 
+#post .new-post {
+    #top : 150px;
+    #left : 150px;
+    position:absolute;
+	display:none;
+    background-color : #fff;
+    border:1px solid #bbb;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    -moz-box-shadow:inset 1px 1px 4px #ccc;
+    -webkit-box-shadow:inset 1px 1px 4px #ccc;
+    box-shadow:inset 1px 1px 4px #ccc;
+    padding:10px 10px 10px 10px;
+}
+
+
 #post .status-box {
     background-position:-460px -17px;
     border:1px solid #bbb;
@@ -401,11 +422,13 @@ span.unfollow:hover {
     cursor : text;
 }
 
-#post form, #post.open .status-box {
+#post form,
+#post.open .status-box,
+#post.open .photo {
     display:none;
 }
 
-#post.open form {
+#post.open form, #post.open .new-post {
     display:block;
     overflow: hidden;
 }
@@ -857,9 +880,10 @@ span.unfollow:hover {
 }
 
 #feed .followed .follow {
-    display:none;
+    float:right;
+    margin-bottom: 5px;
+    margin-right: 7px;}
 }
-
 .msg .star, .msg .lock {
     background-position:-164px -123px;
     display:inline-block;
@@ -943,6 +967,10 @@ span.unfollow:hover {
 #feed .unread h3 {
 }
 
+#feed .unread li {
+    background-color : #fff;
+}
+
 #feed .msg .participants {
     display: block;
     font-size: 93%;
@@ -1010,7 +1038,7 @@ span.unfollow:hover {
 }
 
 #feed .open-msg .content p a {
-    text-decoration:underline;
+    text-decoration:none;
 }
 
 #feed .open-msg .content .user,
@@ -1276,23 +1304,23 @@ span.unfollow:hover {
 
 #search .dates .date {
     background-color: #fff;
-    background-position: 46px -122px;
+    background-position: 80px -122px;
     border:1px solid #999;
     display:inline;
-    margin: 0 5px;
-    padding:3px 23px 3px 3px;
+    #margin: 0 5px;
+    padding:3px 3px 3px 3px;
     vertical-align: middle;
-    width:56px;
+    width:113px;
 }
 
 #search .author input {
     background-color: #fff;
-    border:1px solid #999;
-    display:inline;
-    margin: 0 5px;
+    #border:1px solid #999;
+    #display:inline;
+    #margin: 0 5px;
     padding:3px;
     vertical-align: middle;
-    width:185px;
+    width:240px;
 }
 
 
@@ -1317,7 +1345,7 @@ span.unfollow:hover {
 }
 
 #sidebar .folders li a.cat {
-    color: <?php echo ($css_sidebar_folders = get_plugin_setting('css_sidebar_folders','enlightn'))?$css_sidebar_folders:'#2D87E1';?>;
+    color: <?php echo ($css_sidebar_folders = get_plugin_setting('css_sidebar_folders','enlightn'))?$css_sidebar_folders:'#8d8187';?>;
     display: block;
     font-size: 124%;
     font-weight: bold;
@@ -1844,7 +1872,7 @@ span.unfollow:hover {
 #profile_sidebar .mail {
     background-position:-470px -282px;
 }
-#profile_sidebar .address {
+#profile_sidebar .direction {
     background-position:-472px -313px;
     margin-top: 5px;
 }
@@ -2227,7 +2255,7 @@ span.unfollow:hover {
     background-color:#fff;
     min-height:600px;
     padding: 30px 10px 30px 20px;
-    width: 630px;
+    width: 100%;
 }
 
 
@@ -2237,7 +2265,6 @@ span.unfollow:hover {
 
 #login-box .loginbox {
     margin:10px 100px 10px 100px;
-    text-align: center;
 
 }
 
@@ -2256,11 +2283,11 @@ span.unfollow:hover {
     -moz-box-shadow:inset 1px 1px 4px #ccc;
     -webkit-box-shadow:inset 1px 1px 4px #ccc;
     box-shadow:inset 1px 1px 4px #ccc;
-    font-size:108%;
+    font-size:200%;
     margin : 10px;
 }
 
-#login-box .submit_button {
+#login-box .loginbox input[type='submit'] {
     background-position: 0 -411px;
     border: 1px solid #8eac15;
     -moz-border-radius:3px;
@@ -2283,6 +2310,23 @@ span.unfollow:hover {
     text-align:center;
     margin-bottom : 30px;
 }
+
+/**
+LOST PASSWORD
+**/
+
+#one_column {
+    background-color:#fff;
+    min-height:600px;
+    padding: 30px 10px 30px 20px;
+    width: 630px;
+}
+
+#one_column p {
+    padding-top: 30px;
+
+}
+
 
 /**
 RTE EDITOR
@@ -2316,9 +2360,6 @@ RTE EDITOR
 }
 
 
-#edit_discussion {
-	display:none;
-}
 .view {
 	display:none;
 }
@@ -2637,14 +2678,6 @@ label a.embed_media {
 }
 
 
-/* general page titles in main content area */
-#content_area_user_title h2 {
-        margin:0 0 0 8px;
-        padding:5px;
-        color:#0054A7;
-        font-size:1.35em;
-        line-height:1.2em;
-}
 
 /* ***************************************
 PAGE-OWNER BLOCK
@@ -2967,7 +3000,6 @@ h3.settings {
 #content_area_user_title h2 {
         margin:0 0 0 8px;
         padding:5px;
-        color:#0054A7;
         font-size:1.35em;
         line-height:1.2em;
 }

@@ -488,9 +488,11 @@ function get_last_search_value ($value) {
 
 
 
-function get_profile_settings () {
+function get_profile_settings ($user_guid = false) {
     global $CONFIG;
-    $user_guid = get_loggedin_userid();
+    if (!$user_guid) {
+        $user_guid = get_loggedin_userid();
+    }
     //Retrveive all defined profile settings
     if (!is_array($CONFIG->profile)) {
         profile_fields_setup();

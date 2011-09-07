@@ -14,10 +14,9 @@
 ?>
     <div id="header">
         <div class="nav">
-            <h1 class="logo">enlightn</h1>
+            <a href="<?php echo $vars['url']; ?>pg/enlightn/" alt="<?php echo elgg_echo('PUBLIC')?>"><h1 class="logo">enlightn</h1></a>
 			<?php if (isloggedin()) { ?>
             <ul class="menus">
-                <li class="directory"><a class="link" href="<?php echo $vars['url']; ?>pg/enlightn/directory"><span class="ico"></span><?php echo elgg_echo('enlightn:directory')?></a></li>
                 <li class="account submenu">
                     <span class="user">
                         <img src="<?php echo $vars['user']->getIcon('small')?>" />
@@ -38,9 +37,11 @@
 
             <ul class="tabs">
                 <li class="home current" id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PU?>_tabs"><a href="<?php echo $vars['url']; ?>pg/enlightn/" alt="<?php echo elgg_echo('PUBLIC')?>"><?php echo elgg_echo("home"); ?></a></li>
-                <li class="alert" id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PR?>_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_<?php echo ENLIGHTN_ACCESS_PR?>', <?php echo ENLIGHTN_ACCESS_PR?>);return false;">Alert</a></li>
+                <li class="directory"><a href="<?php echo $vars['url']; ?>pg/enlightn/directory"><?php echo elgg_echo("directory"); ?></a></li>
+                <li class="cloud"><a href="<?php echo $vars['url']; ?>pg/enlightn/cloud" ><?php echo elgg_echo("cloud"); ?></a></li>
+                <!--<li class="alert" id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PR?>_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_<?php echo ENLIGHTN_ACCESS_PR?>', <?php echo ENLIGHTN_ACCESS_PR?>);return false;">Alert</a></li>
                 <li class="favorites" id="discussion_selector_<?php echo ENLIGHTN_ACCESS_FA?>_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_<?php echo ENLIGHTN_ACCESS_PR?>', <?php echo ENLIGHTN_ACCESS_FA?>);return false;">Favorites</a></li>
-                <li class="replies" id="discussion_selector_sent_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_sent', <?php echo ENLIGHTN_ACCESS_PR?>);return false;">Replies</a></li>
+                <li class="replies" id="discussion_selector_sent_tabs"><a href="" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_sent', <?php echo ENLIGHTN_ACCESS_PR?>);return false;">Replies</a></li>-->
             </ul>
         </div>
     </div>

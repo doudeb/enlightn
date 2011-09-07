@@ -9,18 +9,18 @@ global $enlightn;
 /**
  * @todo set it to cache
  */
-$words 			= get_input('q','');
+$words 			= sanitise_string_special(get_input('q',''));
 $date_begin 	= get_input('date_begin');
 $date_end 		= get_input('date_end');
-$from_users 	= get_input('from_users');
+$from_users 	= sanitise_string(get_input('from_users'));
 $from_users		= parse_user_to($from_users);
-$subtype	 	= get_input('subtype');
-$offset			= get_input('offset', 0);
-$limit			= get_input('limit', 10);
-$access_level	= get_input('discussion_type', 4);
-$entity_guid	= get_input('entity_guid', 0);
-$fetch_modified	= get_input('fetch_modified', 0);
-$unreaded_only	= get_input('unreaded_only', 0);
+$subtype	 	= sanitise_string(get_input('subtype'));
+$offset			= sanitise_int(get_input('offset', 0));
+$limit			= sanitise_int(get_input('limit', 10));
+$access_level	= sanitise_int(get_input('discussion_type', 4));
+$entity_guid	= sanitise_int(get_input('entity_guid', 0));
+$fetch_modified	= sanitise_int(get_input('fetch_modified', 0));
+$unreaded_only	= sanitise_int(get_input('unreaded_only', 0));
 
 
 //var_dump($subtype);
@@ -51,7 +51,7 @@ $nb_results = count($search_results);
 if ($nb_results > 0) {
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s",$last_modified) . " GMT");
 	header("Query-uid: " . md5($last_search));
-	if ($fetch_modified === '1') {
+	if ($fetch_modified === 1) {
 		//echo json_encode(array('last-modified' => $search_results[0]->created));
 		return;
 	}

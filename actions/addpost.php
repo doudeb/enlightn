@@ -60,6 +60,14 @@ foreach($followers as $follower) {
 	$enlightn->flush_cache(array('user_guid' => $follower->guid,'access_level' => ENLIGHTN_ACCESS_IN),'search');
 	$enlightn->flush_cache(array('user_guid' => $follower->guid,'access_level' => ENLIGHTN_ACCESS_FA),'search');
 	$enlightn->flush_cache(array('user_guid' => $follower->guid),'unreaded');
+    // Send email
+    if ($follower->{"notification:method:".NOTIFICATION_EMAIL_MESSAGE_FOLLOWED} == '1' && $follower->guid != $user->guid) {
+        notify_user($follower->getGUID(), $user->guid,
+                sprintf(elgg_echo('enlightn:newmessagefollowed:subject'), $topic->title),
+                sprintf(elgg_echo('enlightn:newmessagefollowed:body'), $follower->name, $user->name, $topic->title, $url),
+                NULL);
+    }
+
 
 }
 echo elgg_echo('enlightn:discussion_sucessfully_created');

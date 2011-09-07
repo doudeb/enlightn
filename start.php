@@ -34,6 +34,7 @@ function enlightn_init() {
 	register_action("enlightn/read",false, $CONFIG->pluginspath . "enlightn/actions/read.php");
 	register_action("enlightn/favorite",false, $CONFIG->pluginspath . "enlightn/actions/favorite.php");
 	register_action("enlightn/upload",false, $CONFIG->pluginspath . "enlightn/actions/upload.php");
+	register_action("enlightn/save_notifications",false, $CONFIG->pluginspath . "enlightn/actions/save_notifications.php");
 	//collection
 	register_action("enlightn/collection/addcollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/addcollection.php");
 	register_action("enlightn/collection/removefromcollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/removefromcollection.php");
@@ -49,14 +50,16 @@ function enlightn_init() {
         $timezone = 'Europe/Paris';
     }
     date_default_timezone_set($timezone);
+    //Register notification handler
+    register_notification_handler(NOTIFICATION_EMAIL_INVITE,'email_invite_notify_handler');
+    register_notification_handler(NOTIFICATION_EMAIL_MESSAGE_FOLLOWED,'email_message_followed_notify_handler');
 }
 function new_index($hook, $type, $return, $params) {
 	if (isloggedin()) {
 		forward('pg/enlightn/');
 		return true;
 	} else {
-		$title = elgg_view_title(elgg_echo('enlightn:login'));
-		set_context('main');
+		$title = elgg_echo('enlightn:login');
 		$content = elgg_view("account/forms/login");
         page_draw($title, $content);
 		return true;

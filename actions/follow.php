@@ -12,6 +12,7 @@
 	$user_guid 			= get_loggedin_userid();
 	$discussion_guid 	= get_input('discussion_guid');
 	$annotation_id	 	= get_input('annotation_id');
+	$ignore_request	 	= get_input('ignore');
 
 	if (!$discussion_guid) {
 		$post 			= get_annotation($annotation_id);
@@ -20,16 +21,16 @@
 
 	// @todo fix for #287
 	// disable access to get entity.
-	$discussion 		= get_entity($discussion_guid);
 	$is_follow			= check_entity_relationship($user_guid, ENLIGHTN_FOLLOW, $discussion_guid);
-	if ($is_follow) {
+    if ($ignore_request == '1') {
+		remove_entity_relationship($discussion_guid, ENLIGHTN_INVITED, $user_guid);
+    } elseif ($is_follow) {
 		remove_entity_relationship($user_guid, ENLIGHTN_FOLLOW, $discussion_guid);
-		add_to_river('river/relationship/member/create','quit',$user->guid,$discussion->guid);
+		add_to_river('river/relationship/member/create','quit',$user->guid,$discussion_guid);
 	} else {
-		if (add_entity_relationship($user_guid, 'member', $discussion->guid)) {
-			remove_entity_relationship($discussion->guid, 'invited', $user_guid);
-			system_message(elgg_echo("enlightn:joined"));
-			add_to_river('river/relationship/member/create','join',$user->guid,$discussion->guid);
+		if (add_entity_relationship($user_guid, ENLIGHTN_FOLLOW, $discussion_guid)) {
+			remove_entity_relationship($discussion_guid, ENLIGHTN_INVITED, $user_guid);
+			add_to_river('river/relationship/member/create','join',$user->guid,$discussion_guid);
 		}
 	}
 	$enlightn->flush_cache(array('user_guid' => $user_guid),'unreaded');

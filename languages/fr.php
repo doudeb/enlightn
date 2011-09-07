@@ -11,10 +11,10 @@
 		 * Menu items and titles
 		 */
 
-		 
+
 			//REGISTRATION FORM
-			
-			
+
+
 			//LOG IN
 			'enlightn:username' => 'Nom d\'utilisateur'
 			,'enlightn:password' => 'Mot de passe'
@@ -24,14 +24,14 @@
 			,'enlightn:rememberme' => 'Rester connecté'
 			,'enlightn:lostpassword' => 'Mot de passe oublié?'
 			,'enlightn:buttonrequest' => 'Envoyer'
-			
+
 			//HEADER
 			,'enlightn' => "Enlightn"
 			,'enlightn:profile' => 'Profil'
 			,'enlightn:settings' => 'Préférences'
 			,'enlightn:logout' => 'Déconnexion'
 			,'enlightn:directory' => 'Trombinoscope'
-			
+
 			//HOME - NEW TOPIC
 			,'enlightn:newdiscussion' => "Créez une nouvelle discussion"
 			,'enlightn:title' => 'Sujet'
@@ -42,19 +42,19 @@
 			,'enlightn:buttonpost' => "Envoyer"
 			,'enlightn:missingData' => "Oups, il manque une information"
 			,'enlightn:discussion_sucessfully_created' => "Votre discussion a bien été créée."
-			
+
 			//HOME - NEW TOPIC - UPLOAD
 			,'enlightn:uploadyourfile' => 'Joindre un fichier'
 			,'enlightn:cloud' => 'Accéder au Cloud'
 			,'enlightn:titlefile' => 'Titre du document'
 			,'enlightn:tagsfile' => 'Mots-clé'
 			,'enlightn:upload' => 'Joindre à la discussion'
-			
+
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Lus'
-			,'enlightn:unread' => 'Non lus'			
-			,'enlightn:followed' => 'Suivies'			
-			,'enlightn:unfollowed' => 'Non suivies'			
+			,'enlightn:unread' => 'Non lus'
+			,'enlightn:followed' => 'Suivies'
+			,'enlightn:unfollowed' => 'Non suivies'
 			,'enlightn:setasreadunread' => 'Lu / Non lu'
 			,'enlightn:setasread' => 'Marquer comme lu'
 			,'enlightn:setasunread' => 'Marquer comme non lu'
@@ -64,7 +64,7 @@
 			,'enlightn:setasfavoriteunfavorite' => 'Favoris'
 			,'enlightn:setasfavorite' => 'Mettre en favori'
 			,'enlightn:setasunfavorite' => 'Supprimer de mes favoris'
-			
+
 			//HOME - SEARCH
 			,'enlightn:search' => "Recherche"
 			,'enlightn:buttonall' => "Tous"
@@ -73,20 +73,22 @@
 			,'enlightn:fromuser' => 'Par'
 			,'enlightn:typeinasearchterm' => "Nom"
 			,'enlightn:searching' => "recherche..."
-			
+
 			//HOME - RIGHT COLUMN
 			,'enlightn:public' => "Discussions publiques"
 			,'enlightn:follow' => "Mes discussions"
 			,'enlightn:request' => "Invitations"
+			,'enlightn:buttonfollow' => "Suivre"
+			,'enlightn:buttonunfollow' => "Quitter"
 			,'enlightn:buttonignore' => "Ignorer"
 			,'enlightn:favorites' => "Favoris"
 			,'enlightn:sent' => "Envoyés"
-			
+
 			//HOME - LEFT COLUMN
 			,'enlightn:andothers' => ' et %s autres'
 			,'enlightn:buttonfollow' => "Suivre"
 			,'enlightn:seemore' => "Voir plus"
-			
+
 			//DETAILS OF A DISCUSSION
 			,'enlightn:buttonunnfollow' => "Se désabonner"
 			,'enlightn:followers' => "Participants:"
@@ -107,20 +109,21 @@
 			,'enlightn:downloaddocument' => 'Télécharger'
 			,'enlightn:activity:member' => ' a rejoint la discussion'
 			,'enlightn:activity:membership_request' => ' a été invité à la discussion'
-			
+
 			//PROFILE
 			,'enlightn:editprofileicon' => 'Modifier ma photo'
 			,'enlightn:editprofile' => 'Modifier mon profil'
-			
+
 			//DIRECTORY
 			,'enlightn:directoryall' => 'Tous'
 			,'enlightn:createanewlist' => 'Créer une nouvelle liste'
 			,'enlightn:listname' => 'Nom de la liste'
 			,'enlightn:private/public' => 'privée/publique'
 			,'enlightn:errorlistnoname' => 'Veuillez choisir un nom pour cette liste'
-			
+
 			//CLOUD
 			,'enlightn:cloudmain' => 'Cloud'
+			,'enlightn:download' => 'Télécharger'
 			/*
 			Attention tonton, il est écrit enlighnt en dev au lieu d'enlightn
 			*/
@@ -131,14 +134,24 @@
 			,'enlightn:file:type:image' => 'Images'
 			,'enlightn:file:type:doc' => 'Documents'
 			,'enlightn:file:type:link' => 'Articles'
-			
+
 			//SETTINGS
-			
-			
+            ,'enlightn:settingsheader' => '%s settings'
+
 			//LOG OUT
 			,'enlightn:logoutsucceed' => 'A bientôt'
-			
-			
+
+            //MAIL
+            //Invite
+			,'enlightn:invite:subject' => 'Invitation à rejoindre la discussion : %s '
+			,'enlightn:invite:body' => 'Bonjour %s,
+
+Vous avez reçu de la part de %s une invitation à rejoindre la discussion "%s"
+
+<a href="%s">Rejoindre la discussion</a>
+%s'
+
+
 	);
 	add_translation("fr",$french);
 ?>

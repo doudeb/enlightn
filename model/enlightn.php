@@ -47,8 +47,8 @@ Order By e.time_created desc";
 				break;
 			case 2:#Private Followed And Public Folowed 2
 				$force[] = "#Force Index (idx_annotations_time)";
-				$join[] = "Inner Join entity_relationships As rel_follow On a.entity_guid = rel_follow.guid_two And rel_follow.guid_one = $user_guid And rel_follow.relationship = '". ENLIGHTN_FOLLOW . "'";
-				$where[] = "";
+				$join[] = "";
+				$where[] = "And Exists(Select rel_follow.id From entity_relationships As rel_follow Where a.entity_guid = rel_follow.guid_two And rel_follow.guid_one = $user_guid And rel_follow.relationship = '". ENLIGHTN_FOLLOW . "')";
 				break;
 			case 3:#Favorite
 				//$force[] = "Force Index (idx_annotations_time)";
@@ -56,8 +56,8 @@ Order By e.time_created desc";
 				$where[] = "";
 				break;
 			case 4:#Private Folowed or Public 4
-				$join[] = "Left Join entity_relationships As rel_all On a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And a.access_id  = " . ACCESS_PRIVATE;
-                $where[] = "And ( rel_all.id Is Not Null
+				//$join[] = "Left Join entity_relationships As rel_all On a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And a.access_id  = " . ACCESS_PRIVATE;
+                $where[] = "And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And a.access_id  = " . ACCESS_PRIVATE . ")
                                   Or a.access_id  = " . ACCESS_PUBLIC . ')';
 				break;
 			case 5:#Invited aka request 5
@@ -136,19 +136,15 @@ Order By e.time_created desc";
 		$join	= implode(' ',$join);
 		$where	= implode(' ',$where);
 		$group	= implode(' ',$group);
-		$query 	= "Select * From (
-						Select a.entity_guid as guid
-						, a.time_created as created
-						, a.id
-				From annotations a $force
+		$query 	= "Select Distinct a.entity_guid as guid
+                		, (Select Max(id) From annotations Where entity_guid = a.entity_guid) id
+		   				, (Select Max(time_created) From annotations Where entity_guid = a.entity_guid) created
+		From annotations a $force
 				$join
 				Where 1
 				$where
 				Order By a.time_created Desc
-				Limit $offset,50) as p
-				$group
-				Order By p.created Desc
-				Limit 0, $limit";
+				Limit $offset,$limit";
 		//echo "<pre>" . $query;die();
 		return  $this->get_data($query, $key_cache, null);
 	}
