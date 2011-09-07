@@ -89,7 +89,7 @@
     settings: {
       opacity      : 0.7,
       overlay      : true,
-      loadingImage : '<?php echo $vars['url']; ?>mod/embed/images/loading.gif',
+      loadingImage : '<?php echo $vars['url']; ?>mod/enlightn/media/graphics/loading.gif',
       closeImage   : '<?php echo $vars['url']; ?>mod/embed/images/button_spacer.gif',
       imageTypes   : [ 'png', 'jpg', 'jpeg', 'gif' ],
       faceboxHtml  : '\

@@ -81,11 +81,22 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
 		$('#invite').click( function(){
 			if (!$(this).hasClass('add-form')) {
 				$(this).addClass('add-form');
-				$('<input />', {
+				$('<span />', {
+				'id' : 'close-invite',
+				'style' : 'margin-top : -20px',
+				'html' : '<h2>&times;</h2>',
+	    		'class': 'mini-close'}).appendTo($(this));
+	    		$("#close-invite").click( function(){
+					$('#invite').html('<?php echo elgg_echo('enlightn:discussioninvite');?>');
+
+				});
+
+                $('<input />', {
 				'type' : 'text',
 				'id' : 'invite_to_folow',
 	    		'class': ''}).appendTo($(this));
 	    		$("#invite_to_folow").tokenInput("<?php echo $vars['url']?>mod/enlightn/ajax/members.php");
+
 
 				$('<span />', {
 				'id' : 'invite_button',
@@ -93,11 +104,9 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
 	    		'class': 'button'}).appendTo($(this));
 	    		$("#invite_button").click( function(){
 					loadContent($('#loader'),'<?php echo $url_invite?>&invite='+$('#invite_to_folow').val());
-					$(this).removeClass('add-form');
+                    $('#invite').html('<?php echo elgg_echo('enlightn:discussioninvite');?>');
+
 				});
-			} else {
-				$(this).html('<?php echo elgg_echo('enlightn:discussioninvite');?>');
-				$(this).removeClass('add-form');
 			}
 		});
 		$("#favorite<?php echo $post->guid; ?>").click( function(){

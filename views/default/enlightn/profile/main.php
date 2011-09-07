@@ -1,7 +1,6 @@
 <?php
 $user		= $vars['user'];
 $settings	= $vars['settings'];
-
 ?>
 
 <div id="main">
@@ -10,7 +9,7 @@ $settings	= $vars['settings'];
 	    <div class="header">
 			<p><h2><?php echo $user->name?></h2></p>
 			<p><h3><?php echo $settings['jobtitle']['value']?></h3></p>
-			<div class="job_location"><?php echo $settings['department']['value']?>, <?php echo $settings['location']['value']?></div>
+			<div class="job_location"><?php echo $settings['department']['value']?> <?php echo !empty($settings['location']['value'])?', ' . $settings['location']['value']:''?></div>
 		</div> <!-- end header -->
 		<div id="feed">
 			<div class="actions">

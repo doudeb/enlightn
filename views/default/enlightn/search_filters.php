@@ -8,7 +8,7 @@
                 </div>
                 <input type="hidden" name="subtype_checked" id="subtype_checked" value="" />
                 <ul class="filters">
-                    <li class="checked"><input id="type_all" name="subtype[]" type="checkbox" value="" checked /><label for="type_all">All</label></li>
+                    <li class="checked" style="width:83px"><input id="type_all" name="subtype[]" type="checkbox" value="" checked /><label for="type_all">All</label></li>
                     <li><input id="type_text" name="subtype[]" type="checkbox" value="<?php echo ENLIGHTN_DISCUSSION;?>"/><label class="ico text" for="type_text"><?php echo elgg_echo('enlightn:'. ENLIGHTN_DISCUSSION);?></label></li>
                     <li><input id="type_link" name="subtype[]" type="checkbox" value="<?php echo ENLIGHTN_LINK;?>" /><label class="ico link" for="type_link"><?php echo elgg_echo('enlightn:'. ENLIGHTN_LINK);?></label></li>
                     <li><input id="type_video" name="subtype[]" type="checkbox" value="<?php echo ENLIGHTN_MEDIA;?>" /><label class="ico video" for="type_video"><?php echo elgg_echo('enlightn:'. ENLIGHTN_MEDIA);?></label></li>
@@ -16,12 +16,14 @@
                     <li><input id="type_doc" name="subtype[]" type="checkbox" value="<?php echo ENLIGHTN_DOCUMENT;?>" /><label class="ico doc" for="type_doc"><?php echo elgg_echo('enlightn:'. ENLIGHTN_DOCUMENT);?></label></li>
                 </ul>
                 <div class="dates">
-                    <label for="date_begin"><?php echo elgg_echo('enlightn:datefrom')?></label><input id="date_begin" type="text" class="date" />
-                    <label for="date_end"><?php echo elgg_echo('enlightn:dateto')?></label><input id="date_end" type="text" class="date" />
+                    <input id="date_begin" type="text" class="date" placeholder="<?php echo elgg_echo('enlightn:datefrom')?>" />
+                    <span style="width:14px;display:inline-block"></span>
+                    <input id="date_end" type="text" class="date" placeholder="<?php echo elgg_echo('enlightn:dateto')?>" />
                 </div>
                 <div class="author">
-                	<label for="from_users"><?php echo elgg_echo('enlightn:fromuser')?></label>
+                	<label for="from_users"><?php echo elgg_echo('enlightn:fromuser'); ?></label>
 					<?php echo elgg_view("enlightn/helper/adduser",array(
+																'placeholder' => elgg_echo('enlightn:fromuser'),
 																'internalname' => 'from_users',
 																'internalid' => 'from_users',
 																)); ?>

@@ -14,8 +14,5 @@
 
                 <div id="feed">
                     <div class="s-actions">
-                        <ul>
-                            <li class="right">Envoyer un message</li>
-                            <li>Lastname AZ <span class="arrow"></span></li>
-                        </ul>
+                        <ul></ul>
 				</div>

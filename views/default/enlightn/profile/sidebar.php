@@ -1,6 +1,7 @@
 <?php
 $user		= $vars['user'];
 $settings	= $vars['settings'];
+$settings['mail']['value'] = $user->email;
 global $sn_linkers;
 ?>
 		<div id="sidebar">
@@ -15,11 +16,14 @@ global $sn_linkers;
                     ?>
                 </div>
 				<div class="details">
-					<span class="ico phone"><?php echo $settings['phone']['value']?></span>
-					<span class="ico cellphone"><?php echo $settings['cellphone']['value']?></span>
-					<span class="ico mail"><?php echo $user->email?></span>
-                    <h1></h1>
-					<span class="ico address"><?php echo $settings['direction']['value']?></span>
+                    <?php
+                    foreach (array('phone','cellphone','mail', 'direction') as $key => $name) {
+                        if(!empty ($settings[$name]['value'])) {
+                            if ($name == 'direction') echo '<h1></h1>';
+                            echo '<span class="ico ' . $name . '">' . $settings[$name]['value'] .'</span>';
+                        }
+                    }
+                    ?>
 				</div><!-- end details -->
 			</div><!-- end profile_sidebar -->
 			<ol class="folders">

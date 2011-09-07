@@ -2,10 +2,7 @@
 	<div id="cloud">
 	    <div class="header">
 	    	<?php if (get_context() != 'cloud_embed') { ?>
-	        <form id="join" action="" method="post">
-                <span class="join-field"><input type="text" placeholder="<?php echo elgg_echo('enlightn:addadocument');?>" /></span>
                 <button class="submit" type="submit"><?php echo elgg_echo('enlightn:browse');?></button>
-	        </form>
 	        <?php } ?>
 	        <h2><?php echo elgg_echo('enlightn:cloudmain');?></h2>
 	    </div>
@@ -13,8 +10,7 @@
 		<div id="feed">
 			<div class="actions">
 				<ul>
-				    <li><?php echo elgg_echo("enlightn:select")?></li>
-				    <li><?php echo elgg_echo("enlightn:join")?></li>
+				    
 				</ul>
 
 				<ul class="right">

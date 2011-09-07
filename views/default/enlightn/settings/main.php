@@ -1,23 +1,20 @@
 <?php
 $user		= $vars['user'];
 $settings	= $vars['settings'];
-//var_dump($NOTIFICATION_HANDLERS);
 global $sn_linkers;
 $sn_linkers_select[0] = elgg_echo('enlightn:selectasociallink');
 foreach ($sn_linkers as $key => $name) {
-
     if (isset($settings[$name]['value']) && empty ($settings[$name]['value'])) {
         $sn_linkers_select[$settings[$name]['original_name']] = $name;
     }
 }
-
 ?>
 
 
 	<div id="settings">
         <img class="big-photo" src="<?php echo $user->getIcon('large')?>" />
 	    <div class="header">
-			<p><h1><?php echo $user->name?></h1></p>
+            <p><h1><?php echo sprintf(elgg_echo('enlightn:settingsheader'),$user->name)?></h1></p>
         </div>
         <div id="settings_tabs">
             <ul class="settings_tabs">
@@ -25,7 +22,7 @@ foreach ($sn_linkers as $key => $name) {
                 <li id="password"><?php echo elgg_echo('enlightn:password'); ?></li>
                 <li id="profile"><?php echo elgg_echo('enlightn:profile'); ?></li>
                 <li id="picture"><?php echo elgg_echo('enlightn:picture'); ?></li>
-                <!--<li id="notification"><?php echo elgg_echo('enlightn:notification'); ?></li>-->
+                <li id="notification"><?php echo elgg_echo('enlightn:notification'); ?></li>
                 <li id="statistics"><?php echo elgg_echo('enlightn:statistics'); ?></li>
             </ul>
         </div>
@@ -82,10 +79,13 @@ foreach ($sn_linkers as $key => $name) {
                <?php echo elgg_view("profile/editicon", array('user' => $user));?>
             </div>
             <div id="tabnotification" style="display: none;">
-               <?php echo elgg_echo('enlightn:notifcationheadline'); ?>
-                <p><label><?php echo elgg_echo('enlightn:notifyoninvite'); ?><input type="checkbox" name="notifyoninvite"/></label></p>
-                <p><label><?php echo elgg_echo('enlightn:notifyonnewmsg'); ?><input type="checkbox" name="notifyonnewmsg"/></label></p>
-                <p><input type="submit" class="button" /></p>
+               <?php
+               echo elgg_echo('enlightn:notifcationheadline');
+               $form_body = '<p><label>' . elgg_echo('enlightn:notifyoninvite') . '<input type="checkbox" name="' . NOTIFICATION_EMAIL_INVITE. '"' . ($user->{"notification:method:".NOTIFICATION_EMAIL_INVITE} == '1'?' checked=checked':'') . ' value="1"/></label></p>
+                <p><label>' .elgg_echo('enlightn:notifyonnewmsg'). '<input type="checkbox" name="' .NOTIFICATION_EMAIL_MESSAGE_FOLLOWED. '" ' . ($user->{"notification:method:".NOTIFICATION_EMAIL_MESSAGE_FOLLOWED} == '1'?' checked=checked':'') . ' value="1"/></label></p>
+                <p><input type="submit" class="button" /></p>';
+                echo elgg_view('input/form', array('action' => "{$vars['url']}action/enlightn/save_notifications", 'body' => $form_body));
+                ?>
             </div>
             <div id="tabstatistics" style="display: none;">
                <?php  echo elgg_view("usersettings/statistics");?>
