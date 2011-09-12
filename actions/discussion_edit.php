@@ -80,7 +80,7 @@ if (empty($title) || empty($message)) {
 				$enlightn->flush_cache(array('user_guid' => $usertoid,'access_level' => ENLIGHTN_ACCESS_IN),'search');
 			}
 			$usertoid = get_entity((int)$usertoid);
-			if ($usertoid->guid) {
+			if ($usertoid->guid && $usertoid->guid != $enlightndiscussion->owner_guid) {
 				/*if (!$usertoid->isFriend()) {
 					add_entity_relationship($_SESSION['user']->guid, 'friend', $usertoid->guid);
 				}*/
