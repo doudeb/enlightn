@@ -62,7 +62,6 @@ input, textarea {
     background: url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/sprite.png') no-repeat scroll 0 0 transparent;
 }
 
-.follow,
 .button,
 #header,
 #header  .menus li.submenu:hover,
@@ -72,9 +71,10 @@ input, textarea {
 #feed .actions,
 #feed .actions ul li:hover,
 #feed .more,
-#post form .privacy .value,
-#post .textarea .toolbar li,
-#post button.submit,
+#new-post form .privacy .value,
+#new-post .textarea .toolbar li,
+#new-post button.submit,
+#new-post button.reset,
 #login-box .submit_button,
 #sidebar .folders .menu .up,
 #sidebar .folders .menu .down,
@@ -124,41 +124,79 @@ input, textarea {
 }
 
 .follow {
-    padding: 0 6px 0 0;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ddd'); /*NEW*/
+	background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ddd)); /*NEW*/
+	background: -moz-linear-gradient(top, #f5f5f5, #ddd); /*NEW*/
+    border-color:#999;/*NEW*/
+    color:#555;/*NEW*/
+    font-size: 93%;/*NEW*/
+    font-weight: bold;/*NEW*/
+    padding: 3px 6px;/*NEW*/
 }
 
 .unfollow {
-    background-position: 0 -351px;
-    border-color:#999;
-    color:#555;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bbdc03', endColorstr='#a0c01d'); /*NEW*/
+	background: -webkit-gradient(linear, left top, left bottom, from(#bbdc03), to(#a0c01d)); /*NEW*/
+	background: -moz-linear-gradient(top, #bbdc03, #a0c01d); /*NEW*/
+    border:1px solid #8eac15;/*NEW*/
+    color:#43520a;/*NEW*/
 }
+
 
 span.follow:hover, span.button:hover {
     background-color:#bbdc03;
     background-image:none;
 }
-
 span.unfollow:hover {
-    background-color:#ddd;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff82c1', endColorstr='#e14694');
+	background: -webkit-gradient(linear, left top, left bottom, from(#ff82c1), to(#e14694));
+	background: -moz-linear-gradient(top, #ff82c1, #e14694);
+    border:1px solid #8eac15;
+    color:#fff;
+}
+.ignore,
+span.ignore,
+span.ignore:hover {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff82c1', endColorstr='#e14694');
+	background: -webkit-gradient(linear, left top, left bottom, from(#ff82c1), to(#e14694));
+	background: -moz-linear-gradient(top, #ff82c1, #e14694);
+    border:1px solid #8eac15;
+    color:#555;
 }
 
 .follow .ico, .button .ico {
-    background-position: -198px -126px;
     display: inline-block;
     height: 15px;
     vertical-align: middle;
     width: 15px;
 }
 
-.unfollow .ico {
-    background-position: -200px -152px;
+.button .ico {
+    background-position: -198px -126px;
 }
 
-.unfollow .follow-val, .follow .unfollow-val {
+.follow .ico {
+    background-position: -260px -216px;
+}
+
+.unfollow .ico {
+    background-position: -307px -217px;
+}
+
+.ignore .ico,
+.ignore:hover .ico,
+.unfollow:hover .ico {
+    background-position: -283px -216px;
+}
+
+.unfollow .follow-val, .follow .unfollow-val, .unfollow .unfollow-val, .follow .followed-val, .unfollow:hover .followed-val {
     display:none;
 }
 
-.unfollow .unfollow-val {
+.unfollow .followed-val,
+.unfollow:hover .unfollow-val,
+.ignore .unfollow-val,
+.ignore:hover .unfollow-val {
     display:inline;
 }
 
@@ -217,6 +255,14 @@ span.unfollow:hover {
     padding:0 10px;
 }
 
+#header .menus li.directory .ico {
+    background-position:-392px -30px;
+    display:inline-block;
+    height:15px;
+    margin:-3px 7px 0 0;
+    vertical-align:middle;
+    width:15px;
+}
 
 #header .menus li.account {
     cursor:default;
@@ -388,21 +434,28 @@ span.unfollow:hover {
     margin-right:10px;
 }
 
-#post .new-post {
-    #top : 150px;
-    #left : 150px;
+#new-post.fixed {
+    display : block;
+    margin-bottom:25px;
+}
+#new-post.open {
+    top : 50%;
+    left : 50%;
+    width : 620px;
     position:absolute;
-	display:none;
+	display:block;
     background-color : #fff;
-    border:1px solid #bbb;
+    border:5px solid rgba(82, 82, 82, 0.702);
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     -khtml-border-radius:5px;
     border-radius:5px;
-    -moz-box-shadow:inset 1px 1px 4px #ccc;
-    -webkit-box-shadow:inset 1px 1px 4px #ccc;
-    box-shadow:inset 1px 1px 4px #ccc;
+    -moz-box-shadow:inset 1px 1px 4px rgba(82, 82, 82, 0.702);
+    -webkit-box-shadow:inset 1px 1px 4px rgba(82, 82, 82, 0.702);
+    box-shadow:inset 1px 1px 4px rgba(82, 82, 82, 0.702);
     padding:10px 10px 10px 10px;
+    margin-top: -103px;
+    margin-left: -310px;
 }
 
 
@@ -422,28 +475,29 @@ span.unfollow:hover {
     cursor : text;
 }
 
-#post form,
+#new-post,
 #post.open .status-box,
 #post.open .photo {
     display:none;
 }
 
-#post.open form, #post.open .new-post {
+#new-post.open {
     display:block;
     overflow: hidden;
 }
 
-#post form .privacy {
+#new-post form .privacy {
     border:1px solid #8fad15;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     -khtml-border-radius:5px;
     border-radius:5px;
-    float:right;
     height:30px;
+    width : 108px;
+    float : left;
 }
 
-#post form .privacy .value {
+#new-post form .privacy .value {
     background-color:#bbdc03;
     background-position:0 -451px;
     color:#fff;
@@ -456,15 +510,24 @@ span.unfollow:hover {
     width: 50px;
 }
 
-#post form .privacy .private-val, #post form .private .public-val {
+/*NEW*/
+#new-post form .private .value {
+    background-image:none;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e14694', endColorstr='#ff82c1');
+	background: -webkit-gradient(linear, left top, left bottom, from(#e14694), to(#ff82c1));
+	background: -moz-linear-gradient(top, #e14694, #ff82c1);
+}
+/*NEW*/
+
+#new-post form .privacy .private-val, #new-post form .private .public-val {
     display:none;
 }
 
-#post form .private .private-val {
+#new-post form .private .private-val {
     display:block;
 }
 
-#post form .private .private-val .ico {
+#new-post form .private .private-val .ico {
     background-position: -104px -151px;
     display: inline-block;
     height: 14px;
@@ -473,7 +536,7 @@ span.unfollow:hover {
     width: 11px;
 }
 
-#post form .privacy .cursor {
+#new-post form .privacy .cursor {
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     -khtml-border-radius:5px;
@@ -495,27 +558,34 @@ span.unfollow:hover {
     width: 40px;
 }
 
-#post form .title, #post .textarea {
+#new-post form .title,
+#new-post .textarea,
+#new-post form .dest ul {
     background-color:#fff;
     border:1px solid #ccc;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     -khtml-border-radius:5px;
     border-radius:5px;
-    margin-bottom: 10px;
+    #margin-bottom: 10px;
     overflow:hidden;
     padding:7px 9px;
 }
 
-#post form .title {
-    width: 420px;
+#new-post form .title {
+    width: 600px;
+    margin-bottom : 10px;
 }
 
-#post .textarea {
+#new-post .textarea {
     height:85px;
 }
 
-#post .textarea .toolbar {
+#new-post form .dest ul {
+    padding:6px 9px;
+}
+
+#new-post .textarea .toolbar {
     background-color:#e5e5e5;
     border:1px solid #ccc;
     -moz-border-radius:5px 5px 0 0;
@@ -527,7 +597,7 @@ span.unfollow:hover {
     padding: 4px;
 }
 
-#post .textarea .toolbar li {
+#new-post .textarea .toolbar li {
     background-color:#fff;
     background-position: 0 -381px;
     border:1px solid #bbb;
@@ -543,42 +613,42 @@ span.unfollow:hover {
     width: 24px;
 }
 
-#post .textarea .toolbar li .ico {
+#new-post .textarea .toolbar li .ico {
     display:block;
     height: 22px;
     width: 24px;
 }
 
-#post .textarea .toolbar .bold .ico { background-position:-11px -177px; }
-#post .textarea .toolbar .italic .ico { background-position:-39px -177px; }
-#post .textarea .toolbar .stroke .ico { background-position:-67px -177px; }
+#new-post .textarea .toolbar .bold .ico { background-position:-11px -177px; }
+#new-post .textarea .toolbar .italic .ico { background-position:-39px -177px; }
+#new-post .textarea .toolbar .stroke .ico { background-position:-67px -177px; }
 
-#post .textarea .toolbar .ul .ico { background-position:-105px -177px; }
-#post .textarea .toolbar .ol .ico { background-position:-133px -177px; }
-#post .textarea .toolbar .quote .ico { background-position:-161px -177px; }
+#new-post .textarea .toolbar .ul .ico { background-position:-105px -177px; }
+#new-post .textarea .toolbar .ol .ico { background-position:-133px -177px; }
+#new-post .textarea .toolbar .quote .ico { background-position:-161px -177px; }
 
-#post .textarea .toolbar .a-left .ico { background-position:-194px -177px; }
-#post .textarea .toolbar .a-center .ico { background-position:-222px -177px; }
-#post .textarea .toolbar .a-right .ico { background-position:-250px -177px; }
+#new-post .textarea .toolbar .a-left .ico { background-position:-194px -177px; }
+#new-post .textarea .toolbar .a-center .ico { background-position:-222px -177px; }
+#new-post .textarea .toolbar .a-right .ico { background-position:-250px -177px; }
 
-#post .textarea .toolbar .link .ico { background-position:-284px -177px; }
-#post .textarea .toolbar .video .ico { background-position:-309px -177px; }
-#post .textarea .toolbar .pict .ico { background-position:-335px -177px; }
-#post .textarea .toolbar .doc .ico { background-position:-362px -177px; }
+#new-post .textarea .toolbar .link .ico { background-position:-284px -177px; }
+#new-post .textarea .toolbar .video .ico { background-position:-309px -177px; }
+#new-post .textarea .toolbar .pict .ico { background-position:-335px -177px; }
+#new-post .textarea .toolbar .doc .ico { background-position:-362px -177px; }
 
-#post .textarea .toolbar li:hover {
+#new-post .textarea .toolbar li:hover {
     background-image:none;
 }
 
-#post .textarea .toolbar li.new-gp {
+#new-post .textarea .toolbar li.new-gp {
     margin-left:7px;
 }
 
-#post .textarea .toolbar .form-open  {
+#new-post .textarea .toolbar .form-open  {
     background-image: none;
 }
 
-#post .textarea .toolbar .video .form {
+#new-post .textarea .toolbar .video .form {
     background-color: #FFFFFF;
     border: 1px solid #CCCCCC;
     display:none;
@@ -587,16 +657,16 @@ span.unfollow:hover {
     position: absolute;
 }
 
-#post .textarea .toolbar .form-open .form {
+#new-post .textarea .toolbar .form-open .form {
     display:block;
 }
 
-#post .textarea .toolbar .video .form .caption {
+#new-post .textarea .toolbar .video .form .caption {
     color: #666666;
     font-size: 93%;
 }
 
-#post .textarea .toolbar .video .form input {
+#new-post .textarea .toolbar .video .form input {
     color: #666;
     display: block;
     font-size: 87%;
@@ -604,20 +674,31 @@ span.unfollow:hover {
     width: 150px;
 }
 
-#post form .dest {
-    margin-bottom: 10px;
+#new-post form .dest {
+    vertical-align : middle;
+    display : inline-block;
+    #float:left;
+    #display: block;
+}
+#new-post form .dest input,
+#new-post form .dest ul {
+    width: 450px;
+    #border : 0px;
+}
+#new-post form .dest li {
+    #padding : 0px;
 }
 
-#post form .dest input,
-#post form .dest ul {
-    display: inline-block;
-    vertical-align: middle;
-    width: 370px;
+#new-post form label {
+    margin : 0px 0px 10px 10px;
 }
 
-#post form .tags {
-    float:left;
+#new-post form .tags {
+    margin-top : 10px;
+    clear : left;
 }
+
+
 
 .add {
     cursor:pointer;
@@ -653,15 +734,24 @@ span.unfollow:hover {
     width: 150px;
 }
 
-#post form .sending {
+#invite-form {
+    position: absolute;
+    display : none;
+}
+
+#tags-input {
+    display : none;
+    margin-left : 10px;
+}
+#new-post form .sending {
     float:right;
 }
 
-#post form .sending .checkbox {
+#new-post form .sending .checkbox {
     vertical-align: middle;
 }
 
-#post form .sending .reply {
+#new-post form .sending .reply {
     background-position: -228px -152px;
     display: inline-block;
     height: 15px;
@@ -669,7 +759,7 @@ span.unfollow:hover {
     width: 15px;
 }
 
-#post button.submit {
+#new-post button[type="submit"] {
     background-position: 0 -411px;
     border: 1px solid #8eac15;
     -moz-border-radius:3px;
@@ -685,13 +775,40 @@ span.unfollow:hover {
     text-shadow: 1px 1px 1px #43520A;
 }
 
-#post button.submit:hover {
+#new-post button[type="reset"] {
+    background-position:0 -191px;
+    border: 1px solid #999;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    -khtml-border-radius:3px;
+    border-radius:3px;
+    color:#555;
+    font-size: 116%;
+    font-weight: bold;
+    margin-left: 10px;
+    outline:none;
+    padding: 3px 15px;
+    text-shadow: 1px 1px 1px #ccc;
+}
+
+
+#new-post button.submit:hover {
     background-color:#bbdc03;
     background-image:none;
 }
 
-#post button.submit:active {
+#new-post button[type="reset"]:hover {
+    background-color:#ddd;
+    background-image:none;
+}
+
+#new-post button.submit:active {
     background-color:#9dbd20;
+    background-image:none;
+}
+
+#new-post button[type="reset"]:active {
+    background-color:#e;
     background-image:none;
 }
 
@@ -873,17 +990,13 @@ span.unfollow:hover {
     overflow:hidden;
 }
 
-#feed .msg .follow {
-    float:right;
-    margin-bottom: 5px;
-    margin-right: 7px;
-}
-
+#feed .msg .follow,
 #feed .followed .follow {
     float:right;
     margin-bottom: 5px;
-    margin-right: 7px;}
+    width: 70px;
 }
+
 .msg .star, .msg .lock {
     background-position:-164px -123px;
     display:inline-block;
@@ -1479,6 +1592,7 @@ span.unfollow:hover {
 
 #detail .actions {
     padding: 5px 0;
+    height: 21px;
 }
 
 #detail .read {
@@ -1491,24 +1605,47 @@ span.unfollow:hover {
     vertical-align: middle;
 }
 
-#detail .follow {
-    margin-right: 0px;
-    text-align: center;
+#detail .follow, {
+    margin-right: 5px;
     width: 70px;
-    float:right;
+    float:left;
 }
 
 #detail .tags {
-    display:block;
     overflow:hidden;
+    display:block;
 }
 
 #detail .tags li {
     background-color: #ffff99;
     float:left;
     margin: 3px;
+    display:block;
     padding: 0 4px;
 }
+
+/*NEW*/
+#detail .toggle {
+    background-position:-197px -212px;
+    float:right;
+    height:20px;
+    margin:-9px -11px 0 0;
+    width:22px;
+    cursor : pointer;
+}
+
+#detail.full .toggle {
+    background-position:-225px -212px;
+}
+
+#detail .users {
+    display:none;
+}
+
+#detail.full .users {
+    display:block;
+}
+/*/NEW*/
 
 .users {
     padding:3px 0;
@@ -1775,7 +1912,7 @@ span.unfollow:hover {
 }
 
 
-#cloud .join-field input {
+#join .join-field button {
     border:1px solid #fff;
     -moz-box-shadow:inset 0 0 0 #fff;
     -webkit-box-shadow:inset 0 0 0 #fff;
@@ -2333,20 +2470,20 @@ RTE EDITOR
 **/
 .frameBody
 {
-    font-family:sans-serif;
-    font-size:12px;
     margin:0;
     width:100%;
     height:100%;
    	background-color: #FFFFFF;
-
+    list-style-type:disc;
 }
+
 
 .frameBody p
 {
     border:0px;
     padding:0px;
 }
+
 
 .rte-zone
 {
@@ -3264,13 +3401,14 @@ ul#friends_collections_accordian {
 }
 .friendsPickerNavigation a {
 	font-weight: bold;
+	font-size: 110%;
 	text-align: center;
 	background: white;
 	color: #999999;
 	text-decoration: none;
 	display: block;
 	padding: 0;
-	width:20px;
+	width:23px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 }
@@ -3598,4 +3736,48 @@ a.toggle_customise_edit_panel:hover {
 }
 *:first-child+html .ui-sortable-helper img.drag_handle, *:first-child+html .ui-sortable-helper img.remove_me, *:first-child+html .ui-sortable-helper img.more_info {
 	padding-top: 4px;
+}
+/* ***************************************
+SYSTEM MESSSAGES
+*************************************** */
+.messages {
+        background:#ccffcc;
+        color:#000000;
+        padding:3px 10px 3px 10px;
+        z-index: 8000;
+        margin:0;
+        position:fixed;
+        top:30px;
+        width:969px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border:4px solid #00CC00;
+        cursor: pointer;
+}
+.messages_error {
+        border:4px solid #D3322A;
+        background:#F7DAD8;
+        color:#000000;
+        padding:3px 10px 3px 10px;
+        z-index: 8000;
+        margin:0;
+        position:fixed;
+        top:30px;
+        width:969px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        cursor: pointer;
+}
+.closeMessages {
+        float:right;
+        margin-top:17px;
+}
+.closeMessages a {
+        color:#666666;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 80%;
+}
+.closeMessages a:hover {
+        color:black;
 }

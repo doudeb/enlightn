@@ -270,7 +270,7 @@ function get_embeded_type ($links) {
 			case false !== strstr($link,'?fetched=1'):
 				$links_type[ENLIGHTN_EMBEDED][]['link'] = str_replace('?fetched=1','',$link);
 				break;
-			case preg_match("/\.(bmp|jpeg|gif|png|jpg)$/i", $link) > 0:
+			case preg_match("/\.(bmp|jpeg|gif|png|jpg|pdf)$/i", $link) > 0:
 				$links_type[ENLIGHTN_IMAGE][]['link'] = $link;
 				break;
 			case preg_match("/(dailymotion|vimeo|youtube)/i", $link) > 0:
@@ -294,7 +294,7 @@ function get_embeded_title ($links) {
 		switch ($type) {
 			case ENLIGHTN_IMAGE:
 				foreach ($links_by_type as $key=>$link) {
-					//$title = parse_url($link['link'],PHP_URL_PATH);
+					$title = parse_url($link['link'],PHP_URL_PATH);
 					$title = basename($title);
 					$links[$type][$key]['title'] = $title;
 				}
@@ -343,8 +343,9 @@ function create_embeded_entities ($message,$entity) {
 			$title 				= $link["title"];
 			$desc 				= $link["link"];
 			$file				= elgg_get_entities_from_metadata(array('metadata_names' => 'filename', 'metadata_values' => $link["link"]));
+			$access_id 			= $entity->access_id;
+
 			if (!$file) {
-				$access_id 			= $entity->access_id;
 				$container_guid 	= get_loggedin_userid();
 				$file 				= new FilePluginFile();
 				$file->subtype 		= "file";
@@ -361,6 +362,10 @@ function create_embeded_entities ($message,$entity) {
 				$file 				= $file[0];
 				$guid 				= true;
 				$file->guid			= $file->entity_guid;
+				if($file->access_id != $access_id) {
+       				$file->access_id 	= $access_id;
+                    $file->save();
+                }
 			}
 			if ($guid) {
 				$new_link = elgg_view('enlightn/new_link', array('guid'=>$file->guid,'type'=>$type,'link'=>$link["link"], 'title'=>$title));

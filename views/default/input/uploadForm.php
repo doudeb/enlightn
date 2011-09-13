@@ -53,7 +53,7 @@
 		            	$('#tags').val('');
 		            	$('#title').val('');
 		            	$('#upload').val('');
-		            	if ('cloud_embed' == '<?php echo get_context()?>') {
+		            	if (typeof $(".rte-zone").contents().find(".frameBody") != undefined) {
 					       	$(".rte-zone").contents().find(".frameBody").html($(".rte-zone").contents().find(".frameBody").html() + ' ' + data);
 		            	} else {
 							loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo get_context()?>&' + get_search_criteria());

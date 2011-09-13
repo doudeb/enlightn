@@ -32,6 +32,7 @@ if (get_context() !== 'cloud_embed') {
 	echo elgg_view('page_elements/header_contents', $vars);
 }
 ?>
+<?php echo elgg_view('messages/list', array('object' => $vars['sysmessages'])); ?>
 <div id="page">
 <!-- main contents -->
 

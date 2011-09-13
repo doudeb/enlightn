@@ -37,8 +37,9 @@
 			,'enlightn:title' => 'Sujet'
 			,'enlightn:buttonpublic' => "Publique"
 			,'enlightn:buttonprivate' => "Privée"
-			,'enlightn:to' => "Destinataires:"
+			,'enlightn:to' => "A"
 			,'enlightn:tags' => 'Mots-clé'
+			,'enlightn:buttoncancel' => "Annuler"
 			,'enlightn:buttonpost' => "Envoyer"
 			,'enlightn:missingData' => "Oups, il manque une information"
 			,'enlightn:discussion_sucessfully_created' => "Votre discussion a bien été créée."
@@ -81,6 +82,7 @@
 			,'enlightn:buttonfollow' => "Suivre"
 			,'enlightn:buttonunfollow' => "Quitter"
 			,'enlightn:buttonignore' => "Ignorer"
+			,'enlightn:bunttonfollowed' => "Suivi"
 			,'enlightn:favorites' => "Favoris"
 			,'enlightn:sent' => "Envoyés"
 

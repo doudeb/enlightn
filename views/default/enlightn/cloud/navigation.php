@@ -2,7 +2,9 @@
 	<div id="cloud">
 	    <div class="header">
 	    	<?php if (get_context() != 'cloud_embed') { ?>
-                <button class="submit" type="submit"><?php echo elgg_echo('enlightn:browse');?></button>
+                <div id="join">
+                    <button class="submit" type="submit"><?php echo elgg_echo('enlightn:browse');?></button>
+                </div>
 	        <?php } ?>
 	        <h2><?php echo elgg_echo('enlightn:cloudmain');?></h2>
 	    </div>
@@ -10,11 +12,11 @@
 		<div id="feed">
 			<div class="actions">
 				<ul>
-				    
+
 				</ul>
 
 				<ul class="right">
-				    <li><a href id="cloud_next"><?php echo elgg_echo("enlightn:next")?></a></li>
+				    <li><a href="" id="cloud_next"><?php echo elgg_echo("enlightn:next")?></a></li>
 				    <li><a href="" id="cloud_previous"><?php echo elgg_echo("enlightn:previous")?></a></li>
 				</ul>
 			</div>

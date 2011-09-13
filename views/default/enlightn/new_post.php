@@ -1,4 +1,4 @@
-			<div id="post" class="open">
+			<div id="new-post" class="fixed">
 				<form id="add_post" action="<?php echo $vars['url']; ?>action/enlightn/addpost" enctype="multipart/form-data" method="post">
 					<?php
 					$url_cloud = $vars['url'] . 'pg/enlightn/cloud/' . $vars['entity']->guid . '/new_post';

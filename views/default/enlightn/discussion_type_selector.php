@@ -14,17 +14,25 @@ $unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
     </div>
 <input type="hidden" name="discussion_type" id="discussion_type" value="<?php echo ENLIGHTN_ACCESS_PU?>">
 <script language="javascript">
+var oldTitle = document.title;
 setInterval(function() {
 	$.getJSON('<?php echo $vars['url']; ?>mod/enlightn/ajax/discussion_unreaded.php', function(data) {
+        var totalUnreaded = 0;
 		$.each(data, function(i,item){
 			var received_value = item;
 			var nav_element = $("#nav_unreaded_" + i);
+            if (i != '<?php echo ENLIGHTN_ACCESS_PU;?>') {
+                totalUnreaded += parseInt(received_value);
+            }
 			if(typeof nav_element == 'object') {
 				if (received_value != '0' && nav_element.html() != received_value) {
 					nav_element.html(received_value);
 				}
 			}
 		});
+        if (totalUnreaded > 0) {
+            document.title = oldTitle + '(' + totalUnreaded + ')';
+        }
 	});
 }, 15000);
 </script>

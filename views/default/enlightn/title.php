@@ -19,7 +19,7 @@ $url_follow			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/fol
 $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/invite?discussion_guid={$post->guid}");
 ?>
 		<div id="main">
-			<div id="detail" class="msg <?php echo false===$flag_readed?'unread':'read' ?> <?php echo  false===$flag_favorite?'':'starred'?>">
+			<div id="detail" class="msg <?php echo false===$flag_readed?'':'read' ?> <?php echo  false===$flag_favorite?'':'starred'?>">
                 <div class="header">
                     <span class="read ico"></span>
                     <h2><?php echo $post->title; ?></h2>
@@ -29,10 +29,11 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                 </div><!-- header -->
 
                 <div class="actions">
-                    <span id="follow" class="follow <?php echo false===$flag_folowed?'':'unfollow' ?>">
+                    <span id="follow" class="follow <?php echo false===$flag_folowed?'':'followed' ?>">
                         <span class="ico"></span>
-                        <span class="follow-val">Follow</span>
-                        <span class="unfollow-val">Unfollow</span>
+                        <span class="follow-val"><?php echo elgg_echo("enlightn:buttonfollow"); ?></span>
+                        <span class="unfollow-val"><?php echo elgg_echo("enlightn:buttonunfollow"); ?></span>
+                        <span class="followed-val"><?php echo elgg_echo("enlightn:bunttonfollowed"); ?></span>
                     </span>
 
                     <span class="tags">
@@ -66,7 +67,13 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
 					?>
                     <span class="add">
                         <span class="ico"></span>
-                        <span class="caption" id="invite"><?php echo elgg_echo('enlightn:discussioninvite');?></span>
+                        <span class="caption" id="invite">
+                            <?php echo elgg_echo('enlightn:discussioninvite');?>
+                        </span>
+                        <span class="caption" id="invite-form">
+                            <input type="text" id="invite_to_folow" />
+                            <span id="invite_button" class="button"><?php echo elgg_echo("send"); ?></span>
+                        </span>
                     </span>
                 </div>
 
@@ -75,40 +82,20 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                     <img src="<?php echo $post_owner->getIcon('small')?>" />
                     <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>
                 </div>
-
+                <span class="toggle ico"></span>
             </div>
 <script>
-		$('#invite').click( function(){
-			if (!$(this).hasClass('add-form')) {
-				$(this).addClass('add-form');
-				$('<span />', {
-				'id' : 'close-invite',
-				'style' : 'margin-top : -20px',
-				'html' : '<h2>&times;</h2>',
-	    		'class': 'mini-close'}).appendTo($(this));
-	    		$("#close-invite").click( function(){
-					$('#invite').html('<?php echo elgg_echo('enlightn:discussioninvite');?>');
+    $("#invite_to_folow").tokenInput("<?php echo $vars['url']?>mod/enlightn/ajax/members.php");
+	$("#invite_button").click( function(){
+        loadContent($('#loader'),'<?php echo $url_invite?>&invite='+$('#invite_to_folow').val());
+        $('#invite-form').toggle();
+        $('#invite-form').toggleClass('add-form');
+    });
+    $('#invite').click(function () {
+        $('#invite-form').toggleClass('add-form');
+        $('#invite-form').toggle();
+    });
 
-				});
-
-                $('<input />', {
-				'type' : 'text',
-				'id' : 'invite_to_folow',
-	    		'class': ''}).appendTo($(this));
-	    		$("#invite_to_folow").tokenInput("<?php echo $vars['url']?>mod/enlightn/ajax/members.php");
-
-
-				$('<span />', {
-				'id' : 'invite_button',
-				'html' : '<?php echo elgg_echo("send"); ?>',
-	    		'class': 'button'}).appendTo($(this));
-	    		$("#invite_button").click( function(){
-					loadContent($('#loader'),'<?php echo $url_invite?>&invite='+$('#invite_to_folow').val());
-                    $('#invite').html('<?php echo elgg_echo('enlightn:discussioninvite');?>');
-
-				});
-			}
-		});
 		$("#favorite<?php echo $post->guid; ?>").click( function(){
 			if ($("#detail").hasClass("starred")) {
 				$("#detail").removeClass("starred");

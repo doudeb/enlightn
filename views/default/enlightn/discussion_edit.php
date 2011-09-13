@@ -8,10 +8,14 @@
 	// new groups default to open membership
 
 ?>
-    <div class="new-post">
+    <div id="new-post">
         <form id="discussion_edit" action="<?php echo $vars['url']; ?>action/enlightn/edit" enctype="multipart/form-data" method="post">
-            <span id="close_new_discussion" class="mini-close"/><h2>&times;</h2></span>
             <?php echo elgg_view('input/securitytoken'); ?>
+            <p><input class="title" type="text" name="title" id="title" placeholder="<?php echo elgg_echo("enlightn:title") ?>" value="" /></p>
+            <?php echo elgg_view("input/longtext",array(
+                                    'internalname' => 'description',
+                                    'internalid' => 'description',
+                                    'value' => $vars['entity']->description)); ?>
             <div class="privacy private">
                 <span class="private-val value"><span class="ico"></span><?php echo elgg_echo('private') ?></span>
 
@@ -22,15 +26,11 @@
                                         'internalid' => 'membership',
                                         'value' => ACCESS_PRIVATE)); ?>
             </div>
-            <input class="title" type="text" name="title" id="title" placeholder="<?php echo elgg_echo("enlightn:title") ?>" value="" />
-            <?php echo elgg_view("input/longtext",array(
-                                    'internalname' => 'description',
-                                    'internalid' => 'description',
-                                    'value' => $vars['entity']->description)); ?>
+            <label><?php echo elgg_echo("enlightn:to") ?> :</label>
             <div class="dest">
-                <label><?php echo elgg_echo("enlightn:to") ?> :</label>
                 <?php echo elgg_view("enlightn/helper/adduser",array(
                                                                     'internalname' => 'invite',
+                                                                    'placeholder' => elgg_echo("enlightn:to"),
                                                                     'internalid' => 'invite',
                                                                     'value' => $vars['entity']->invite,
                                                                     )); ?>
@@ -38,17 +38,17 @@
             <div class="tags">
                 <span class="add">
                     <span class="ico"></span>
-                    <span class="caption"><?php echo elgg_echo("enlightn:tags") ?></span>
-                    <?php echo elgg_view("input/tags",array(
+                    <span class="caption" id="add-tags"><?php echo elgg_echo("enlightn:tags") ?></span>
+                    <span id="tags-input">&nbsp;<?php echo elgg_view("input/tags",array(
                                                         'internalname' => 'interests',
                                                         'internalid' => 'interests',
                                                         'value' => $vars['entity']->interests,
-                                                        )); ?>
+                                                        )); ?></span>
                 </span>
             </div>
             <div class="sending">
-
-                <button type="submit" class="submit"><?php echo elgg_echo("enlightn:post"); ?></button>
+                <button type="reset" class="submit"><?php echo elgg_echo("enlightn:buttoncancel"); ?></button>
+                <button type="submit" class="submit"><?php echo elgg_echo("enlightn:buttonpost"); ?></button>
             </div>
             <div id="submission"></div>
         </form>

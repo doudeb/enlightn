@@ -1,5 +1,8 @@
 <?php
-echo elgg_view('input/uploadForm');
+if (isloggedin()) {
+    echo elgg_view('enlightn/discussion_edit');
+    echo elgg_view('input/uploadForm');
+}
 $plugin_elements = load_plugin_manifest('enlightn');
 ?>
     <div id="footer">

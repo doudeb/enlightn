@@ -10,7 +10,6 @@ $offset 		= (int) get_input('offset',0);
 ?>
 <div id="topic_posts"><!-- open the topic_posts div -->
 <?php
-
 	// check to find out the status of the topic and act
     if($vars['entity']->status != "closed" /*&& page_owner_entity()->isMember($vars['user'])*/){
 

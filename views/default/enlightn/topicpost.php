@@ -36,6 +36,7 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
                         </div>
                         <div class="content">
                         	<?php echo enlightn_search_highlight_words($vars['query'],$discussion->value);
+                        $src_embeded    = false;
                         if (is_array($src_embeded)) {
 							echo '<div class="inclosed-list">
                                 <h4>' . count($src_embeded) . ' ' . elgg_echo('enlightn:attachmentlist') . '</h4>

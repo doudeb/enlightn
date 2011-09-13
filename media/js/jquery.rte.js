@@ -138,10 +138,13 @@ if(typeof $.fn.rte === "undefined") {
 		    </li>-->\
 	        <li class='bold' title='Gras'><span class='ico'></span></li>\
 	        <li class='italic' title='Italique'><span class='ico'></span></li>\
-	        <li class='new-gp ul' title='Liste'><span class='ico'></span></li>\
+	        <li id='unorderedlist' class='new-gp ul' title='Liste'><span class='ico'></span></li>\
+		    <li id='embedLink' class='new-gp link' title='Lien'><span class='ico'></span></li>\
+            <li class='video' title='Video'><span class='ico'></span></li>\
+            <li class='pict' title='Image'><span class='ico'></span></li>\
+            <li class='doc' title='Document'><span class='ico'></span></li>\
 		    <li><a href='#' class='disable'><img src='"+opts.media_url+"close.gif' alt='close rte' /></a></li>\
-		    <li id='embedMedia' class='new-gp link' title='Lien'><span class='ico'></span></li>\
-		</ul>");
+    </ul>");
 
             $('select', tb).change(function(){
                 var index = this.selectedIndex;
@@ -152,20 +155,28 @@ if(typeof $.fn.rte === "undefined") {
             });
             $('.bold', tb).click(function(){ formatText('bold');return false; });
             $('.italic', tb).click(function(){ formatText('italic');return false; });
-            $('.unorderedlist', tb).click(function(){ formatText('insertunorderedlist');return false; });
-            $('.link', tb).click(function(){
+            $('.ul', tb).click(function(){ formatText('insertunorderedlist');return false; });
+            $('.doc', tb).click(function(){
             	pos = $(this).position();
             	elmTop = pos.top + 'px';
             	$('#layer').css('top',elmTop);
             	$('#embedContent').css('display','block');
             });
-
-            $('.image', tb).click(function(){
-                var p=prompt("image URL:");
+            $('.link', tb).click(function(){
+                var p=prompt("URL:");
                 if(p)
-                    formatText('InsertImage', p);
+                    formatText('insertHTML', p);
                 return false; });
-
+            $('.video', tb).click(function(){
+                var p=prompt("URL:");
+                if(p)
+                    formatText('insertHTML', p);
+                return false; });
+            $('.pict', tb).click(function(){
+                var p=prompt("URL:");
+                if(p)
+                    formatText('insertHTML', p);
+                return false; });
             $('.disable', tb).click(function() {
                 disableDesignMode();
                 var edm = $('<a class="rte-edm" href="#">Enable design mode</a>');
