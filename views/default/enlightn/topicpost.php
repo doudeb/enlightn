@@ -17,7 +17,7 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
 															'relationship_guid' => $discussion->id,
 															'inverse_relationship' => true));
 ?>
-                    <li class="msg <?php echo false===$flag_readed?'unread open-msg':'' ?> <?php echo $has_words?'open-msg':'' ?>">
+                    <li class="msg <?php echo false===$flag_readed?'unread open-msg':'read' ?> <?php echo $has_words?'open-msg':'' ?>">
                         <div class="toolbar">
                         	<?php if (is_array($src_embeded)) {
 								echo '<span class="inclosed ico"></span>';

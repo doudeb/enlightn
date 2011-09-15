@@ -8,16 +8,18 @@ $url_follow			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/fol
                     <ul>
                         <li><input class="checkbox" type="checkbox" id="selectAll"/><span class="arrow"></span>
                             <ul>
-                                <li id="selectNone"><?php echo elgg_echo("enlightn:none")?></li>
                                 <li id="selectRead"><?php echo elgg_echo("enlightn:read")?></li>
                                 <li id="selectUnread"><?php echo elgg_echo("enlightn:unread")?></li>
                             </ul>
                         </li>
                         <li><?php echo elgg_echo("enlightn:action")?><span class="arrow"></span>
                             <ul>
-                                <li id="setReaded"><?php echo elgg_echo("enlightn:setasreadunread")?></li>
-                                <li id="setFollow"><?php echo elgg_echo("enlightn:setasfollowunfolow")?></li>
+                                <li id="setReaded"><?php echo elgg_echo("enlightn:setasread")?></li>
+                                <li id="setReaded"><?php echo elgg_echo("enlightn:setasunread")?></li>
+                                <li id="setFollow"><?php echo elgg_echo("enlightn:setasfollow")?></li>
+                                <li id="setFollow"><?php echo elgg_echo("enlightn:setasunfolow")?></li>
                                 <li id="setFavorite"><?php echo elgg_echo("enlightn:setasfavorite")?></li>
+                                <li id="setFavorite"><?php echo elgg_echo("enlightn:setasunfavorite")?></li>
                             </ul>
                         </li>
                     </ul>
@@ -43,44 +45,37 @@ $('#see_more_discussion_list').click(function () {
 
 $(document).ready(function(){
 	reloader("<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php", '#discussion_list_container');
-	$('#setReaded').click(function () {
-		$("#discussion_list_container li").each(function () {
-			elmId = $(this).find('.statusbar').find(':checkbox').is(':checked')?$($(this).find('.statusbar').find(':checkbox')):false;
-			if (elmId) {
-				loadContent("#loader",'<?php echo $url_read ?>&discussion_guid=' + elmId.val());
-				if ($("#read" + elmId.val()).parent().parent().hasClass("unread")) {
-					$("#read" + elmId.val()).parent().parent().removeClass("unread");
-				} else {
-					$("#read" + elmId.val()).parent().parent().addClass("unread");
-				}
+
+    function markAs (action) {
+        $('#discussion_list_container li input[type=checkbox]:checked').each(function (key,item) {
+			var elmId = $(item);
+			if (elmId.val().length > 1) {
+                switch (action) {
+                    case 'setFollow' :
+                        var url = '<?php echo $url_follow ?>&annotation_id=' + elmId.val();
+                        var toggleElm = $(this).parent().parent().find('.toolbar span').eq(0);
+                        var toggleClass = "unfollow";
+                    break;
+                    case 'setFavorite' :
+                        var url = '<?php echo $url_favorite ?>&annotation_id=' + elmId.val();
+                        var toggleElm = $(this).parent();
+                        var toggleClass = "starred";
+                    break;
+                    case 'setReaded' :
+                        var url = '<?php echo $url_read ?>&discussion_guid=' + elmId.val();
+                        var toggleElm = $("#read" + elmId.val()).parent().parent();
+                        var toggleClass = "unread";
+                    break;
+                    default : return false;
+                }
+				loadContent("#loader",url,'append');
+   				toggleElm.toggleClass(toggleClass);
 			}
 		});
-	});
-	$('#setFollow').click(function () {
-		$("#discussion_list_container li").each(function () {
-			elmId = $(this).find('.statusbar').find(':checkbox').is(':checked')?$($(this).find('.statusbar').find(':checkbox')):false;
-			if (elmId) {
-				loadContent("#loader",'<?php echo $url_follow ?>&annotation_id=' + elmId.val());
-				if ($(this).hasClass("followed")) {
-					$(this).removeClass("followed");
-				} else {
-					$(this).addClass("followed");
-				}
-			}
-		});
-	});
-	$('#setFavorite').click(function () {
-		$("#discussion_list_container li").each(function () {
-			elmId = $(this).find('.statusbar').find(':checkbox').is(':checked')?$($(this).find('.statusbar').find(':checkbox')):false;
-			if (elmId) {
-				loadContent("#loader",'<?php echo $url_favorite ?>&annotation_id=' + elmId.val());
-				if ($(this).hasClass("starred")) {
-					$(this).removeClass("starred");
-				} else {
-					$(this).addClass("starred");
-				}
-			}
-		});
-	});
+    }
+
+	$('#setFollow').click(function () { markAs('setFollow') });
+	$('#setFavorite').click(function () { markAs('setFavorite') });
+	$('#setReaded').click(function () { markAs('setReaded') });
 });
 </script>

@@ -47,8 +47,11 @@ if (is_array($message['guids'])) {
 }
 // add to river
 add_to_river('enlightn/river/comment', 'create', $user->guid, $topic_guid, "", 0, $post_id);
-//Mark as read
-add_entity_relationship($user->guid, ENLIGHTN_FOLLOW, $topic_guid);
+//Mark as read && follow
+if (add_entity_relationship($user->guid, ENLIGHTN_FOLLOW, $topic_guid)) {
+    //Remove invitation
+    remove_entity_relationship($topic_guid, ENLIGHTN_INVITED, $user->guid);
+}
 add_entity_relationship($user->guid, ENLIGHTN_READED, $post_id);
 system_message(elgg_echo("enlightn:success"));
 // Remove cache

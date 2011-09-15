@@ -1,6 +1,6 @@
 <?php
 if (strstr($vars['entity']->getFilenameOnFilestore(),'file/')) {
-	$imgsrc = $vars['url'] . 'mod/file/download.php?file_guid=' .$vars['entity']->guid;
+	$imgsrc = URL_DOWNLOAD .$vars['entity']->guid;
 } else {
 	$imgsrc = $vars['entity']->originalfilename;
 }

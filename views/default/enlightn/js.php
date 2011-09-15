@@ -284,7 +284,7 @@ $(document).ready(function(){
 	        // other available options:
 	        //url:       url         // override for form's 'action' attribute
 	      	type:      'post',        // 'get' or 'post', override for form's 'method' attribute
-	        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type)
+	        dataType:  'json',        // 'xml', 'script', or 'json' (expected server response type)
 	        clearForm: true        // clear all form fields after successful submit
 	        //resetForm: true        // reset the form after successful submit
 
@@ -309,43 +309,20 @@ $(document).ready(function(){
 		$('#post').removeClass('open');
 		return true;
 	}
-	// pre-submit callback
-	function showRequest(formData, jqForm, options) {
-	    // formData is an array; here we use $.param to convert it to a string to display it
-	    // but the form plugin does this for you automatically when it submits the data
-	    var queryString = $.param(formData);
 
-	    // jqForm is a jQuery object encapsulating the form element.  To access the
-	    // DOM element for the form do this:
-	    // var formElement = jqForm[0];
+	function autoClose (data) {
+        if(data.success) {
+        	$('#new-post').removeClass('open');
+            $(".rte-zone").contents().find(".frameBody").html('');
+            $("#new-post .textarea").css('height','85');
+            tokenInputName = $('#discussion_edit input:text[name=invite]').attr('id');
+            $('#submission').html('');
+            $('#' + tokenInputName).tokenInput("clear");
+            //changeMessageList('#discussion_selector_all');
+        } else {
+            $('#submission').html(data.message);
+        }
 
-	    alert('About to submit: \n\n' + queryString);
-	    // here we could return false to prevent the form from being submitted;
-	    // returning anything other than false will allow the form submit to continue
-	    return true;
-	}
-
-	// post-submit callback
-	function showResponse(responseText, statusText, xhr, $form)  {
-	    // for normal html responses, the first argument to the success callback
-	    // is the XMLHttpRequest object's responseText property
-
-	    // if the ajaxSubmit method was passed an Options Object with the dataType
-	    // property set to 'xml' then the first argument to the success callback
-	    // is the XMLHttpRequest object's responseXML property
-
-	    // if the ajaxSubmit method was passed an Options Object with the dataType
-	    // property set to 'json' then the first argument to the success callback
-	    // is the json data object returned by the server
-
-	    //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText +
-	    //    '\n\nThe output div should have already been updated with the responseText.');
-	    popin.PPNclose();
-		//return false;
-	}
-	function autoClose () {
-		$('#new-post').removeClass('open');
-		//changeMessageList('#discussion_selector_all');
 	}
     function showNewDiscussionBox() {
         boxElm = $('#new-post');
@@ -356,7 +333,9 @@ $(document).ready(function(){
             $('#new-post').removeClass('open');
             $(".rte-zone").contents().find(".frameBody").html('');
             $("#new-post .textarea").css('height','85');
-            $('#discussion_edit .dest').find("input").tokeninput("clear");
+            tokenInputName = $('#discussion_edit input:text[name=invite]').attr('id');
+            $('#submission').html(data.message);
+            $('#' + tokenInputName).tokenInput("clear");
         });
         $('#add-tags').click(function () {
             $('#tags-input').toggle();

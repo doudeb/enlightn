@@ -64,10 +64,8 @@ $(document).ready(function(){
 	}
 
 	function autoClose () {
-		$('#edit_discussion').fadeOut();
-		$('#fake_input').fadeIn();
 		$(".rte-zone").contents().find(".frameBody").html('');
-		$("#embedContent").val('');
+        $("#post .textarea").css('height','85');
 		return true;
 	}
 </script>

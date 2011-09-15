@@ -39,6 +39,7 @@ Order By e.time_created desc";
 		$join	= array();
 		$where	= array();
 		$group	= array();
+
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1
@@ -85,7 +86,7 @@ Order By e.time_created desc";
 		}
 		#Subtype
 		if ($subtype) {
-			$subtype		= str_replace("'","",$subtype);
+			$subtype		= str_replace(array(0=>"'",1=>'\\'),"",$subtype);
 			$subtype_names = explode(',',$subtype);
 			foreach ($subtype_names as $key => $subtype_name) {
 				$subtype_ids[] = get_metastring_id($subtype_name);
@@ -102,7 +103,7 @@ Order By e.time_created desc";
 		                            From metastrings mst
 		                            Where a.name_id = mst.id
 		                            And mst.string In('$subtype')))";*/
-			$join[]	= "Inner Join entity_relationships As rel_embed On a.id = rel_embed.guid_two And rel_embed.relationship = 'embeded'
+			$join[]	= "Inner Join entity_relationships As rel_embed On a.id = rel_embed.guid_two And rel_embed.relationship = '" . ENLIGHTN_EMBEDED . "'
 						Inner Join metadata mtd On rel_embed.guid_one = mtd.entity_guid And mtd.value_id in ($subtype_id)";
 		}
 		#Words
@@ -248,13 +249,24 @@ public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$f
 		$where	= implode(' ',$where);
 		$query = "Select Distinct ent.*
 From entities ent
-Left Join entity_relationships As rel_embed On ent.guid = rel_embed.guid_one And rel_embed.relationship = '" . ENLIGHTN_EMBEDED ."'
-Left Join annotations a On rel_embed.guid_two = a.id
-Left Join entity_relationships As rel_follow On rel_follow.guid_two = a.entity_guid And rel_follow.guid_one = " . $user_guid ." And rel_follow.relationship = '" . ENLIGHTN_FOLLOW ."'
 $join
 Where ent.subtype = $file_subtype_id #File type
-And  (ent.access_id In (" . ACCESS_PUBLIC ."," . ACCESS_PRIVATE .")
-		$user)
+And  (
+		Case
+			When ent.access_id = " . ACCESS_PRIVATE . " Then
+                ent.owner_guid = $user_guid
+                Or 
+				Exists(Select rel_follow.id
+						From entity_relationships rel_embed
+						Inner Join annotations a On rel_embed.guid_two = a.id
+						Inner join entity_relationships As rel_follow On a.entity_guid = rel_follow.guid_two
+																		And rel_follow.guid_one = $user_guid
+																		And rel_follow.relationship = '" . ENLIGHTN_FOLLOW . "'
+						Where ent.guid = rel_embed.guid_one And rel_embed.relationship = '" . ENLIGHTN_EMBEDED . "')
+			When ent.access_id = " . ACCESS_PUBLIC . " Then true
+			Else Null
+		End
+)
 $where
 Order By ent.time_created Desc
 Limit $offset,$limit";
@@ -345,4 +357,20 @@ Limit $offset,$limit";
 		}
 		return  $results;
 	}
+
+    public function is_embeded_and_followed ($guid) {
+        $user_guid = get_loggedin_userid();
+        if (!$user_guid) {
+            return false;
+        }
+        $query = "Select a.entity_guid
+                    From annotations a
+                    Inner Join entity_relationships As rel_embed On a.id = rel_embed.guid_two And rel_embed.relationship = 'embeded'
+                    Where (Exists (Select id From entity_relationships As rel_all Where a.id = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '" . ENLIGHTN_FOLLOW . "' And a.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
+                                                            Or a.access_id  = " . ACCESS_PUBLIC . ")
+                    And rel_embed.guid_one = $guid
+                    Limit 1";
+		return  $this->get_data($query);
+
+    }
 }

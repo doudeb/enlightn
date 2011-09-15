@@ -7,7 +7,6 @@
 function enlightn_init() {
 
 	//Disable rights
-	//elgg_get_access_object()->set_ignore_access(true);
 
 	require_once("helper/config.php");
 	require_once("helper/enlightn.php");
@@ -129,6 +128,11 @@ function enlightn_page_handler($page) {
             set_context('enlightn:settings');
             set_input('current', $page[1]);
 			include($CONFIG->pluginspath . "enlightn/settings.php");
+			break;
+		case "download":
+            set_context('enlightn:download');
+            set_input('file_guid', $page[1]);
+			include($CONFIG->pluginspath . "enlightn/download.php");
 			break;
         case "home":
         default:

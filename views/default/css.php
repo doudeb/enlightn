@@ -201,6 +201,12 @@ span.ignore:hover {
 }
 
 
+.backgroundLock {
+    width : 100%;
+    height : 100%;
+    background-color : #eeeeee;
+}
+
 /** HEADER */
 #header {
     border-bottom:1px solid #000;
@@ -683,6 +689,7 @@ span.ignore:hover {
 #new-post form .dest input,
 #new-post form .dest ul {
     width: 450px;
+    height : 19px;
     #border : 0px;
 }
 #new-post form .dest li {
@@ -894,6 +901,7 @@ span.ignore:hover {
 #feed .actions .checkbox {
     height:15px;
     margin-top: -3px;
+    margin-left: 1px
     vertical-align: middle;
     width:15px;
 }
@@ -961,7 +969,11 @@ span.ignore:hover {
 .msg_home {
 	cursor:pointer;
 }
-
+.msg_home.read{
+	cursor:pointer;
+    background-color : #F7F7F7;
+}
+#feed.detail .msg:hover,
 .msg_home:hover {
     background-color:#f2f1f2;
 }
@@ -995,6 +1007,7 @@ span.ignore:hover {
     float:right;
     margin-bottom: 5px;
     width: 70px;
+    margin-right: 5px;
 }
 
 .msg .star, .msg .lock {
@@ -1035,7 +1048,7 @@ span.ignore:hover {
     display:block;
     height:12px;
     width:12px;
-    margin-left:8px;
+    margin-left:0px;
 }
 
 .unread .read {
@@ -1044,10 +1057,12 @@ span.ignore:hover {
 
 #feed.detail .msg .read {
     display:inline-block;
-    margin-top: 10px;
+    margin-top: 21px;
     vertical-align: top;
 }
-
+#feed.detail .read {
+    background-color : #F7F7F7;
+}
 #feed .msg .inclosed {
     background-position:-100px -125px;
     display:block;
@@ -1077,7 +1092,8 @@ span.ignore:hover {
 }
 
 
-#feed .unread h3 {
+#feed .read h3 {
+    font-weight: normal;
 }
 
 #feed .unread li {
@@ -1095,7 +1111,7 @@ span.ignore:hover {
 
 #feed.detail .msg .participants {
     float:left;
-    margin: 9px 10px 0 9px;
+    margin: 20px 10px 0 9px;
 }
 
 #feed .msg .participants strong {
@@ -1114,6 +1130,7 @@ span.ignore:hover {
     height: auto;
     overflow:hidden;
     white-space:nowrap;
+    margin-top : 20px;
 }
 
 #feed .msg .date {
@@ -2131,7 +2148,7 @@ span.ignore:hover {
     border-radius:5px;
     color:#666;
     cursor:default;
-    #display:none;
+    display:block;
     margin: 22px 0 0 -20px;
     padding: 10px;
     position: absolute;
@@ -2179,6 +2196,7 @@ span.ignore:hover {
 
 .bubble .headline {
     font-size: 87%;
+    width : 150px;
 }
 
 .bubble .button {

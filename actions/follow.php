@@ -1,3 +1,4 @@
+<pre>
 <?php
 	/**
 	 * Join a group action.
@@ -12,13 +13,12 @@
 	$user_guid 			= get_loggedin_userid();
 	$discussion_guid 	= get_input('discussion_guid');
 	$annotation_id	 	= get_input('annotation_id');
-	$ignore_request	 	= get_input('ignore');
+	$ignore_request	 	= get_input('ignore',false);
 
-	if (!$discussion_guid) {
+	if (!$discussion_guid && !empty ($annotation_id)) {
 		$post 			= get_annotation($annotation_id);
 		$discussion_guid= $post->entity_guid;
 	}
-
 	// @todo fix for #287
 	// disable access to get entity.
 	$is_follow			= check_entity_relationship($user_guid, ENLIGHTN_FOLLOW, $discussion_guid);
@@ -37,5 +37,6 @@
 	$enlightn->flush_cache(array('user_guid' => $user_guid,'access_level' => ENLIGHTN_ACCESS_PR),'search');
 	$enlightn->flush_cache(array('user_guid' => $user_guid,'access_level' => ENLIGHTN_ACCESS_PU),'search');
 	$enlightn->flush_cache(array('user_guid' => $user_guid,'access_level' => ENLIGHTN_ACCESS_IN),'search');
+
 exit;
 ?>

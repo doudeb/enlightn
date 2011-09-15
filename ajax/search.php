@@ -23,17 +23,13 @@ $fetch_modified	= sanitise_int(get_input('fetch_modified', 0));
 $unreaded_only	= sanitise_int(get_input('unreaded_only', 0));
 
 
-//var_dump($subtype);
 $last_search	= serialize(array('user_guid' => $user_guid,'entity_guid' => $entity_guid,'access_level' => $access_level,'unreaded_only' => $unreaded_only,'words' => $words,'from_users' => $from_users,'date_begin' => $date_begin,'date_end' => $date_end,'subtype' => $subtype,'offset' => $offset,'limit' => $limit));
 
 $date_begin 	= strtotime($date_begin);
 $date_end 		= strtotime($date_end);
 
 if ($entity_guid > 0) {
-	$flag_member = check_entity_relationship($user_guid, ENLIGHTN_FOLLOW,$entity_guid);
-	if ($flag_member) {
-		elgg_set_ignore_access(true);
-	}
+    disable_right($entity_guid);
 	$discussion_activities  = get_entity_relationships($entity_guid,true);
 	$discussion_activities  = array_reverse($discussion_activities);
 	$discussion_activities  = sort_entity_activities($discussion_activities);
@@ -44,6 +40,9 @@ if ($entity_guid > 0) {
 	$search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
 	$_SESSION['last_search'] = $last_search;
 	$last_modified			= $search_results[0]->created;
+    if ($access_level == ENLIGHTN_ACCESS_IN) {
+        set_context(ENLIGHTN_INVITED);
+    }
 }
 $discussion_unreaded	= $enlightn->count_unreaded_discussion($user_guid);
 

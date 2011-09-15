@@ -5,6 +5,7 @@ gatekeeper();
 $user_guid = get_loggedin_userid();
 global $CONFIG;
 $embed_guid 		= get_input('guid');
+disable_right($embed_guid);
 $file				= new ElggFile((int)$embed_guid);
 
 //is description already loaded

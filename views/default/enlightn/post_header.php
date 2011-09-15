@@ -7,6 +7,7 @@ $(document).ready(function(){
 		if (!$('#' +elm).hasClass('bubble')) {
 		    $('<span />', {
 		            'id' : elm,
+		            'style' : 'width : 300px',
 		    'class': 'bubble'}).insertAfter(this);
 			loadContent('#' + elm,'<?php echo $vars['url']; ?>mod/enlightn/ajax/embed_preview.php?guid=' + $(this).attr('id'));
 		} else {

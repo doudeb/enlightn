@@ -18,13 +18,14 @@ $access 			= get_input('membership');
 $user_guid			= get_loggedin_userid(); // you need to be logged in to comment on a group forum
 $userto 			= get_input('invite');
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
+$json_return        = array();
+$json_return['success'] = false;
 global $CONFIG;
 // Convert string of tags into a preformatted array
 $tagarray = string_to_tag_array($tags);
 // Make sure the title / message aren't blank
 if (empty($title) || empty($message)) {
-	register_error(elgg_echo("grouptopic:blank"));
-	echo elgg_echo('enlightn:missingData');
+	$json_return['message'] = elgg_echo('enlightn:missingData');
 
 // Otherwise, save the topic
 } else {
@@ -42,7 +43,7 @@ if (empty($title) || empty($message)) {
 	$enlightndiscussion->title = $title;
 	// Before we can set metadata, we need to save the topic
 	if (!$enlightndiscussion->save()) {
-		register_error(elgg_echo("grouptopic:error"));
+		$json_return['message'] = elgg_echo("grouptopic:error");
 		//forward("pg/groups/forum/{$group_guid}/");
 	}
 	// Now let's add tags. We can pass an array directly to the object property! Easy.
@@ -103,15 +104,8 @@ if (empty($title) || empty($message)) {
 	//Mark the message as read
 	//add_entity_relationship($user_guid, ENLIGHTN_READED, $enlightndiscussion->guid);
 	add_entity_relationship($user_guid, ENLIGHTN_READED, $annotationid);
-	echo elgg_echo('enlightn:discussion_sucessfully_created');
+	$json_return['message'] = elgg_echo('enlightn:discussion_sucessfully_created');
+    $json_return['success'] = $enlightndiscussion->guid;
 }
-?>
-<script language="javascript">
-	var discussion_id = <?php echo $enlightndiscussion->guid?$enlightndiscussion->guid:'false' ?>;
-	console.log('discussion_id inserted:: ' + discussion_id);
-</script>
-
-<?php
+echo json_encode($json_return);
 exit();
-
-?>

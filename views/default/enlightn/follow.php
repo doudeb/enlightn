@@ -7,20 +7,12 @@ $url 			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?di
 <script language="javascript">
 	$(document).ready(function(){
 		$('#follow<?php echo $vars['entity']->guid?>').click( function(){
-			loadContent("#loader",'<?php echo $url ?>');
-			if ($(this).hasClass("unfollow")) {
-				$(this).removeClass("unfollow");
-			} else {
-				$(this).addClass("unfollow");
-			}
+			loadContent("#follow<?php echo $vars['entity']->guid?>",'<?php echo $url ?>');
+			$(this).toggleClass("unfollow");
 		});
 		$('#ignore<?php echo $vars['entity']->guid?>').click( function(){
-			loadContent("#loader",'<?php echo $url ?>&ignore=1');
-			if ($(this).parent().parent().hasClass("followed")) {
-				$(this).parent().parent().removeClass("followed");
-			} else {
-				$(this).parent().parent().addClass("followed");
-			}
+			loadContent("#ignore<?php echo $vars['entity']->guid?>",'<?php echo $url ?>&ignore=1');
+			$(this).toggle();
 		});
 	});
 </script>
@@ -31,7 +23,7 @@ $url 			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?di
     <span class="followed-val"><?php echo elgg_echo("enlightn:bunttonfollowed"); ?></span>
 </span>
 <?php
-if ($is_invited) {?>
+if ($is_invited && get_context() == ENLIGHTN_INVITED) {?>
 <span class="follow ignore" id="ignore<?php echo $vars['entity']->guid?>">
     <span class="ico"></span>
     <span class="unfollow-val"><?php echo elgg_echo("enlightn:buttonignore")?></span>

@@ -143,7 +143,7 @@ if(typeof $.fn.rte === "undefined") {
             <li class='video' title='Video'><span class='ico'></span></li>\
             <li class='pict' title='Image'><span class='ico'></span></li>\
             <li class='doc' title='Document'><span class='ico'></span></li>\
-		    <li><a href='#' class='disable'><img src='"+opts.media_url+"close.gif' alt='close rte' /></a></li>\
+		    <!--<li><a href='#' class='disable'><img src='"+opts.media_url+"close.gif' alt='close rte' /></a></li>-->\
     </ul>");
 
             $('select', tb).change(function(){

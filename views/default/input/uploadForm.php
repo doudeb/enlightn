@@ -2,7 +2,16 @@
 	<form id="mediaUpload" action="<?php echo $vars['url']; ?>action/enlightn/upload" method="post" enctype="multipart/form-data">
 	<div id="layer">
 	    <span class="close" id="closeUploader">&times;</span>
-	    <span class="caption"><?php echo elgg_echo('enlightn:uploadyourfile')?> <a href="<?php echo $vars['url']; ?>/pg/enlightn/cloud/cloud_embed" rel="facebox" id="cloudLink"><?php echo elgg_echo("enlightn:cloud"); ?></a></span>
+	    <span class="caption">
+            <?php echo elgg_echo('enlightn:uploadyourfile')?>
+            <?php
+            if (get_context() != 'cloud') {
+            ?>
+            <a href="<?php echo $vars['url']; ?>/pg/enlightn/cloud/cloud_embed" rel="facebox" id="cloudLink"><?php echo elgg_echo("enlightn:cloud"); ?></a>
+            <?php
+            }
+            ?>
+        </span>
 	    <input type="file" name="upload" id="upload"/>
 	    <div id="uploader" style="display:none">
 			<input type="text" placeholder="<?php echo elgg_echo('enlightn:title')?>" name="title" id="title"/>
@@ -12,6 +21,7 @@
    				echo elgg_view('input/securitytoken');
 	        ?>
 	        <div class="new-bloc" id="submitBloc">
+                 <div id="submissionUpload"></div>
 	           	<input type="submit" value="<?php echo elgg_echo('enlightn:upload')?>" name="<?php echo elgg_echo('enlightn:upload')?>">
 	        </div>
 	    </div>
@@ -45,7 +55,10 @@
         // bind 'myForm' and provide a simple callback function
         $('#mediaUpload').submit(function() {
 	            var options = {
-	            	beforeSubmit:  showLoading,
+	            	beforeSubmit: showLoading,
+                    target:        '#submissionUpload',
+                    clearForm: true,
+                    resetForm: true,
 				    success:    function(data) {
 				       	$('#uploader').css('display','none');
 		            	$('#embedContent').css('display','none');
@@ -65,7 +78,7 @@
 	            return false;
     });
 	function showLoading () {
-		$('#submitBloc').html('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
+		$('#submissionUpload').html('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
 		return true;
 	}
 </script>

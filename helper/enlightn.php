@@ -526,3 +526,27 @@ function get_time_zone () {
     }
     return $timezone_list;
 }
+
+/**
+ * Depending of the relationship (followed, ressource embeded) this function will
+ * disable access right control
+ * @param type $guid
+ *
+ */
+function disable_right ($guid) {
+    global $enlightn;
+    $user_guid = get_loggedin_userid();
+    if (!$user_guid) {
+        return false;
+    }
+    $is_followed = check_entity_relationship($user_guid, ENLIGHTN_FOLLOW,$guid);
+    if ($is_followed) {
+   		return elgg_set_ignore_access(true);
+
+    }
+    $is_embeded_and_followed = $enlightn->is_embeded_and_followed($guid);
+    if(is_array($is_embeded_and_followed)) {
+    	return elgg_set_ignore_access(true);
+    }
+    return false;
+}
