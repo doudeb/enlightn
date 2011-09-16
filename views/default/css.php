@@ -1006,7 +1006,7 @@ span.ignore:hover {
 #feed .followed .follow {
     float:right;
     margin-bottom: 5px;
-    width: 70px;
+    width: 80px;
     margin-right: 5px;
 }
 
@@ -1043,12 +1043,15 @@ span.ignore:hover {
     width:15px;
 }
 
+#discussion_list_container .msg .read {
+    margin-left:8px;
+}
+
 .msg .read {
     background-position:-50px -127px;
     display:block;
     height:12px;
     width:12px;
-    margin-left:0px;
 }
 
 .unread .read {
@@ -1144,8 +1147,7 @@ span.ignore:hover {
     display: inline-block;
     float: none;
     font-weight: normal;
-    margin-top: 11px;
-    vertical-align: top;
+    margin-top : 21px;
 }
 
 #feed .open-msg .excerpt p, #feed .msg .content {
@@ -2389,10 +2391,18 @@ span.ignore:hover {
     font-size:92%;
 }
 
+#layer .cloud_access {
+    float:right;
+    margin-right : 10px;
+}
+
+#layer .cloud_access a {
+    color : #2c75e2;
+}
 #layer input {
     border-color: #999999;
-    margin: 3px 0;
-    width: 470px;
+    margin: 3px 0px;
+    width: 463px;
 }
 
 #layer .new-bloc {
@@ -3426,9 +3436,11 @@ ul#friends_collections_accordian {
 	text-decoration: none;
 	display: block;
 	padding: 0;
-	width:23px;
+	width:auto;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
 }
 .tabHasContent {
 	background: white; color:#333333 !important;

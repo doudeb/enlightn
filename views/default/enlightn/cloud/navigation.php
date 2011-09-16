@@ -3,7 +3,7 @@
 	    <div class="header">
 	    	<?php if (get_context() != 'cloud_embed') { ?>
                 <div id="join">
-                    <button class="submit" type="submit"><?php echo elgg_echo('enlightn:browse');?></button>
+                    <button class="submit" type="submit"><?php echo elgg_echo('enlightn:cloudnew');?></button>
                 </div>
 	        <?php } ?>
 	        <h2><?php echo elgg_echo('enlightn:cloudmain');?></h2>

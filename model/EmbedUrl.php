@@ -70,10 +70,13 @@ class Embed_url {
 		if (isset($this->tags['title'])) {
 			$this->title = $this->tags['title'];
 		} else {
-			$title_regex = "/<title>(.+)<\/title>/is";
+			$title_regex = '/<title>(.*?)<\/title>/is';
 			preg_match_all($title_regex, $this->html, $title, PREG_PATTERN_ORDER);
-			$this->title = htmlentities($title[1][0]);
+            //$titre = eregi("<title>(.*)</title>",$this->html,$title);
+			//$this->title = $title[1];
+			$this->title = ($title[1][0]);
 		}
+		$this->title = htmlentities($this->title);
 	}
 
 	private function getTags () {

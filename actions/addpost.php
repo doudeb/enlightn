@@ -17,11 +17,10 @@ $topic_guid 		= (int) get_input('topic_guid');
 $group_guid 		= (int) get_input('group_guid');
 $post 				= get_input('new_post',null,false);
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
-//var_dump($_POST);die();
-if (!is_null($embeded)) {
-	$post 			.= $embeded;
+if (empty($post)) {
+    echo elgg_echo('enlightn:messageempty');
+    exit;
 }
-
 
 
 // Check that user is a group member
@@ -53,7 +52,7 @@ if (add_entity_relationship($user->guid, ENLIGHTN_FOLLOW, $topic_guid)) {
     remove_entity_relationship($topic_guid, ENLIGHTN_INVITED, $user->guid);
 }
 add_entity_relationship($user->guid, ENLIGHTN_READED, $post_id);
-system_message(elgg_echo("enlightn:success"));
+//system_message(elgg_echo("enlightn:success"));
 // Remove cache
 $enlightn->flush_cache(array('entity_guid' => $topic_guid),'search');
 $enlightn->flush_cache(array('user_guid' => $user->guid,'access_level' => ENLIGHTN_ACCESS_PU),'search');
@@ -66,8 +65,8 @@ foreach($followers as $follower) {
     // Send email
     if ($follower->{"notification:method:".NOTIFICATION_EMAIL_MESSAGE_FOLLOWED} == '1' && $follower->guid != $user->guid) {
         notify_user($follower->getGUID(), $user->guid,
-                sprintf(elgg_echo('enlightn:newmessagefollowed:subject'), $topic->title),
-                sprintf(elgg_echo('enlightn:newmessagefollowed:body'), $follower->name, $user->name, $topic->title, $url),
+                sprintf(elgg_echo('enlightn:newmessage:subject'), $topic->title),
+                sprintf(elgg_echo('enlightn:newmessage:body'), $follower->name, $user->name, $topic->title, $url),
                 NULL);
     }
 

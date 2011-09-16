@@ -101,6 +101,10 @@
         $('#sidebar .addform input')
             .keyup(function(e) {
                 if(e.keyCode == 13) {
+                    if($(this).val() == '') {
+                        alert('<?php elgg_echo("enlightn:errorlistnoname"); ?>');
+                        return false;
+                    }
                     addNewList($(this).val(), $('#sidebar .addform .ico').hasClass('private-ico'));
                 }
             });
@@ -233,7 +237,7 @@
                 <div class="header">
                     <form id="search" action="" method="post">
                         <div class="search-field">
-                            <input type="text" placeholder="<?php echo elgg_echo('search');?>" name="userSearch" value="<?php echo $vars['user_search']?>"/>
+                            <input type="text" placeholder="<?php echo elgg_echo('enlightn:directory:search');?>" name="userSearch" value="<?php echo $vars['user_search']?>"/>
                             <button class="submit" type="submit"></button>
                         </div>
                     </form>

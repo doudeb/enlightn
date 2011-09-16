@@ -15,11 +15,11 @@ $url_follow			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/fol
                         <li><?php echo elgg_echo("enlightn:action")?><span class="arrow"></span>
                             <ul>
                                 <li id="setReaded"><?php echo elgg_echo("enlightn:setasread")?></li>
-                                <li id="setReaded"><?php echo elgg_echo("enlightn:setasunread")?></li>
+                                <li id="setReaded"><?php echo elgg_echo("enlightn:removeasread")?></li>
                                 <li id="setFollow"><?php echo elgg_echo("enlightn:setasfollow")?></li>
-                                <li id="setFollow"><?php echo elgg_echo("enlightn:setasunfolow")?></li>
+                                <li id="setFollow"><?php echo elgg_echo("enlightn:removeasfollow")?></li>
                                 <li id="setFavorite"><?php echo elgg_echo("enlightn:setasfavorite")?></li>
-                                <li id="setFavorite"><?php echo elgg_echo("enlightn:setasunfavorite")?></li>
+                                <li id="setFavorite"><?php echo elgg_echo("enlightn:removeasfavorite")?></li>
                             </ul>
                         </li>
                     </ul>

@@ -39,6 +39,7 @@ unset($directory_top);
 $collection_list		= elgg_view('enlightn/directory/collection_list',array(
 															'user_ent' => $user_ent
 															, 'collections' => $collections
+                                                            , 'collection_id' => $collection_id
 															));
 $right					= $collection_list;
 unset($collection_list);

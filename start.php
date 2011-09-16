@@ -95,6 +95,7 @@ function enlightn_page_handler($page) {
 			break;
 		case "discuss":
 			set_input('entity_guid', $page[1]);
+			set_context('discuss');
 			include($CONFIG->pluginspath . "enlightn/discuss.php");
 			break;
 		case "cloud":
@@ -113,14 +114,17 @@ function enlightn_page_handler($page) {
 	        if ($user = get_user_by_username($page[0])) {
                 set_page_owner($user->getGUID());
 	        }
+			set_context('collection');
 			$action = $page[1];
 			include($CONFIG->pluginspath . "enlightn/collection.php");
 			break;
 		case "directory":
+			set_context('directory');
 			$collection_id = $page[1];
 			include($CONFIG->pluginspath . "enlightn/directory.php");
 			break;
 		case "profile":
+			set_context('profile');
 			set_input('username', $page[1]);
 			include($CONFIG->pluginspath . "enlightn/profile.php");
 			break;
@@ -136,6 +140,7 @@ function enlightn_page_handler($page) {
 			break;
         case "home":
         default:
+            set_context('home');
 			set_input('discussion_type', $page[1]);
 			include($CONFIG->pluginspath . "enlightn/home.php");
 			break;

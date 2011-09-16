@@ -54,7 +54,7 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                     <span class="label"><?php echo elgg_echo('enlightn:followers');?> (<?php echo count($members);?>)</span>
 					<?php
 					foreach($members as $mem) {
-						echo "<img src='" . $mem->getIcon('small') . "' />\n";
+						echo elgg_view('input/user_photo',array('user_ent'=>$mem));
 					}
 					?>
                 </div>
@@ -62,7 +62,7 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                     <span class="label"><?php echo elgg_echo('enlightn:invitedusers');?> (<?php echo count($invited_members);?>)</span>
 					<?php
 					foreach($invited_members as $mem) {
-						echo "<img src='" . $mem->getIcon('small') . "' />\n";
+						echo elgg_view('input/user_photo',array('user_ent'=>$mem));
 					}
 					?>
                     <span class="add">
@@ -72,14 +72,14 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                         </span>
                         <span class="caption" id="invite-form">
                             <input type="text" id="invite_to_folow" />
-                            <span id="invite_button" class="button"><?php echo elgg_echo("send"); ?></span>
+                            <span id="invite_button" class="button"><?php echo elgg_echo("enlightn:buttonsend"); ?></span>
                         </span>
                     </span>
                 </div>
 
                 <div class="users author">
                     <span class="label"><?php echo elgg_echo('enlightn:postcreated')?></span>
-                    <img src="<?php echo $post_owner->getIcon('small')?>" />
+                    <?php echo elgg_view('input/user_photo',array('user_ent'=>$post_owner));?>
                     <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>
                 </div>
                 <span class="toggle ico"></span>

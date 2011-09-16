@@ -12,7 +12,7 @@
 					<div id="submission"></div>
                     <div class="sending">
                         <input class="checkbox" type="checkbox" /><span class="reply ico"></span>
-                        <button type="submit" class="submit">Post</button>
+                        <button type="submit" class="submit"><?php echo elgg_echo('enlightn:buttonsend'); ?></button>
                     </div>
 				</form>
 			</div>

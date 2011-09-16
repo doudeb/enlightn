@@ -4,25 +4,25 @@
 	    <span class="close" id="closeUploader">&times;</span>
 	    <span class="caption">
             <?php echo elgg_echo('enlightn:uploadyourfile')?>
+        </span>
             <?php
             if (get_context() != 'cloud') {
             ?>
-            <a href="<?php echo $vars['url']; ?>/pg/enlightn/cloud/cloud_embed" rel="facebox" id="cloudLink"><?php echo elgg_echo("enlightn:cloud"); ?></a>
+            <span class="caption cloud_access"><a href="<?php echo $vars['url']; ?>/pg/enlightn/cloud/cloud_embed" rel="facebox" id="cloudLink"><?php echo elgg_echo("enlightn:uploadcloud"); ?></a></span>
             <?php
             }
             ?>
-        </span>
 	    <input type="file" name="upload" id="upload"/>
 	    <div id="uploader" style="display:none">
-			<input type="text" placeholder="<?php echo elgg_echo('enlightn:title')?>" name="title" id="title"/>
-	        <input type="text" placeholder="<?php echo elgg_echo('enlightn:keywords')?>" name="tags" id="tags"/>
+			<input type="text" placeholder="<?php echo elgg_echo('enlightn:titlefile')?>" name="title" id="title"/>
+	        <input type="text" placeholder="<?php echo elgg_echo('enlightn:tagsfile')?>" name="tags" id="tags"/>
 	        <?php
 	        	echo elgg_view('input/hidden', array('internalname' => 'access_id','value' => $access_id));
    				echo elgg_view('input/securitytoken');
 	        ?>
 	        <div class="new-bloc" id="submitBloc">
                  <div id="submissionUpload"></div>
-	           	<input type="submit" value="<?php echo elgg_echo('enlightn:upload')?>" name="<?php echo elgg_echo('enlightn:upload')?>">
+	           	<input type="submit" value="<?php echo elgg_echo('enlightn:uploadembed')?>" name="<?php echo elgg_echo('enlightn:upload')?>">
 	        </div>
 	    </div>
 	</div>

@@ -11,148 +11,271 @@
 		 * Menu items and titles
 		 */
 
-
+			//GENERAL
+			'systemmessages:dismiss' => 'Fermer'
+		 
 			//REGISTRATION FORM
-
-
+			,'register' => 'Inscription' //title of the page AND label of the register button: keep it short!
+			,'name' => 'Nom Prénom'
+			,'email' => 'email'
+			,'username' => 'Nom d\utilisateur'
+			,'password' => 'Mot de passe'
+			,'passwordagain' => 'Resaisissez votre mot de passe'
+			,'RegistrationException:PasswordMismatch' => 'Attention! Tapez bien le même mot de passe dans les deux champs.'
+			,'registerok' => 'Bienvenue sur Enlightn, le mail 2.0. Nous vous avons envoyé un email de confirmation. Merci de cliquer sur le lien pour valider votre inscription.'
+			,'registerbad' => 'Oups, nous ne pouvons créer votre compte pour le moment. Veuillez réessayer.'
+			,'registration:emailnotvalid' => 'Oups, votre adresse email est invalide. Veuillez réessayer.'
+			,'registration:passwordnotvalid' => 'Pour des raisons de sécurité, votre mot de passe doit contenir au minimum 6 caractères.'
+			,'registration:usernamenotvalid' => 'Votre nom d\'utilisateur ne doit contenir aucun espace ni caractères spéciaux.'
+			,'registration:userexists' => 'Ce nom d\'utilisateur est déjà utilisé. Veuillez en choisir un autre.'
+			,'registration:dupeemail' => ''
+			
 			//LOG IN
-			'enlightn:username' => 'Nom d\'utilisateur'
-			,'enlightn:password' => 'Mot de passe'
-			,'enlightn:buttonlogin' => 'Connexion'
-			,'enlightn:errorlogin' => 'Impossible de vous connecter; votre nom d\'utilisateur ou votre mot de passe est erroné. Veuillez essayer à nouveau.'
-			,'enlightn:loginsuccess' => ''
-			,'enlightn:rememberme' => 'Rester connecté'
-			,'enlightn:lostpassword' => 'Mot de passe oublié?'
-			,'enlightn:buttonrequest' => 'Envoyer'
+			,'username' => 'Nom d\'utilisateur'
+			,'password' => 'Mot de passe'
+			,'login' => 'Connexion'
+			,'loginerror' => 'Impossible de vous connecter; votre nom d\'utilisateur ou votre mot de passe est erroné. Veuillez essayer à nouveau.'
+			,'loginok' => ''
+			,'user:persistent' => 'Rester connecté'
+			,'user:password:lost' => 'Mot de passe oublié?'
+			,'request' => 'Envoyer'
+			,'register' => 'Inscription'
+			,'user:password:text' => ''
 
 			//HEADER
-			,'enlightn' => "Enlightn"
-			,'enlightn:profile' => 'Profil'
+			,'enlightn' => ""
+			,'enlightn:title:discussions' => "Discussions"
+			,'enlightn:title:cloud' => "Cloud"
+			,'enlightn:title:directory' => "Trombinoscope"
+			,'enlightn:myprofile' => 'Profil'
+			,'enlightn:editprofile' => 'Modifier mon profil'
 			,'enlightn:settings' => 'Préférences'
 			,'enlightn:logout' => 'Déconnexion'
-			,'enlightn:directory' => 'Trombinoscope'
 
 			//HOME - NEW TOPIC
-			,'enlightn:newdiscussion' => "Créez une nouvelle discussion"
-			,'enlightn:title' => 'Sujet'
-			,'enlightn:buttonpublic' => "Publique"
-			,'enlightn:buttonprivate' => "Privée"
-			,'enlightn:to' => "A"
-			,'enlightn:tags' => 'Mots-clé'
-			,'enlightn:buttoncancel' => "Annuler"
-			,'enlightn:buttonpost' => "Envoyer"
-			,'enlightn:missingData' => "Oups, il manque une information"
-			,'enlightn:discussion_sucessfully_created' => "Votre discussion a bien été créée."
+			,'enlightn:newdiscussion' => "Créer une nouvelle discussion"
+			,'enlightn:title' => 'Titre de la discussion'
+			,'enlightn:title:bold' => 'Gras'
+			,'enlightn:title:italic' => 'Italique'
+			,'enlightn:title:bulletpoints' => 'Liste'
+			,'enlightn:title:link' => 'Lien'
+			,'enlightn:title:video' => 'Vidéo'
+			,'enlightn:prompt:link' => 'Saisissez le lien que vous souhaitez partager:'
+			,'enlightn:prompt:video' => 'Saisissez un lien Youtube/Dailymotion...'
+			,'enlightn:title:picture' => 'Image'
+			,'enlightn:title:document' => 'Document'
+			,'enlightn:buttonpublic' => 'Publique'
+			,'enlightn:buttonprivate' => 'Privée'
+			,'enlightn:to' => 'A'
+			,'enlightn:tags' => 'Mots-clés'
+			,'enlightn:buttoncancel' => 'Annuler'
+			,'enlightn:buttonpost' => 'Envoyer'
+			,'enlightn:missingData' => 'Oups, il manque un titre à votre discussion.'
+			,'enlightn:discussion_sucessfully_created' => ''
 
 			//HOME - NEW TOPIC - UPLOAD
-			,'enlightn:uploadyourfile' => 'Joindre un fichier'
-			,'enlightn:cloud' => 'Accéder au Cloud'
+			,'enlightn:uploadcloud' => 'Votre fichier se trouve dans le cloud?'
 			,'enlightn:titlefile' => 'Titre du document'
-			,'enlightn:tagsfile' => 'Mots-clé'
-			,'enlightn:upload' => 'Joindre à la discussion'
+			,'enlightn:tagsfile' => 'Mots-clés'
+			,'enlightn:uploadembed' => 'Joindre à la discussion'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Lus'
 			,'enlightn:unread' => 'Non lus'
-			,'enlightn:followed' => 'Suivies'
-			,'enlightn:unfollowed' => 'Non suivies'
-			,'enlightn:setasreadunread' => 'Lu / Non lu'
+			,'enlightn:action' => 'Actions'
 			,'enlightn:setasread' => 'Marquer comme lu'
-			,'enlightn:setasunread' => 'Marquer comme non lu'
-			,'enlightn:setasfollowunfollow' => 'Suivi'
-			,'enlightn:setasfollow' => 'Suivre'
-			,'enlightn:setasunfollow' => 'Se désabonner'
-			,'enlightn:setasfavoriteunfavorite' => 'Favoris'
+			,'enlightn:removeasread' => 'Marquer comme non lu'
+			,'enlightn:setasfollow' => 'Rejoindre la discussion'
+			,'enlightn:removeasfollow' => 'Quitter la discussion'
 			,'enlightn:setasfavorite' => 'Mettre en favori'
-			,'enlightn:setasunfavorite' => 'Supprimer de mes favoris'
+			,'enlightn:removeasfavorite' => 'Supprimer de mes favoris'
 
 			//HOME - SEARCH
-			,'enlightn:search' => "Recherche"
-			,'enlightn:buttonall' => "Tous"
-			,'enlightn:datefrom' => 'Du'
+			,'enlightn:search' => 'Recherche'
+			,'enlightn:searchindiscussion' => 'Recherche dans cette discussion'
+			,'enlightn:buttonall' => 'Tous'
+			,'enlightn:title:buttonall' => 'Tous types de messages'
+			,'enlightn:title:text' => 'Texte'
+			,'enlightn:title:link' => 'Lien'
+			,'enlightn:title:video' => 'Vidéo'
+			,'enlightn:title:picture' => 'Image'
+			,'enlightn:title:document' => 'Document'
+			,'enlightn:datefrom' => 'du'
 			,'enlightn:dateto' => 'au'
-			,'enlightn:fromuser' => 'Par'
-			,'enlightn:typeinasearchterm' => "Nom"
-			,'enlightn:searching' => "recherche..."
+			,'enlightn:fromuser' => 'De:'
+			,'enlightn:typeinasearchterm' => 'Saisir un nom'
+			,'enlightn:searching' => 'recherche...'
 
 			//HOME - RIGHT COLUMN
-			,'enlightn:public' => "Discussions publiques"
-			,'enlightn:follow' => "Mes discussions"
-			,'enlightn:request' => "Invitations"
-			,'enlightn:buttonfollow' => "Suivre"
-			,'enlightn:buttonunfollow' => "Quitter"
-			,'enlightn:buttonignore' => "Ignorer"
-			,'enlightn:bunttonfollowed' => "Suivi"
-			,'enlightn:favorites' => "Favoris"
-			,'enlightn:sent' => "Envoyés"
+			,'enlightn:public' => 'Discussions publiques'
+			,'enlightn:follow' => 'Mes discussions'
+			,'enlightn:request' => 'Invitations'
+			,'enlightn:favorites' => 'Favoris'
+			,'enlightn:sent' => 'Envoyés'
 
 			//HOME - LEFT COLUMN
-			,'enlightn:andothers' => ' et %s autres'
-			,'enlightn:buttonfollow' => "Suivre"
-			,'enlightn:seemore' => "Voir plus"
+			,'enlightn:seemore' => 'Voir plus'
+			,'enlightn:buttonfollow' => 'Rejoindre' //short text please (button)
+			,'enlightn:buttonunfollow' => 'Quitter' //short text please (button)
+			,'enlightn:bunttonfollowed' => 'Abonné' // short texte please (button)
 
+			//REQUESTS - LEFT COLUMN
+			,'enlightn:buttonignore' => 'Ignorer'
+			
 			//DETAILS OF A DISCUSSION
-			,'enlightn:buttonunnfollow' => "Se désabonner"
-			,'enlightn:followers' => "Participants:"
-			,'enlightn:invitedusers' => "Invités:"
-			,'enlightn:userinvited' => "Votre invitation a bien été envoyée."
-			,'enlightn:discussioninvite' => "Inviter des participants"
-			,'enlightn:buttonsend' => "Envoyer"
-			,'enlightn:postcreated' => "Créée par:"
-			,'enlightn:newpost' => 'Ajouter un message'
-			,'enlightn:message_sucessfully_created' => "Votre message a bien été ajouté à la discussion."
+			,'enlightn:andothers' => ' et %s autres'
+			,'enlightn:invitedusers' => 'Invités:'
+			,'enlightn:userinvited' => 'Votre invitation a bien été envoyée.'
+			,'enlightn:discussioninvite' => 'Inviter des participants'
+			,'enlightn:followers' => 'Participants:'
+			,'enlightn:buttonsend' => 'Envoyer'
+			,'enlightn:postcreated' => 'Créée par:'
+			//,'enlightn:newpost' => 'Ajouter un message'
+			//,'enlightn:message_sucessfully_created' => "Votre message a bien été ajouté à la discussion."
 			,'enlightn:messageempty' => "Oups, vous avez oublié de saisir votre message..."
-			,'enlightn:expandall' => "Voir tout"
-			,'enlightn:collapseall' => "Réduire"
+			,'enlightn:expandall' => " Agrandir" //don't forget to add a space first
+			,'enlightn:collapseall' => " Réduire" //don't forget to add a space first
 			,'enlightn:readmore' => 'Plus d\'infos'
 			,'enlightn:viewvideo' => 'Voir sur le site'
 			,'enlightn:viewimage' => 'Agrandir'
-			,'enlightn:viewdocument' => 'Ouvrir'
 			,'enlightn:downloaddocument' => 'Télécharger'
 			,'enlightn:activity:member' => ' a rejoint la discussion'
-			,'enlightn:activity:membership_request' => ' a été invité à la discussion'
+			,'enlightn:activity:membership_request' => ' a été invité à rejoindre la discussion'
 
 			//PROFILE
-			,'enlightn:editprofileicon' => 'Modifier ma photo'
-			,'enlightn:editprofile' => 'Modifier mon profil'
+			,'enlightn:profilelastmessage' => 'Discussions'
+			,'enlightn:profilecloud' => 'Cloud'
+			,'enlightn:previous' => 'Précédent'
+			,'enlightn:next' => 'Suivant'
 
 			//DIRECTORY
-			,'enlightn:directoryall' => 'Tous'
-			,'enlightn:createanewlist' => 'Créer une nouvelle liste'
-			,'enlightn:listname' => 'Nom de la liste'
-			,'enlightn:private/public' => 'privée/publique'
-			,'enlightn:errorlistnoname' => 'Veuillez choisir un nom pour cette liste'
+			,'enlightn:directory' => 'Trombinoscope'
+			,'*' => 'Tous' //4 characters max please
+			,'enlightn:taball' => 'Tous'
+			,'enlightn:directory:search' => 'Nom, Prénom'
+			,'enlightn:seehisprofil' => 'Voir son profil'
+			,'enlightn:createanewlist' => '+ Créer une nouvelle liste' //don't forget the "+"
+			,'enlightn:listname' => 'Intitulé' //short text please
+			,'enlightn:privatepublic' => 'privée/publique'
+			,'enlightn:errorlistnoname' => 'Veuillez attribuer un nom pour cette liste'
 
 			//CLOUD
 			,'enlightn:cloudmain' => 'Cloud'
-			,'enlightn:download' => 'Télécharger'
-			/*
-			Attention tonton, il est écrit enlighnt en dev au lieu d'enlightn
-			*/
-			,'enlightn:previous' => 'Précédent'
-			,'enlightn:next' => 'Suivant'
-			,'enlightn:file:type:all' => 'Tous'
-			,'enlightn:file:type:video' => 'Videos'
-			,'enlightn:file:type:image' => 'Images'
-			,'enlightn:file:type:doc' => 'Documents'
-			,'enlightn:file:type:link' => 'Articles'
+			,'enlightn:cloudnew' => 'Ajouter un document'
+			,'enlightn:file:type:all' => 'Tous' //don't translate please
+			,'enlightn:file:type:video' => 'Videos' //don't translate please
+			,'enlightn:file:type:image' => 'Images' //don't translate please
+			,'enlightn:file:type:doc' => 'Documents' //don't translate please
+			,'enlightn:file:type:link' => 'Articles' //don't translate please
 
 			//SETTINGS
-            ,'enlightn:settingsheader' => '%s settings'
-
+            ,'enlightn:settingsheader' => '%s' //don't translate please
+			,'enlightn:account' => 'Mon compte'
+			,'user:name:label' => 'Nom Prénom'
+			,'email:address:label' => 'email'
+			,'user:language:label' => 'Langue'
+			
+			,'enlightn:password' => 'Changer mon mot de passe'
+			,'user:current_password:label' => 'Mot de passe actuel'
+			,'user:password:label' => 'Nouveau mot de passe'
+			,'user:password2:label' => 'Saisissez de nouveau votre mot de passe'
+			
+			,'enlightn:profile' => 'Modifier mon profil'
+			,'profile:jobtitle' => 'Fonction'
+			,'profile:department' => 'Département'
+			,'profile:location' => 'Localisation'
+			,'profile:timezone' => 'Fuseau horaire'
+			,'profile:addasociallink' => 'Ajouter un lien vers un profil social'
+			,'profile:selectasociallink' => 'Choisissez'
+			,'profile:phone' => 'Téléphone professionnel'
+			,'profile:cellphone' => 'Mobile'
+			,'profile:direction' => 'Adresse professionnelle'
+			
+			,'enlightn:picture' => 'Photo'
+			,'profile:profilepictureinstructions' => ''
+			,'profile:currentavatar' => 'Photo actuelle'
+			,'profile:editicon' => 'Changer ma photo'
+			,'upload' => 'Valider'
+			,'profile:profilepicturecroppingtool' => ''
+			,'profile:createicon:instructions' => 'Sélectionnez la partie de l\'image que vous souhaitez utiliser comme photo pour votre profil.'
+			,'profile:preview' => 'Prévisualisation:'
+			,'profile:createicon' => 'Valider'	
+			
+			,'enlightn:notification' => 'Alertes email'
+			,'enlightn:notificationheadline' => 'M\'alerter quand:'
+			,'enlightn:notifyoninvite' => 'Je suis invité à une discussion'
+			,'enlightn:notifyonnewmsg' => 'Quand il y a un nouveau message dans mes discussions'
+			
+			,'enlightn:statistics' => 'Statistiques'
+			,'usersettings:statistics:yourdetails' => 'Mes infos'
+			,'usersettings:statistics:label:name' => 'Nom'
+			,'usersettings:statistics:label:email' => 'email'
+			,'usersettings:statistics:label:membersince' => 'Inscrit le'
+			,'usersettings:statistics:label:lastlogin' => 'Dernière connexion'
+			,'usersettings:statistics:label:numentities' => 'Mes participations'
+			,'item:object:enlightndiscussion' => 'Discussions créées'
+			,'item:object:file' => 'Mon cloud'
+			
+			//FOOTER
+			,'expages:about' => 'Charte d\'utilisation'
+			,'expages:terms' => 'Politique de Confidentialité'
+			,'expages:privacy' => 'CGU'
+			,'expages:help' => 'Aide'
+			,'expages:FAQ' => 'FAQ'
+			
+			//DATES
+			,'friendlytime:justnow' => "à l'instant"
+			,'friendlytime:minutes' => "il y a %s minutes"
+			,'friendlytime:minutes:singular' => "il y a une minute"
+			,'friendlytime:hours' => "il y a %s heures"
+			,'friendlytime:hours:singular' => "il y a une heure"
+			,'friendlytime:days' => "il y a %s jours"
+			,'friendlytime:days:singular' => "hier"
+			,'friendlytime:date_format' => 'j F Y à H:i'
+			
 			//LOG OUT
-			,'enlightn:logoutsucceed' => 'A bientôt'
+			,'logoutsucceed' => 'A bientôt'
 
             //MAIL
+			//New message
+			,'enlightn:newmessage:subject' => 'Re: %s '
+			,'enlightn:newmessage:body' => 'Bonjour %s,
+
+%s a ajouté un nouveau message à la discussion "%s"
+
+<a href="%s">Accéder à la discussion</a>
+%s'
+			
+			//$follower (to)  $user (from)  $topic (title)  $url
+			
+			//Confirm email
+			,'uservalidation:email:validate:subject' => '%s, veuillez confirmer votre email pour accéder à %s'
+			,'uservalidation:email:validate:body' => 'Bonjour %s,
+				
+Vous venez de vous inscrire à la plateforme %s.
+Pour y accéder, veuillez confirmer votre adresse email en cliquant sur le lien ci-dessous:
+%s
+
+A tout de suite sur %s,
+L\'équipe Enlightn'
+			
+			//Email validated
+			,'email:validate:success:subject' => 'Bienvenue sur %s'
+			,'email:validate:success:body' => 'Bonjour %s,
+
+Votre compte a bien été créé sur la plateforme %s.
+
+A tout de suite sur %s,
+L\'équipe Enlightn'
+			
             //Invite
-			,'enlightn:invite:subject' => 'Invitation à rejoindre la discussion : %s '
+			,'enlightn:invite:subject' => '%s'
 			,'enlightn:invite:body' => 'Bonjour %s,
 
-Vous avez reçu de la part de %s une invitation à rejoindre la discussion "%s"
+%s vous invite à rejoindre la discussion "%s
 
 <a href="%s">Rejoindre la discussion</a>
 %s'
-
 
 	);
 	add_translation("fr",$french);

@@ -29,8 +29,7 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
                             <span id="read<?php echo $discussion->id?>" class="read ico"></span>
                         </div>
                         <div class="excerpt">
-                            <img class="thumb-photo" src="<?php echo $post_owner->getIcon('small')?>" />
-
+                            <?php echo elgg_view('input/user_photo',array('class'=>'thumb-photo','user_ent'=>$post_owner));?>
                             <span class="participants"><strong><?php echo $post_owner->name?></strong></span>
                             <p><?php echo strip_tags($discussion->value); ?></p>
                         </div>
@@ -52,11 +51,7 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
                     </li>
 <script>
 		$("#read<?php echo $discussion->id; ?>").click( function(){
-			if ($("#read<?php echo $discussion->id; ?>").parent().parent().hasClass("unread")) {
-				$("#read<?php echo $discussion->id; ?>").parent().parent().removeClass("unread");
-			} else {
-				$("#read<?php echo $discussion->id; ?>").parent().parent().addClass("unread");
-			}
+			$("#read<?php echo $discussion->id; ?>").parent().parent().toggleClass("read unread open-msg");
 			loadContent('#loader','<?php echo $url_read?>');
 		});
 </script>

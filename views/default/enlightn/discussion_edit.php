@@ -18,10 +18,10 @@
                                     'internalid' => 'description',
                                     'value' => $vars['entity']->description)); ?>
             <div class="privacy private">
-                <span class="private-val value"><span class="ico"></span><?php echo elgg_echo('private') ?></span>
+                <span class="private-val value"><span class="ico"></span><?php echo elgg_echo('enlightn:buttonprivate') ?></span>
 
                 <span class="cursor" id="privacy_cursor"></span>
-                <span class="public-val value"><?php echo elgg_echo('public') ?></span>
+                <span class="public-val value"><?php echo elgg_echo('enlightn:buttonpublic') ?></span>
                 <?php echo elgg_view("input/hidden",array(
                                         'internalname' => 'membership',
                                         'internalid' => 'membership',

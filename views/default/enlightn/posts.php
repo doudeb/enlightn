@@ -2,8 +2,8 @@
                 <div class="s-actions">
                     <ul>
 
-                        <li id="expandAll"><span class="arrow"></span> Expand all</li>
-                        <li id="collapseAll"><span class="arrow arrow-top"></span> Collapse all</li>
+                        <li id="expandAll"><span class="arrow"></span><?php echo elgg_echo("enlightn:expandall"); ?></li>
+                        <li id="collapseAll"><span class="arrow arrow-top"></span><?php echo elgg_echo("enlightn:collapseall"); ?></li>
                     </ul>
                 </div>
                 <ol id="discussion_list_container"></ol>

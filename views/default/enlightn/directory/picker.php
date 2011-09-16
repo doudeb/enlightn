@@ -81,7 +81,6 @@ if (is_array($vars['entities']) && sizeof($vars['entities'])) {
 		$users[$letter][$user->guid] = $user;
 	}
 }
-
 // sort users in letters alphabetically
 foreach ($users as $letter => $letter_users) {
 	usort($letter_users, create_function('$a, $b', '
@@ -169,7 +168,7 @@ if (!isset($vars['replacement'])) {
 	$letpos = 0;
 	while (1 == 1) {
 		?>
-		<div class="panel" title="<?php	echo $letter; ?>">
+		<div class="panel" title="<?php	echo elgg_echo($letter); ?>">
 			<div class="wrapper">
 				<h3><?php echo elgg_echo($letter); ?></h3>
 		<?php

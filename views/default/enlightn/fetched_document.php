@@ -6,5 +6,5 @@
 </span>
 <span class="col">
     <strong><?php echo $vars['entity']->title;?></strong>
-    <span class="button download"><span class="ico"></span><a href="<?php echo URL_DOWNLOAD .$vars['entity']->guid;?>" target="_blank"><?php  echo elgg_echo('download')?></a></span>
+    <span class="button download"><span class="ico"></span><a href="<?php echo URL_DOWNLOAD .$vars['entity']->guid;?>" target="_blank"><?php  echo elgg_echo('enlightn:downloaddocument')?></a></span>
 </span>

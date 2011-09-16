@@ -136,13 +136,13 @@ if(typeof $.fn.rte === "undefined") {
 		            <option value='address'>Address</option>\
 		        </select>\
 		    </li>-->\
-	        <li class='bold' title='Gras'><span class='ico'></span></li>\
-	        <li class='italic' title='Italique'><span class='ico'></span></li>\
-	        <li id='unorderedlist' class='new-gp ul' title='Liste'><span class='ico'></span></li>\
-		    <li id='embedLink' class='new-gp link' title='Lien'><span class='ico'></span></li>\
-            <li class='video' title='Video'><span class='ico'></span></li>\
-            <li class='pict' title='Image'><span class='ico'></span></li>\
-            <li class='doc' title='Document'><span class='ico'></span></li>\
+	        <li class='bold' title=''><span class='ico'></span></li>\
+	        <li class='italic' title=''><span class='ico'></span></li>\
+	        <li id='unorderedlist' class='new-gp ul' title=''><span class='ico'></span></li>\
+		    <li id='embedLink' class='new-gp link' title=''><span class='ico'></span></li>\
+            <li class='video' title=''><span class='ico'></span></li>\
+            <li class='pict' title=''><span class='ico'></span></li>\
+            <li class='doc' title=''><span class='ico'></span></li>\
 		    <!--<li><a href='#' class='disable'><img src='"+opts.media_url+"close.gif' alt='close rte' /></a></li>-->\
     </ul>");
 

@@ -61,8 +61,6 @@ $release = get_version(true);
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.form.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery-ui-1.7.2.min.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>_css/js.php?lastcache=<?php echo $vars['config']->lastcache; ?>&js=initialise_elgg&viewtype=<?php echo $vars['view']; ?>"></script>
-	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.popin.js"></script>
-	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.rte.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.tokeninput.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/cal.js"></script>
 <?php

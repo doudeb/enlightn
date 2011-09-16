@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin_manifest>
         <field key="author" value="Edouard Bardet" />
-        <field key="version" value="0.9.2" />
+        <field key="version" value="0.9.3" />
         <field key="description" value="Enlightn functionality for elgg" />
         <field key="website" value="http://www.enlightn.org/" />
         <field key="copyright" value="Enlightn 2011" />

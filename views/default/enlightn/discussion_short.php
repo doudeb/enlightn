@@ -33,7 +33,7 @@ $short_title    	= substr($entity->title,0,55);
                             <span class="star ico" id="favorite<?php echo $post->entity_guid; ?>"></span>
                         </div>
                         <div class="excerpt" id="excerpt<?php echo $post->entity_guid; ?>">
-                            <img class="thumb-photo" src="<?php echo $post_owner->getIcon('small')?>" />
+                            <?php echo elgg_view('input/user_photo',array('class'=>'thumb-photo','user_ent'=>$post_owner));?>
                             <h3><a href="<?php echo $vars['url'] ?>/pg/enlightn/discuss/<?php echo $vars['entity']->guid; ?>"><?php echo $short_title?></a></h3>
                             <span class="participants"><strong><?php echo $post_owner->name?></strong> <?php echo elgg_view("enlightn/discussion_members",array('entity' => $post
 														, 'limit' => 5));?></span>
@@ -50,11 +50,7 @@ $short_title    	= substr($entity->title,0,55);
 			$(location).attr('href','<?php echo $vars['url'] ?>/pg/enlightn/discuss/<?php echo $vars['entity']->guid; ?>');
 		});
 		$("#read<?php echo $post->id; ?>").click( function(){
-			if ($("#read<?php echo $post->id; ?>").parent().parent().hasClass("unread")) {
-				$("#read<?php echo $post->id; ?>").parent().parent().removeClass("unread");
-			} else {
-				$("#read<?php echo $post->id; ?>").parent().parent().addClass("unread");
-			}
+			$("#read<?php echo $post->id; ?>").parent().parent().toggleClass("read unread");
 			loadContent('#loader','<?php echo $url_read?>');
 		});
 		$("#favorite<?php echo $post->entity_guid; ?>").click( function(){
