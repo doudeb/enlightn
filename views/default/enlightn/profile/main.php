@@ -8,8 +8,8 @@ $settings	= $vars['settings'];
 	    <img class="big-photo" src="<?php echo $user->getIcon('large')?>" />
 	    <div class="header">
 			<p><h2><?php echo $user->name?></h2></p>
-			<p><h3><?php echo $settings['jobtitle']['value']?></h3></p>
-			<div class="job_location"><?php echo $settings['department']['value']?> <?php echo !empty($settings['location']['value'])?', ' . $settings['location']['value']:''?></div>
+			<p><h3><?php echo $settings['jobtitle']?></h3></p>
+			<div class="job_location"><?php echo $settings['department']?> <?php echo !empty($settings['location'])?', ' . $settings['location']:''?></div>
 		</div> <!-- end header -->
 		<div id="feed">
 			<div class="actions">

@@ -1,7 +1,7 @@
 <?php
-$user		= $vars['user'];
-$settings	= $vars['settings'];
-$settings['mail']['value'] = $user->email;
+$user               = $vars['user'];
+$settings           = $vars['settings'];
+$settings['mail']   = $user->email;
 global $sn_linkers;
 ?>
 		<div id="sidebar">
@@ -9,21 +9,23 @@ global $sn_linkers;
                 <div class="linker">
                     <?php
                     foreach ($sn_linkers as $key => $name) {
-                        if (isset($settings[$name]['value']) && !empty ($settings[$name]['value'])) {
+                        if (isset($settings[$name]) && !empty ($settings[$name])) {
                             echo elgg_view('enlightn/profile/sn_ico', array('settings'=>$settings,'needle'=>$name));
                         }
                     }
                     ?>
                 </div>
 				<div class="details">
+                    <ul>
                     <?php
                     foreach (array('phone','cellphone','mail', 'direction') as $key => $name) {
-                        if(!empty ($settings[$name]['value'])) {
-                            if ($name == 'direction') echo '<h1></h1>';
-                            echo '<span class="ico ' . $name . '">' . $settings[$name]['value'] .'</span>';
+                        if(!empty ($settings[$name])) {
+                            if ($name == 'direction') echo '<li><h1></h1></li>';
+                            echo '<li><span class="ico ' . $name . '">' . $settings[$name] .'</span></li>';
                         }
                     }
                     ?>
+                    </ul>
 				</div><!-- end details -->
 			</div><!-- end profile_sidebar -->
 			<ol class="folders">

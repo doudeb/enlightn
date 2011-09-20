@@ -494,25 +494,37 @@ function get_last_search_value ($value) {
 
 
 function get_profile_settings ($user_guid = false) {
-    global $CONFIG;
+    $profile_defaults = array (
+            'jobtitle' => 'text',
+            'department' => 'text',
+            'direction' => 'longtext',
+            'location' => 'tags',
+            'phone' => 'text',
+            'cellphone' => 'text',
+            'timezone' => 'text',
+            'skype'=> 'text',
+            'linkedin'=> 'text',
+            'twitter'=> 'text',
+            'viadeo'=> 'text',
+            //'facebook'=> 'text',
+            'google'=> 'text',
+            'flickr'=> 'text',
+            'youtube'=> 'text',
+            'vimeo'=> 'text',
+            'myspace'=> 'text',
+            'netvibes'=> 'text');
     if (!$user_guid) {
         $user_guid = get_loggedin_userid();
     }
-    //Retrveive all defined profile settings
-    if (!is_array($CONFIG->profile)) {
-        profile_fields_setup();
-    }
-    foreach ($CONFIG->profile as $key => $fields) {
-        if ($metadata = get_metadata_byname($user_guid, $key)) {
-            $value = $metadata->value;
-            $value_name = elgg_echo('profile:' . $metadata->name);
-            $profile_settings[$value_name]['value'] = $value;
-            $profile_settings[$value_name]['original_name'] = $key;
-        }
+    foreach ($profile_defaults as $key => $fields) {
+        $metadata = get_metadata_byname($user_guid, $key);
+        $value = $metadata->value;
+        $profile_settings[$key] = $value;
     }
 
     return $profile_settings;
 }
+
 
 function get_time_zone () {
     $timezone_identifiers = DateTimeZone::listIdentifiers();

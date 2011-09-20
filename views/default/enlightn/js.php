@@ -479,13 +479,13 @@ if(typeof $.fn.rte === "undefined") {
 		            <option value='address'>Address</option>\
 		        </select>\
 		    </li>-->\
-	        <li class='bold' title=''><span class='ico'></span></li>\
-	        <li class='italic' title=''><span class='ico'></span></li>\
-	        <li id='unorderedlist' class='new-gp ul' title=''><span class='ico'></span></li>\
-		    <li id='embedLink' class='new-gp link' title=''><span class='ico'></span></li>\
-            <li class='video' title=''><span class='ico'></span></li>\
-            <li class='pict' title=''><span class='ico'></span></li>\
-            <li class='doc' title=''><span class='ico'></span></li>\
+	        <li class='bold' title='<?php echo elgg_echo('enlightn:title:bold')?>'><span class='ico'></span></li>\
+	        <li class='italic' title='<?php echo elgg_echo('enlightn:title:italic')?>'><span class='ico'></span></li>\
+	        <li id='unorderedlist' class='new-gp ul' title='<?php echo elgg_echo('enlightn:title:bulletpoints')?>'><span class='ico'></span></li>\
+		    <li id='embedLink' class='new-gp link' title='<?php echo elgg_echo('enlightn:title:link')?>'><span class='ico'></span></li>\
+            <li class='video' title='<?php echo elgg_echo('enlightn:title:video')?>'><span class='ico'></span></li>\
+            <li class='pict' title='<?php echo elgg_echo('enlightn:title:picture')?>'><span class='ico'></span></li>\
+            <li class='doc' title='<?php echo elgg_echo('enlightn:title:document')?>'><span class='ico'></span></li>\
 		    <!--<li><a href='#' class='disable'><img src='"+opts.media_url+"close.gif' alt='close rte' /></a></li>-->\
     </ul>");
 
@@ -506,17 +506,17 @@ if(typeof $.fn.rte === "undefined") {
             	$('#embedContent').css('display','block');
             });
             $('.link', tb).click(function(){
-                var p=prompt("URL:");
+                var p=prompt("<?php echo elgg_echo('enlightn:prompt:link')?>");
                 if(p)
                     formatText('insertHTML', p);
                 return false; });
             $('.video', tb).click(function(){
-                var p=prompt("URL:");
+                var p=prompt("<?php echo elgg_echo('enlightn:prompt:video')?>");
                 if(p)
                     formatText('insertHTML', p);
                 return false; });
             $('.pict', tb).click(function(){
-                var p=prompt("URL:");
+                var p=prompt("<?php echo elgg_echo('enlightn:prompt:picture')?>");
                 if(p)
                     formatText('insertHTML', p);
                 return false; });

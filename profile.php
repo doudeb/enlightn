@@ -10,7 +10,6 @@ $user_ent				= get_user($user_guid);
 $username				= get_input('username');
 $user 					= get_user_by_username($username);
 $user_settings          = get_profile_settings($user->guid);
-
 if (!$user_guid || !$user_ent) {
 	forward();
 }

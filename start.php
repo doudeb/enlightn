@@ -6,8 +6,6 @@
 
 function enlightn_init() {
 
-	//Disable rights
-
 	require_once("helper/config.php");
 	require_once("helper/enlightn.php");
 	require_once("model/enlightn.php");
@@ -34,6 +32,7 @@ function enlightn_init() {
 	register_action("enlightn/favorite",false, $CONFIG->pluginspath . "enlightn/actions/favorite.php");
 	register_action("enlightn/upload",false, $CONFIG->pluginspath . "enlightn/actions/upload.php");
 	register_action("enlightn/save_notifications",false, $CONFIG->pluginspath . "enlightn/actions/save_notifications.php");
+	register_action("enlightn/profile_edit",false, $CONFIG->pluginspath . "enlightn/actions/profile_edit.php");
 	//collection
 	register_action("enlightn/collection/addcollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/addcollection.php");
 	register_action("enlightn/collection/removefromcollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/removefromcollection.php");
@@ -130,8 +129,8 @@ function enlightn_page_handler($page) {
 			break;
 		case "settings":
             set_context('enlightn:settings');
-            set_input('current', $page[1]);
-			include($CONFIG->pluginspath . "enlightn/settings.php");
+   			$page[1]?set_input('tab', $page[1]):set_input('tab', 'account');
+            include($CONFIG->pluginspath . "enlightn/settings.php");
 			break;
 		case "download":
             set_context('enlightn:download');

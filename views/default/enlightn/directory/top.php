@@ -62,12 +62,12 @@
 
                 /* APPEL AJAX DE CREATION */
                 $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/collection/addcollection");?>', {listName: name, userIds: formUserIds, isPrivate: isPrivate}, function(data) {
-
-                    //var data = {id: Math.round(Math.random()*1000)}; /* REMOVE after Ajax implementation */
-
+                    //remove class current
+                    $('#sidebar .folders')
+                        .find('li').removeClass('current');
                     $('#sidebar .addform')
                         /* Add list and tag to users */
-                        .before('<li id="area'+ data.id +'" class="dropable" style="display:none" data-listId="'+ data.id +'" data-listName="'+ name +'"><a class="cat" href="/list'+ data.id +'"><span class="count">'+ formUserIds.length +'</span>'+ name +'<span class="ico '+ privacyClass +'"></span></a></li>')
+                        .after('<li id="area'+ data.id +'" class="dropable current" style="display:none" data-listId="'+ data.id +'" data-listName="'+ name +'"><span class="arrow"></span><a class="cat" href="/list'+ data.id +'"><span class="count">'+ formUserIds.length +'</span>'+ name +'<span class="ico '+ privacyClass +'"></span></a></li>')
                         .find('.count').text('').end()
                         .find('.form').hide()
                             .find('input').val('').end()
@@ -85,8 +85,7 @@
                         $('#area'+ data.id).slideDown(function() {
                             updateDropAreas();
                         });
-
-                });
+                },'json');
             }
         ;
 

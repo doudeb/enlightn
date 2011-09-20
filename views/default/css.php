@@ -74,6 +74,7 @@ input, textarea {
 #new-post form .privacy .value,
 #new-post .textarea .toolbar li,
 #new-post button.submit,
+#settings_edit button.submit,
 #new-post button.reset,
 #login-box .submit_button,
 #sidebar .folders .menu .up,
@@ -135,9 +136,9 @@ input, textarea {
 }
 
 .unfollow {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bbdc03', endColorstr='#a0c01d'); /*NEW*/
-	background: -webkit-gradient(linear, left top, left bottom, from(#bbdc03), to(#a0c01d)); /*NEW*/
-	background: -moz-linear-gradient(top, #bbdc03, #a0c01d); /*NEW*/
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#AFDD4B', endColorstr='#74C923'); /*NEW*/
+	background: -webkit-gradient(linear, left top, left bottom, from(#AFDD4B), to(#74C923)); /*NEW*/
+	background: -moz-linear-gradient(top, #AFDD4B, #74C923); /*NEW*/
     border:1px solid #8eac15;/*NEW*/
     color:#43520a;/*NEW*/
 }
@@ -148,18 +149,18 @@ span.follow:hover, span.button:hover {
     background-image:none;
 }
 span.unfollow:hover {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff82c1', endColorstr='#e14694');
-	background: -webkit-gradient(linear, left top, left bottom, from(#ff82c1), to(#e14694));
-	background: -moz-linear-gradient(top, #ff82c1, #e14694);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F973BC', endColorstr='#E20780');
+	background: -webkit-gradient(linear, left top, left bottom, from(#F973BC), to(#E20780));
+	background: -moz-linear-gradient(top, #F973BC, #E20780);
     border:1px solid #8eac15;
     color:#fff;
 }
 .ignore,
 span.ignore,
 span.ignore:hover {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff82c1', endColorstr='#e14694');
-	background: -webkit-gradient(linear, left top, left bottom, from(#ff82c1), to(#e14694));
-	background: -moz-linear-gradient(top, #ff82c1, #e14694);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F973BC', endColorstr='#E20780');
+	background: -webkit-gradient(linear, left top, left bottom, from(#F973BC), to(#E20780));
+	background: -moz-linear-gradient(top, #F973BC, #E20780);
     border:1px solid #8eac15;
     color:#555;
 }
@@ -220,7 +221,7 @@ span.ignore:hover {
 }
 
 #header .logo {
-    background-position:-16px -16px;
+    background-position:-16px -18px;
     float:left;
     height:40px;
     margin: 0 25px 0 20px;
@@ -228,14 +229,14 @@ span.ignore:hover {
     width:117px;
 }
 
-#header .menus, #header .tabs {
+#header .tabs {
     border-left:1px solid #999;
     border-right:1px solid #000;
     *border-left:none;
     *border-right:1px solid #999;
 }
 
-#header .menus li, #header .tabs li {
+#header .tabs li {
     border-left:1px solid #000;
     border-right:1px solid #999;
     *border-left:1px solid #999;
@@ -251,6 +252,8 @@ span.ignore:hover {
 
 #header .menus li {
     float:right;
+    width : 120px;
+    text-align : right;
 }
 
 #header .menus li .link, #header  .menus li .user {
@@ -361,7 +364,7 @@ span.ignore:hover {
 }
 
 #header .tabs li.home a {
-    background-position:-147px -16px;
+    background-position:-160px -18px;
 }
 
 #header .tabs li.alert a {
@@ -377,11 +380,11 @@ span.ignore:hover {
 }
 
 #header .tabs li.directory a {
-    background-position:-380px -17px;
+    background-position:-264px -18px;
 }
 
 #header .tabs li.cloud a {
-    background-position:-196px -16px;
+    background-position:-213px -18px;
 }
 /** FOOTER */
 #footer {
@@ -479,6 +482,7 @@ span.ignore:hover {
     overflow:hidden;
     padding:10px 10px 10px 40px;
     cursor : text;
+    color: #9c9c9c;
 }
 
 #new-post,
@@ -519,9 +523,9 @@ span.ignore:hover {
 /*NEW*/
 #new-post form .private .value {
     background-image:none;
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e14694', endColorstr='#ff82c1');
-	background: -webkit-gradient(linear, left top, left bottom, from(#e14694), to(#ff82c1));
-	background: -moz-linear-gradient(top, #e14694, #ff82c1);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E20780', endColorstr='#F973BC');
+	background: -webkit-gradient(linear, left top, left bottom, from(#E20780), to(#F973BC));
+	background: -moz-linear-gradient(top, #E20780, #F973BC);
 }
 /*NEW*/
 
@@ -765,7 +769,7 @@ span.ignore:hover {
     vertical-align: middle;
     width: 15px;
 }
-
+#settings_edit button[type="submit"],
 #new-post button[type="submit"] {
     background-position: 0 -411px;
     border: 1px solid #8eac15;
@@ -799,6 +803,7 @@ span.ignore:hover {
 }
 
 
+##settings_edit  button.submit:hover,
 #new-post button.submit:hover {
     background-color:#bbdc03;
     background-image:none;
@@ -809,6 +814,7 @@ span.ignore:hover {
     background-image:none;
 }
 
+##settings_edit  button.submit:active,
 #new-post button.submit:active {
     background-color:#9dbd20;
     background-image:none;
@@ -1971,7 +1977,6 @@ span.ignore:hover {
 
 #profile_sidebar {
 	text-align:center;
-
 }
 
 
@@ -2012,24 +2017,26 @@ span.ignore:hover {
     text-align : left;
 }
 
+
+
 #profile_sidebar .ico {
     font-size : 88%;
     display: inline-block;
     height: 20px;
-    padding : 5px 0 5px 35px;
+    padding : 5px 0 0px 35px;
 }
 
 #profile_sidebar .phone {
-    background-position:-472px -344px;
+    background-position:-473px -327px;
 }
 #profile_sidebar .cellphone {
-    background-position:-468px -371px;
+    background-position:-473px -350px;
 }
 #profile_sidebar .mail {
-    background-position:-470px -282px;
+    background-position:-473px -282px;
 }
 #profile_sidebar .direction {
-    background-position:-472px -313px;
+    background-position:-473px -305px;
     margin-top: 5px;
 }
 /** SETTINGS */
@@ -2100,12 +2107,12 @@ span.ignore:hover {
 }
 
 #settings_edit label {
-    width : 150px;
+    width : 250px;
     display : block;
     height : 30px;
     float : left;
     text-align : right;
-    margin : 2px 5px 0px 0;
+    margin : 2px 10px 0px 0;
     vertical-align: middle;
 }
 
@@ -2121,20 +2128,9 @@ span.ignore:hover {
     border-radius:5px;
 }
 
-#settings_edit .button {
-    background-position: 0 -411px;
-    border: 1px solid #8eac15;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    -khtml-border-radius:3px;
-    border-radius:3px;
-    color: #FFFFFF;
-    font-size: 116%;
-    font-weight: bold;
-    margin-left: 10px;
-    outline:none;
-    padding: 3px 15px;
-    text-shadow: 1px 1px 1px #43520A;
+#settings_edit button.submit {
+    margin-left: 220px;
+    margin-top: 15px;
 }
 
 /** BUBBLE */

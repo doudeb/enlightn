@@ -1,5 +1,6 @@
 <?php
 	global $CONFIG,$enlightn,$site_guid,$sn_linkers,$profile_defaults,$profile_settings;
+
     //$CONFIG->site_guid = $site_guid;
 	define('ENLIGHTN_DISCUSSION', 'enlightndiscussion');
 	define('ENLIGHTN_LINK', 'enlightnlink');
@@ -25,23 +26,3 @@
 	define('URL_DOWNLOAD', $CONFIG->url . 'pg/enlightn/download/');
 
     $sn_linkers = array('skype','linkedin','twitter','viadeo','facebook','google','flickr','youtube','vimeo','myspace','netvibes');
-
-    $profile_defaults = array (
-            'jobtitle' => 'text',
-            'department' => 'text',
-            'direction' => 'longtext',
-            'location' => 'tags',
-            'phone' => 'text',
-            'cellphone' => 'text',
-            'timezone' => 'text',
-            'skype'=> 'text',
-            'linkedin'=> 'text',
-            'twitter'=> 'text',
-            'viadeo'=> 'text',
-            //'facebook'=> 'text',
-            'google'=> 'text',
-            'flickr'=> 'text',
-            'youtube'=> 'text',
-            'vimeo'=> 'text',
-            'myspace'=> 'text',
-            'netvibes'=> 'text');

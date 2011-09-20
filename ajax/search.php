@@ -83,4 +83,7 @@ if ($nb_results > 0) {
 												, 'discussion_unreaded' => $discussion_unreaded));
 		}
 	}
+    if ($key >=9) {
+        echo elgg_view('input/seemore', array());
+    }
 }

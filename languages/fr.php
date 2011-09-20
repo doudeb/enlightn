@@ -13,7 +13,7 @@
 
 			//GENERAL
 			'systemmessages:dismiss' => 'Fermer'
-		 
+
 			//REGISTRATION FORM
 			,'register' => 'Inscription' //title of the page AND label of the register button: keep it short!
 			,'name' => 'Nom Prénom'
@@ -29,7 +29,7 @@
 			,'registration:usernamenotvalid' => 'Votre nom d\'utilisateur ne doit contenir aucun espace ni caractères spéciaux.'
 			,'registration:userexists' => 'Ce nom d\'utilisateur est déjà utilisé. Veuillez en choisir un autre.'
 			,'registration:dupeemail' => ''
-			
+
 			//LOG IN
 			,'username' => 'Nom d\'utilisateur'
 			,'password' => 'Mot de passe'
@@ -62,6 +62,7 @@
 			,'enlightn:title:video' => 'Vidéo'
 			,'enlightn:prompt:link' => 'Saisissez le lien que vous souhaitez partager:'
 			,'enlightn:prompt:video' => 'Saisissez un lien Youtube/Dailymotion...'
+			,'enlightn:prompt:picure' => 'Saisissez un lien vers une image...'
 			,'enlightn:title:picture' => 'Image'
 			,'enlightn:title:document' => 'Document'
 			,'enlightn:buttonpublic' => 'Publique'
@@ -121,7 +122,7 @@
 
 			//REQUESTS - LEFT COLUMN
 			,'enlightn:buttonignore' => 'Ignorer'
-			
+
 			//DETAILS OF A DISCUSSION
 			,'enlightn:andothers' => ' et %s autres'
 			,'enlightn:invitedusers' => 'Invités:'
@@ -174,12 +175,12 @@
 			,'user:name:label' => 'Nom Prénom'
 			,'email:address:label' => 'email'
 			,'user:language:label' => 'Langue'
-			
+
 			,'enlightn:password' => 'Changer mon mot de passe'
 			,'user:current_password:label' => 'Mot de passe actuel'
 			,'user:password:label' => 'Nouveau mot de passe'
 			,'user:password2:label' => 'Saisissez de nouveau votre mot de passe'
-			
+
 			,'enlightn:profile' => 'Modifier mon profil'
 			,'profile:jobtitle' => 'Fonction'
 			,'profile:department' => 'Département'
@@ -190,7 +191,7 @@
 			,'profile:phone' => 'Téléphone professionnel'
 			,'profile:cellphone' => 'Mobile'
 			,'profile:direction' => 'Adresse professionnelle'
-			
+
 			,'enlightn:picture' => 'Photo'
 			,'profile:profilepictureinstructions' => ''
 			,'profile:currentavatar' => 'Photo actuelle'
@@ -199,13 +200,13 @@
 			,'profile:profilepicturecroppingtool' => ''
 			,'profile:createicon:instructions' => 'Sélectionnez la partie de l\'image que vous souhaitez utiliser comme photo pour votre profil.'
 			,'profile:preview' => 'Prévisualisation:'
-			,'profile:createicon' => 'Valider'	
-			
+			,'profile:createicon' => 'Valider'
+
 			,'enlightn:notification' => 'Alertes email'
 			,'enlightn:notificationheadline' => 'M\'alerter quand:'
 			,'enlightn:notifyoninvite' => 'Je suis invité à une discussion'
 			,'enlightn:notifyonnewmsg' => 'Quand il y a un nouveau message dans mes discussions'
-			
+
 			,'enlightn:statistics' => 'Statistiques'
 			,'usersettings:statistics:yourdetails' => 'Mes infos'
 			,'usersettings:statistics:label:name' => 'Nom'
@@ -215,14 +216,14 @@
 			,'usersettings:statistics:label:numentities' => 'Mes participations'
 			,'item:object:enlightndiscussion' => 'Discussions créées'
 			,'item:object:file' => 'Mon cloud'
-			
+
 			//FOOTER
 			,'expages:about' => 'Charte d\'utilisation'
 			,'expages:terms' => 'Politique de Confidentialité'
 			,'expages:privacy' => 'CGU'
 			,'expages:help' => 'Aide'
 			,'expages:FAQ' => 'FAQ'
-			
+
 			//DATES
 			,'friendlytime:justnow' => "à l'instant"
 			,'friendlytime:minutes' => "il y a %s minutes"
@@ -232,7 +233,7 @@
 			,'friendlytime:days' => "il y a %s jours"
 			,'friendlytime:days:singular' => "hier"
 			,'friendlytime:date_format' => 'j F Y à H:i'
-			
+
 			//LOG OUT
 			,'logoutsucceed' => 'A bientôt'
 
@@ -245,20 +246,20 @@
 
 <a href="%s">Accéder à la discussion</a>
 %s'
-			
+
 			//$follower (to)  $user (from)  $topic (title)  $url
-			
+
 			//Confirm email
 			,'uservalidation:email:validate:subject' => '%s, veuillez confirmer votre email pour accéder à %s'
 			,'uservalidation:email:validate:body' => 'Bonjour %s,
-				
+
 Vous venez de vous inscrire à la plateforme %s.
 Pour y accéder, veuillez confirmer votre adresse email en cliquant sur le lien ci-dessous:
 %s
 
 A tout de suite sur %s,
 L\'équipe Enlightn'
-			
+
 			//Email validated
 			,'email:validate:success:subject' => 'Bienvenue sur %s'
 			,'email:validate:success:body' => 'Bonjour %s,
@@ -267,7 +268,7 @@ Votre compte a bien été créé sur la plateforme %s.
 
 A tout de suite sur %s,
 L\'équipe Enlightn'
-			
+
             //Invite
 			,'enlightn:invite:subject' => '%s'
 			,'enlightn:invite:body' => 'Bonjour %s,

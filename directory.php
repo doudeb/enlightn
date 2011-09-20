@@ -7,7 +7,7 @@ $user_guid 				= get_loggedin_userid();
 $user_ent				= get_user($user_guid);
 $user_search			= get_input('userSearch');
 
-if (isset($user_search)) {
+if (!empty($user_search)) {
 	$site_members			= search_for_user($user_search);
 } else {
 	$site_members			= get_site_members($CONFIG->site_guid,100000);

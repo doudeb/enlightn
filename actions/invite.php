@@ -24,8 +24,10 @@ $enlightndiscussion = get_entity(get_input('discussion_guid'));
 if (is_array($userto)) {
 	foreach ($userto as $key => $usertoid) {
 		$usertoid = get_entity($usertoid);
-		if ($usertoid->guid && $usertoid->guid != $enlightndiscussion->owner_guid) {
-			add_entity_relationship($enlightndiscussion->guid, 'invited', $usertoid->guid);
+		if ($usertoid->guid
+                && $usertoid->guid != $enlightndiscussion->owner_guid
+                && !check_entity_relationship($enlightndiscussion->guid, ENLIGHTN_INVITED, $usertoid->guid)) {
+			add_entity_relationship($enlightndiscussion->guid, ENLIGHTN_INVITED, $usertoid->guid);
 			// Add membership requested
 			add_entity_relationship($usertoid->guid, 'membership_request', $enlightndiscussion->guid);
 			$enlightn->flush_cache(array('user_guid' => $usertoid->guid),'unreaded');

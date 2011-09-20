@@ -180,7 +180,7 @@ if (!isset($vars['replacement'])) {
 			foreach($users[$letter] as $friend) {
                 $user_settings          = get_profile_settings($friend->getGUID());
  				echo '<li id="user' . $friend->getGUID() . '" class="user" data-userId="' . $friend->getGUID() . '">
-                            <img class="photo" src="' . $friend->getIcon() . '" />
+                            ' . elgg_view('input/user_photo',array('user_ent'=>$friend, 'class'=>'photo')) . '
                             <a href="' . $vars['url'] . 'pg/profile/' . $friend->username .'">' . $friend->name . '</a>
                             <a href="' . $vars['url'] . 'pg/profile/' . $friend->username .'">' . elgg_echo('enlightn:seehisprofil') . '</a>
                             <p>' . $user_settings['jobtitle']['value'] .'</p>
