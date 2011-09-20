@@ -4,13 +4,13 @@ include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 gatekeeper();
 $user_guid 			= get_loggedin_userid();
 $user_ent			= get_user($user_guid);
-$discussion_id		= get_input('discussion_id');
+$entity_guid		= get_input('entity_guid');
 if (!$user_guid || !$user_ent) {
 	forward();
 }
-$topic 				= get_entity(get_input('entity_guid'));
+disable_right($entity_guid);
+$topic 				= get_entity($entity_guid);
 if (!$topic) forward();
-//var_dump($CONFIG->site_guid);
 /**
  * Left part
  */

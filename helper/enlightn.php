@@ -554,7 +554,10 @@ function disable_right ($guid) {
     $is_followed = check_entity_relationship($user_guid, ENLIGHTN_FOLLOW,$guid);
     if ($is_followed) {
    		return elgg_set_ignore_access(true);
-
+    }
+    $is_invited = check_entity_relationship($guid, ENLIGHTN_INVITED,$user_guid);
+    if ($is_invited) {
+   		return elgg_set_ignore_access(true);
     }
     $is_embeded_and_followed = $enlightn->is_embeded_and_followed($guid);
     if(is_array($is_embeded_and_followed)) {
