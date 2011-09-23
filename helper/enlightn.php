@@ -235,7 +235,7 @@ function regenerate_cache ($entity,$user_guid,$action_type) {
 }
 
 function get_http_link($message) {
-	$regexp = "#\b(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))+(\s|\n|$|\r|\t)#";
+	$regexp = "#\b(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))+(\s|\n|$|\r|\t|</p>|<br>)#";
 	if (preg_match_all($regexp, $message, $http_link)) {
 		return $http_link[0];
 	}
