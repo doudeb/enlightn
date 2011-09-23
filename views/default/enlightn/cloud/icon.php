@@ -24,7 +24,6 @@
 	} else {
 		$size = 'small';
 	}
-
 	// Handle
 	switch ($mime)
 	{
@@ -48,6 +47,13 @@
 			}
 
 		break;
+        case 'text/html'    :
+            if ($thumbnail) {
+				echo "<img class=\"photo\" src=\"" . $thumbnail ."\" border=\"0\" />";
+			} else {
+				echo "<img src=\"". elgg_view('file/icon/default',$vars) ."\" border=\"0\" />";
+			}
+        break;
 		default :
 			if (!empty($mime) && elgg_view_exists("file/icon/{$mime}")) {
 				echo elgg_view("file/icon/{$mime}", $vars);

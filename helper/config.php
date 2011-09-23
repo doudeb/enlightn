@@ -24,5 +24,6 @@
 	define('NOTIFICATION_EMAIL_INVITE', 'email_invite');
 	define('NOTIFICATION_EMAIL_MESSAGE_FOLLOWED', 'email_message_followed');
 	define('URL_DOWNLOAD', $CONFIG->url . 'pg/enlightn/download/');
+	define('ENLIGHTN_THUMBNAIL', 'link_thumbnail');
 
     $sn_linkers = array('skype','linkedin','twitter','viadeo','facebook','google','flickr','youtube','vimeo','myspace','netvibes');

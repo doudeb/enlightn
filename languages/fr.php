@@ -90,6 +90,7 @@
 			,'enlightn:removeasfollow' => 'Quitter la discussion'
 			,'enlightn:setasfavorite' => 'Mettre en favori'
 			,'enlightn:removeasfavorite' => 'Supprimer de mes favoris'
+			,'enlightn:showunread' => 'Afficher non lus'
 
 			//HOME - SEARCH
 			,'enlightn:search' => 'Recherche'
@@ -110,8 +111,8 @@
 			//HOME - RIGHT COLUMN
 			,'enlightn:public' => 'Discussions publiques'
 			,'enlightn:follow' => 'Mes discussions'
-			,'enlightn:request' => 'Invitations'
-			,'enlightn:favorites' => 'Favoris'
+			,'enlightn:request' => 'Invitations reçues'
+			,'enlightn:favorites' => 'Mes favoris'
 			,'enlightn:sent' => 'Envoyés'
 
 			//HOME - LEFT COLUMN
@@ -144,8 +145,8 @@
 			,'enlightn:activity:membership_request' => ' a été invité à rejoindre la discussion'
 
 			//PROFILE
-			,'enlightn:profilelastmessage' => 'Discussions'
-			,'enlightn:profilecloud' => 'Cloud'
+			,'enlightn:profilelastmessage' => 'Ses discussions'
+			,'enlightn:profilecloud' => 'Son cloud'
 			,'enlightn:previous' => 'Précédent'
 			,'enlightn:next' => 'Suivant'
 
@@ -184,9 +185,19 @@
 			,'enlightn:profile' => 'Modifier mon profil'
 			,'profile:jobtitle' => 'Fonction'
 			,'profile:department' => 'Département'
-			,'profile:location' => 'Localisation'
+			,'profile:location' => 'Ville'
 			,'profile:timezone' => 'Fuseau horaire'
 			,'profile:addasociallink' => 'Ajouter un lien vers un profil social'
+			,'profile:linkhelper:skype' => 'skype:username?call'
+			,'profile:linkhelper:linkedin' => 'linkedin.com/in/username'
+			,'profile:linkhelper:twitter' => 'twitter.com/#!/username'
+			,'profile:linkhelper:viadeo' => 'viadeo.com/fr/profile/username'
+			,'profile:linkhelper:google' => 'plus.google.com/user'
+			,'profile:linkhelper:flickr' => 'flickr.com/people/username'
+			,'profile:linkhelper:youtube' => 'youtube.com/user/username'
+			,'profile:linkhelper:vimeo' => 'vimeo.com/user'
+			,'profile:linkhelper:myspace' => 'myspace.com/username'
+			,'profile:linkhelper:netvibes' => 'netvibes.com/username'
 			,'profile:selectasociallink' => 'Choisissez'
 			,'profile:phone' => 'Téléphone professionnel'
 			,'profile:cellphone' => 'Mobile'
@@ -245,7 +256,7 @@
 %s a ajouté un nouveau message à la discussion "%s"
 
 <a href="%s">Accéder à la discussion</a>
-%s'
+A tout de suite sur ' . $CONFIG->sitename
 
 			//$follower (to)  $user (from)  $topic (title)  $url
 
@@ -257,8 +268,7 @@ Vous venez de vous inscrire à la plateforme %s.
 Pour y accéder, veuillez confirmer votre adresse email en cliquant sur le lien ci-dessous:
 %s
 
-A tout de suite sur %s,
-L\'équipe Enlightn'
+A tout de suite sur ' . $CONFIG->sitename
 
 			//Email validated
 			,'email:validate:success:subject' => 'Bienvenue sur %s'
@@ -276,7 +286,7 @@ L\'équipe Enlightn'
 %s vous invite à rejoindre la discussion "%s
 
 <a href="%s">Rejoindre la discussion</a>
-%s'
+A tout de suite sur ' . $CONFIG->sitename
 
 	);
 	add_translation("fr",$french);

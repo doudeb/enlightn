@@ -25,7 +25,7 @@ $url_follow			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/fol
                     </ul>
 
                     <ul class="right">
-                        <!--<li>Trier par : date<span class="arrow"></span></li>-->
+                        <li><?php echo elgg_echo("enlightn:showunread")?> <input class="checkbox" type="checkbox" id="showunread"/></li>
                     </ul>
                 </div>
    				<ol id="discussion_list_container"></ol>

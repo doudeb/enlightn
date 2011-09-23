@@ -68,15 +68,14 @@ class Embed_url {
 
 	private function getTitle () {
 		if (isset($this->tags['title'])) {
-			$this->title = $this->tags['title'];
+			$this->title = _convert($this->tags['title']);
 		} else {
 			$title_regex = '/<title>(.*?)<\/title>/is';
 			preg_match_all($title_regex, $this->html, $title, PREG_PATTERN_ORDER);
             //$titre = eregi("<title>(.*)</title>",$this->html,$title);
 			//$this->title = $title[1];
-			$this->title = ($title[1][0]);
+			$this->title = _convert($title[1][0]);
 		}
-		$this->title = htmlentities($this->title);
 	}
 
 	private function getTags () {

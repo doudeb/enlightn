@@ -15,7 +15,7 @@ elgg_get_access_object()->set_ignore_access(true);
 // Get input
 $topic_guid 		= (int) get_input('topic_guid');
 $group_guid 		= (int) get_input('group_guid');
-$post 				= get_input('new_post',null,false);
+$post 				= get_input('new_post',null);
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
 if (empty($post)) {
     echo elgg_echo('enlightn:messageempty');

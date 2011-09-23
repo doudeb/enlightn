@@ -1,5 +1,4 @@
 <?php
-
 	/**
 	 * Grabs groups by invitations
 	 * Have to override all access until there's a way override access to getter functions.
@@ -236,7 +235,7 @@ function regenerate_cache ($entity,$user_guid,$action_type) {
 }
 
 function get_http_link($message) {
-	$regexp = "#\b(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#";
+	$regexp = "#\b(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))+(\s|\n|$|\r|\t)#";
 	if (preg_match_all($regexp, $message, $http_link)) {
 		return $http_link[0];
 	}
@@ -258,7 +257,7 @@ function get_embeded_type ($links) {
 	}
 	$links_type = array();
 	foreach ($links as $key=>$link) {
-		//$link = urlencode($link);
+		$link = trim($link);
 		switch ($link) {
 			/**
 			 * Remove enlightn internal doc
@@ -304,7 +303,7 @@ function get_embeded_title ($links) {
 				foreach ($links_by_type as $key=>$link) {
 					$embedUrl = new Embed_url(array('url' => $link['link']));
 					$embedUrl->get_page_title();
-					$links[$type][$key]['title'] = $embedUrl->title;
+					$links[$type][$key]['title'] = utf8_encode($embedUrl->title);
 				}
 				break;
 			case ENLIGHTN_EMBEDED:
@@ -334,6 +333,7 @@ function create_embeded_entities ($message,$entity) {
 	if (!is_array($links)) {
 		return $new_message;
 	}
+
 	$links = get_embeded_title($links);
 	if (!is_array($links)) {
 		return false;
@@ -565,3 +565,58 @@ function disable_right ($guid) {
     }
     return false;
 }
+
+
+
+/**
+ * htmLawed filtering of tags, called on a plugin hook
+ *
+ * @param mixed $var Variable to filter
+ * @return mixed
+ */
+function enlightn_filter_tags($hook, $entity_type, $returnvalue, $params) {
+    global $CONFIG;
+	$return = $returnvalue;
+	$var = $returnvalue;
+    if (!function_exists('htmLawed')) {
+        include_once($CONFIG->pluginspath . "htmlawed/vendors/htmLawed/htmLawed.php");
+    }
+    $htmlawed_config = array('deny_attribute' => '* -span -img -src -href -alt -b -ul -li -em -p -br ');
+
+	if (!is_array($var)) {
+		$return = "";
+		$return = htmLawed($var, $htmlawed_config);
+	} else {
+			array_walk_recursive($var, 'htmLawedArray', $htmlawed_config);
+			$return = $var;
+	}
+
+    $return = remove_href ($return);
+	return $return;
+}
+
+
+function remove_href ($message) {
+    $message = preg_replace("/<a href=\"(.*)\">/i", "$1", $message);
+    $message = str_replace('</a>', '',$message);
+    return $message;
+}
+
+
+function _convert($content) {
+     if(!mb_check_encoding($content, 'UTF-8')
+         OR !($content === mb_convert_encoding(mb_convert_encoding($content, 'UTF-32', 'UTF-8' ), 'UTF-8', 'UTF-32'))) {
+
+         $content = mb_convert_encoding($content, 'UTF-8');
+
+         if (mb_check_encoding($content, 'UTF-8')) {
+             // log('Converted to UTF-8');
+         } else {
+             // log('Could not converted to UTF-8');
+         }
+     } else {
+         $content = utf8_decode($content);
+     }
+     return $content;
+ }
+

@@ -12,7 +12,7 @@ if (!isloggedin()) forward();
 global $enlightn;
 // Get input data
 $title 				= strip_tags(get_input('title'));
-$message 			= get_input('description',null,false);
+$message 			= get_input('description',null);
 $tags 				= get_input('interests');
 $access 			= get_input('membership');
 $user_guid			= get_loggedin_userid(); // you need to be logged in to comment on a group forum
@@ -93,7 +93,7 @@ if (empty($title) || empty($message)) {
                     if ($usertoid->{"notification:method:".NOTIFICATION_EMAIL_INVITE} == '1') {
                         notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
                                 sprintf(elgg_echo('enlightn:invite:subject'), $enlightndiscussion->title),
-                                sprintf(elgg_echo('enlightn:invite:body'), $usertoid->name, $_SESSION['user']->name, $enlightndiscussion->title, $url),
+                                sprintf(elgg_echo('enlightn:invite:body'), $usertoid->name, $user_guid, $enlightndiscussion->title, $url),
                                 NULL);
                     }
 

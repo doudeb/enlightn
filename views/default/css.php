@@ -968,7 +968,7 @@ span.ignore:hover {
 }
 
 #feed.detail .msg {
-    padding:3px 0;
+    padding:3px 10px;
 }
 
 /*home message hover and cursor*/
@@ -1200,7 +1200,7 @@ span.ignore:hover {
 #feed .msg .inclosed-list {
     border:1px solid #ccc;
     font-size: 93%;
-    margin:0 0 0 -5px;
+    margin:15px 0 0 -5px;
     padding:5px;
 }
 
@@ -1215,6 +1215,8 @@ span.ignore:hover {
 
 #feed .msg .inclosed-list li {
     padding: 4px 0 0;
+    height : 65px;
+    vertical-align : middle;
 }
 
 #feed .msg .content .inclosed-list li a {
@@ -1226,10 +1228,8 @@ span.ignore:hover {
     text-decoration:underline;
 }
 
-#feed .msg .inclosed-list .spec {
-    color:#999;
-    font-size: 92%;
-    margin-left:5px;
+#feed .msg .inclosed-list .participants {
+    display : none;
 }
 
 #feed .join {
@@ -1574,18 +1574,22 @@ span.ignore:hover {
     border: none;
     font-size:93%;
     margin: 1px;
-    padding: 2px 5px;
+    padding: 5px 7px;
     height: auto;
     overflow:hidden;
     white-space:nowrap;
 }
 
 
+#sidebar .folders .menu li.readed {
+    background-color: #F7F7F7;
+    color: #000;
+}
+
 #sidebar .folders .menu li.unreaded {
-    background-color: #FF0000;
+    background-color: #fff;
     color: #000;
     font-weight:bold;
-    padding: 5px 7px;
 }
 
 #sidebar .folders .menu li.selected {
@@ -1597,6 +1601,11 @@ span.ignore:hover {
 
 
 /** DETAIL */
+#nav_unreaded_<?php echo ENLIGHTN_ACCESS_PU?> {
+    display : none;
+}
+
+
 #detail {
     background-color:#f1f1f1;
     border:1px solid #ccc;
@@ -1615,9 +1624,14 @@ span.ignore:hover {
     vertical-align: middle;
 }
 
+#detail .header {
+    height : 40px;
+}
+
 #detail .actions {
-    padding: 5px 0;
-    height: 21px;
+    display: block;
+    float: right;
+    margin-top : -39px;
 }
 
 #detail .read {
@@ -1634,11 +1648,12 @@ span.ignore:hover {
     margin-right: 5px;
     width: 70px;
     float:left;
+    display:block;
 }
 
 #detail .tags {
     overflow:hidden;
-    display:block;
+    float : left;
 }
 
 #detail .tags li {
@@ -1907,11 +1922,19 @@ span.ignore:hover {
     background-color: #fff;
     border: 1px solid #ccc;
     float:left;
-    padding: 3px;
+    padding: 1px;
     margin: 0 6px;
-    width:60px
+    width:60px;
 }
 
+#cloud .photo {
+   border:0;
+   padding : 0;
+   float : none;
+   width:60px;
+   height:60px;
+
+}
 #cloud .header {
     margin-bottom: 20px;
 }
@@ -2540,6 +2563,12 @@ RTE EDITOR
 	overflow: hidden;
 }
 
+.loading {
+    display : block;
+    background-image : url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif');
+    height : 11px;
+    width : 16px;
+}
 /**
 * Calendar
 **/

@@ -29,7 +29,7 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                 </div><!-- header -->
 
                 <div class="actions">
-                    <span id="follow" class="follow <?php echo false===$flag_folowed?'':'followed' ?>">
+                    <span id="follow" class="follow<?php echo $flag_folowed?' unfollow':'' ?>">
                         <span class="ico"></span>
                         <span class="follow-val"><?php echo elgg_echo("enlightn:buttonfollow"); ?></span>
                         <span class="unfollow-val"><?php echo elgg_echo("enlightn:buttonunfollow"); ?></span>
@@ -105,11 +105,7 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
 			loadContent('#loader','<?php echo $url_favorite?>');
 		});
 		$("#follow").click( function(){
-			if ($("#follow").hasClass("unfollow")) {
-				$("#follow").removeClass("unfollow");
-			} else {
-				$("#follow").addClass("unfollow");
-			}
+			$("#follow").toggleClass("unfollow");
 			loadContent('#loader','<?php echo $url_follow?>');
 		});
 </script>

@@ -17,6 +17,7 @@ function enlightn_init() {
     elgg_extend_view('profile/editicon','enlightn/helper/redirect');
 	// Try to remove the dashboard page
     register_plugin_hook('index','system','new_index');
+	register_plugin_hook('validate', 'input', 'enlightn_filter_tags', 1);
     //register_plugin_hook('siteid','system','set_site_id');
 	// register for search
 	register_entity_type('enlightn','');

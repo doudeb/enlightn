@@ -19,6 +19,9 @@ if ($to_fetch) {
 			$media_uid = $file->guid;
 			$file->description = elgg_view('enlightn/fetched_media',array('entity'=> $oembed[0],'media_uid' => $media_uid));
 			$file->save();
+            if ($oembed[0]->thumbnail_url) {
+                $file->thumbnail =  $oembed[0]->thumbnail_url;
+            }
 			break;
 		case ENLIGHTN_LINK:
 			require_once $CONFIG->pluginspath . "enlightn/model/Embedly.php";
@@ -29,12 +32,19 @@ if ($to_fetch) {
 				$media_uid = $file->entity_guid;
 				$file->description = elgg_view('enlightn/fetched_media',array('entity'=> $oembed[0],'media_uid' => $media_uid));
 				$file->save();
+                if ($oembed[0]->thumbnail_url) {
+                    $file->thumbnail = $oembed[0]->thumbnail_url;
+                }
 				break;
 			}
 			$embedUrl = new Embed_url(array('url' => $file->originalfilename));
 			$embedUrl->embed();
 			$file->description = elgg_view('enlightn/fetched_link',array('entity' => $embedUrl));
 			$file->save();
+            if ($embedUrl->sortedImage[0]) {
+                $file->thumbnail = $embedUrl->sortedImage[0];
+            }
+
 			break;
 		case ENLIGHTN_IMAGE:
 			$file->description = elgg_view('enlightn/fetched_image',array('entity'=> $file));
@@ -48,6 +58,5 @@ if ($to_fetch) {
 			break;
 	}
 }
-
 
 echo $file->description;

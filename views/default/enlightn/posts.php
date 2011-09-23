@@ -20,7 +20,6 @@ $('#see_more_discussion_list').click(function () {
 
 $(document).ready(function() {
 	loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
-	reloader("<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php" + get_search_criteria(), '#discussion_list_container');
 });
 </script>
 	</div>

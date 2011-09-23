@@ -74,7 +74,7 @@ Order By e.time_created desc";
 			$where[] = "And Not Exists(Select id
 		    	                        From entity_relationships As rel
 		                                Where a.id = rel.guid_two
-		                                And rel.guid_one = 2
+		                                And rel.guid_one = $user_guid
 		                                And rel.relationship = '". ENLIGHTN_READED . "')";
 		}
 		#From user
@@ -110,7 +110,7 @@ Order By e.time_created desc";
 		if ($words) {
 			$force   = array();
 			$join [] = "Inner Join sphinx_search sphinx On a.id = sphinx.id And a.entity_guid = sphinx.guid";
-			$where[] = "And sphinx.query='@(title,content) $words;mode=extended;offset=$offset;limit=50;sort=extended:@weight desc'";
+			$where[] = "And sphinx.query='@(title,content) $words;mode=extended;offset=$offset;limit=10;sort=extended:@weight desc'";
 			//remove offset when going throught sphinx... not needed as it's the main data source.
 			if ($offset > 0) {
 				$offset = 0;
@@ -255,7 +255,7 @@ And  (
 		Case
 			When ent.access_id = " . ACCESS_PRIVATE . " Then
                 ent.owner_guid = $user_guid
-                Or 
+                Or
 				Exists(Select rel_follow.id
 						From entity_relationships rel_embed
 						Inner Join annotations a On rel_embed.guid_two = a.id

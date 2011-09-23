@@ -34,10 +34,10 @@ function get_search_criteria () {
 	} else {
 		var words = $('#searchInput').val();
 	}
-	if (typeof $('input:text[name=from_users]').val() == 'undefined') {
+	if (typeof $('input[name="from_users"]').val() == 'undefined') {
 		var from_users = '';
 	} else {
-		var from_users = $('input:text[name=from_users]').val();
+		var from_users = $('input[name="from_users"]').val();
 	}
 	if (typeof $('#date_end').val() == 'undefined') {
 		var date_end = '';
@@ -59,10 +59,10 @@ function get_search_criteria () {
 	} else {
 		var entity_guid = $('#entity_guid').val();
 	}
-	if (typeof $('#unreaded_only').val() == 'undefined') {
+	if (typeof $('#showunread').val() == 'undefined') {
 		var unreaded_only = 0;
 	} else {
-		var unreaded_only = $('#unreaded_only').val();
+		var unreaded_only = $('#showunread').attr('checked')=='checked'?1:0;
 	}
 	if(words) {
 		discussion_type = 4;
@@ -161,7 +161,6 @@ $(document).ready(function(){
 				lastModified = jqXHR.getResponseHeader('Last-Modified');
 			 	queryUid = jqXHR.getResponseHeader('Query-uid');
 			 	lastCalled = $('#lastModified' + queryUid).val();
-			 	//alert(lastModified + ' != ' + lastCalled);
 			 	if (lastModified != lastCalled && offset == '0') {
                     //console.log(lastModified + ' != ' + lastCalled);
 			 		loadContent (element_id, url_to_check + get_search_criteria());

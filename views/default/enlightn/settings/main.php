@@ -80,7 +80,7 @@ foreach ($sn_linkers as $key => $name) {
             </div>
             <div id="tabnotification" style="display: none;">
                <?php
-               echo elgg_echo('enlightn:notifcationheadline');
+               echo elgg_echo('enlightn:notificationheadline');
                $form_body = '<p><label>' . elgg_echo('enlightn:notifyoninvite') . '<input type="checkbox" name="' . NOTIFICATION_EMAIL_INVITE. '"' . ($user->{"notification:method:".NOTIFICATION_EMAIL_INVITE} == '1'?' checked=checked':'') . ' value="1"/></label></p>
                 <p><label>' .elgg_echo('enlightn:notifyonnewmsg'). '<input type="checkbox" name="' .NOTIFICATION_EMAIL_MESSAGE_FOLLOWED. '" ' . ($user->{"notification:method:".NOTIFICATION_EMAIL_MESSAGE_FOLLOWED} == '1'?' checked=checked':'') . ' value="1"/></label></p>
                 <p><button type="submit" class="submit">' . elgg_echo("enlightn:buttonpost") . '</button></p>';

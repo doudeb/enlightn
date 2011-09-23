@@ -1,8 +1,8 @@
-		<div id="sidebar">
+    <div id="sidebar">
 
             <form id="search">
                 <div class="search-field">
-                    <input type="text" placeholder="<?php echo elgg_echo("enlightn:search")?>" id="searchInput" name="q" value="<?php echo get_last_search_value('words') && get_context() != 'home'?get_last_search_value('words'):'';?>" />
+                    <input type="text" placeholder="<?php echo elgg_echo("enlightn:search")?>" id="searchInput" name="q" value="<?php echo (get_last_search_value('words') && get_context() != 'home')?get_last_search_value('words'):'';?>" />
                     <input type="hidden" id="last_search">
                     <button class="submit" type="submit" id="search_submit"></button>
                 </div>
