@@ -17,7 +17,7 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
 															'relationship_guid' => $discussion->id,
 															'inverse_relationship' => true));
 ?>
-                    <li class="msg <?php echo false===$flag_readed?'unread open-msg':'read' ?> <?php echo $has_words?'open-msg':'' ?>">
+                    <li class="msg<?php echo false===$flag_readed?' unread open-msg':' read' ?><?php echo $has_words?' open-msg':'' ?>">
                         <div class="toolbar">
                         	<?php if (is_array($src_embeded)) {
 								echo '<span class="inclosed ico"></span>';
@@ -38,12 +38,12 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
                         if (is_array($src_embeded)) {
 							echo '<div class="inclosed-list">
                                 <h4>' . count($src_embeded) . ' ' . elgg_echo('enlightn:attachmentlist') . '</h4>
-                                <ul>';
+                                <p>';
 							foreach ($src_embeded as $key=>$file) {
-								echo elgg_view("enlightn/cloud/embedlist", array("entity" => $file));
+                                $url = get_file_link($file);
+								echo '<a href="' . $url . '" target="_blank" title="' . $file->title. '">' . elgg_view("enlightn/cloud/icon", array("mimetype" => $file->mimetype, 'thumbnail' => $file->thumbnail, 'file_guid' => $file->guid, 'size' => 'small')) . "</a>";
 							}
-                            echo '</ul>
-                            </div>';
+                            echo '</p></div>';
                         }?>
                         </div>
                     </li>

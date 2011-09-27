@@ -1094,6 +1094,7 @@ span.ignore:hover {
     font-weight: bold;
     overflow:hidden;
     white-space: nowrap;
+    height : 15px;
 }
 
 #feed .msg a {
@@ -1166,12 +1167,12 @@ span.ignore:hover {
 
 #feed .open-msg .content {
     display:block;
-    margin:-20px 0 10px 100px;
+    margin:0px 0 10px 100px;
 }
 
 #feed .open-msg .content p {
     font-size: 93%;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     margin-right: 60px;
 }
 
@@ -1228,8 +1229,8 @@ span.ignore:hover {
     text-decoration:underline;
 }
 
-#feed .msg .inclosed-list .participants {
-    display : none;
+#feed .msg .inclosed-list .photo {
+    float : none;
 }
 
 #feed .join {
@@ -1285,6 +1286,7 @@ span.ignore:hover {
     border-width: 0 1px 1px;
     overflow:hidden;
     padding: 10px;
+    width : 590px;
 }
 
 #feed .user:hover {
@@ -1325,7 +1327,7 @@ span.ignore:hover {
 /** SEARCH */
 #search {
     overflow: hidden;
-    padding:20px 15px;
+    padding:20px 15px 10px 15px;
 }
 
 #search .search-field {
@@ -1461,6 +1463,33 @@ span.ignore:hover {
     width:240px;
 }
 
+#search .s-actions {
+    color: #2C75E2;
+    cursor:pointer;
+    display:inline;
+    font-size:87%;
+    vertical-align: top;
+    float : right;
+}
+
+#search .s-actions .arrow {
+    background-position: -299px -128px;
+    display: inline-block;
+    height: 7px;
+    width: 10px;
+}
+
+#search .s-actions .arrow-top {
+    background-position: -321px -128px;
+}
+
+#search .toggle-search-filters {
+    display : none;
+}
+
+#search .full {
+    display : block;
+}
 
 /** SIDEBAR */
 #sidebar {
@@ -1599,7 +1628,6 @@ span.ignore:hover {
     padding: 5px 7px;
 }
 
-
 /** DETAIL */
 #nav_unreaded_<?php echo ENLIGHTN_ACCESS_PU?> {
     display : none;
@@ -1625,13 +1653,11 @@ span.ignore:hover {
 }
 
 #detail .header {
-    height : 40px;
+    height : 50px;
 }
 
 #detail .actions {
     display: block;
-    float: right;
-    margin-top : -39px;
 }
 
 #detail .read {
@@ -1644,15 +1670,11 @@ span.ignore:hover {
     vertical-align: middle;
 }
 
-#detail .follow, {
-    margin-right: 5px;
-    width: 70px;
-    float:left;
-    display:block;
+#detail .follow {
+    float:right;
 }
 
 #detail .tags {
-    overflow:hidden;
     float : left;
 }
 
@@ -1665,6 +1687,7 @@ span.ignore:hover {
 }
 
 /*NEW*/
+#search .toggle,
 #detail .toggle {
     background-position:-197px -212px;
     float:right;
@@ -1978,6 +2001,14 @@ span.ignore:hover {
     margin-top: 30px;
 }
 
+#cloud .msg .excerpt p {
+    margin-top:2px;
+}
+
+#cloud .msg .participants {
+    margin-top: 15px;
+}
+
 /** PROFILE */
 
 #profile .big-photo {
@@ -2119,8 +2150,8 @@ span.ignore:hover {
 
 #settings_edit p {
     clear : both;
-    height : 30px;
     vertical-align: middle;
+    margin-top : 10px;
 }
 
 #settings_edit .photo_linker {
@@ -2132,7 +2163,6 @@ span.ignore:hover {
 #settings_edit label {
     width : 250px;
     display : block;
-    height : 30px;
     float : left;
     text-align : right;
     margin : 2px 10px 0px 0;
@@ -2152,7 +2182,7 @@ span.ignore:hover {
 }
 
 #settings_edit button.submit {
-    margin-left: 220px;
+    margin-left: 260px;
     margin-top: 15px;
 }
 
@@ -2170,7 +2200,7 @@ span.ignore:hover {
     color:#666;
     cursor:default;
     display:block;
-    margin: 22px 0 0 -20px;
+    margin: 22px 0 25px -10px;
     padding: 10px;
     position: absolute;
     text-decoration:none;

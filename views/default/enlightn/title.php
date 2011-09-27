@@ -21,7 +21,12 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
 		<div id="main">
 			<div id="detail" class="msg <?php echo false===$flag_readed?'':'read' ?> <?php echo  false===$flag_favorite?'':'starred'?>">
                 <div class="header">
-                    <span class="read ico"></span>
+                    <span class="follow<?php echo $flag_folowed?' unfollow':'' ?>">
+                        <span class="ico"></span>
+                        <span class="follow-val"><?php echo elgg_echo("enlightn:buttonfollow"); ?></span>
+                        <span class="unfollow-val"><?php echo elgg_echo("enlightn:buttonunfollow"); ?></span>
+                        <span class="followed-val"><?php echo elgg_echo("enlightn:bunttonfollowed"); ?></span>
+                    </span>                    <span class="read ico"></span>
                     <h2><?php echo $post->title; ?></h2>
                     <span id="favorite<?php echo $post->guid; ?>" class="star ico"></span>
                     <span class="<?php echo $post->access_id==ACCESS_PRIVATE?'lock':'unlock'; ?> ico"></span>
@@ -29,12 +34,7 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                 </div><!-- header -->
 
                 <div class="actions">
-                    <span id="follow" class="follow<?php echo $flag_folowed?' unfollow':'' ?>">
-                        <span class="ico"></span>
-                        <span class="follow-val"><?php echo elgg_echo("enlightn:buttonfollow"); ?></span>
-                        <span class="unfollow-val"><?php echo elgg_echo("enlightn:buttonunfollow"); ?></span>
-                        <span class="followed-val"><?php echo elgg_echo("enlightn:bunttonfollowed"); ?></span>
-                    </span>
+
 
                     <span class="tags">
 
@@ -104,8 +104,8 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
 			}
 			loadContent('#loader','<?php echo $url_favorite?>');
 		});
-		$("#follow").click( function(){
-			$("#follow").toggleClass("unfollow");
+		$("#detail .follow").click( function(){
+			$("#detail .follow").toggleClass("unfollow");
 			loadContent('#loader','<?php echo $url_follow?>');
 		});
 </script>

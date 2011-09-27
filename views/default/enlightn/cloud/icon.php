@@ -48,6 +48,7 @@
 
 		break;
         case 'text/html'    :
+        case 'link/image'   :
             if ($thumbnail) {
 				echo "<img class=\"photo\" src=\"" . $thumbnail ."\" border=\"0\" />";
 			} else {

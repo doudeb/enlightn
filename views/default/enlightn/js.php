@@ -1,25 +1,35 @@
 function loadContent (divId,dataTo,method) {
-	if (method == undefined || method == 'load') {
+	if (typeof method == 'undefined' || method == 'load') {
 		if ($(divId).html().indexOf('loading.gif') == -1) {
 			$(divId).prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif" alt="loading">');
 			 $(divId).load(dataTo, function(responseText, textStatus, XMLHttpRequest) {
-			 	lastModified = XMLHttpRequest.getResponseHeader('Last-Modified');
+                lastModified = XMLHttpRequest.getResponseHeader('Last-Modified');
 			 	queryUid = XMLHttpRequest.getResponseHeader('Query-uid');
-			 	if (typeof lastModified != undefined) {
+			 	fetchedRows = XMLHttpRequest.getResponseHeader('Fetch-rows');
+
+			 	if (typeof lastModified != 'undefined') {
 			 		$('<input />', {
 	            		'id' : 'lastModified' + queryUid
 	    				,'type': 'hidden'
 			 			,'value' : lastModified}).insertAfter(divId);
 			 	}
-			 	//alert($('#lastModified' + queryUid).val());
-	  		return true;
+                if (typeof fetchedRows != 'undefined') {
+                    $('#see_more_discussion_list').toggle(parseInt(fetchedRows) > 9);
+                }
+               return true;
 			});
 		}
 	} else if (method == 'append') {
-		$.get(dataTo, function(data){
+		$.get(dataTo, function(data, textStatus, XMLHttpRequest){
+		 	fetchedRows = XMLHttpRequest.getResponseHeader('Fetch-rows');
 			$(divId).append(data);
+            if (typeof fetchedRows != 'undefined') {
+                $('#see_more_discussion_list').toggle(parseInt(fetchedRows) > 9);
+            }
+            return true;
 		});
 	}
+    return false;
 }
 
 function get_search_criteria () {
@@ -151,6 +161,11 @@ $(document).ready(function(){
 		});
 		$('#subtype_checked').val(items_checked.join("','"));
 	});
+
+    $('#search .s-actions').click( function(){
+        $('#search .toggle-search-filters').toggleClass('full');
+        $(this).find('span').toggleClass('arrow-top');
+    });
 });
 
 
@@ -317,6 +332,9 @@ $(document).ready(function(){
             tokenInputName = $('#discussion_edit input:text[name=invite]').attr('id');
             $('#submission').html('');
             $('#' + tokenInputName).tokenInput("clear");
+            $('#privacy_cursor').parent().removeClass('public');
+			$('#privacy_cursor').parent().addClass('private');
+			$('#membership').val(<?php echo ACCESS_PRIVATE?>);
             //changeMessageList('#discussion_selector_all');
         } else {
             $('#submission').html(data.message);
@@ -340,6 +358,12 @@ $(document).ready(function(){
             $('#tags-input').toggle();
         });
     }
+
+    function getEmbedPreview (fileGuid) {
+        alert("abouttofetch");
+        $.get("<?php echo $vars['url'] ?>mod/enlightn/ajax/embed_preview.php?guid=" + fileGuid);
+    }
+
 /*
 * jQuery RTE plugin 0.5.1 - create a rich text form for Mozilla, Opera, Safari and Internet Explorer
 *

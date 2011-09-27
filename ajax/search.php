@@ -50,6 +50,7 @@ $nb_results = count($search_results);
 if ($nb_results > 0) {
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s",$last_modified) . " GMT");
 	header("Query-uid: " . md5($last_search));
+	header("Fetch-rows: " . $nb_results);
 	if ($fetch_modified === 1) {
 		//echo json_encode(array('last-modified' => $search_results[0]->created));
 		return;
@@ -65,8 +66,6 @@ if ($nb_results > 0) {
 			if ($key === 0) {
 				echo elgg_view('enlightn/post_header', array());
 			}
-			echo elgg_view("enlightn/topic_activities",array('entity' => $topic
-														, 'activities' => $topic_activities));
 			if(!$flag_readed) {
 				add_entity_relationship($user_guid, ENLIGHTN_READED,$topic->id);
 				$enlightn->flush_cache(array('user_guid' => $user_guid),'unreaded');
@@ -74,6 +73,8 @@ if ($nb_results > 0) {
 		    echo elgg_view("enlightn/topicpost",array('entity' => $topic
 		    											, 'query' => $words
 		    											, 'flag_readed' => $flag_readed));
+			echo elgg_view("enlightn/topic_activities",array('entity' => $topic
+														, 'activities' => $topic_activities));
 		} else {
 			echo  elgg_view("enlightn/discussion_short", array('entity' => $topic
 												, 'current' => $key===0?true:false

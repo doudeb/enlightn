@@ -3,14 +3,7 @@
 $file 			= $vars['entity'];
 $friendlytime 	= elgg_view_friendly_time($file->time_created);
 $user_ent		= get_user($file->owner_guid);
-switch ($file->mimetype) {
-    case 'text/html'    :
-        $url = $file->originalfilename;
-        break;
-    default:
-        $url = URL_DOWNLOAD .$file->guid;
-        break;
-}
+$url            = get_file_link($file);
 ?>
 					<input type="hidden" name="embeder_content" id="embeder_content<?php echo $file->guid; ?>" value="<?php echo $vars['embeder_content']; ?>">
 					<li id="embedFile<?php echo $file->guid; ?>" class="msg msg_home unread">

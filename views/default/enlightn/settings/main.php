@@ -70,7 +70,7 @@ foreach ($sn_linkers as $key => $name) {
                 }
                 $form_body .= '<p><label>' . elgg_echo('profile:phone') . '</label> <input type="text" name="phone"  value="' . $settings['phone'] . '" /></p>
                 <p><label>' . elgg_echo('profile:cellphone') . '</label> <input type="text" name="cellphone"  value="' . $settings['cellphone'] . '" /></p>
-                <p><label>' . elgg_echo('profile:direction') . '</label> <textarea name="direction">' . $settings['direction'] . '</textarea></p>';
+                <p><label>' . elgg_echo('profile:direction') . '</label> <textarea name="direction" rows="5">' . $settings['direction'] . '</textarea></p>';
                 $form_body .= '<p><button type="submit" class="submit">' . elgg_echo("enlightn:buttonpost") . '</button></p>';
                 echo elgg_view('input/form', array('action' => "{$vars['url']}action/enlightn/profile_edit", 'body' => $form_body));
                 ?>

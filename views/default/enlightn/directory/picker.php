@@ -182,11 +182,10 @@ if (!isset($vars['replacement'])) {
  				echo '<li id="user' . $friend->getGUID() . '" class="user" data-userId="' . $friend->getGUID() . '">
                             ' . elgg_view('input/user_photo',array('user_ent'=>$friend, 'class'=>'photo')) . '
                             <a href="' . $vars['url'] . 'pg/profile/' . $friend->username .'">' . $friend->name . '</a>
-                            <a href="' . $vars['url'] . 'pg/profile/' . $friend->username .'">' . elgg_echo('enlightn:seehisprofil') . '</a>
-                            <p>' . $user_settings['jobtitle']['value'] .'</p>
-                            <!--<span class="follow send-msg">
-                                <span class="ico"></span> Envoyer un message
-                            </span>-->';
+                            <p>' . $user_settings['jobtitle'] .'</p>
+                            <span class="follow send-msg">
+                                <a href="' . $vars['url'] . 'pg/profile/' . $friend->username .'">' . elgg_echo('enlightn:seehisprofil') . '</a>
+                            </span>';
 				$member_collection = array();
 				if (is_array($my_collection_members)) {
 					foreach ($my_collection_members as $collection_id=>$collection_members) {

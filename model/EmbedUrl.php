@@ -83,7 +83,7 @@ class Embed_url {
 	}
 
 	private function getDescription () {
-		$this->description = $this->tags['description'];
+		$this->description = _convert($this->tags['description']);
 	}
 
 	private function getImages () {
@@ -122,10 +122,13 @@ class Embed_url {
 				}
 			}
 		}
+        if (count($this->sortedImage) == 0) {
+            $this->sortedImage[0] = 'http://www.' . $this->hostname . '/favicon.ico';
+        }
 	}
 
 	private function isImageId ($image) {
-		return preg_match('/\d{5,10}/i',$image);
+		return preg_match('/\d{4,10}/i',$image);
 	}
 
 	private function isRelatedImage ($image) {

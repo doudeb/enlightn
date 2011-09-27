@@ -110,10 +110,11 @@ function getUnreadedDiscussion() {
 	});
  }
 $(document).ready(function(){
+    loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
     if ($('#discussion_type').val() != '<?php echo ENLIGHTN_ACCESS_AL?>') {
         getUnreadedDiscussion();
        	reloader("<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php" + get_search_criteria(), '#discussion_list_container');
-        setInterval(function() {getUnreadedDiscussion()}, 10000);
+        setInterval(function() {getUnreadedDiscussion()}, 7000);
     } else {
         changeShortCutList($('#discussion_type').val(),undefined,<?php echo $vars['discussion_id']?>);
     }

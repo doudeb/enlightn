@@ -235,7 +235,7 @@ function regenerate_cache ($entity,$user_guid,$action_type) {
 }
 
 function get_http_link($message) {
-	$regexp = "#\b(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))+(\s|\n|$|\r|\t|</p>|<br>)#";
+	$regexp = "#\b(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))+(\s|\n|$|\r|\t|</p>|<br/>|<p/>)#";
 	if (preg_match_all($regexp, $message, $http_link)) {
 		return $http_link[0];
 	}
@@ -296,7 +296,7 @@ function get_embeded_title ($links) {
 					$title = parse_url($link['link'],PHP_URL_PATH);
 					$title = basename($title);
 					$links[$type][$key]['title'] = $title;
-				}
+			}
 				break;
 			case ENLIGHTN_MEDIA:
 			case ENLIGHTN_LINK:
@@ -354,10 +354,17 @@ function create_embeded_entities ($message,$entity) {
 				$file->access_id 	= $access_id;
 				$file->container_guid = $container_guid;
 				$file->setFilename($link["link"]);
-				$file->setMimeType('text/html');
+                if ($type === ENLIGHTN_IMAGE) {
+                    $file->thumbnail = $link["link"];
+                    $mime = 'link/image';
+                } else {
+                    $mime = 'text/html';
+                }
+                $file->setMimeType($mime);
 				$file->originalfilename = $link["link"];
 				$file->simpletype 	= $type;
 				$guid 				= $file->save();
+                generate_preview($file->guid);
 			} else {
 				$file 				= $file[0];
 				$guid 				= true;
@@ -597,7 +604,7 @@ function enlightn_filter_tags($hook, $entity_type, $returnvalue, $params) {
 
 
 function remove_href ($message) {
-    $message = preg_replace("/<a href=\"(.*)\">/i", "$1", $message);
+    $message = preg_replace("/<a href=\"(.*)\">/i", " $1 ", $message);
     $message = str_replace('</a>', '',$message);
     return $message;
 }
@@ -620,3 +627,68 @@ function _convert($content) {
      return $content;
  }
 
+function get_file_link ($file) {
+    switch ($file->mimetype) {
+        case 'text/html'    :
+        case 'link/image'    :
+            $url = $file->originalfilename;
+            break;
+        default:
+            $url = URL_DOWNLOAD .$file->guid;
+            break;
+    }
+    return $url;
+}
+
+
+function generate_preview ($guid) {
+    global $CONFIG;
+    $file				= new ElggFile((int)$guid);
+	switch ($file->simpletype) {
+		case ENLIGHTN_MEDIA :
+			require_once $CONFIG->pluginspath . "enlightn/model/Embedly.php";
+			$api = new Embedly_API(array('user_agent' => 'Mozilla/5.0 (compatible; embedly/example-app; support@embed.ly)'));
+			$oembed = $api->oembed(array('url' => $file->originalfilename));
+			$media_uid = $file->guid;
+			$file->description = elgg_view('enlightn/fetched_media',array('entity'=> $oembed[0],'media_uid' => $media_uid));
+			$file->save();
+            if ($oembed[0]->thumbnail_url) {
+                $file->thumbnail =  $oembed[0]->thumbnail_url;
+            }
+			break;
+		case ENLIGHTN_LINK:
+			require_once $CONFIG->pluginspath . "enlightn/model/Embedly.php";
+			require_once $CONFIG->pluginspath . "enlightn/model/EmbedUrl.php";
+			$api = new Embedly_API(array('user_agent' => 'Mozilla/5.0 (compatible; embedly/example-app; support@embed.ly)'));
+			$oembed = $api->oembed(array('url' => $file->originalfilename));
+			if (!isset($oembed[0]->error_code)) {
+				$media_uid = $file->entity_guid;
+				$file->description = elgg_view('enlightn/fetched_media',array('entity'=> $oembed[0],'media_uid' => $media_uid));
+				$file->save();
+                if ($oembed[0]->thumbnail_url) {
+                    $file->thumbnail = $oembed[0]->thumbnail_url;
+                }
+				break;
+			}
+			$embedUrl = new Embed_url(array('url' => $file->originalfilename));
+			$embedUrl->embed();
+			$file->description = elgg_view('enlightn/fetched_link',array('entity' => $embedUrl));
+			$file->save();
+            if ($embedUrl->sortedImage[0]) {
+                $file->thumbnail = $embedUrl->sortedImage[0];
+            }
+
+			break;
+		case ENLIGHTN_IMAGE:
+			$file->description = elgg_view('enlightn/fetched_image',array('entity'=> $file));
+			$file->save();
+			break;
+		case ENLIGHTN_DOCUMENT:
+			$file->description = elgg_view('enlightn/fetched_document',array('link'=> $file->originalfilename, 'entity' => $file));
+			//$file->save();
+			break;
+		default:
+			break;
+	}
+
+}
