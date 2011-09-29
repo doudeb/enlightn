@@ -75,7 +75,7 @@ $release = get_version(true);
 ?>
 	<!-- include the default css file -->
 	<link rel="stylesheet" href="<?php echo $vars['url']; ?>_css/css.css?lastcache=<?php echo $vars['config']->lastcache; ?>&viewtype=<?php echo $vars['view']; ?>" type="text/css" />
-    <link rel="stylesheet" href="<?php echo $vars['url']; ?>mod/enlightn/media/css/token-input.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo $vars['url']; ?>mod/enlightn/media/css/token-input-facebook.css" type="text/css" />
 
 	<?php
 		echo $feedref;

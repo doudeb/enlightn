@@ -35,12 +35,12 @@ $(document).ready(function(){
 	$(document).ready(function() {
 	    var options = {
 	        target:        '#submission',   // target element(s) to be updated with server response
-	        beforeSubmit:  showLoading,  // pre-submit callback
+	        beforeSubmit:  loadingNewPost,  // pre-submit callback
 	        success:       autoClose,  // post-submit callback
 	        // other available options:
 	        //url:       url         // override for form's 'action' attribute
 	      	type:      'post',        // 'get' or 'post', override for form's 'method' attribute
-	        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type)
+	        dataType:  'json',        // 'xml', 'script', or 'json' (expected server response type)
 	        clearForm: false,        // clear all form fields after successful submit
 	        resetForm: false        // reset the form after successful submit
 	        // $.ajax options can be used here too, for example:
@@ -58,14 +58,21 @@ $(document).ready(function(){
 	    });
 	});
 
-	function showLoading () {
-		javascript:$('#submission').prepend('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
+	function loadingNewPost () {
+		$('#submission').prepend('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
 		return true;
 	}
 
-	function autoClose () {
-		$(".rte-zone").contents().find(".frameBody").html('');
-        $("#post .textarea").css('height','85');
-		return true;
+	function autoClose (data) {
+        if(data.success) {
+            $(".rte-zone").contents().find(".frameBody").html('');
+            $(".rte-zone").contents().find(".frameBody").css('height','85');
+            $("#post .textarea").css('height','85');
+            $('#submission').html('');
+            loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
+            return true;
+       } else {
+            $('#submission').html(data.message);
+       }
 	}
 </script>

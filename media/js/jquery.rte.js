@@ -36,7 +36,7 @@ if(typeof $.fn.rte === "undefined") {
         // enable design mode
         function enableDesignMode() {
 
-            var content = textarea.val();
+            var content = '';
 
             // Mozilla needs this to display caret
             /*if($.trim(content)=='') {

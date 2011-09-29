@@ -11,18 +11,17 @@ gatekeeper();
 global $CONFIG;
 $url 				= $CONFIG->wwwroot . "pg/enlightn";
 $enlightn 			= new enlightn();
-elgg_get_access_object()->set_ignore_access(true);
 // Get input
 $topic_guid 		= (int) get_input('topic_guid');
-$group_guid 		= (int) get_input('group_guid');
 $post 				= get_input('new_post',null);
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
+$json_return        = array();
+$json_return['success'] = false;
 if (empty($post)) {
-    echo elgg_echo('enlightn:messageempty');
-    exit;
+    $json_return['message'] = elgg_echo('enlightn:messageempty');
 }
 
-
+disable_right($topic_guid);
 // Check that user is a group member
 $user 				= get_loggedin_user();
 // Let's see if we can get an form topic with the specified GUID, and that it's a group forum topic
@@ -72,6 +71,7 @@ foreach($followers as $follower) {
 
 
 }
-echo elgg_echo('enlightn:discussion_sucessfully_created');
-elgg_get_access_object()->set_ignore_access(false);
+$json_return['message'] = elgg_echo('enlightn:discussion_sucessfully_created');
+$json_return['success'] = $post_id;
+echo json_encode($json_return);
 exit();

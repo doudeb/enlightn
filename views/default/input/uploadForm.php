@@ -8,7 +8,7 @@
             <?php
             if (get_context() != 'cloud') {
             ?>
-            <span class="caption cloud_access"><a href="<?php echo $vars['url']; ?>/pg/enlightn/cloud/cloud_embed" rel="facebox" id="cloudLink"><?php echo elgg_echo("enlightn:uploadcloud"); ?></a></span>
+            <span class="caption cloud_access"><a href="<?php echo $vars['url']; ?>/pg/enlightn/cloud/cloud_embed" rel="[facebox]" rev="iframe|1600" id="cloudLink"><?php echo elgg_echo("enlightn:uploadcloud"); ?></a></span>
             <?php
             }
             ?>

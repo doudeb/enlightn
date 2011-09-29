@@ -113,7 +113,8 @@
 
       $('#facebox .content').empty()
       $('#facebox .body').children().hide().end().
-        append('<div class=""><br /><br /><img src="'+$.facebox.settings.loadingImage+'"/><br /><br /></div>')
+        append('')
+        //append('<div class=""><br /><br /><img src="'+$.facebox.settings.loadingImage+'"/><br /><br /></div>')
 
       $('#facebox').css({
         top:	getPageScroll()[1] + (getPageHeight() / 10),
@@ -183,7 +184,7 @@
       var klass = this.rel.match(/facebox\[?\.(\w+)\]?/)
       if (klass) klass = klass[1]
 
-      fillFaceboxFromHref(this.href, klass)
+      fillFaceboxFromHref(this.href, klass, this.rev)
       return false
     }
 
@@ -285,21 +286,26 @@
   //     div: #id
   //   image: blah.extension
   //    ajax: anything else
-  function fillFaceboxFromHref(href, klass) {
+    function fillFaceboxFromHref(href, klass, rev) {
     // div
     if (href.match(/#/)) {
-      var url    = window.location.href.split('#')[0]
-      var target = href.replace(url,'')
-      $.facebox.reveal($(target).clone().show(), klass)
+    var url = window.location.href.split('#')[0]
+    var target = href.replace(url, '')
+    $.facebox.reveal($(target).clone().show(), klass)
 
     // image
     } else if (href.match($.facebox.settings.imageTypesRegexp)) {
-      fillFaceboxFromImage(href, klass)
+    fillFaceboxFromImage(href, klass)
+
+    // iframe
+    } else if (rev.split('|')[0] == 'iframe') {
+    fillFaceboxFromIframe(href, klass, rev.split('|')[1])
+
     // ajax
     } else {
-      fillFaceboxFromAjax(href, klass)
+    fillFaceboxFromAjax(href, klass)
     }
-  }
+    }
 
   function fillFaceboxFromImage(href, klass) {
     var image = new Image()
@@ -369,7 +375,9 @@
 
 
 	});
-
+    function fillFaceboxFromIframe(href, klass, height) {
+        $.facebox.reveal('<iframe id ="faceboxIframe" scrolling="no" marginwidth="0" width="980" height="' + height + '" frameborder="0" src="' + href + '" marginheight="0"></iframe>', klass)
+    }
 
 
 

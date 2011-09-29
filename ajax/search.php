@@ -24,7 +24,6 @@ $unreaded_only	= sanitise_int(get_input('unreaded_only', 0));
 
 
 $last_search	= serialize(array('user_guid' => $user_guid,'entity_guid' => $entity_guid,'access_level' => $access_level,'unreaded_only' => $unreaded_only,'words' => $words,'from_users' => $from_users,'date_begin' => $date_begin,'date_end' => $date_end,'subtype' => $subtype,'offset' => $offset,'limit' => $limit));
-
 $date_begin 	= strtotime($date_begin);
 $date_end 		= strtotime($date_end);
 
@@ -67,8 +66,7 @@ if ($nb_results > 0) {
 				echo elgg_view('enlightn/post_header', array());
 			}
 			if(!$flag_readed) {
-				add_entity_relationship($user_guid, ENLIGHTN_READED,$topic->id);
-				$enlightn->flush_cache(array('user_guid' => $user_guid),'unreaded');
+				add_entity_relationship($user_guid, ENLIGHTN_QUEUE_READED,$topic->id);
 			}
 		    echo elgg_view("enlightn/topicpost",array('entity' => $topic
 		    											, 'query' => $words

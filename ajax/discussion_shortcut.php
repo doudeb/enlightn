@@ -51,6 +51,7 @@ if ($nb_results > 0) {
 		return;
 	}
 	foreach ($search_results as $key => $topic) {
+        disable_right($topic->guid);
 		$flag_readed = check_entity_relationship($user_guid, ENLIGHTN_READED,$topic->id);
 		$topic = get_entity($topic->guid);
 		$results[$key] = array('guid'=>$topic->guid

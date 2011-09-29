@@ -382,7 +382,7 @@ function create_embeded_entities ($message,$entity) {
 				}
 				$guid = false;
 				$new_message['guids'][] = $file->guid;
-				add_entity_relationship($file->guid,ENLIGHTN_EMBEDED,$entity->guid);
+				//add_entity_relationship($file->guid,ENLIGHTN_EMBEDED,$entity->guid);
 			}
 
 		}
@@ -582,19 +582,14 @@ function disable_right ($guid) {
  * @return mixed
  */
 function enlightn_filter_tags($hook, $entity_type, $returnvalue, $params) {
-    global $CONFIG;
 	$return = $returnvalue;
 	$var = $returnvalue;
-    if (!function_exists('htmLawed')) {
-        include_once($CONFIG->pluginspath . "htmlawed/vendors/htmLawed/htmLawed.php");
-    }
-    $htmlawed_config = array('deny_attribute' => '* -span -img -src -href -alt -b -ul -li -em -p -br ');
-
+    //echo $var;
+    $htmlawed_config = '<a><img><span><p><p/><br><br/><ul><li><em><strong>';
 	if (!is_array($var)) {
-		$return = "";
-		$return = htmLawed($var, $htmlawed_config);
+		$return = strip_tags($var, $htmlawed_config);
 	} else {
-			array_walk_recursive($var, 'htmLawedArray', $htmlawed_config);
+			array_walk_recursive($var, 'strip_tags', $htmlawed_config);
 			$return = $var;
 	}
 
@@ -604,8 +599,10 @@ function enlightn_filter_tags($hook, $entity_type, $returnvalue, $params) {
 
 
 function remove_href ($message) {
-    $message = preg_replace("/<a href=\"(.*)\">/i", " $1 ", $message);
+    file_put_contents('/tmp/data', $message,FILE_APPEND);
     $message = str_replace('</a>', '',$message);
+    $message = str_replace('target="_blank"', '',$message);
+    $message = preg_replace("/<a.*href=\"(.*)\".*>/i", " $1 ", $message);
     return $message;
 }
 
@@ -691,4 +688,42 @@ function generate_preview ($guid) {
 			break;
 	}
 
+}
+
+
+
+function enlightn_purge_readed_queue () {
+    global $enlightn;
+    if(in_array(get_context(), array('home','discuss','profile'))) {
+        $user_guid      = get_loggedin_userid();
+        $readed_queue   = enlightn_get_relationships($user_guid , ENLIGHTN_QUEUE_READED);
+        if(is_array($readed_queue)) {
+            foreach ($readed_queue as $key => $relationship) {
+                if(remove_entity_relationship($relationship->guid_one, $relationship->relationship, $relationship->guid_two)) {
+                    add_entity_relationship($relationship->guid_one, ENLIGHTN_READED, $relationship->guid_two);
+                    $enlightn->flush_cache(array('user_guid' => $user_guid),'unreaded');
+                }
+            }
+        }
+    }
+}
+
+
+/**
+ * Return relationship(s) for an id and a relationship type
+ *
+ * @param int $guid_one The GUID of the entity "owning" the relationship
+ * @param string $relationship The type of relationship
+
+ */
+function enlightn_get_relationships($guid_one, $relationship) {
+	global $CONFIG;
+
+	$guid_one = (int)$guid_one;
+	$relationship = sanitise_string($relationship);
+	if ($row = get_data("SELECT * FROM {$CONFIG->dbprefix}entity_relationships WHERE guid_one=$guid_one AND relationship='$relationship'")) {
+		return $row;
+	}
+
+	return false;
 }

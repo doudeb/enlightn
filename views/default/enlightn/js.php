@@ -108,7 +108,7 @@ function get_search_criteria () {
 			return false;
 		}
 		if(typeof discussion_type == undefined) {
-			discussion_type = 1;
+			discussion_type = $('#discussion_type').val();
 		}
 		if (discussion_type == 4) {
 			currElement = '#discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>';
@@ -292,7 +292,7 @@ $(document).ready(function(){
 	});
 	    var options = {
 	        target:        '#submission',   // target element(s) to be updated with server response
-	        beforeSubmit:  showLoading,  // pre-submit callback
+	        beforeSubmit:  loading,  // pre-submit callback
 	        success:       autoClose,  // post-submit callback
 
 	        // other available options:
@@ -308,20 +308,13 @@ $(document).ready(function(){
 
 	    // bind to the form's submit event
 	    $('#discussion_edit').submit(function() {
-	        // inside event callbacks 'this' is the DOM element so we first
-	        // wrap it in a jQuery object and then invoke ajaxSubmit
 	        $(this).ajaxSubmit(options);
-
-	        // !!! Important !!!
-	        // always return false to prevent standard browser submit and page navigation
 	        return false;
 	    });
 	});
 
-	function showLoading () {
-		$('#submission').prepend('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
-		$('#post').removeClass('open');
-		return true;
+	function loading () {
+		$('#submission').prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif" alt="loading">');
 	}
 
 	function autoClose (data) {
@@ -329,13 +322,14 @@ $(document).ready(function(){
         	$('#new-post').removeClass('open');
             $(".rte-zone").contents().find(".frameBody").html('');
             $("#new-post .textarea").css('height','85');
+       		$(".rte-zone").contents().find(".frameBody").css('height','85');
             tokenInputName = $('#discussion_edit input:text[name=invite]').attr('id');
             $('#submission').html('');
             $('#' + tokenInputName).tokenInput("clear");
             $('#privacy_cursor').parent().removeClass('public');
 			$('#privacy_cursor').parent().addClass('private');
 			$('#membership').val(<?php echo ACCESS_PRIVATE?>);
-            //changeMessageList('#discussion_selector_all');
+            changeMessageList();
         } else {
             $('#submission').html(data.message);
         }
@@ -351,8 +345,11 @@ $(document).ready(function(){
             $(".rte-zone").contents().find(".frameBody").html('');
             $("#new-post .textarea").css('height','85');
             tokenInputName = $('#discussion_edit input:text[name=invite]').attr('id');
-            $('#submission').html(data.message);
+            $('#submission').html('');
             $('#' + tokenInputName).tokenInput("clear");
+            $('#privacy_cursor').parent().removeClass('public');
+			$('#privacy_cursor').parent().addClass('private');
+			$('#membership').val(<?php echo ACCESS_PRIVATE?>);
         });
         $('#add-tags').click(function () {
             $('#tags-input').toggle();
@@ -362,6 +359,13 @@ $(document).ready(function(){
     function getEmbedPreview (fileGuid) {
         alert("abouttofetch");
         $.get("<?php echo $vars['url'] ?>mod/enlightn/ajax/embed_preview.php?guid=" + fileGuid);
+    }
+
+    function updateRte (content) {
+        elm = $(".rte-zone").contents().find(".frameBody");
+        if (elm) {
+            elm.html(elm.html() + ' ' + content);
+        }
     }
 
 /*
@@ -411,7 +415,6 @@ if(typeof $.fn.rte === "undefined") {
 
             // already created? show/hide
             if(iframe) {
-                console.log("already created");
                 textarea.hide();
                 $(iframe).contents().find("body").html(content);
                 $(iframe).show();

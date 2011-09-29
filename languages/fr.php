@@ -107,6 +107,7 @@
 			,'enlightn:fromuser' => 'De:'
 			,'enlightn:typeinasearchterm' => 'Saisir un nom'
 			,'enlightn:searching' => 'recherche...'
+			,'enlightn:togglemorefilters' => 'Recherche avancée'
 
 			//HOME - RIGHT COLUMN
 			,'enlightn:public' => 'Discussions publiques'

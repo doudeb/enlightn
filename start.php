@@ -52,6 +52,7 @@ function enlightn_init() {
     //Register notification handler
     register_notification_handler(NOTIFICATION_EMAIL_INVITE,'email_invite_notify_handler');
     register_notification_handler(NOTIFICATION_EMAIL_MESSAGE_FOLLOWED,'email_message_followed_notify_handler');
+    register_elgg_event_handler('shutdown','system', 'enlightn_purge_readed_queue',1000);
 }
 function new_index($hook, $type, $return, $params) {
 	if (isloggedin()) {
@@ -76,7 +77,6 @@ function set_site_id() {
 
 register_elgg_event_handler('init','system','enlightn_init');
 // Look if required profile fiels have been created
-register_elgg_event_handler('init','system','init_enlightn_profile_fields', 10001); // Ensure this runs after other plugins
 
 /**
  * Group page handler

@@ -1,8 +1,8 @@
 <script>
 $(".embeder").click(function(){
         content = $('#embeder_content' + $(this).attr('id')).val();
-        $(".rte-zone").contents().find(".frameBody").html($(".rte-zone").contents().find(".frameBody").html() + ' ' + content);
-        $.facebox.close();
+        window.parent.updateRte(content);
+        window.parent.$.facebox.close();
         return false;
 });
 </script>

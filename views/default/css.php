@@ -162,7 +162,7 @@ span.ignore:hover {
 	background: -webkit-gradient(linear, left top, left bottom, from(#F973BC), to(#E20780));
 	background: -moz-linear-gradient(top, #F973BC, #E20780);
     border:1px solid #8eac15;
-    color:#555;
+    color:#fff;
 }
 
 .follow .ico, .button .ico {
@@ -503,7 +503,7 @@ span.ignore:hover {
     -khtml-border-radius:5px;
     border-radius:5px;
     height:30px;
-    width : 108px;
+    width : 117px;
     float : left;
 }
 
@@ -517,7 +517,7 @@ span.ignore:hover {
     height: 22px;
     padding: 8px 9px 0;
     text-align: center;
-    width: 50px;
+    width: 59px;
 }
 
 /*NEW*/
@@ -592,7 +592,7 @@ span.ignore:hover {
 }
 
 #new-post form .dest ul {
-    padding:6px 9px;
+    padding:1px 9px;
 }
 
 #new-post .textarea .toolbar {
@@ -1170,6 +1170,12 @@ span.ignore:hover {
     margin:0px 0 10px 100px;
 }
 
+#feed .open-msg .content ul,
+#feed .open-msg .content li {
+    list-style-type : disc;
+    list-style-position : inside;
+}
+
 #feed .open-msg .content p {
     font-size: 93%;
     margin-bottom: 0px;
@@ -1327,7 +1333,7 @@ span.ignore:hover {
 /** SEARCH */
 #search {
     overflow: hidden;
-    padding:20px 15px 10px 15px;
+    padding:30px 15px 60px 15px;
 }
 
 #search .search-field {
@@ -1470,12 +1476,15 @@ span.ignore:hover {
     font-size:87%;
     vertical-align: top;
     float : right;
+    margin-top: 4px;
 }
 
 #search .s-actions .arrow {
     background-position: -299px -128px;
     display: inline-block;
     height: 7px;
+    margin-left : 3px;
+    margin-right: 2px;
     width: 10px;
 }
 
@@ -1641,7 +1650,7 @@ span.ignore:hover {
     -webkit-border-radius:5px;
     -khtml-border-radius:5px;
     border-radius:5px;
-    margin:-10px 0 20px;
+    margin:0px 0 20px;
     padding:10px;
 }
 
@@ -2551,9 +2560,12 @@ RTE EDITOR
     width:100%;
     height:100%;
    	background-color: #FFFFFF;
-    list-style-type:disc;
 }
-
+.frameBody ul,
+.frameBody li {
+    list-style-type : disc;
+    list-style-position : inside;
+}
 
 .frameBody p
 {

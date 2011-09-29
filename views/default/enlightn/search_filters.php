@@ -6,7 +6,7 @@
                     <input type="hidden" id="last_search">
                     <button class="submit" type="submit" id="search_submit"></button>
                 </div>
-                <div class="s-actions"><span class="arrow"></span><?php echo elgg_echo("enlightn:togglemorefilters"); ?></div>
+                <div class="s-actions"><?php echo elgg_echo("enlightn:togglemorefilters"); ?><span class="arrow"></span></div>
                 <div class="toggle-search-filters">
                     <input type="hidden" name="subtype_checked" id="subtype_checked" value="" />
                     <ul class="filters">

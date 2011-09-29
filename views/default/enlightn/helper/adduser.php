@@ -9,6 +9,7 @@ $unique_id = md5($vars['internalname'] . time());
                  hintText : "<?php echo elgg_echo('enlightn:typeforsearch'); ?>"
                  , searchingText : "<?php echo elgg_echo('enlightn:searchforuser'); ?>"
                  , preventDuplicates: true
+                 , theme: 'facebook'
                  , placeholder: '<?php echo $vars['placeholder']; ?>'
         });
 	});

@@ -12,6 +12,7 @@
 	define('ENLIGHTN_EMBEDED', 'embeded');
 	define('ENLIGHTN_INVITED', 'invited');
 	define('ENLIGHTN_FAVORITE', 'favorite');
+	define('ENLIGHTN_QUEUE_READED', 'queue_readed');
 	define('ENLIGHTN_ACCESS_PU', '1');//Public access
 	define('ENLIGHTN_ACCESS_PR', '2');//Private
 	define('ENLIGHTN_ACCESS_FA', '3');//Favorite

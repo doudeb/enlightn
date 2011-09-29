@@ -22,7 +22,7 @@ $url 			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?di
     <span class="followed-val"><?php echo elgg_echo("enlightn:bunttonfollowed"); ?></span>
 </span>
 <?php
-if ($is_invited && get_context() == ENLIGHTN_INVITED) {?>
+if ($is_invited && in_array(get_context(), array(ENLIGHTN_INVITED,'discuss'))) {?>
 <span class="follow ignore" id="ignore<?php echo $vars['entity']->guid?>">
     <span class="ico"></span>
     <span class="unfollow-val"><?php echo elgg_echo("enlightn:buttonignore")?></span>
