@@ -108,13 +108,27 @@ Order By e.time_created desc";
 		}
 		#Words
 		if ($words) {
-			$force   = array();
-			$join [] = "Inner Join sphinx_search sphinx On a.id = sphinx.id And a.entity_guid = sphinx.guid";
-			$where[] = "And sphinx.query='@(title,content) $words;mode=extended;offset=$offset;limit=10;sort=extended:@weight desc'";
-			//remove offset when going throught sphinx... not needed as it's the main data source.
-			if ($offset > 0) {
-				$offset = 0;
-			}
+            $sphinx_enabled = get_plugin_setting('sphinx_enabled','enlightn');
+            if ($sphinx_enabled == 1) {
+                $force   = array();
+                $join [] = "Inner Join sphinx_search sphinx On a.id = sphinx.id And a.entity_guid = sphinx.guid";
+                $where[] = "And sphinx.query='@(title,content) $words;mode=extended;offset=$offset;limit=10;sort=extended:@weight desc'";
+                //remove offset when going throught sphinx... not needed as it's the main data source.
+                if ($offset > 0) {
+                    $offset = 0;
+                }
+            } else {
+                $join [] = "Inner Join objects_entity ent_title On ent_title.guid = a.entity_guid
+                            Inner Join metastrings msv On a.value_id = msv.id";
+                $where[] = "And
+                                Case
+                                    When length('$words') > 2 And length('$words') <= @@ft_min_word_len Then
+                                        ent_title.title Like concat('%', '$words', '%') Or msv.string Like concat('%', '$words', '%')
+                                    When length('$words') > @@ft_min_word_len Then
+                                        MATCH (ent_title.title,msv.string) AGAINST ('$words' IN BOOLEAN MODE)
+                                    Else true
+                                End";
+            }
 		}
 		#Entity guid
 		if ($entity_guid) {
@@ -222,8 +236,15 @@ public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$f
 			$where[] = "And mst.string In ('$simpletype')";
 		}
 		if ($words) {
-			$join [] = "Inner Join objects_entity object_ent On ent.guid = object_ent.guid";
-			$where[] = "And Match (object_ent.title,object_ent.description) Against ('$words' IN BOOLEAN MODE)";
+			$join [] = "Inner Join objects_entity ent_title On ent.guid = ent_title.guid";
+			$where[] = "And
+                                Case
+                                    When length('$words') > 2 And length('$words') <= @@ft_min_word_len Then
+                                        ent_title.title Like concat('%', '$words', '%') Or ent_title.description Like concat('%', '$words', '%')
+                                    When length('$words') > @@ft_min_word_len Then
+                                        MATCH (ent_title.title,ent_title.description) AGAINST ('$words' IN BOOLEAN MODE)
+                                    Else true
+                                End";
 
 		}
 		#date

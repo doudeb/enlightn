@@ -448,7 +448,7 @@ span.ignore:hover {
     margin-bottom:25px;
 }
 #new-post.open {
-    top : 50%;
+    top : 69px;
     left : 50%;
     width : 620px;
     position:absolute;
@@ -463,7 +463,7 @@ span.ignore:hover {
     -webkit-box-shadow:inset 1px 1px 4px rgba(82, 82, 82, 0.702);
     box-shadow:inset 1px 1px 4px rgba(82, 82, 82, 0.702);
     padding:10px 10px 10px 10px;
-    margin-top: -103px;
+    margin-top: 0px;
     margin-left: -310px;
 }
 
@@ -1318,6 +1318,7 @@ span.ignore:hover {
 
 #feed .user .send-msg {
     float:right;
+    margin-top: 16px;
 }
 
 #feed .user .send-msg .ico {
@@ -2209,7 +2210,7 @@ span.ignore:hover {
     color:#666;
     cursor:default;
     display:block;
-    margin: 22px 0 25px -10px;
+    margin: 10px 0 25px -10px;
     padding: 10px;
     position: absolute;
     text-decoration:none;

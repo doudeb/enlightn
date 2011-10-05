@@ -16,7 +16,6 @@ $offset			= get_input('offset', 0);
 $limit			= get_input('limit', 10);
 $types 			= get_tags(0,10,'simpletype','object','file',$user_guid);
 $context		= get_input('context');
-
 if ($context) {
 	set_context($context);
 }
