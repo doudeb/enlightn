@@ -38,32 +38,33 @@ Order By e.time_created desc";
         $force 	= array();
 		$join	= array();
 		$where	= array();
+        $having = array();
 		$group	= array();
-
+        $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', ENLIGHTN_DISCUSSION, null);
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1
 				$force[] = "#Force Index (idx_annotations_time)";
-				$where[] = "And a.access_id = " . ACCESS_PUBLIC;
+				$where[] = "And ent.access_id = " . ACCESS_PUBLIC;
 				break;
 			case 2:#Private Followed And Public Folowed 2
 				$force[] = "#Force Index (idx_annotations_time)";
 				$join[] = "";
-				$where[] = "And Exists(Select rel_follow.id From entity_relationships As rel_follow Where a.entity_guid = rel_follow.guid_two And rel_follow.guid_one = $user_guid And rel_follow.relationship = '". ENLIGHTN_FOLLOW . "')";
+				$where[] = "And Exists(Select rel_follow.id From entity_relationships As rel_follow Where ent.guid = rel_follow.guid_two And rel_follow.guid_one = $user_guid And rel_follow.relationship = '". ENLIGHTN_FOLLOW . "')";
 				break;
 			case 3:#Favorite
 				//$force[] = "Force Index (idx_annotations_time)";
-				$join[] = "Inner Join entity_relationships rel_favorite On a.entity_guid = rel_favorite.guid_two And rel_favorite.guid_one = $user_guid And rel_favorite.relationship = '". ENLIGHTN_FAVORITE . "'";
+				$join[] = "Inner Join entity_relationships rel_favorite On ent.guid = rel_favorite.guid_two And rel_favorite.guid_one = $user_guid And rel_favorite.relationship = '". ENLIGHTN_FAVORITE . "'";
 				$where[] = "";
 				break;
 			case 4:#Private Folowed or Public 4
 				//$join[] = "Left Join entity_relationships As rel_all On a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And a.access_id  = " . ACCESS_PRIVATE;
-                $where[] = "And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And a.access_id  = " . ACCESS_PRIVATE . ")
-                                  Or a.access_id  = " . ACCESS_PUBLIC . ')';
+                $where[] = "And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where ent.guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And ent.access_id  = " . ACCESS_PRIVATE . ")
+                                  Or ent.access_id  = " . ACCESS_PUBLIC . ')';
 				break;
 			case 5:#Invited aka request 5
 				#$force[] = "Force Index (idx_annotations_time)";
-				$join[] = "Inner Join entity_relationships As rel_req On a.entity_guid = rel_req.guid_one And rel_req.guid_two = $user_guid And rel_req.relationship = '". ENLIGHTN_INVITED . "'";
+				$join[] = "Inner Join entity_relationships As rel_req On ent.guid = rel_req.guid_one And rel_req.guid_two = $user_guid And rel_req.relationship = '". ENLIGHTN_INVITED . "'";
 				$where[] = "";
 				break;
 			default:
@@ -71,9 +72,10 @@ Order By e.time_created desc";
 		}
 		if ($unreaded_only) {
 			#Unreaded
-			$where[] = "And Not Exists(Select id
-		    	                        From entity_relationships As rel
+			$where[] = "And Not Exists(Select rel.id
+		    	                        From entity_relationships As rel, annotations a
 		                                Where a.id = rel.guid_two
+                                        And ent.guid = a.entity_guid
 		                                And rel.guid_one = $user_guid
 		                                And rel.relationship = '". ENLIGHTN_READED . "')";
 		}
@@ -81,7 +83,8 @@ Order By e.time_created desc";
 		if (is_array($from_users)) {
 			$from_users = implode(',',$from_users);
 			if (!empty($from_users)) {
-				$where[] = "And a.owner_guid in ($from_users)";
+				$from_users = "And a.owner_guid in ($from_users)";
+                $having[]   = "Having id";
 			}
 		}
 		#Subtype
@@ -103,7 +106,8 @@ Order By e.time_created desc";
 		                            From metastrings mst
 		                            Where a.name_id = mst.id
 		                            And mst.string In('$subtype')))";*/
-			$join[]	= "Inner Join entity_relationships As rel_embed On a.id = rel_embed.guid_two And rel_embed.relationship = '" . ENLIGHTN_EMBEDED . "'
+			$join[]	= "Inner Join annotations a On ent.guid = a.entity_guid
+                        Inner Join entity_relationships As rel_embed On a.id = rel_embed.guid_two And rel_embed.relationship = '" . ENLIGHTN_EMBEDED . "'
 						Inner Join metadata mtd On rel_embed.guid_one = mtd.entity_guid And mtd.value_id in ($subtype_id)";
 		}
 		#Words
@@ -111,14 +115,15 @@ Order By e.time_created desc";
             $sphinx_enabled = get_plugin_setting('sphinx_enabled','enlightn');
             if ($sphinx_enabled == 1) {
                 $force   = array();
-                $join [] = "Inner Join sphinx_search sphinx On a.id = sphinx.id And a.entity_guid = sphinx.guid";
+                $join [] = "Inner Join sphinx_search sphinx On ent.guid = sphinx.guid";
                 $where[] = "And sphinx.query='@(title,content) $words;mode=extended;offset=$offset;limit=10;sort=extended:@weight desc'";
                 //remove offset when going throught sphinx... not needed as it's the main data source.
                 if ($offset > 0) {
                     $offset = 0;
                 }
             } else {
-                $join [] = "Inner Join objects_entity ent_title On ent_title.guid = a.entity_guid
+                $join [] = "Inner Join objects_entity ent_title On ent_title.guid = ent.guid
+                            Inner Join annotations a On ent.guid = a.entity_guid
                             Inner Join metastrings msv On a.value_id = msv.id";
                 $where[] = "And
                                 Case
@@ -132,7 +137,7 @@ Order By e.time_created desc";
 		}
 		#Entity guid
 		if ($entity_guid) {
-			$where[] = "And a.entity_guid = $entity_guid";
+			$where[] = "And ent.guid = $entity_guid";
 			$group[] = "Group By p.id";
 		} else {
 			$group[] = "Group By p.guid";
@@ -145,21 +150,23 @@ Order By e.time_created desc";
 			if (empty($date_end)) {
 				$date_end = strtotime("now");
 			}
-			$where[] = "And a.time_created Between $date_begin And $date_end";
+			$where[] = "And ent.time_created Between $date_begin And $date_end";
 		}
 		$force 	= implode(' ',$force);
 		$join	= implode(' ',$join);
 		$where	= implode(' ',$where);
 		$group	= implode(' ',$group);
-		$query 	= "Select Distinct a.entity_guid as guid
-                		, (Select Max(id) From annotations Where entity_guid = a.entity_guid) id
-		   				, (Select Max(time_created) From annotations Where entity_guid = a.entity_guid) created
-		From annotations a $force
-				$join
-				Where 1
-				$where
-				Order By a.time_created Desc
-				Limit $offset,$limit";
+		$having	= implode(' ',$having);
+		$query 	= "Select Distinct ent.guid
+                        ,  (Select Max(a.id) From annotations a Where ent.guid = a.entity_guid $from_users) id
+                        , ent.time_updated created
+                    From entities ent $force
+                    $join
+                    Where
+    				$where
+                    $having
+        			Order By ent.time_updated Desc
+            		Limit $offset,$limit";
 		//echo "<pre>" . $query;die();
 		return  $this->get_data($query, $key_cache, null);
 	}
@@ -387,7 +394,7 @@ Limit $offset,$limit";
         $query = "Select a.entity_guid
                     From annotations a
                     Inner Join entity_relationships As rel_embed On a.id = rel_embed.guid_two And rel_embed.relationship = 'embeded'
-                    Where (Exists (Select id From entity_relationships As rel_all Where a.id = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '" . ENLIGHTN_FOLLOW . "' And a.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
+                    Where (Exists (Select id From entity_relationships As rel_all Where a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '" . ENLIGHTN_FOLLOW . "' And a.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
                                                             Or a.access_id  = " . ACCESS_PUBLIC . ")
                     And rel_embed.guid_one = $guid
                     Limit 1";

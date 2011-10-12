@@ -8,7 +8,7 @@
 
 $collection_id 			= get_input('listId');
 $users_id 				= get_input('userIds');
-
+$members                = array();
 $members_of_collection  = get_members_of_access_collection($collection_id);
 foreach ($members_of_collection as $key => $member) {
 	$members[] = $member->guid;

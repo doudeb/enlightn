@@ -1,7 +1,6 @@
 <?php
 include_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php");
 global $CONFIG;
-
 if (!function_exists('elgg_get_data_path')) {
     function elgg_get_data_path () {
         global $CONFIG;

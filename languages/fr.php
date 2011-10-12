@@ -170,6 +170,8 @@
 			,'enlightn:file:type:image' => 'Images' //don't translate please
 			,'enlightn:file:type:doc' => 'Documents' //don't translate please
 			,'enlightn:file:type:link' => 'Articles' //don't translate please
+			,'enlightn:attach' => 'Attacher' //Attach a doc to a dissucssion
+			,'enlightn:attachtoanewdiscussion' => 'Envoyer' //Create a discussion with the doc
 
 			//SETTINGS
             ,'enlightn:settingsheader' => '%s' //don't translate please

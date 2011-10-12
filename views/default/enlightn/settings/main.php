@@ -10,8 +10,6 @@ foreach ($sn_linkers as $key => $name) {
     }
 }
 ?>
-
-
 	<div id="settings">
         <img class="big-photo" src="<?php echo $user->getIcon('large')?>" />
 	    <div class="header">
@@ -42,7 +40,6 @@ foreach ($sn_linkers as $key => $name) {
                 echo elgg_view('input/form', array('action' => "{$vars['url']}action/usersettings/save", 'body' => $form_body));
 
                 ?>
-
             </div>
             <div id="tabpassword" style="display: none">
                 <?php
@@ -76,7 +73,7 @@ foreach ($sn_linkers as $key => $name) {
                 ?>
             </div>
             <div id="tabpicture" style="display: none;">
-               <?php echo elgg_view("profile/editicon", array('user' => $user));?>
+               <?php echo elgg_view("enlightn/profile/editicon", array('user' => $user));?>
             </div>
             <div id="tabnotification" style="display: none;">
                <?php

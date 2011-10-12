@@ -5,6 +5,14 @@ $(".embeder").click(function(){
         window.parent.$.facebox.close();
         return false;
 });
+$(".embederToNew").click(function(){
+        content = $('#embeder_content' + $(this).attr('id')).val();
+        if (content) {
+            showNewDiscussionBox();
+            window.parent.updateRte(content);
+        }
+        return false;
+});
 </script>
 <?php
 	$context = get_context();

@@ -11,7 +11,7 @@
 					<!-- display the post button -->
 					<div id="submission"></div>
                     <div class="sending">
-                        <input class="checkbox" type="checkbox" /><span class="reply ico"></span>
+                        <input class="checkbox" type="checkbox" id="autoReply"/><span class="reply ico"></span>
                         <button type="submit" class="submit"><?php echo elgg_echo('enlightn:buttonsend'); ?></button>
                     </div>
 				</form>
@@ -68,6 +68,7 @@ $(document).ready(function(){
             $(".rte-zone").contents().find(".frameBody").html('');
             $(".rte-zone").contents().find(".frameBody").css('height','85');
             $("#post .textarea").css('height','85');
+            $(".rte-zone").contents().find(".frameBody").focus();
             $('#submission').html('');
             loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
             return true;

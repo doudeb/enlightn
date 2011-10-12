@@ -17,8 +17,11 @@ $post 				= get_input('new_post',null);
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
 $json_return        = array();
 $json_return['success'] = false;
-if (empty($post)) {
+
+if (strip_tags($post,'<img>') == "" || trim($post) == "") {
     $json_return['message'] = elgg_echo('enlightn:messageempty');
+    echo json_encode($json_return);
+    exit();
 }
 
 disable_right($topic_guid);
@@ -38,6 +41,7 @@ if ($post_id == false) {
 	system_message(elgg_echo("groupspost:failure"));
 	forward($_SERVER['HTTP_REFERER']);
 }
+$topic->save();//trigger entities save, in order to update the update_time;
 if (is_array($message['guids'])) {
 	foreach ($message['guids'] as $embeded_guids) {
 		add_entity_relationship($embeded_guids,ENLIGHTN_EMBEDED,$post_id);

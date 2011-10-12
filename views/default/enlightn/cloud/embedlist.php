@@ -10,12 +10,16 @@ $url            = get_file_link($file);
                             <div class="cloud_thumb"><?php echo elgg_view("enlightn/cloud/icon", array("mimetype" => $file->mimetype, 'thumbnail' => $file->thumbnail, 'file_guid' => $file->guid, 'size' => 'small')); ?></div>
                             <div class="excerpt" id="excerpt<?php echo $file->guid; ?>">
                                 <h3><?php echo $file->title?></h3>
+                                <?php if(get_context() == 'cloud_embed') {?>
+                                    <span class="follow send-msg embeder" id="<?php echo $file->guid; ?>">&nbsp;<?php echo elgg_echo('enlightn:attach')?></span>
+                                <?php } else { ?>
+                                    <span class="follow send-msg embederToNew" id="<?php echo $file->guid; ?>">&nbsp;<?php echo elgg_echo('enlightn:attachtoanewdiscussion')?></span>
+                                <?php }?>
                                 <p><?php echo substr($file->originalfilename, 0, 107);?></p>
                                 <p></p>
                                 <span class="participants"><?php echo $user_ent->name?>
                                     <span class="date"><?php echo elgg_view_friendly_time($file->time_created) ?></span>
                                 </span>
-                                <?php if(get_context() == 'cloud_embed') {?><span class="follow send-msg embeder" id="<?php echo $file->guid; ?>">&nbsp;<?php echo elgg_echo('enlightn:attach')?></span><?php } ?>
                                 <p></p>
                             </div>
                     </li>

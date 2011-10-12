@@ -16,6 +16,7 @@ function enlightn_init() {
     elgg_extend_view('js/initialise_elgg','enlightn/js');
     elgg_extend_view('profile/editicon','enlightn/helper/redirect');
 	// Try to remove the dashboard page
+    unregister_plugin_hook('validate', 'input', 'htmlawed_filter_tags');
     register_plugin_hook('index','system','new_index');
 	register_plugin_hook('validate', 'input', 'enlightn_filter_tags', 1);
     //register_plugin_hook('siteid','system','set_site_id');
@@ -43,8 +44,8 @@ function enlightn_init() {
     register_entity_type('object',ENLIGHTN_DISCUSSION);
     // Load profile settings
     $profile_settings = get_profile_settings();
-    if (!empty($profile_settings['timezone']['value'])) {
-        $timezone = $profile_settings['timezone']['value'];
+    if (!empty($profile_settings['timezone'])) {
+        $timezone = $profile_settings['timezone'];
     } else {
         $timezone = 'Europe/Paris';
     }

@@ -25,7 +25,7 @@
 		$size = 'small';
 	}
 	// Handle
-	switch ($mime)
+    switch ($mime)
 	{
 		case 'image/jpg' 	:
 		case 'image/jpeg' 	:
@@ -49,7 +49,8 @@
 		break;
         case 'text/html'    :
         case 'link/image'   :
-            if ($thumbnail) {
+            $is_document = preg_match("/\.(doc|xls|pdf|csv|txt|php)$/i", $thumbnail);
+            if ($thumbnail && !$is_document) {
 				echo "<img class=\"photo\" src=\"" . $thumbnail ."\" border=\"0\" />";
 			} else {
 				echo "<img src=\"". elgg_view('file/icon/default',$vars) ."\" border=\"0\" />";

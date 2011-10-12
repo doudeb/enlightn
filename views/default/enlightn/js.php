@@ -205,10 +205,12 @@ $(document).ready(function(){
 				$('#membership').val(<?php echo ACCESS_PRIVATE?>);
 			}
 		});
-	});
 
-$(document).ready(function(){
- 	$('#detail .toggle').click( function(){
+    $('#autoReply').click(function () {
+        $('#add_post .sending .submit').toggle();
+    });
+
+    $('#detail .toggle').click( function(){
         $('#detail').toggleClass('full');
 	});
 	$('#selectNone').click( function(){
@@ -336,9 +338,9 @@ $(document).ready(function(){
 
 	}
     function showNewDiscussionBox() {
-        boxElm = $('#new-post');
+        var boxElm = $('#new-post')
         if (boxElm.addClass('open')) {
-
+            boxElm.draggable();
         }
        	$('button:[type="reset"] ').click( function(){
             $('#new-post').removeClass('open');
@@ -364,7 +366,7 @@ $(document).ready(function(){
     function updateRte (content) {
         elm = $(".rte-zone").contents().find(".frameBody");
         if (elm) {
-            elm.html(elm.html() + ' ' + content);
+            elm.html(elm.html() + "<br/>" + content + "<br/><br/>");
         }
     }
 
@@ -408,10 +410,6 @@ if(typeof $.fn.rte === "undefined") {
 
             var content = textarea.val();
 
-            // Mozilla needs this to display caret
-            /*if($.trim(content)=='') {
-                content = '<br />';
-            }*/
 
             // already created? show/hide
             if(iframe) {
@@ -512,7 +510,7 @@ if(typeof $.fn.rte === "undefined") {
             <li class='video' title='<?php echo elgg_echo('enlightn:title:video')?>'><span class='ico'></span></li>\
             <li class='pict' title='<?php echo elgg_echo('enlightn:title:picture')?>'><span class='ico'></span></li>\
             <li class='doc' title='<?php echo elgg_echo('enlightn:title:document')?>'><span class='ico'></span></li>\
-		    <!--<li><a href='#' class='disable'><img src='"+opts.media_url+"close.gif' alt='close rte' /></a></li>-->\
+		    <li class='disable'><a href='#' class='disable'>&times;</a></li>\
     </ul>");
 
             $('select', tb).change(function(){
@@ -548,7 +546,7 @@ if(typeof $.fn.rte === "undefined") {
                 return false; });
             $('.disable', tb).click(function() {
                 disableDesignMode();
-                var edm = $('<a class="rte-edm" href="#">Enable design mode</a>');
+                var edm = $('<a class="rte-edm" href="#"><?php echo elgg_echo('enlightn:enabledesignmode')?></a>');
                 tb.empty().append(edm);
                 edm.click(function(e){
                     e.preventDefault();
@@ -580,7 +578,16 @@ if(typeof $.fn.rte === "undefined") {
                 return true;
             });
 
-            iframeDoc.keyup(function() {
+            iframeDoc.keyup(function(e) {
+                if(e.keyCode == 13) {
+                    if($('#autoReply').attr('checked')=='checked') {
+                        $('#add_post').submit();
+                        $(iframe).contents().find("body").html('');
+                        $(iframe).contents().find("body").focus();
+                        $(iframe).contents().find("body").select();
+                        return true;
+                    }
+                }
                 setSelectedType(getSelectionElement(), select);
                 var body = $('body', iframeDoc);
                	var scrollHeight = $('body', iframeDoc)[0].scrollHeight;

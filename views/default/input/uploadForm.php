@@ -66,10 +66,10 @@
 		            	$('#tags').val('');
 		            	$('#title').val('');
 		            	$('#upload').val('');
-		            	if (typeof $(".rte-zone").contents().find(".frameBody") != undefined) {
-					       	$(".rte-zone").contents().find(".frameBody").html($(".rte-zone").contents().find(".frameBody").html() + ' ' + data);
-		            	} else {
+		            	if (typeof $("#cloud_content") != undefined) {
 							loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo get_context()?>&' + get_search_criteria());
+		            	} else {
+					       	$(".rte-zone").contents().find(".frameBody").html($(".rte-zone").contents().find(".frameBody").html() + ' ' + data);
 		            	}
 				    }
 				};

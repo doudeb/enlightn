@@ -54,6 +54,10 @@ input, textarea {
 #search .search-field .submit,
 #search .dates .date,
 #feed .open-msg .content .user,
+.framebody .<?php echo ENLIGHTN_LINK?>,
+.framebody .<?php echo ENLIGHTN_IMAGE?>,
+.framebody .<?php echo ENLIGHTN_MEDIA?>,
+.framebody .<?php echo ENLIGHTN_DOCUMENT?>,
 #feed .open-msg .content .<?php echo ENLIGHTN_LINK?>,
 #feed .open-msg .content .<?php echo ENLIGHTN_IMAGE?>,
 #feed .open-msg .content .<?php echo ENLIGHTN_MEDIA?>,
@@ -465,6 +469,7 @@ span.ignore:hover {
     padding:10px 10px 10px 10px;
     margin-top: 0px;
     margin-left: -310px;
+    cursor : move;
 }
 
 
@@ -645,6 +650,16 @@ span.ignore:hover {
 #new-post .textarea .toolbar .video .ico { background-position:-309px -177px; }
 #new-post .textarea .toolbar .pict .ico { background-position:-335px -177px; }
 #new-post .textarea .toolbar .doc .ico { background-position:-362px -177px; }
+#new-post .textarea .toolbar .disable {
+    float : right;
+    background-image:none;
+    background-color:#e5e5e5;
+    border:0px;
+    -moz-border-radius:0px;
+    -webkit-border-radius:0px;
+    -khtml-border-radius:0px;
+    border-radius:0px;
+}
 
 #new-post .textarea .toolbar li:hover {
     background-image:none;
@@ -784,6 +799,7 @@ span.ignore:hover {
     outline:none;
     padding: 3px 15px;
     text-shadow: 1px 1px 1px #43520A;
+    cursor : pointer;
 }
 
 #new-post button[type="reset"] {
@@ -800,6 +816,7 @@ span.ignore:hover {
     outline:none;
     padding: 3px 15px;
     text-shadow: 1px 1px 1px #ccc;
+    cursor : pointer;
 }
 
 
@@ -1187,6 +1204,10 @@ span.ignore:hover {
 }
 
 #feed .open-msg .content .user,
+.framebody .<?php echo ENLIGHTN_LINK?>,
+.framebody .<?php echo ENLIGHTN_IMAGE?>,
+.framebody .<?php echo ENLIGHTN_MEDIA?>,
+.framebody .<?php echo ENLIGHTN_DOCUMENT?>,
 #feed .open-msg .content .<?php echo ENLIGHTN_LINK?>,
 #feed .open-msg .content .<?php echo ENLIGHTN_IMAGE?>,
 #feed .open-msg .content .<?php echo ENLIGHTN_MEDIA?>,
@@ -1199,10 +1220,10 @@ span.ignore:hover {
 }
 
 #feed .open-msg .content .user { background-position:-485px -152px; border: none; overflow: visible; }
-#feed .open-msg .content .<?php echo ENLIGHTN_LINK?> { background-position:-485px -176px; }
-#feed .open-msg .content .<?php echo ENLIGHTN_MEDIA?> { background-position:-485px -200px; }
-#feed .open-msg .content .<?php echo ENLIGHTN_IMAGE?> { background-position:-485px -224px; }
-#feed .open-msg .content .<?php echo ENLIGHTN_DOCUMENT?> { background-position:-485px -248px; }
+.framebody .<?php echo ENLIGHTN_LINK?>, #feed .open-msg .content .<?php echo ENLIGHTN_LINK?> { background-position:-485px -176px; }
+.framebody .<?php echo ENLIGHTN_IMAGE?>, #feed .open-msg .content .<?php echo ENLIGHTN_MEDIA?> { background-position:-485px -200px; }
+.framebody .<?php echo ENLIGHTN_MEDIA?>, #feed .open-msg .content .<?php echo ENLIGHTN_IMAGE?> { background-position:-485px -224px; }
+.framebody .<?php echo ENLIGHTN_DOCUMENT?>, #feed .open-msg .content .<?php echo ENLIGHTN_DOCUMENT?> { background-position:-485px -248px; }
 
 #feed .msg .inclosed-list {
     border:1px solid #ccc;
@@ -3451,7 +3472,7 @@ ul#friends_collections_accordian {
 	overflow: hidden;
 	margin: 0;
 	padding:0;
-
+    width : 630px;
 	height: auto;
 	#background: #dedede;
 	-webkit-border-radius: 8px;
@@ -3878,4 +3899,46 @@ SYSTEM MESSSAGES
 }
 .closeMessages a:hover {
         color:black;
+}
+
+/*
+ * imgAreaSelect animated border style
+ */
+
+.imgareaselect-border1 {
+        background: url(<?php echo $vars['url'] ?>mod/enlightn/media/graphics/border-anim-v.gif) repeat-y left top;
+}
+
+.imgareaselect-border2 {
+    background: url(<?php echo $vars['url'] ?>mod/enlightn/media/graphics/border-anim-h.gif) repeat-x left top;
+}
+
+.imgareaselect-border3 {
+    background: url(<?php echo $vars['url'] ?>mod/enlightn/media/graphics/border-anim-v.gif) repeat-y right top;
+}
+
+.imgareaselect-border4 {
+    background: url(<?php echo $vars['url'] ?>mod/enlightn/media/graphics/border-anim-h.gif) repeat-x left bottom;
+}
+
+.imgareaselect-border1, .imgareaselect-border2,
+.imgareaselect-border3, .imgareaselect-border4 {
+    filter: alpha(opacity=50);
+        opacity: 0.5;
+}
+
+.imgareaselect-handle {
+    background-color: #fff;
+        border: solid 1px #000;
+    filter: alpha(opacity=50);
+        opacity: 0.5;
+}
+
+.imgareaselect-outer {
+        background-color: #000;
+    filter: alpha(opacity=50);
+        opacity: 0.5;
+}
+
+.imgareaselect-selection {
 }

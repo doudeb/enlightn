@@ -235,7 +235,7 @@ function regenerate_cache ($entity,$user_guid,$action_type) {
 }
 
 function get_http_link($message) {
-	$regexp = "#\b(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))+(\s|\n|$|\r|\t|</p>|<br/>|<p/>)#";
+	$regexp = "#\b(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))+(\s|\n|$|\r|\t|</p>|<br/>|<br>|<p/>)#";
 	if (preg_match_all($regexp, $message, $http_link)) {
 		return $http_link[0];
 	}
@@ -243,9 +243,9 @@ function get_http_link($message) {
 }
 
 function get_embeded_src ($message) {
-	$regexp = "#<span.*.id=\"(\d+)\">#";
-	if (preg_match_all($regexp, $message, $http_link)) {
-		return $http_link[1];
+	$regexp = "/id=\"(\d+)\"/";
+	if (preg_match_all($regexp, $message, $embeded_src)) {
+		return $embeded_src[1];
 	}
 	return false;
 }
@@ -258,6 +258,7 @@ function get_embeded_type ($links) {
 	$links_type = array();
 	foreach ($links as $key=>$link) {
 		$link = trim($link);
+		$link = strip_tags($link);
 		switch ($link) {
 			/**
 			 * Remove enlightn internal doc
@@ -272,7 +273,7 @@ function get_embeded_type ($links) {
 			case preg_match("/\.(bmp|jpeg|gif|png|jpg|pdf)$/i", $link) > 0:
 				$links_type[ENLIGHTN_IMAGE][]['link'] = $link;
 				break;
-			case preg_match("/(dailymotion|vimeo|youtube)/i", $link) > 0:
+			case preg_match("/(dailymotion|vimeo|youtu)/i", $link) > 0:
 				$links_type[ENLIGHTN_MEDIA][]['link'] = $link;
 				break;
 			default:
@@ -599,7 +600,6 @@ function enlightn_filter_tags($hook, $entity_type, $returnvalue, $params) {
 
 
 function remove_href ($message) {
-    file_put_contents('/tmp/data', $message,FILE_APPEND);
     $message = str_replace('</a>', '',$message);
     $message = str_replace('target="_blank"', '',$message);
     $message = preg_replace("/<a.*href=\"(.*)\".*>/i", " $1 ", $message);
