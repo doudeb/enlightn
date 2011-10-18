@@ -33,7 +33,10 @@ $date_begin 	= strtotime($date_begin);
 $date_end 		= strtotime($date_end);
 
 if (empty($offset)) {
-	$offset = $last_search['offset'];
+	$offset = 0;
+}
+if (empty($limit)) {
+	$limit = 10;
 }
 
 if (empty($access_level)) {
@@ -46,6 +49,7 @@ $nb_results = count($search_results);
 if ($nb_results > 0) {
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s",$search_results[0]->created) . " GMT");
 	header("Query-uid: " . md5($last_search));
+	header("Fetch-rows: " . $nb_results);
 	if ($fetch_modified === '1') {
 		//echo json_encode(array('last-modified' => $search_results[0]->created));
 		return;

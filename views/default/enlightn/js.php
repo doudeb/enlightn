@@ -1,9 +1,10 @@
-function loadContent (divId,dataTo,method) {
+loadContent = function (divId,dataTo,method) {
 	if (typeof method == 'undefined' || method == 'load') {
 		if ($(divId).html().indexOf('loading.gif') == -1) {
 			$(divId).prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif" alt="loading">');
-			 $(divId).load(dataTo, function(responseText, textStatus, XMLHttpRequest) {
-                lastModified = XMLHttpRequest.getResponseHeader('Last-Modified');
+            $.get(dataTo, function(data, textStatus, XMLHttpRequest){
+                $(divId).html(data);
+			    lastModified = XMLHttpRequest.getResponseHeader('Last-Modified');
 			 	queryUid = XMLHttpRequest.getResponseHeader('Query-uid');
 			 	fetchedRows = XMLHttpRequest.getResponseHeader('Fetch-rows');
 
@@ -169,10 +170,10 @@ $(document).ready(function(){
 });
 
 
-	function reloader (url_to_check, element_id) {
+	reloader = function (url_to_check, element_id) {
 		setInterval(function() {
 			var offset = $('#see_more_discussion_list_offset').val();
-			$.getJSON(url_to_check + get_search_criteria(),{fetch_modified: "1"}, function(data, textStatus, jqXHR) {
+			$.get(url_to_check + get_search_criteria(),{fetch_modified: "1"}, function(data, textStatus, jqXHR) {
 				lastModified = jqXHR.getResponseHeader('Last-Modified');
 			 	queryUid = jqXHR.getResponseHeader('Query-uid');
 			 	lastCalled = $('#lastModified' + queryUid).val();
@@ -180,7 +181,7 @@ $(document).ready(function(){
                     //console.log(lastModified + ' != ' + lastCalled);
 			 		loadContent (element_id, url_to_check + get_search_criteria());
 			 	}
-			});
+			}, 'json');
 		}, 5000);
 	}
 	$(document).ready(function(){
@@ -235,11 +236,14 @@ $(document).ready(function(){
 				$(this).find('.statusbar').find(':checkbox').attr('checked', !$(this).find('.statusbar').find(':checkbox').is(':checked'));
 			}
 		});
-
+	});
+	$('#showunread').click( function(){
+		changeMessageList();
 	});
 	$('#selectAll').click( function(){
+        var toCheck = $(this).attr('checked')=='checked'?true:false;
 		$("#discussion_list_container li").each(function () {
-			$(this).find('.statusbar').find(':checkbox').attr('checked', !$(this).find('.statusbar').find(':checkbox').is(':checked'));
+			$(this).find('.statusbar').find(':checkbox').attr('checked', toCheck);
 		});
 
 	});
@@ -323,8 +327,8 @@ $(document).ready(function(){
         if(data.success) {
         	$('#new-post').removeClass('open');
             $(".rte-zone").contents().find(".frameBody").html('');
-            $("#new-post .textarea").css('height','85');
-       		$(".rte-zone").contents().find(".frameBody").css('height','85');
+            $("#new-post .textarea").css('height','185');
+       		$(".rte-zone").contents().find(".frameBody").css('height','185');
             tokenInputName = $('#discussion_edit input:text[name=invite]').attr('id');
             $('#submission').html('');
             $('#' + tokenInputName).tokenInput("clear");
@@ -341,11 +345,11 @@ $(document).ready(function(){
         var boxElm = $('#new-post')
         if (boxElm.addClass('open')) {
             boxElm.draggable();
+            $("#new-post .textarea").css('height','185');
         }
        	$('button:[type="reset"] ').click( function(){
             $('#new-post').removeClass('open');
             $(".rte-zone").contents().find(".frameBody").html('');
-            $("#new-post .textarea").css('height','85');
             tokenInputName = $('#discussion_edit input:text[name=invite]').attr('id');
             $('#submission').html('');
             $('#' + tokenInputName).tokenInput("clear");
@@ -664,3 +668,4 @@ if(typeof $.fn.rte === "undefined") {
 } // if
 
 })(jQuery);
+

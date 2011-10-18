@@ -26,5 +26,9 @@
 	define('NOTIFICATION_EMAIL_MESSAGE_FOLLOWED', 'email_message_followed');
 	define('URL_DOWNLOAD', $CONFIG->url . 'pg/enlightn/download/');
 	define('ENLIGHTN_THUMBNAIL', 'link_thumbnail');
+    #regexp patern
+	define('REG_LINK', '(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))');
+	define('REG_LINK_IN_MESSAGE', "#\b" . REG_LINK . "+(\s|\n|$|\r|\t|</p>|<br/>|<br>|<p/>)#");
+	define('REG_HREF', "/<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>/siU");
 
     $sn_linkers = array('skype','linkedin','twitter','viadeo','facebook','google','flickr','youtube','vimeo','myspace','netvibes');

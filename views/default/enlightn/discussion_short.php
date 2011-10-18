@@ -23,11 +23,11 @@ $short_description	= substr($short_description,0,214);
 $short_title    	= substr($entity->title,0,55);
 ?>
 <!-- grab the topic title -->
-                    <li id="msg<?php echo $post->entity_guid; ?>" class="msg msg_home <?php echo false===$flag_readed?'unread':'read' ?> <?php echo false===$flag_folowed?'':'followed'  ?> <?php echo  false===$flag_favorite?'':'starred'?>">
+                    <li id="msg<?php echo $post->entity_guid; ?>" class="msg msg_home <?php echo false===$flag_readed?'unread':'read' ?> <?php echo false===$flag_folowed?'':'followed'  ?>">
                         <div class="toolbar">
 							<?php echo elgg_view("enlightn/follow", array('entity' => $vars['entity'], 'user_guid' => $vars['user_guid']));?>
                         </div>
-                        <div class="statusbar">
+                        <div class="statusbar<?php echo  false===$flag_favorite?'':' starred'?>">
                             <input class="checkbox" type="checkbox" value="<?php echo $post->id; ?>"/>
                             <span class="read ico" id="read<?php echo $post->id; ?>"></span>
                             <span class="star ico" id="favorite<?php echo $post->entity_guid; ?>"></span>

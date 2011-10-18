@@ -838,7 +838,7 @@ span.ignore:hover {
 }
 
 #new-post button[type="reset"]:active {
-    background-color:#e;
+    background-color:#eee;
     background-image:none;
 }
 
@@ -866,6 +866,7 @@ span.ignore:hover {
     padding:0 5px;
 	*position:relative;
 	*z-index: 2;
+    cursor : pointer;
 }
 
 #feed .actions ul.right {
@@ -1185,6 +1186,7 @@ span.ignore:hover {
 #feed .open-msg .content {
     display:block;
     margin:0px 0 10px 100px;
+    text-align: justify;
 }
 
 #feed .open-msg .content ul,
@@ -1571,11 +1573,11 @@ span.ignore:hover {
 }
 
 #sidebar .folders .notif {
-    #color:#fff;
-    #background-position:-233px -78px;
-    #display:inline-block;
+    /*color:#fff;
+    background-position:-233px -78px;
+    display:inline-block;*/
     font-size: 100%;
-    font-weight: strong;
+    font-weight: bold;
     height: 16px;
     margin:-4px 0 0 10px;
     padding:5px 0;
@@ -1684,7 +1686,7 @@ span.ignore:hover {
 }
 
 #detail .header {
-    height : 50px;
+    min-height : 50px;
 }
 
 #detail .actions {
@@ -2603,7 +2605,7 @@ RTE EDITOR
     padding:0;
     border:0px;
     clear:both;
-    height:85px;
+    height:auto;
     display:block;
 }
 

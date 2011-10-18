@@ -18,14 +18,14 @@
 			</div>
 <script>
 $(document).ready(function(){
+    $(".rte-zone").contents().find(".frameBody").focus();
 	$('#fake_input').click( function(){
 		$('#fake_input').fadeOut();
 		$('#edit_discussion').fadeIn();
 		var iframeRte = document.getElementsByTagName('iframe');
 		iframeRte[0].contentWindow.focus();
 	});
-});
-$(document).ready(function(){
+
 	$('#close_new_discussion').click( function(){
 		$('#edit_discussion').fadeOut();
 		$('#fake_input').fadeIn();

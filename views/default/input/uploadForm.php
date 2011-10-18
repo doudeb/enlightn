@@ -14,15 +14,15 @@
             ?>
 	    <input type="file" name="upload" id="upload"/>
 	    <div id="uploader" style="display:none">
-			<input type="text" placeholder="<?php echo elgg_echo('enlightn:titlefile')?>" name="title" id="title"/>
-	        <input type="text" placeholder="<?php echo elgg_echo('enlightn:tagsfile')?>" name="tags" id="tags"/>
+			<input type="text" placeholder="<?php echo elgg_echo('enlightn:titlefile')?>" name="title" id="filetitle"/>
+	        <input type="text" placeholder="<?php echo elgg_echo('enlightn:tagsfile')?>" name="tags" id="filetags"/>
 	        <?php
 	        	echo elgg_view('input/hidden', array('internalname' => 'access_id','value' => $access_id));
    				echo elgg_view('input/securitytoken');
 	        ?>
 	        <div class="new-bloc" id="submitBloc">
                  <div id="submissionUpload"></div>
-	           	<input type="submit" value="<?php echo elgg_echo('enlightn:uploadembed')?>" name="<?php echo elgg_echo('enlightn:upload')?>">
+	           	<input type="submit" value="<?php echo elgg_echo('enlightn:buttonpost')?>" name="<?php echo elgg_echo('enlightn:upload')?>">
 	        </div>
 	    </div>
 	</div>
@@ -63,14 +63,14 @@
 				       	$('#uploader').css('display','none');
 		            	$('#embedContent').css('display','none');
 		            	$('#filename').val('');
-		            	$('#tags').val('');
-		            	$('#title').val('');
+		            	$('#filetags').val('');
+		            	$('#filetitle').val('');
 		            	$('#upload').val('');
-		            	if (typeof $("#cloud_content") != undefined) {
-							loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo get_context()?>&' + get_search_criteria());
-		            	} else {
-					       	$(".rte-zone").contents().find(".frameBody").html($(".rte-zone").contents().find(".frameBody").html() + ' ' + data);
-		            	}
+                        <?php if(get_context() == 'cloud') {?>
+		            	loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo get_context()?>&' + get_search_criteria());
+                        <?php } else { ?>
+		            	updateRte(data);
+                        <?php } ?>
 				    }
 				};
 

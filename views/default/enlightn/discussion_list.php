@@ -15,11 +15,11 @@ $url_follow			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/fol
                         <li><?php echo elgg_echo("enlightn:action")?><span class="arrow"></span>
                             <ul>
                                 <li id="setReaded"><?php echo elgg_echo("enlightn:setasread")?></li>
-                                <li id="setReaded"><?php echo elgg_echo("enlightn:removeasread")?></li>
+                                <li id="setUnReaded"><?php echo elgg_echo("enlightn:removeasread")?></li>
                                 <li id="setFollow"><?php echo elgg_echo("enlightn:setasfollow")?></li>
-                                <li id="setFollow"><?php echo elgg_echo("enlightn:removeasfollow")?></li>
+                                <li id="setUnFollow"><?php echo elgg_echo("enlightn:removeasfollow")?></li>
                                 <li id="setFavorite"><?php echo elgg_echo("enlightn:setasfavorite")?></li>
-                                <li id="setFavorite"><?php echo elgg_echo("enlightn:removeasfavorite")?></li>
+                                <li id="removeFavorite"><?php echo elgg_echo("enlightn:removeasfavorite")?></li>
                             </ul>
                         </li>
                     </ul>
@@ -55,16 +55,49 @@ $(document).ready(function(){
                         var url = '<?php echo $url_follow ?>&annotation_id=' + elmId.val();
                         var toggleElm = $(this).parent().parent().find('.toolbar span').eq(0);
                         var toggleClass = "unfollow";
+                        if(toggleElm.hasClass("unfollow")) {
+                            return false;
+                        }
+                    break;
+                    case 'setUnFollow' :
+                        var url = '<?php echo $url_follow ?>&annotation_id=' + elmId.val();
+                        var toggleElm = $(this).parent().parent().find('.toolbar span').eq(0);
+                        var toggleClass = "unfollow";
+                        if(!toggleElm.hasClass("unfollow")) {
+                            return false;
+                        }
                     break;
                     case 'setFavorite' :
                         var url = '<?php echo $url_favorite ?>&annotation_id=' + elmId.val();
                         var toggleElm = $(this).parent();
                         var toggleClass = "starred";
+                        if(toggleElm.hasClass("starred")) {
+                            return false;
+                        }
+                    break;
+                    case 'removeFavorite' :
+                        var url = '<?php echo $url_favorite ?>&annotation_id=' + elmId.val();
+                        var toggleElm = $(this).parent();
+                        var toggleClass = "starred";
+                        if(!toggleElm.hasClass("starred")) {
+                            return false;
+                        }
                     break;
                     case 'setReaded' :
                         var url = '<?php echo $url_read ?>&discussion_guid=' + elmId.val();
                         var toggleElm = $("#read" + elmId.val()).parent().parent();
                         var toggleClass = "unread";
+                        if(!toggleElm.hasClass("unread")) {
+                            return false;
+                        }
+                    break;
+                    case 'setUnReaded' :
+                        var url = '<?php echo $url_read ?>&discussion_guid=' + elmId.val();
+                        var toggleElm = $("#read" + elmId.val()).parent().parent();
+                        var toggleClass = "unread";
+                        if(toggleElm.hasClass("unread")) {
+                            return false;
+                        }
                     break;
                     default : return false;
                 }
@@ -75,7 +108,10 @@ $(document).ready(function(){
     }
 
 	$('#setFollow').click(function () { markAs('setFollow') });
+	$('#setUnFollow').click(function () { markAs('setUnFollow') });
 	$('#setFavorite').click(function () { markAs('setFavorite') });
+	$('#removeFavorite').click(function () { markAs('removeFavorite') });
 	$('#setReaded').click(function () { markAs('setReaded') });
+	$('#setUnReaded').click(function () { markAs('setUnReaded') });
 });
 </script>

@@ -13,33 +13,33 @@ $unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
 </div>
 <input type="hidden" name="discussion_type" id="discussion_type" value="<?php echo get_last_search_value('access_level')?get_last_search_value('access_level'):ENLIGHTN_ACCESS_PU;?>">
 <script language="javascript">
-function changeShortCutList  (accessLevel,offset,discussionId) {
+changeShortCutList = function (accessLevel,offset,discussionId) {
 	oldElement      = $('#shortcuted_messages');
     currElement 	= $('#discussion_selector_' + accessLevel);
 
 	if (typeof accessLevel == 'undefined') {
 		accessLevel = '';
 	}
+
 	if (typeof offset == 'undefined') {
-		offset = '';
+		offset = 0;
 	}
-    oldElement.html('');
     if (typeof oldElement != 'undefined') {
+        oldElement.html('');
         $('<span />', {
 			'id' : 'loadingShortcut',
     		'class': 'loading'}).appendTo(oldElement);
     }
     $('#discussion_type').val(accessLevel);
-	$.getJSON('<?php echo $vars['url']; ?>mod/enlightn/ajax/discussion_shortcut.php'
+	$.get('<?php echo $vars['url']; ?>mod/enlightn/ajax/discussion_shortcut.php'
 	,{
 		offset: offset
 		,access_level: accessLevel
 	}
-	,function(data) {
+	,function(data, textStatus, XMLHttpRequest) {
+        fetchedRows = XMLHttpRequest.getResponseHeader('Fetch-rows');
 		var items = [];
-		var count = 0;
-		for ( results in data ) count++;
-		if(count ==1 ) {
+		if(fetchedRows ==1 ) {
 			//alert("Larousse est un gros sac....");
 			changeShortCutList(accessLevel,offset-10,discussionId);
 			return false;
@@ -64,37 +64,39 @@ function changeShortCutList  (accessLevel,offset,discussionId) {
 		});
 		items.push('</ol><span class="down" id="shortcuted_messages_next"><span class="arrow"></span></span></div>');
         oldElement.remove();
+
 		$('<ul/>', {
 			'id' : 'shortcuted_messages',
     		'class': 'shortcuted_messages',
     		html: items.join('')}).appendTo($(currElement));
 		$(currElement).addClass('current');
+        console.log($(currElement).html());
 		$("#list_selector li").each(function () {
 			if($(this).attr('id') != $(currElement).attr('id')) {
 				$(this).removeClass('current');
 			}
       	});
-		$('#shortcuted_messages_next').click( function(){
-			if (offset == '') {
-				nextOffset = 10;
-				changeShortCutList(accessLevel,nextOffset,discussionId);
-			} else if (parseInt(offset) >= 0) {
-				nextOffset = parseInt(offset) + 10;
-				changeShortCutList(accessLevel,nextOffset,discussionId);
-			}
-			return false;
-		});
-		$('#shortcuted_messages_previous').click( function(){
-			if (parseInt(offset) > 0) {
-				nextOffset = parseInt(offset) - 10;
-				changeShortCutList(accessLevel,nextOffset,discussionId);
-			}
-			return false;
-		});
-	});
+        $('#shortcuted_messages_next').click( function(){
+            if (offset == '') {
+                nextOffset = 10;
+                changeShortCutList(accessLevel,nextOffset,discussionId);
+            } else if (parseInt(offset) >= 0) {
+                nextOffset = parseInt(offset) + 10;
+                changeShortCutList(accessLevel,nextOffset,discussionId);
+            }
+            return false;
+        });
+        $('#shortcuted_messages_previous').click( function(){
+            if (parseInt(offset) > 0) {
+                nextOffset = parseInt(offset) - 10;
+                changeShortCutList(accessLevel,nextOffset,discussionId);
+            }
+            return false;
+        });
+	}, 'json');
 }
-function getUnreadedDiscussion() {
-	$.getJSON('<?php echo $vars['url']; ?>mod/enlightn/ajax/discussion_unreaded.php', function(data) {
+getUnreadedDiscussion = function () {
+	$.get('<?php echo $vars['url']; ?>mod/enlightn/ajax/discussion_unreaded.php', function(data) {
 		$.each(data, function(i,item){
 			var received_value = item;
 			var nav_element = $("#nav_unreaded_" + i);
@@ -107,14 +109,14 @@ function getUnreadedDiscussion() {
 				}
 			}
 		});
-	});
+	},"json");
  }
 $(document).ready(function(){
     loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
     if ($('#discussion_type').val() != '<?php echo ENLIGHTN_ACCESS_AL?>') {
         getUnreadedDiscussion();
-       	reloader("<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php" + get_search_criteria(), '#discussion_list_container');
-        setInterval(function() {getUnreadedDiscussion()}, 7000);
+       	reloader("<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php", '#discussion_list_container');
+        setInterval(function() {getUnreadedDiscussion()}, 7150);
     } else {
         changeShortCutList($('#discussion_type').val(),undefined,<?php echo $vars['discussion_id']?>);
     }

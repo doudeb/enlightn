@@ -15,8 +15,10 @@ $url = $CONFIG->wwwroot . "pg/enlightn";
 // Get input data
 $userto 			= get_input('invite');
 $userto				= parse_user_to($userto);
-$user 				= $_SESSION['user']->getGUID();
-$enlightndiscussion = get_entity(get_input('discussion_guid'));
+$user 				= get_loggedin_userid();
+$guid               = get_input('discussion_guid');
+disable_right($guid);
+$enlightndiscussion = get_entity($guid);
 /*if (!$enlightndiscussion->guid || $enlightndiscussion->owner_guid != $user) {
 	echo elgg_echo('enlightn:cantinvite');
 }*/

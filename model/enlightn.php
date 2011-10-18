@@ -393,7 +393,7 @@ Limit $offset,$limit";
         }
         $query = "Select a.entity_guid
                     From annotations a
-                    Inner Join entity_relationships As rel_embed On a.id = rel_embed.guid_two And rel_embed.relationship = 'embeded'
+                    Inner Join entity_relationships As rel_embed On a.id = rel_embed.guid_two And rel_embed.relationship = '" . ENLIGHTN_EMBEDED . "'
                     Where (Exists (Select id From entity_relationships As rel_all Where a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '" . ENLIGHTN_FOLLOW . "' And a.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
                                                             Or a.access_id  = " . ACCESS_PUBLIC . ")
                     And rel_embed.guid_one = $guid

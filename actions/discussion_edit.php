@@ -26,7 +26,7 @@ $tagarray = string_to_tag_array($tags);
 // Make sure the title / message aren't blank
 if (empty($title) || empty($message)) {
 	$json_return['message'] = elgg_echo('enlightn:missingData');
-
+    exit();
 // Otherwise, save the topic
 } else {
 	// Initialise a new ElggObject
@@ -52,6 +52,8 @@ if (empty($title) || empty($message)) {
 	}
 	$message 	= create_embeded_entities($message,$enlightndiscussion);
 	$post		= $message['message'];
+    file_put_contents('/tmp/post', var_export($message, true), FILE_APPEND);
+
 	// now add the topic message as an annotation
 	$annotationid = $enlightndiscussion->annotate($discussion_type,$post,$access, $user_guid);
 	//link attachement

@@ -1,6 +1,7 @@
 <?php
 include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
-
+$test = '<br><span class="document" id="5823603">test</span><br><br><br><span class="enlightnlink" id="5823602">Friday Night Lights: la petite musique du quotidien - Des séries... et des hommes</span><br><br>';
+//var_dump($test,  get_and_format_href($test));die();
 //Some basic var
 gatekeeper();
 global $enlightn;
@@ -14,10 +15,6 @@ if (!$user_guid || !$user_ent) {
  * Left part
  */
 $left 				= '';
-//Activity
-//$activity 			= elgg_view('enlightn/activity',array());
-//$left 				.= $activity;
-//unset($activity);
 //New discussion
 $new_discussion		= elgg_view('enlightn/new_discussion',array(
 																'user_ent' => $user_ent
