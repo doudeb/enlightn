@@ -1,5 +1,9 @@
 <?php
-$unique_id = md5($vars['internalname'] . time());
+if (!isset($vars['unique_id'])) {
+    $unique_id = md5($vars['internalname'] . time());
+} else {
+    $unique_id = $vars['unique_id'];
+}
 ?>
 
 <input type="text" id="<?php echo $unique_id; ?>" name="<?php echo $vars['internalname']; ?>" placeholder="<?php echo $vars['placeholder']; ?>"/>

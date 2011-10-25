@@ -180,9 +180,9 @@ if (!isset($vars['replacement'])) {
 			foreach($users[$letter] as $friend) {
                 $user_settings          = get_profile_settings($friend->getGUID());
  				echo '<li id="user' . $friend->getGUID() . '" class="user" data-userId="' . $friend->getGUID() . '">
-                            <span class="follow send-msg">
-                                <a href="' . $vars['url'] . 'pg/profile/' . $friend->username .'">' . elgg_echo('enlightn:seehisprofil') . '</a>
-                            </span>
+                             <a href="' . $vars['url'] . 'pg/profile/' . $friend->username .'">
+                                 <span class="follow send-msg">' . elgg_echo('enlightn:seehisprofil') . '</span>
+                            </a>
                             ' . elgg_view('input/user_photo',array('user_ent'=>$friend, 'class'=>'photo')) . '
                             <a href="' . $vars['url'] . 'pg/profile/' . $friend->username .'">' . $friend->name . '</a>
                             <p>' . $user_settings['jobtitle'] .'</p>

@@ -44,6 +44,7 @@ Order By e.time_created desc";
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1
+			default:
 				$force[] = "#Force Index (idx_annotations_time)";
 				$where[] = "And ent.access_id = " . ACCESS_PUBLIC;
 				break;
@@ -66,8 +67,6 @@ Order By e.time_created desc";
 				#$force[] = "Force Index (idx_annotations_time)";
 				$join[] = "Inner Join entity_relationships As rel_req On ent.guid = rel_req.guid_one And rel_req.guid_two = $user_guid And rel_req.relationship = '". ENLIGHTN_INVITED . "'";
 				$where[] = "";
-				break;
-			default:
 				break;
 		}
 		if ($unreaded_only) {

@@ -28,13 +28,13 @@ $value = '';
 if (isset($vars['value'])) {
 	$value = $vars['value'];
 }
+
 ?>
 <script type="text/javascript">
 $(document).ready(function(){
-	//var uEditor = initEditor();
 	$("<?php echo isset($vars['internalid'])?'#'.$vars['internalid']:'textarea[name=' .$vars['internalname'] .']'?>").rte({
     	content_css_url: "<?php echo $vars['url']; ?>_css/css.css?lastcache=<?php echo $vars['config']->lastcache; ?>&viewtype=<?php echo $vars['view']; ?>",
-    	media_url: "<?php echo $vars['url']; ?>mod/enlightn/media/graphics/",
+    	media_url: "<?php echo $vars['url']; ?>mod/enlightn/media/graphics/"
 	});
 });
 </script>

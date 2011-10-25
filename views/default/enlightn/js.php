@@ -1,37 +1,131 @@
+// Buffer class. Has a public append method that expects some kind of Task.
+// Constructor expects a handler which is a method that takes a ajax task
+// and a callback. Buffer expects the handler to deal with the ajax and run
+// the callback when it's finished
+function Buffer(handler) {
+    var queue = [];
+
+    function run() {
+        var callback = function () {
+             // when the handler says it's finished (i.e. runs the callback)
+             // We check for more tasks in the queue and if there are any we run again
+             if (queue.length > 0) {
+                   run();
+             }
+        }
+        // give the first item in the queue & the callback to the handler
+        handler(queue.shift(), callback);
+    }
+
+    // push the task to the queue. If the queue was empty before the task was pushed
+    // we run the task.
+    this.append = function(task) {
+        queue.push(task);
+        if (queue.length === 1) {
+            run();
+        }
+    }
+
+}
+
+// small Task containing item & url & optional callback
+function Task(item, url, params, datatype, callback) {
+    this.item = item;
+    this.url = url;
+    this.params = params;
+    this.datatype = datatype;
+    this.callback = callback;
+}
+
+function ajaxGet(task, callback) {
+        // call an option callback from the task
+        $.get(task.url,task.params, function(data, textStatus, XMLHttpRequest){
+            if (task.callback) task.callback(task, data, textStatus, XMLHttpRequest);
+		}, task.datatype);
+        /*elm = $('#debug');
+        if(typeof elm != undefined) {
+            $('<p/>', {
+                'class': 'debug',
+                html:  new Date() + JSON.stringify(task)}).appendTo(elm);
+        }*/
+        // call the buffer callback.
+        callback();
+}
+
+
 loadContent = function (divId,dataTo,method) {
 	if (typeof method == 'undefined' || method == 'load') {
 		if ($(divId).html().indexOf('loading.gif') == -1) {
 			$(divId).prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif" alt="loading">');
-            $.get(dataTo, function(data, textStatus, XMLHttpRequest){
-                $(divId).html(data);
-			    lastModified = XMLHttpRequest.getResponseHeader('Last-Modified');
-			 	queryUid = XMLHttpRequest.getResponseHeader('Query-uid');
-			 	fetchedRows = XMLHttpRequest.getResponseHeader('Fetch-rows');
-
-			 	if (typeof lastModified != 'undefined') {
-			 		$('<input />', {
-	            		'id' : 'lastModified' + queryUid
-	    				,'type': 'hidden'
-			 			,'value' : lastModified}).insertAfter(divId);
-			 	}
-                if (typeof fetchedRows != 'undefined') {
-                    $('#see_more_discussion_list').toggle(parseInt(fetchedRows) > 9);
-                }
-               return true;
-			});
+            buffer.append(new Task(divId, dataTo, false,'html',loadResults));
 		}
 	} else if (method == 'append') {
-		$.get(dataTo, function(data, textStatus, XMLHttpRequest){
-		 	fetchedRows = XMLHttpRequest.getResponseHeader('Fetch-rows');
-			$(divId).append(data);
-            if (typeof fetchedRows != 'undefined') {
-                $('#see_more_discussion_list').toggle(parseInt(fetchedRows) > 9);
-            }
-            return true;
-		});
+		buffer.append(new Task(divId, dataTo, false, 'html',appendResults));
 	}
     return false;
 }
+
+function loadResults (task, data, textStatus, XMLHttpRequest) {
+    $(task.item).html(data);
+    lastModified = XMLHttpRequest.getResponseHeader('Last-Modified');
+    queryUid = XMLHttpRequest.getResponseHeader('Query-uid');
+    fetchedRows = XMLHttpRequest.getResponseHeader('Fetch-rows');
+
+    if (typeof lastModified != 'undefined') {
+        $('<input />', {
+            'id' : 'lastModified' + queryUid
+            ,'type': 'hidden'
+            ,'value' : lastModified}).insertAfter(task.item);
+    }
+    if (typeof fetchedRows != 'undefined') {
+        $('#see_more_discussion_list').toggle(parseInt(fetchedRows) > 9);
+    }
+}
+
+function appendResults (task, data, textStatus, XMLHttpRequest) {
+    fetchedRows = XMLHttpRequest.getResponseHeader('Fetch-rows');
+    $(task.item).append(data);
+    if (typeof fetchedRows != 'undefined') {
+        $('#see_more_discussion_list').toggle(parseInt(fetchedRows) > 9);
+    }
+}
+
+reloader = function (url_to_check, element_id) {
+    setInterval(function() {
+        buffer.append(new Task(element_id, url_to_check + get_search_criteria(),{fetch_modified: "1"}, 'json',loadIfModified));
+    }, 5000);
+}
+
+function loadIfModified (task, data, textStatus, XMLHttpRequest) {
+    var offset = $('#see_more_discussion_list_offset').val();
+    lastModified = XMLHttpRequest.getResponseHeader('Last-Modified');
+    queryUid = XMLHttpRequest.getResponseHeader('Query-uid');
+    lastCalled = $('#lastModified' + queryUid).val();
+    if (lastModified != lastCalled && offset == '0') {
+        //console.log(lastModified + ' != ' + lastCalled);
+        loadContent (task.item, task.url + get_search_criteria());
+    }
+}
+
+function updateDiscussionUnread (task, data, textStatus, XMLHttpRequest) {
+    var totalUnreaded = 0;
+    $.each(data, function(i,item){
+        var received_value = item;
+        var nav_element = $("#nav_unreaded_" + i);
+        if (i != '<?php echo ENLIGHTN_ACCESS_PU;?>') {
+            totalUnreaded += parseInt(received_value);
+        }
+        if(typeof nav_element == 'object') {
+            if (received_value != '0' && nav_element.html() != received_value) {
+                nav_element.html(received_value);
+            }
+        }
+    });
+    if (totalUnreaded > 0) {
+        document.title = task.item + '(' + totalUnreaded + ')';
+    }
+}
+
 
 function get_search_criteria () {
 	if (typeof $('#subtype_checked').val() == 'undefined') {
@@ -170,20 +264,7 @@ $(document).ready(function(){
 });
 
 
-	reloader = function (url_to_check, element_id) {
-		setInterval(function() {
-			var offset = $('#see_more_discussion_list_offset').val();
-			$.get(url_to_check + get_search_criteria(),{fetch_modified: "1"}, function(data, textStatus, jqXHR) {
-				lastModified = jqXHR.getResponseHeader('Last-Modified');
-			 	queryUid = jqXHR.getResponseHeader('Query-uid');
-			 	lastCalled = $('#lastModified' + queryUid).val();
-			 	if (lastModified != lastCalled && offset == '0') {
-                    //console.log(lastModified + ' != ' + lastCalled);
-			 		loadContent (element_id, url_to_check + get_search_criteria());
-			 	}
-			}, 'json');
-		}, 5000);
-	}
+
 	$(document).ready(function(){
 		$('#expandAll').click( function(){
 			$("#discussion_list_container li").each(function () {
@@ -396,6 +477,8 @@ if(typeof $.fn.rte === "undefined") {
 
     $.fn.rte = function(options) {
 
+    var complete_mode = false;
+
     $.fn.rte.html = function(iframe) {
         return iframe.contentWindow.document.getElementsByTagName("body")[0].innerHTML;
     };
@@ -443,8 +526,7 @@ if(typeof $.fn.rte === "undefined") {
             if(opts.content_css_url) {
                 css = "<link type='text/css' rel='stylesheet' href='" + opts.content_css_url + "' />";
             }
-
-            var doc = "<html><head>"+css+"</head><body class='frameBody' id='ifram" + element_id + "'>"+content+"</body></html>";
+            var doc = "<html><head>"+css+"</head><body class='frameBody' id='iframe" + element_id + "'>"+content+"</body></html>";
             tryEnableDesignMode(doc, function() {
                 $("#toolbar-" + element_id).remove();
                 textarea.before(toolbar());
@@ -583,6 +665,12 @@ if(typeof $.fn.rte === "undefined") {
             });
 
             iframeDoc.keyup(function(e) {
+                var body = $('body', iframeDoc);
+               	var scrollHeight = $('body', iframeDoc)[0].scrollHeight;
+                if(scrollHeight > parseInt(body.css('height'))-14) {
+                    $('.textarea').css('height',scrollHeight+28);
+                    $('.rte-zone').css('height',scrollHeight);
+                }
                 if(e.keyCode == 13) {
                     if($('#autoReply').attr('checked')=='checked') {
                         $('#add_post').submit();
@@ -592,15 +680,25 @@ if(typeof $.fn.rte === "undefined") {
                         return true;
                     }
                 }
-                setSelectedType(getSelectionElement(), select);
-                var body = $('body', iframeDoc);
-               	var scrollHeight = $('body', iframeDoc)[0].scrollHeight;
-               	//alert('height');
-                if(scrollHeight > parseInt(body.css('height'))-14) {
-                    $('.textarea').css('height',scrollHeight+28);
-                    $('.rte-zone').css('height',scrollHeight);
-                    //alert(h);
+                /*if(e.keyCode == 50) {
+                    complete_mode = true;
                 }
+                if (complete_mode) {
+                    var content = $(iframe).contents().find("body"),
+                    elm = parent.$('.mediaAutocomplete'),
+                    attach_elm = $('#'+element_id).parent().position(),
+                    complete_elm = parent.$('#token-input-mediaAutocomplete'),
+                    to_search = content.html().substring((content.html().indexOf("@")+1),content.html().length);
+                    elm
+                        .css('top',(attach_elm.top) + "px")
+                        .css('left',attach_elm.left + "px");
+                    complete_elm
+                        .val(to_search)
+                        .parent().find('tester').html(to_search);
+                    complete_elm.triggerHandler("keydown");
+                }*/
+
+                setSelectedType(getSelectionElement(), select);
                 return true;
             });
 
@@ -669,3 +767,5 @@ if(typeof $.fn.rte === "undefined") {
 
 })(jQuery);
 
+// create a buffer object with a taskhandler
+var buffer = new Buffer(ajaxGet);

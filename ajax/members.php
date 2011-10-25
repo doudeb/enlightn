@@ -11,6 +11,9 @@ $user_guid = get_loggedin_userid();
  */
 $username = get_input('q');
 $i = -1;
+//$usertojson[++$i]['id'] 	= $username;
+//$usertojson[$i]['name'] = $username;
+
 $collections			= array();
 $public_collection 		= get_user_access_collections(0);
 $private_collection		= get_user_access_collections($user_guid);
@@ -30,4 +33,5 @@ if (is_array($collections)) {
 		$usertojson[$i]['name'] 	= $collection->name;
 	}
 }
+
 echo json_encode($usertojson);

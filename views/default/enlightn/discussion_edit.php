@@ -27,7 +27,7 @@
                                         'internalid' => 'membership',
                                         'value' => ACCESS_PRIVATE)); ?>
             </div>
-            <label><?php echo elgg_echo("enlightn:to") ?> :</label>
+            <label><?php echo elgg_echo("enlightn:to") ?></label>
             <div class="dest">
                 <?php echo elgg_view("enlightn/helper/adduser",array(
                                                                     'internalname' => 'invite',

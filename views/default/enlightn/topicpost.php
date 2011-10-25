@@ -35,7 +35,7 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
                         </div>
                         <div class="content">
                         	<?php echo enlightn_search_highlight_words($vars['query'],$discussion->value);
-                        if (is_array($src_embeded)) {
+                        /*if (is_array($src_embeded)) {
 							echo '<div class="inclosed-list">
                                 <h4>' . count($src_embeded) . ' ' . elgg_echo('enlightn:attachmentlist') . '</h4>
                                 <p>';
@@ -44,7 +44,7 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
 								echo '<a href="' . $url . '" target="_blank" title="' . $file->title. '">' . elgg_view("enlightn/cloud/icon", array("mimetype" => $file->mimetype, 'thumbnail' => $file->thumbnail, 'file_guid' => $file->guid, 'size' => 'small')) . "</a>";
 							}
                             echo '</p></div>';
-                        }?>
+                        }*/?>
                         </div>
                     </li>
 <script>

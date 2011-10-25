@@ -36,7 +36,7 @@ $short_title    	= substr($entity->title,0,55);
                             <?php echo elgg_view('input/user_photo',array('class'=>'thumb-photo','user_ent'=>$post_owner));?>
                             <h3><a href="<?php echo $vars['url'] ?>/pg/enlightn/discuss/<?php echo $vars['entity']->guid; ?>"><?php echo $short_title?></a></h3>
                             <span class="participants"><strong><?php echo $post_owner->name?></strong> <?php echo elgg_view("enlightn/discussion_members",array('entity' => $post
-														, 'limit' => 5));?></span>
+														, 'limit' => 3));?></span>
 	                        <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>
 
                             <p><?php echo enlightn_search_highlight_words($vars['query'],$short_description);?></p>
@@ -54,12 +54,7 @@ $short_title    	= substr($entity->title,0,55);
 			loadContent('#loader','<?php echo $url_read?>');
 		});
 		$("#favorite<?php echo $post->entity_guid; ?>").click( function(){
-			//alert($(this).parent().parent().hasClass("starred"));
-			if ($(this).parent().parent().hasClass("starred")) {
-				$(this).parent().parent().removeClass("starred");
-			} else {
-				$(this).parent().parent().addClass("starred");
-			}
+			$(this).parent().toggleClass("starred");
 			loadContent('#loader','<?php echo $url_favorite?>');
 		});
 </script>

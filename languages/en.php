@@ -67,7 +67,7 @@
 			,'enlightn:title:document' => 'Document'
 			,'enlightn:buttonpublic' => 'Public'
 			,'enlightn:buttonprivate' => 'Private'
-			,'enlightn:to' => 'A'
+			,'enlightn:to' => 'To'
 			,'enlightn:tags' => 'Tags'
 			,'enlightn:buttoncancel' => 'Cancel'
 			,'enlightn:buttonpost' => 'Post'
@@ -75,6 +75,7 @@
 			,'enlightn:discussion_sucessfully_created' => ''
 
 			//HOME - NEW TOPIC - UPLOAD
+			,'enlightn:uploadyourfile' => 'Upload your file'
 			,'enlightn:uploadcloud' => 'Has your file been uploaded into the cloud?'
 			,'enlightn:titlefile' => 'File title'
 			,'enlightn:tagsfile' => 'Tags'
@@ -90,6 +91,7 @@
 			,'enlightn:removeasfollow' => 'Unfollow'
 			,'enlightn:setasfavorite' => 'Add to favorite'
 			,'enlightn:removeasfavorite' => 'Remove from favorite'
+            ,'enlightn:showunread' => 'Unread only'
 
 			//HOME - SEARCH
 			,'enlightn:search' => 'Search'
@@ -104,8 +106,9 @@
 			,'enlightn:datefrom' => 'From'
 			,'enlightn:dateto' => 'To'
 			,'enlightn:fromuser' => 'From:'
-			,'enlightn:typeinasearchterm' => 'Enter a name'
-			,'enlightn:searching' => 'Searching...'
+			,'enlightn:typeforsearch' => 'Enter a name'
+			,'enlightn:searchforuser' => 'Searching...'
+            ,'enlightn:togglemorefilters' => 'Advanced search'
 
 			//HOME - RIGHT COLUMN
 			,'enlightn:public' => 'Public discussions'
@@ -140,6 +143,7 @@
 			,'enlightn:viewvideo' => 'Watch the video'
 			,'enlightn:viewimage' => 'Enlarge'
 			,'enlightn:downloaddocument' => 'Download'
+			,'enlightn:attachmentlist' => ''
 			,'enlightn:activity:member' => ' has now join the discussion'
 			,'enlightn:activity:membership_request' => ' has received an invite to join a discussion'
 
@@ -168,6 +172,8 @@
 			,'enlightn:file:type:image' => 'Images' //don't translate please
 			,'enlightn:file:type:doc' => 'Documents' //don't translate please
 			,'enlightn:file:type:link' => 'Articles' //don't translate please
+            ,'enlightn:attach' => 'Attach'
+            ,'enlightn:attachtoanewdiscussion' => 'Attach'
 
 			//SETTINGS
             ,'enlightn:settingsheader' => '%s' //don't translate please
