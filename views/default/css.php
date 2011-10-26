@@ -1163,6 +1163,7 @@ span.ignore:hover {
     overflow:hidden;
     white-space:nowrap;
     margin-top : 20px;
+    display : block;
 }
 
 #feed .msg .date {
@@ -1179,7 +1180,7 @@ span.ignore:hover {
     margin-top : 21px;
 }
 
-#feed .open-msg .excerpt p, #feed .msg .content {
+#feed .open-msg .excerpt p, #feed .msg .content,#feed.detail .open-msg .excerpt p  {
     display:none;
 }
 
@@ -2040,6 +2041,7 @@ span.ignore:hover {
 
 #cloud .msg .excerpt p {
     margin-top:2px;
+    display : block;
 }
 
 #cloud .msg .participants {
