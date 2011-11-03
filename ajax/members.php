@@ -25,12 +25,14 @@ if (is_array($userfound)) {
 	foreach ($userfound as $key => $user) {
 		$usertojson[++$i]['id'] 	= $user->guid;
 		$usertojson[$i]['name'] 	= $user->name;
+		$usertojson[$i]['pic']      = elgg_view('input/user_photo',array('class'=>'users_small','user_ent'=>$user));
 	}
 }
 if (is_array($collections)) {
 	foreach ($collections as $key => $collection) {
 		$usertojson[++$i]['id'] 	= 'C_'.$collection->id;
 		$usertojson[$i]['name'] 	= $collection->name;
+		$usertojson[$i]['pic']      = '<div class="users_small list_select"></div>';
 	}
 }
 

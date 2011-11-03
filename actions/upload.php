@@ -97,6 +97,7 @@
 		}
 		// Open the file to guarantee the directory exists
 		$file->open("write");
+        generate_preview($file->guid);
 		$file->close();
 		// move using built in function to allow large files to be uploaded
 		move_uploaded_file($_FILES['upload']['tmp_name'], $file->getFilenameOnFilestore());

@@ -23,16 +23,18 @@ if (empty($vars['title'])) {
 } else {
 	$title = $vars['config']->sitename . ": " . $vars['title'];
 }
-?>
-<?php echo elgg_view('page_elements/header', $vars); ?>
-<?php echo elgg_view('page_elements/elgg_topbar', $vars); ?>
+echo elgg_view('page_elements/header', $vars);
+if (get_context() === 'main') {
+    echo $vars['body'];
+    return;
+}
+echo elgg_view('page_elements/elgg_topbar', $vars);
 
-<?php
 if (get_context() !== 'cloud_embed') {
 	echo elgg_view('page_elements/header_contents', $vars);
 }
-?>
-<?php echo elgg_view('messages/list', array('object' => $vars['sysmessages'])); ?>
+
+echo elgg_view('messages/list', array('object' => $vars['sysmessages'])); ?>
 <div id="page">
 <!-- main contents -->
 

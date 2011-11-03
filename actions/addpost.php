@@ -45,6 +45,7 @@ $topic->save();//trigger entities save, in order to update the update_time;
 if (is_array($message['guids'])) {
 	foreach ($message['guids'] as $embeded_guids) {
 		add_entity_relationship($embeded_guids,ENLIGHTN_EMBEDED,$post_id);
+        update_entity_access ($embeded_guids,$topic->access_id); //update access_id
 	}
 }
 // add to river

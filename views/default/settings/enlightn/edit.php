@@ -13,6 +13,32 @@ echo  elgg_echo('enlightn:sphinx_enabled') . ' : <br />';
 		));
 ?>
 </p>
+<p><?php
+$register_enabled = $vars['entity']->register_enabled=='1'?'1':'0';
+echo  elgg_echo('enlightn:register_enabled') . ' : <br />';
+		echo elgg_view('input/radio', array(
+			'internalname' => 'params[register_enabled]',
+			'options' => array(
+				elgg_echo('option:no') => '0',
+				elgg_echo('option:yes')=>'1'
+			),
+			'value' => $register_enabled
+		));
+?>
+</p>
+<p><?php
+$disable_registration_email = $vars['entity']->disable_registration_email=='1'?'1':'0';
+echo  elgg_echo('enlightn:disable_registration_email') . ' : <br />';
+		echo elgg_view('input/radio', array(
+			'internalname' => 'params[disable_registration_email]',
+			'options' => array(
+				elgg_echo('option:no') => '0',
+				elgg_echo('option:yes')=>'1'
+			),
+			'value' => $disable_registration_email
+		));
+?>
+</p>
 <p>
 <?php
 $css_sidebar_folders = $vars['entity']->css_sidebar_folders!=''?$vars['entity']->css_sidebar_folders:'#2D87E1';

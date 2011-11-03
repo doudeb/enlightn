@@ -53,7 +53,7 @@
 			,'enlightn:logout' => 'Salir'
 
 			//HOME - NEW TOPIC
-			,'enlightn:discussion' => "Crear una nueva conversación"
+			,'enlightn:newdiscussion' => "Crear una nueva conversación"
 			,'enlightn:title' => 'Título de la conversación'
 			,'enlightn:title:bold' => 'Negritas'
 			,'enlightn:title:italic' => 'Itálica'
@@ -90,6 +90,7 @@
 			,'enlightn:removeasfollow' => 'Deja la conversación'
 			,'enlightn:setasfavorite' => 'Marcar como favorito'
 			,'enlightn:removeasfavorite' => 'Borrar de tus favoritos'
+            ,'enlightn:showunread' => 'Solo no leídos'
 
 			//HOME - SEARCH
 			,'enlightn:search' => 'Buscar'
@@ -106,6 +107,7 @@
 			,'enlightn:fromuser' => 'De :'
 			,'enlightn:typeinasearchterm' => 'Escribe un nombre'
 			,'enlightn:searching' => 'buscando...'
+            ,'enlightn:togglemorefilters' => 'Búsqueda avanzada'
 
 			//HOME - RIGHT COLUMN
 			,'enlightn:public' => 'Conversaciones públicas'
@@ -226,6 +228,7 @@
 			,'usersettings:statistics:label:numentities' => 'Tus participaciones'
 			,'item:object:enlightnconversación' => 'Conversaciones creadas'
 			,'item:object:file' => 'Tu cloud'
+            ,'user:language:success' => 'Tus ajustes de lenguaje se han actualizado'
 
 			//FOOTER
 			,'expages:about' => 'Acerca de'

@@ -76,7 +76,8 @@ $release = get_version(true);
 	<!-- include the default css file -->
 	<link rel="stylesheet" href="<?php echo $vars['url']; ?>_css/css.css?lastcache=<?php echo $vars['config']->lastcache; ?>&viewtype=<?php echo $vars['view']; ?>" type="text/css" />
     <link rel="stylesheet" href="<?php echo $vars['url']; ?>mod/enlightn/media/css/token-input-facebook.css" type="text/css" />
-
+    <link rel="shortcut icon" href="<?php echo $vars['url']; ?>mod/enlightn/media/graphics/favicon.ico">
+    <link rel="icon" href="<?php echo $vars['url']; ?>mod/enlightn/media/graphics/favicon.ico">
 	<?php
 		echo $feedref;
 		echo elgg_view('metatags',$vars);

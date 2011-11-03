@@ -48,6 +48,7 @@ input, textarea {
 .ico,
 .arrow,
 .notif,
+.list_select,
 #header  .logo,
 #header  .tabs li a,
 #post .status-box,
@@ -81,6 +82,7 @@ input, textarea {
 #settings_edit button.submit,
 #new-post button.reset,
 #login-box .submit_button,
+#login .submit_button,
 #sidebar .folders .menu .up,
 #sidebar .folders .menu .down,
 #presence .header,
@@ -295,13 +297,25 @@ span.ignore:hover {
     padding:0;
 }
 
-#header .menus li .user img, .users img {
+#header .menus li .user img,
+.users img,
+.users_small {
     border: 1px solid #ccc;
     display: inline-block;
-    margin: -3px 5px 0 0;
-    height:20px;
+    margin: 0px 5px 0 0;
+    height:30px;
     vertical-align: middle;
-    width:20px;
+    width:30px;
+}
+
+.user_select {
+    display: inline-block;
+    padding-left: 10px;
+}
+
+.list_select {
+    background-color : #000;
+    background-position:-274px -23px;
 }
 
 #header .menus li.submenu:hover {
@@ -1127,9 +1141,6 @@ span.ignore:hover {
     font-weight: normal;
 }
 
-#feed .unread li {
-    background-color : #ff0000;
-}
 
 #feed .msg .participants {
     display: block;
@@ -2503,17 +2514,62 @@ span.ignore:hover {
 
 /** LOGIN **/
 
+#login {
+    background-color:#fff;
+    min-height:300px;
+    background-image : url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/enlightn_baseline.jpg');
+    background-repeat: no-repeat;
+    width : 745px;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 90px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+}
+
+#login .box {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    -moz-box-shadow:inset 1px 1px 4px #ccc;
+    -webkit-box-shadow:inset 1px 1px 4px #ccc;
+    box-shadow:inset 1px 1px 4px #ccc;
+    width: 350px;
+    overflow:hidden;
+    padding:40px 10px 40px 40px;
+    background-color: #e5e5e5;
+    float : right;
+}
+
+#login .headline {
+    width : 190px;
+    text-align : justify;
+    float : right;
+    padding-bottom: 88px;
+    padding-left: 100px;
+    padding-right: 0px;
+    padding-top: 197px;
+}
 
 #login-box {
     background-color:#fff;
     min-height:600px;
-    padding: 30px 10px 30px 20px;
+    padding: 30px;
     width: 100%;
 }
 
+#login h1 {
+    font-size : 160%;
 
-#login-box h2 {
+}
 
+#login h2 {
+    font-size : 110%;
+    padding-left: 10px;
 }
 
 #login-box .loginbox {
@@ -2526,7 +2582,8 @@ span.ignore:hover {
 #login-box .loginbox label {
 }
 
-#login-box .loginbox input {
+#login-box .loginbox input,
+#login .box input {
     background-color:#fff;
     border:1px solid #bbb;
     -moz-border-radius:5px;
@@ -2540,7 +2597,8 @@ span.ignore:hover {
     margin : 10px;
 }
 
-#login-box .loginbox input[type='submit'] {
+#login-box .loginbox input[type='submit'],
+#login .box input[type='submit'] {
     background-position: 0 -411px;
     border: 1px solid #8eac15;
     -moz-border-radius:3px;
@@ -2657,6 +2715,25 @@ RTE EDITOR
 .mediaAutocomplete .token-input-list-facebook {
     border : 0px;
     background-color : transparent;
+}
+
+
+.unreaded_messages {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    background-color : #fff;
+    border: 1px solid #999;
+    color: #444950;
+    display: inline-block;
+    height: 12px;
+    min-width: 12px;
+    text-align : center;
+    margin : 0px 0px 0px 10px;
+    vertical-align: top;
+    font-size : 10px;
+    overflow : hidden;
 }
 /**
 * Calendar

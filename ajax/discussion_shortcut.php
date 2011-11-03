@@ -62,5 +62,7 @@ if ($nb_results > 0) {
 							, 'readed' => $flag_readed?true:false
 							, 'title' => $topic->title);
 	}
+} else {
+    header("Fetch-rows: 0");
 }
 echo json_encode($results);

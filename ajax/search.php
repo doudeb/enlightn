@@ -34,6 +34,7 @@ if ($entity_guid > 0) {
 	$discussion_activities  = sort_entity_activities($discussion_activities);
 	$discussion				= get_entity($entity_guid);
 	$search_results			= $discussion->getAnnotations('', $limit, $offset, "desc");
+    //$search_results         = array_reverse($search_results);
 	$last_modified			= $search_results[0]->time_created;
 } else {
 	$search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);

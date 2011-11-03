@@ -41,6 +41,7 @@
 			,'request' => 'Send'
 			,'register' => 'Register'
 			,'user:password:text' => ''
+			,'enlightn:loginboxheadline' => 'Email 2.0 for your company'
 
 			//HEADER
 			,'enlightn' => ""

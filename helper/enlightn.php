@@ -347,15 +347,13 @@ function create_embeded_entities ($message,$entity) {
 	$new_message['guids']   = get_embeded_src($new_message['message']);
 	$links                  = get_http_link($message);
 	$links                  = get_embeded_type($links);
-
 	$links                  = get_embeded_title($links);
+    $access_id              = $entity->access_id;
 	foreach ($links as $type=>$links_by_type) {
 		foreach ($links_by_type as $key=>$link) {
 			$title 			= $link["title"];
 			$desc 			= $link["link"];
 			$file			= elgg_get_entities_from_metadata(array('metadata_names' => 'filename', 'metadata_values' => $link["link"]));
-			$access_id 		= $entity->access_id;
-
 			if (!$file) {
 				$container_guid 	= get_loggedin_userid();
 				$file 				= new FilePluginFile();
@@ -690,7 +688,7 @@ function generate_preview ($guid) {
 			break;
 		case ENLIGHTN_DOCUMENT:
 			$file->description = elgg_view('enlightn/fetched_document',array('link'=> $file->originalfilename, 'entity' => $file));
-			//$file->save();
+			$file->save();
 			break;
 		default:
 			break;
@@ -734,4 +732,25 @@ function enlightn_get_relationships($guid_one, $relationship) {
 	}
 
 	return false;
+}
+
+function count_unreaded_messages ($guid) {
+    $user_guid = get_loggedin_userid();
+    $query = "Select Count(a.id) as messages_unreaded
+                From annotations a
+                Where Not Exists(Select rel.id
+                            From entity_relationships As rel
+                            Where a.id = rel.guid_two
+                            And rel.guid_one = $user_guid
+                            And rel.relationship = '". ENLIGHTN_READED . "')
+                And a.entity_guid = " . $guid;
+    return get_data($query);
+}
+
+
+function update_entity_access ($guid ,$access_id) {
+    $entity = get_entity($guid);
+    if ($access_id != $entity->access_id) {
+        update_entity($guid, $entity->owner_guid, $access_id);
+    }
 }

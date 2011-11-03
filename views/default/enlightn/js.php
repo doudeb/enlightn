@@ -116,8 +116,12 @@ function updateDiscussionUnread (task, data, textStatus, XMLHttpRequest) {
             totalUnreaded += parseInt(received_value);
         }
         if(typeof nav_element == 'object') {
-            if (received_value != '0' && nav_element.html() != received_value) {
-                nav_element.html(received_value);
+            if (nav_element.html() != received_value) {
+                if (received_value == '0') {
+                    nav_element.html('');
+                } else {
+                    nav_element.html(received_value);
+                }
             }
         }
     });
@@ -213,7 +217,7 @@ function get_search_criteria () {
 		$('#discussion_type').val(discussion_type);
 		$('#see_more_discussion_list_offset').val(0);
 		if (currElement == '#discussion_selector_sent') {
-			$('#from_users').val('<?php echo get_loggedin_userid()?>');
+			$('input[name="from_users"]').val('<?php echo get_loggedin_userid()?>');
 		}
 		loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria());
 		$(currElement).addClass('current');
@@ -319,7 +323,8 @@ $(document).ready(function(){
 		});
 	});
 	$('#showunread').click( function(){
-		changeMessageList();
+        currElement = '#discussion_selector_' + $('#discussion_type').val();
+		changeMessageList(currElement,$('#discussion_type').val());
 	});
 	$('#selectAll').click( function(){
         var toCheck = $(this).attr('checked')=='checked'?true:false;

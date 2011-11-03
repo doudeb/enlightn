@@ -59,6 +59,7 @@ if (empty($title) || empty($message)) {
 	if (is_array($message['guids'])) {
 		foreach ($message['guids'] as $embeded_guids) {
 			add_entity_relationship($embeded_guids,ENLIGHTN_EMBEDED,$annotationid);
+            update_entity_access ($embeded_guids,$access); //update access_id
 		}
 	}
 	// add to river

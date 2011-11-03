@@ -33,7 +33,7 @@ Order By e.time_created desc";
 		return  get_data($query, 'entity_row_to_elggstar');
 	}
 
-	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $unreaded_only = 0,$words, $from_users = '', $date_begin = '""', $date_end = '""', $subtype = '', $offset = 0, $limit = 10) {
+	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $unreaded_only = 0,$words, $from_users = '', $date_begin = false, $date_end =false, $subtype = '', $offset = 0, $limit = 10) {
 		$key_cache = $this->generate_key_cache(get_defined_vars(), 'search');
         $force 	= array();
 		$join	= array();
@@ -139,7 +139,7 @@ Order By e.time_created desc";
 			$where[] = "And ent.guid = $entity_guid";
 			$group[] = "Group By p.id";
 		} else {
-			$group[] = "Group By p.guid";
+			//$group[] = "Group By p.guid";
 		}
 		#date
 		if ($date_begin || $date_end) {
@@ -166,7 +166,7 @@ Order By e.time_created desc";
                     $having
         			Order By ent.time_updated Desc
             		Limit $offset,$limit";
-		//echo "<pre>" . $query;die();
+		//echo "<pre>" . $query;//die();
 		return  $this->get_data($query, $key_cache, null);
 	}
 
@@ -280,9 +280,9 @@ $join
 Where ent.subtype = $file_subtype_id #File type
 And  (
 		Case
+            When ent.owner_guid = $user_guid Then True
+			When ent.access_id = " . ACCESS_PUBLIC . " Then True
 			When ent.access_id = " . ACCESS_PRIVATE . " Then
-                ent.owner_guid = $user_guid
-                Or
 				Exists(Select rel_follow.id
 						From entity_relationships rel_embed
 						Inner Join annotations a On rel_embed.guid_two = a.id
@@ -290,7 +290,6 @@ And  (
 																		And rel_follow.guid_one = $user_guid
 																		And rel_follow.relationship = '" . ENLIGHTN_FOLLOW . "'
 						Where ent.guid = rel_embed.guid_one And rel_embed.relationship = '" . ENLIGHTN_EMBEDED . "')
-			When ent.access_id = " . ACCESS_PUBLIC . " Then true
 			Else Null
 		End
 )
@@ -394,10 +393,12 @@ Limit $offset,$limit";
                     From annotations a
                     Inner Join entity_relationships As rel_embed On a.id = rel_embed.guid_two And rel_embed.relationship = '" . ENLIGHTN_EMBEDED . "'
                     Where (Exists (Select id From entity_relationships As rel_all Where a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '" . ENLIGHTN_FOLLOW . "' And a.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
-                                                            Or a.access_id  = " . ACCESS_PUBLIC . ")
+                           Or Exists (Select id From entity_relationships As rel_all Where a.entity_guid = rel_all.guid_one And rel_all.guid_two = $user_guid And rel_all.relationship = '" . ENLIGHTN_INVITED . "' And a.access_id  = 0)
+                           Or a.access_id  = " . ACCESS_PUBLIC . ")
                     And rel_embed.guid_one = $guid
                     Limit 1";
-		return  $this->get_data($query);
+        //echo "<pre>"; die($query);
+		return  get_data($query);
 
     }
 }

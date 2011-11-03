@@ -15,6 +15,9 @@ $unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
 <script language="javascript">
 changeShortCutList = function (accessLevel,offset,discussionId) {
     currElement 	= $('#discussion_selector_' + accessLevel);
+    if($('#loadingShortcut').hasClass('loading')) {
+        return false;
+    }
     $('<span />', {
 			'id' : 'loadingShortcut',
     		'class': 'loading'}).prependTo(currElement);
@@ -61,36 +64,32 @@ function changeShortCutMenu (task, data, textStatus, XMLHttpRequest) {
     $('#discussion_type').val(task.params.access_level);
     fetchedRows = XMLHttpRequest.getResponseHeader('Fetch-rows');
     var items = [];
-    if(fetchedRows ==1 ) {
-        //alert("Larousse est un gros sac....");
-        changeShortCutList(task.params.access_level,task.params.offset-10,task.item);
-        return false;
+    if(fetchedRows >0 ) {
+        items.push('<div class="menu"><span class="up" id="shortcuted_messages_previous"><span class="arrow"></span></span><ol>');
+        $.each(data, function(i,item){
+            if (i != 'access_level') {
+                if (item.readed) {
+                    classReaded = ' readed';
+                } else {
+                    classReaded = ' unreaded';
+                }
+                if(task.item == item.guid) {
+                    liClass = ' class="selected' + classReaded +'"';
+                } else {
+                    liClass = ' class="' + classReaded +'"';
+                }
+                items.push('<li id="' + item.guid + '"' + liClass + '><a href="<?php echo $vars['url']; ?>pg/enlightn/discuss/' + item.guid +'">' +  item.title + '</li>');
+            } else {
+                accessLevel = item;
+            }
+        });
+        items.push('</ol><span class="down" id="shortcuted_messages_next"><span class="arrow"></span></span></div>');
+        $('<ul/>', {
+            'id' : 'shortcuted_messages',
+            'class': 'shortcuted_messages',
+            html: items.join('')}).appendTo($(currElement));
     }
-    items.push('<div class="menu"><span class="up" id="shortcuted_messages_previous"><span class="arrow"></span></span><ol>');
-    $.each(data, function(i,item){
-        if (i != 'access_level') {
-            if (item.readed) {
-                classReaded = ' readed';
-            } else {
-                classReaded = ' unreaded';
-            }
-            if(task.item == item.guid) {
-                liClass = ' class="selected' + classReaded +'"';
-            } else {
-                liClass = ' class="' + classReaded +'"';
-            }
-            items.push('<li id="' + item.guid + '"' + liClass + '><a href="<?php echo $vars['url']; ?>pg/enlightn/discuss/' + item.guid +'">' +  item.title + '</li>');
-        } else {
-            accessLevel = item;
-        }
-    });
-    items.push('</ol><span class="down" id="shortcuted_messages_next"><span class="arrow"></span></span></div>');
     oldElement.remove();
-
-    $('<ul/>', {
-        'id' : 'shortcuted_messages',
-        'class': 'shortcuted_messages',
-        html: items.join('')}).appendTo($(currElement));
     $("#loadingShortcut").remove();
 
     $(currElement).addClass('current');

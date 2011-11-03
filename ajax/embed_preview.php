@@ -8,6 +8,7 @@ $guid 		= get_input('guid');
 disable_right($guid);
 $file				= new ElggFile((int)$guid);
 //is description already loaded
+//var_dump($file->description , $file->originalfilename);
 $to_fetch = $file->description === $file->originalfilename;
 if ($to_fetch) {
     generate_preview($guid);
