@@ -22,7 +22,7 @@ if (strip_tags($message,'<img>') == "" || trim($message) == "") {
     exit();
 }
 
-disable_right($topic_guid);
+disable_right($guid);
 // Check that user is a group member
 $user_guid 				= get_loggedin_userid();
 // Let's see if we can get an form topic with the specified GUID, and that it's a group forum topic
