@@ -97,7 +97,6 @@
 		}
 		// Open the file to guarantee the directory exists
 		$file->open("write");
-        generate_preview($file->guid);
 		$file->close();
 		// move using built in function to allow large files to be uploaded
 		move_uploaded_file($_FILES['upload']['tmp_name'], $file->getFilenameOnFilestore());
@@ -154,8 +153,11 @@
 	// handle results differently for new files and file updates
 	if ($new_file) {
 		if ($guid) {
+            generate_preview($file->guid);
 			system_message(elgg_echo("file:saved"));
 			add_to_river('river/object/file/create', 'create', get_loggedin_userid(), $file->guid);
+            echo elgg_view('enlightn/new_link', array('type' => $file->simpletype, 'link' => $file->filename . '?fetched=1', 'guid' => $file->guid, 'title'=>$file->title));
+
 		} else {
 			// failed to save file object - nothing we can do about this
 			register_error(elgg_echo("file:uploadfailed"));
@@ -166,9 +168,10 @@
 	} else {
 		if ($guid) {
 			system_message(elgg_echo("file:saved"));
+            echo elgg_view('enlightn/new_link', array('type' => $file->simpletype, 'link' => $file->filename . '?fetched=1', 'guid' => $file->guid, 'title'=>$file->title));
+
 		} else {
 			register_error(elgg_echo("file:uploadfailed"));
 		}
 	}
-	echo elgg_view('enlightn/new_link', array('type' => $file->simpletype, 'link' => $file->filename . '?fetched=1', 'guid' => $file->guid, 'title'=>$file->title));
 	exit();

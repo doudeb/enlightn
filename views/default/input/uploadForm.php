@@ -56,7 +56,7 @@
         $('#mediaUpload').submit(function() {
 	            var options = {
 	            	beforeSubmit: showLoading,
-                    target:        '#submissionUpload',
+                    target: '#submissionUpload',
                     clearForm: true,
                     resetForm: true,
 				    success:    function(data) {

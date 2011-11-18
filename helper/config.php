@@ -26,6 +26,11 @@
 	define('NOTIFICATION_EMAIL_MESSAGE_FOLLOWED', 'email_message_followed');
 	define('URL_DOWNLOAD', $CONFIG->url . 'pg/enlightn/download/');
 	define('ENLIGHTN_THUMBNAIL', 'link_thumbnail');
+    //email constant
+    define('ENLIGHTN_EMAILMESSAGE_ID', 'email_message_id');
+    define('ENLIGHTN_EMAILINREPLY_TO', 'email_in_reply_to');
+    define('ENLIGHTN_EMAILREFERENCES', 'email_references');
+    define('ENLIGHTN_EXTERNAL_USER', 'external_user');
     #regexp patern
 	define('REG_LINK', '(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))');
 	define('REG_LINK_IN_MESSAGE', "#\b" . REG_LINK . "+(\s|\n|$|\r|\t|</p>|<br/>|<br>|<p/>)#");

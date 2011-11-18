@@ -71,12 +71,11 @@ Order By e.time_created desc";
 		}
 		if ($unreaded_only) {
 			#Unreaded
-			$where[] = "And Not Exists(Select rel.id
-		    	                        From entity_relationships As rel, annotations a
-		                                Where a.id = rel.guid_two
-                                        And ent.guid = a.entity_guid
-		                                And rel.guid_one = $user_guid
-		                                And rel.relationship = '". ENLIGHTN_READED . "')";
+			$where[] = "And Exists(Select a.id
+									From annotations a
+									Left join entity_relationships rel On a.id = rel.guid_two And rel.guid_one = $user_guid And rel.relationship = '". ENLIGHTN_READED . "'
+									Where a.entity_guid = ent.guid
+									And rel.id Is Null)";
 		}
 		#From user
 		if (is_array($from_users)) {

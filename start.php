@@ -9,6 +9,7 @@ function enlightn_init() {
 	require_once("helper/config.php");
 	require_once("helper/enlightn.php");
 	require_once("model/enlightn.php");
+	require_once("model/imap.class.php");
 	$enlightn		= new enlightn();
     // Extend system CSS with our own styles
     //elgg_extend_view('css', 'enlightn/css');
@@ -142,7 +143,7 @@ function enlightn_page_handler($page) {
         case "home":
         default:
             set_context('home');
-			set_input('discussion_type', $page[1]);
+			set_input('discussion_type', $page[0]=='home'?ENLIGHTN_ACCESS_PU:$page[0]);
 			include($CONFIG->pluginspath . "enlightn/home.php");
 			break;
 		}

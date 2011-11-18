@@ -1,7 +1,8 @@
 <?php
-$user		= $vars['user'];
-$settings	= $vars['settings'];
-$current	= $vars['current'];
+$user               = $vars['user'];
+$settings           = $vars['settings'];
+$current            = $vars['current'];
+$email_activated    = get_plugin_setting('email_activated','enlightn');
 global $sn_linkers;
 $sn_linkers_select[0] = elgg_echo('enlightn:selectasociallink');
 foreach ($sn_linkers as $key => $name) {
@@ -9,6 +10,7 @@ foreach ($sn_linkers as $key => $name) {
         $sn_linkers_select[$name] = $name;
     }
 }
+
 ?>
 	<div id="settings">
         <img class="big-photo" src="<?php echo $user->getIcon('large')?>" />
@@ -20,6 +22,9 @@ foreach ($sn_linkers as $key => $name) {
                 <?php
                 foreach (array('account','password','profile','picture','notification','statistics') as $key => $value) {
                     echo '<li id="' . $value . '" class="' . ($current===$value?'current':'') . '">' . elgg_echo('enlightn:'. $value) . "</li>\n";
+                }
+                if ($email_activated == 1) {
+                    echo '<li id="email1" class="' . ($current==='email1'?'current':'') . '">' . elgg_echo('enlightn:email1') . "</li>\n";
                 }
                 ?>
             </ul>
@@ -86,5 +91,28 @@ foreach ($sn_linkers as $key => $name) {
             </div>
             <div id="tabstatistics" style="display: none;">
                <?php  echo elgg_view("usersettings/statistics");?>
+            </div>
+            <div id="tabemail1" style="display: none;">
+                <?php
+                $form_body = '
+                     <p><label>' . elgg_echo('enlightn:emaillogin') . '</label><input type="text" name="emaillogin" id="user" value="' . $settings['emaillogin'] . '"/></p>
+                     <input type="hidden" name="domainnum" value="0" id="domainnum" />
+                     <p><label>' . elgg_echo('enlightn:emailpassword') . '</label> <input type="password" name="emailpasswd" id="passwd" value="' . $settings['emailpasswd'] . '"/></p>
+                     <p><label>' . elgg_echo('enlightn:emailserver') . '</label> <input type="text" name="emailserver" id="server" value="' . ($settings['emailserver']?$settings['emailserver']:'mail.example.com') . '" />
+                     <p><label>' . elgg_echo('enlightn:emailservertype') . '</label>
+                     <select name="emailservtype" onchange="updateLoginPort()" id="emailservtype">
+                        <option value="imap">IMAP</option>
+                        <option value="notls">IMAP (no TLS)</option>
+                        <option value="ssl">IMAP SSL</option>
+                        <option value="ssl/novalidate-cert">IMAP SSL (self signed)</option>
+                        <option value="pop3">POP3</option>
+                        <option value="pop3/notls">POP3 (no TLS)</option>
+                        <option value="pop3/ssl">POP3 SSL</option>
+                        <option value="pop3/ssl/novalidate-cert">POP3 SSL (self signed)</option>
+                     </select>
+                     <input type="text" size="4" name="emailport"  id="emailport" value="' . ($settings['emailport']?$settings['emailport']:'143') . '" style="width:25px"/></p></p>
+                     <p><button type="submit" class="submit">' . elgg_echo("enlightn:buttonpost") . '</button></p>';
+                     echo elgg_view('input/form', array('action' => "{$vars['url']}action/enlightn/profile_edit", 'body' => $form_body, 'internalid' => 'email1'));
+                     ?>
             </div>
 	</div><!-- end profile -->

@@ -14,6 +14,10 @@ $unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
 <input type="hidden" name="discussion_type" id="discussion_type" value="<?php echo get_last_search_value('access_level')?get_last_search_value('access_level'):ENLIGHTN_ACCESS_PU;?>">
 <script language="javascript">
 changeShortCutList = function (accessLevel,offset,discussionId) {
+    if ($('#discussion_type').val() != accessLevel) {
+        $(location).attr('href','<?php echo $vars['url'] ?>pg/enlightn/' + accessLevel);
+        return true;
+    }
     currElement 	= $('#discussion_selector_' + accessLevel);
     if($('#loadingShortcut').hasClass('loading')) {
         return false;

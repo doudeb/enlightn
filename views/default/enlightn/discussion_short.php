@@ -46,7 +46,7 @@ $short_title    	= substr($entity->title,0,55);
 
 <script>
 		$("#excerpt<?php echo $post->entity_guid; ?>").click( function(){
-			$(location).attr('href','<?php echo $vars['url'] ?>/pg/enlightn/discuss/<?php echo $vars['entity']->guid; ?>');
+			$(location).attr('href','<?php echo $vars['url'] ?>pg/enlightn/discuss/<?php echo $vars['entity']->guid; ?>');
 		});
 		$("#read<?php echo $post->id; ?>").click( function(){
 			$("#read<?php echo $post->id; ?>").parent().parent().toggleClass("read unread");

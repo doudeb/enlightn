@@ -421,6 +421,7 @@ $(document).ready(function(){
             $('#privacy_cursor').parent().removeClass('public');
 			$('#privacy_cursor').parent().addClass('private');
 			$('#membership').val(<?php echo ACCESS_PRIVATE?>);
+            $(".dialog-overlay").css('display','none');
             changeMessageList();
         } else {
             $('#submission').html(data.message);
@@ -432,6 +433,7 @@ $(document).ready(function(){
         if (boxElm.addClass('open')) {
             boxElm.draggable();
             $("#new-post .textarea").css('height','185');
+            $(".dialog-overlay").css('display','block');
         }
        	$('button:[type="reset"] ').click( function(){
             $('#new-post').removeClass('open');
@@ -442,6 +444,7 @@ $(document).ready(function(){
             $('#privacy_cursor').parent().removeClass('public');
 			$('#privacy_cursor').parent().addClass('private');
 			$('#membership').val(<?php echo ACCESS_PRIVATE?>);
+            $(".dialog-overlay").css('display','none');
         });
         $('#add-tags').click(function () {
             $('#tags-input').toggle();
@@ -774,3 +777,35 @@ if(typeof $.fn.rte === "undefined") {
 
 // create a buffer object with a taskhandler
 var buffer = new Buffer(ajaxGet);
+
+/**
+ * Update "Port" textbox at login page.
+ */
+
+function updateLoginPort() {
+  var servtype = $('#emailservtype option:selected').val();
+  if (servtype == 'imap') {
+    $('#emailport').val('143');
+  }
+  else if (servtype == 'notls') {
+    $('#emailport').val('143');
+  }
+  else if (servtype == 'ssl') {
+    $('#emailport').val('993');
+  }
+  else if (servtype == 'ssl/novalidate-cert') {
+    $('#emailport').val('993');
+  }
+  else if (servtype == 'pop3') {
+    $('#emailport').val('110');
+  }
+  else if (servtype == 'pop3/notls') {
+    $('#emailport').val('110');
+  }
+  else if (servtype == 'pop3/ssl') {
+    $('#emailport').val('995');
+  }
+  else if (servtype == 'pop3/ssl/novalidate-cert') {
+    $('#emailport').val('995');
+  }
+}

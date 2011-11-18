@@ -123,7 +123,7 @@ class Embed_url {
 			}
 		}
         if (count($this->sortedImage) == 0) {
-            $this->sortedImage[0] = 'http://www.' . $this->hostname . '/favicon.ico';
+            $this->sortedImage[0] = null;
         }
 	}
 

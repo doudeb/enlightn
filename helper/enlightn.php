@@ -347,6 +347,9 @@ function create_embeded_entities ($message,$entity) {
 	$new_message['guids']   = get_embeded_src($new_message['message']);
 	$links                  = get_http_link($message);
 	$links                  = get_embeded_type($links);
+    if (!is_array($links)) {
+        return $new_message;
+    }
 	$links                  = get_embeded_title($links);
     $access_id              = $entity->access_id;
 	foreach ($links as $type=>$links_by_type) {
@@ -511,6 +514,11 @@ function get_last_search_value ($value) {
 
 function get_profile_settings ($user_guid = false) {
     $profile_defaults = array (
+            'emaillogin' => 'text',
+            'emailpasswd' => 'text',
+            'emailserver' => 'text',
+            'emailport' => 'text',
+            'emailservtype' => 'text',
             'jobtitle' => 'text',
             'department' => 'text',
             'direction' => 'longtext',
@@ -753,4 +761,179 @@ function update_entity_access ($guid ,$access_id) {
     if ($access_id != $entity->access_id) {
         update_entity($guid, $entity->owner_guid, $access_id);
     }
+}
+
+function create_enlightn_discussion ($user_guid, $access_id,$message, $title,$tags, $userto, $guid = false) {
+    global $enlightn;
+
+    $return        = array();
+    $return['success'] = false;
+
+    $tagarray = string_to_tag_array($tags);
+    if (!$guid) {
+        // Initialise a new ElggObject
+        $enlightndiscussion = new ElggObject();
+        // Tell the system it's a simple post, url link, media,etc.
+        $enlightndiscussion->subtype = ENLIGHTN_DISCUSSION;
+        // Set its owner to the current user
+        $enlightndiscussion->owner_guid = $user_guid;
+        // For now, set its access to public (we'll add an access dropdown shortly)
+        $enlightndiscussion->access_id = $access_id;
+        // Set its title and description appropriately
+        $enlightndiscussion->title = $title;
+        // Before we can set metadata, we need to save the topic
+        if (!$enlightndiscussion->save()) {
+            $return['message'] = elgg_echo("grouptopic:error");
+            //forward("pg/groups/forum/{$group_guid}/");
+        }
+    } else {
+        $enlightndiscussion = get_entity($guid);
+    }
+    // Now let's add tags. We can pass an array directly to the object property! Easy.
+    if (is_array($tagarray)) {
+        $enlightndiscussion->tags = $tagarray;
+    }
+    $return['guid'] = $enlightndiscussion->guid;
+    $message 	= create_embeded_entities($message,$enlightndiscussion);
+	$post		= $message['message'];
+
+	// now add the topic message as an annotation
+	$annotationid = $enlightndiscussion->annotate(ENLIGHTN_DISCUSSION,$post,$enlightndiscussion->access_id, $user_guid);
+    $return['success'] = $annotationid;
+    $enlightndiscussion->save();//trigger entities save, in order to update the update_time;
+	//link attachement
+	if (is_array($message['guids'])) {
+		foreach ($message['guids'] as $embeded_guids) {
+			add_entity_relationship($embeded_guids,ENLIGHTN_EMBEDED,$annotationid);
+            update_entity_access ($embeded_guids,$enlightndiscussion->access_id); //update access_id
+		}
+	}
+	// add to river
+	add_to_river('enlightn/river/create','create',$user_guid,$enlightndiscussion->guid,$enlightndiscussion->access_id, 0, $annotationid);
+	// Success message
+	// Remove cache for public access
+	$enlightn->flush_cache(array('access_level' => ENLIGHTN_ACCESS_PU),'search');
+	$enlightn->flush_cache(array('user_guid' => $user_guid,'access_level' => ENLIGHTN_ACCESS_PR),'search');
+	// Add users membership to the discussion
+	//Current user
+	add_entity_relationship($user_guid, ENLIGHTN_FOLLOW, $enlightndiscussion->guid);
+    //Remove invitation
+    remove_entity_relationship($enlightndiscussion->guid, ENLIGHTN_INVITED, $user_guid);
+	//Invited user
+	$userto = parse_user_to($userto);
+	if (is_array($userto)) {
+        add_folowers ($userto,$enlightndiscussion);
+	}
+    add_entity_relationship($user_guid, ENLIGHTN_READED, $annotationid);
+    $return['message'] = elgg_echo('enlightn:discussion_sucessfully_created');
+    return $return;
+}
+
+function add_folowers ($userto,$enlightndiscussion) {
+    global $enlightn,$CONFIG;
+    foreach ($userto as $key => $usertoid) {
+        // Remove cache for private access, need to be deployed on user side
+        if ($enlightndiscussion->access_id == ACCESS_PRIVATE) {
+            $enlightn->flush_cache(array('user_guid' => $usertoid),'unreaded');
+            $enlightn->flush_cache(array('user_guid' => $usertoid,'access_level' => ENLIGHTN_ACCESS_PR),'search');
+            $enlightn->flush_cache(array('user_guid' => $usertoid,'access_level' => ENLIGHTN_ACCESS_IN),'search');
+        }
+        $usertoid = get_entity((int)$usertoid);
+        if ($usertoid->guid && $usertoid->guid != $enlightndiscussion->owner_guid) {
+            /*if (!$usertoid->isFriend()) {
+                add_entity_relationship($_SESSION['user']->guid, 'friend', $usertoid->guid);
+            }*/
+            if(add_entity_relationship($enlightndiscussion->guid, ENLIGHTN_INVITED, $usertoid->guid)) {
+                // Add membership requested
+                add_entity_relationship($usertoid->guid, 'membership_request', $enlightndiscussion->guid);
+                // Send email
+                $url = "{$CONFIG->url}pg/enlightn";
+                if (in_array($usertoid->{"notification:method:".NOTIFICATION_EMAIL_INVITE}, array(null, '1'))) {
+                    notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
+                            sprintf(elgg_echo('enlightn:invite:subject'), $enlightndiscussion->title),
+                            sprintf(elgg_echo('enlightn:invite:body'), $usertoid->name, $user_guid, $enlightndiscussion->title, $url),
+                            NULL);
+                }
+
+            }
+        }
+    }
+}
+
+
+function create_external_user($email,$username,$name) {
+    $password       = generate_random_cleartext_password();
+	// Belts and braces
+	// @todo Tidy into main unicode
+	$blacklist = '\'/\\"*& ?#%^(){}[]~?<>;|¬`@-+=';
+	for ($n=0; $n < strlen($blacklist); $n++) {
+		$username = str_replace($blacklist[$n], '', $username);
+	}
+    $guid           = register_user($username, $password, $name, $email);
+    create_metadata($guid, ENLIGHTN_EXTERNAL_USER, true, '', 0, ACCESS_PUBLIC);
+    return $guid;
+}
+
+function create_attachement ($annotation_id, $filename, $content) {
+    $prefix             = "file/";
+
+    $file               = new FilePluginFile();
+	$file->subtype      = "file";
+    $file->title        = $filename;
+	$file->access_id    = ENLIGHTN_ACCESS_PRIVATE;
+    $filestorename      = elgg_strtolower(time().$filename);
+    $file->setFilename($prefix.$filestorename);
+    $file->setMimeType($content['mime_type']);
+    $file->originalfilename = $filename;
+    $file->description  = $file->originalfilename;
+    $file->simpletype   = get_general_file_type($content['mime_type']);
+    if (!in_array($file->simpletype,(array(ENLIGHTN_LINK,ENLIGHTN_MEDIA,ENLIGHTN_IMAGE,ENLIGHTN_DOCUMENT)))) {
+        $file->simpletype = ENLIGHTN_DOCUMENT;
+    }
+    // Open the file to guarantee the directory exists
+    $file->open("write");
+    $file->close();
+    // move using built in function to allow large files to be uploaded
+    file_put_contents($file->getFilenameOnFilestore(), $content['content']);
+    $guid = $file->save();
+    // if image, we need to create thumbnails (this should be moved into a function)
+    if ($guid && $file->simpletype == "image") {
+        $thumbnail = get_resized_image_from_existing_file($file->getFilenameOnFilestore(),60,60, true);
+        if ($thumbnail) {
+            $thumb = new ElggFile();
+            $thumb->setMimeType($content['mime_type']);
+
+            $thumb->setFilename($prefix."thumb".$filestorename);
+            $thumb->open("write");
+            $thumb->write($thumbnail);
+            $thumb->close();
+
+            $file->thumbnail = $prefix."thumb".$filestorename;
+            unset($thumbnail);
+        }
+
+        $thumbsmall = get_resized_image_from_existing_file($file->getFilenameOnFilestore(),153,153, true);
+        if ($thumbsmall) {
+            $thumb->setFilename($prefix."smallthumb".$filestorename);
+            $thumb->open("write");
+            $thumb->write($thumbsmall);
+            $thumb->close();
+            $file->smallthumb = $prefix."smallthumb".$filestorename;
+            unset($thumbsmall);
+        }
+
+        $thumblarge = get_resized_image_from_existing_file($file->getFilenameOnFilestore(),600,600, false);
+        if ($thumblarge) {
+            $thumb->setFilename($prefix."largethumb".$filestorename);
+            $thumb->open("write");
+            $thumb->write($thumblarge);
+            $thumb->close();
+            $file->largethumb = $prefix."largethumb".$filestorename;
+            unset($thumblarge);
+        }
+    }
+
+    generate_preview($file->guid);
+    add_entity_relationship($file->guid,ENLIGHTN_EMBEDED,$annotation_id);
+    return $guid;
 }

@@ -39,6 +39,19 @@ echo  elgg_echo('enlightn:disable_registration_email') . ' : <br />';
 		));
 ?>
 </p>
+<p><?php
+$email_activated = $vars['entity']->email_activated=='1'?'1':'0';
+echo  elgg_echo('enlightn:email_activated') . ' : <br />';
+		echo elgg_view('input/radio', array(
+			'internalname' => 'params[email_activated]',
+			'options' => array(
+				elgg_echo('option:no') => '0',
+				elgg_echo('option:yes')=>'1'
+			),
+			'value' => $email_activated
+		));
+?>
+</p>
 <p>
 <?php
 $css_sidebar_folders = $vars['entity']->css_sidebar_folders!=''?$vars['entity']->css_sidebar_folders:'#2D87E1';

@@ -36,15 +36,16 @@ $url_follow			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/fol
 <input type="hidden" name="see_more_discussion_list_offset" id="see_more_discussion_list_offset" value="0">
 <input type="hidden" name="unreaded_only" id="unreaded_only" value="0">
 <script language="javascript">
-changeMessageList('#discussion_selector_<?php echo ENLIGHTN_ACCESS_PU?>', '<?php echo ENLIGHTN_ACCESS_PU?>');
+
 
 $('#see_more_discussion_list').click(function () {
 	$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())+10);
-	loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria(),'append');
+	loadContent('#discussion_list_container','<?php echo $vars['url'] ?>mod/enlightn/ajax/search.php'  + get_search_criteria(),'append');
 });
 
 $(document).ready(function(){
-	reloader("<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php", '#discussion_list_container');
+    changeMessageList('#discussion_selector_<?php echo $vars['discussion_type']?>', '<?php echo $vars['discussion_type']?>');
+    reloader("<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php", '#discussion_list_container');
 
     function markAs (action) {
         $('#discussion_list_container li input[type=checkbox]:checked').each(function (key,item) {

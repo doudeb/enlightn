@@ -24,6 +24,7 @@ if (empty($vars['title'])) {
 	$title = $vars['config']->sitename . ": " . $vars['title'];
 }
 echo elgg_view('page_elements/header', $vars);
+echo elgg_view('messages/list', array('object' => $vars['sysmessages']));
 if (get_context() === 'main') {
     echo $vars['body'];
     return;
@@ -33,13 +34,9 @@ echo elgg_view('page_elements/elgg_topbar', $vars);
 if (get_context() !== 'cloud_embed') {
 	echo elgg_view('page_elements/header_contents', $vars);
 }
-
-echo elgg_view('messages/list', array('object' => $vars['sysmessages'])); ?>
+?>
 <div id="page">
 <!-- main contents -->
-
-
-<!-- canvas -->
 <?php echo $vars['body']; ?>
 </div><!-- end div id page-->
 <!-- footer -->
