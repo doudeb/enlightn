@@ -65,7 +65,6 @@ function changeShortCutMenu (task, data, textStatus, XMLHttpRequest) {
         oldElement.html('');
     }
 
-    $('#discussion_type').val(task.params.access_level);
     fetchedRows = XMLHttpRequest.getResponseHeader('Fetch-rows');
     var items = [];
     if(fetchedRows >0 ) {

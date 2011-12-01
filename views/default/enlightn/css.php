@@ -747,7 +747,7 @@ span.follow:hover {
 }
 
 #sidebar .folders .notif {
-    color:#fff;
+    color:#000;
     background-position:-233px -78px;
     display:inline-block;
     font-size: 75%;

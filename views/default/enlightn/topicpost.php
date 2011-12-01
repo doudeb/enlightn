@@ -52,4 +52,7 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
 			$("#read<?php echo $discussion->id; ?>").parent().parent().toggleClass("read unread open-msg");
 			loadContent('#loader','<?php echo $url_read?>');
 		});
+        if ($('#expand span').hasClass('arrow-top')) {
+            $("#read<?php echo $discussion->id; ?>").parent().parent().addClass('open-msg');
+        }
 </script>

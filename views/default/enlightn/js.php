@@ -270,16 +270,17 @@ $(document).ready(function(){
 
 
 	$(document).ready(function(){
-		$('#expandAll').click( function(){
+		$('#expand').click( function(){
+            $('#expand span').toggleClass('arrow-top');
 			$("#discussion_list_container li").each(function () {
-				$(this).addClass('open-msg');
+                if ($('#expand span').hasClass('arrow-top')) {
+                    $(this).addClass('open-msg');
+                } else {
+                    $(this).removeClass('open-msg');
+                }
 			});
 		});
-		$('#collapseAll').click( function(){
-			$("#discussion_list_container li").each(function () {
-				$(this).removeClass('open-msg');
-			});
-		});
+
 		$('#privacy_cursor').click( function(){
 			if($(this).parent().hasClass('private')) {
 				$(this).parent().removeClass('private');
