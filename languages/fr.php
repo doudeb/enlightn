@@ -256,10 +256,11 @@
 			,'enlightn:newmessage:subject' => 'Re: %s '
 			,'enlightn:newmessage:body' => 'Bonjour %s,
 
-%s a ajouté un nouveau message à la discussion "%s"
+%s a ajouté un nouveau message à la discussion <strong>"%s" :</strong>
+%s
 
-<a href="%s">Accéder à la discussion</a>
-A tout de suite sur ' . $CONFIG->sitename
+<p><a href="%s"><span class="tag">Accéder à la discussion</a></span></a></p>
+<p>A tout de suite sur ' . $CONFIG->sitename . '</p>'
 
 			//$follower (to)  $user (from)  $topic (title)  $url
 
@@ -286,11 +287,11 @@ L\'équipe Enlightn'
 			,'enlightn:invite:subject' => '%s'
 			,'enlightn:invite:body' => 'Bonjour %s,
 
-%s vous invite à rejoindre la discussion "%s
+%s vous invite à rejoindre la discussion <strong>"%s".</strong>
 
-<a href="%s">Rejoindre la discussion</a>
-A tout de suite sur ' . $CONFIG->sitename
+<p><a href="%s"><span class="tag">Accéder la discussion</span></a></p>
+<p>A tout de suite sur ' . $CONFIG->sitename . '</p>'
 
-	);
+            );
 	add_translation("fr",$french);
 ?>

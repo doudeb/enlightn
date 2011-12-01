@@ -1184,7 +1184,9 @@ img.online {
     margin-top : 20px;
     display : block;
 }
-
+#feed.detail .msg .content img {
+    max-width : 500px;
+}
 #feed .msg .date {
     color: #8b97a1;
     font-size: 87%;
@@ -4196,4 +4198,47 @@ div.usericon a.icon img {
 .profile_banned {
 	border:2px solid #FF6666;
 	opacity:.5;
+}
+.river_content_display div.usericon a.icon img {
+        width:40px;
+        height:40px;
+}
+
+/* ***************************************
+        ENTITY LISTINGS
+*************************************** */
+.search_listing {
+        display: block;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        background:white;
+        margin:0 10px 5px 10px;
+        padding:5px;
+}
+.search_listing_icon {
+        float:left;
+}
+.search_listing_icon img {
+        width: 40px;
+}
+.search_listing_icon .avatar_menu_button img {
+        width: 15px;
+}
+.search_listing_info {
+        margin-left: 50px;
+        min-height: 40px;
+}
+/* IE 6 fix */
+* html .search_listing_info {
+        height:40px;
+}
+.search_listing_info p {
+        margin:0 0 3px 0;
+        line-height:1.2em;
+}
+.search_listing_info p.owner_timestamp {
+        margin:0;
+        padding:0;
+        color:#666666;
+        font-size: 90%;
 }

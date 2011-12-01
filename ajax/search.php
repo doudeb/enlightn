@@ -32,8 +32,10 @@ if ($entity_guid > 0) {
 	$discussion_activities  = get_entity_relationships($entity_guid,true);
 	$discussion_activities  = array_reverse($discussion_activities);
 	$discussion_activities  = sort_entity_activities($discussion_activities);
-	$discussion				= get_entity($entity_guid);
+    $discussion				= get_entity($entity_guid);
 	$search_results			= $discussion->getAnnotations('', $limit, $offset, "desc");
+    $previous_result        = $offset>0?$discussion->getAnnotations('', 1, abs($offset-$limit), "desc"):false;
+    $total_results          = $discussion->countAnnotations('');
     //$search_results         = array_reverse($search_results);
 	$last_modified			= $search_results[0]->time_created;
 } else {
@@ -57,23 +59,25 @@ if ($nb_results > 0) {
 	}
 	foreach ($search_results as $key => $topic) {
 		if ((int)$entity_guid > 0) {
-			$flag_readed = check_entity_relationship($user_guid, ENLIGHTN_READED,$topic->id);
-			if ($nb_results-1 == $key) {
-				$topic_activities = $discussion_activities;
-			} else {
-				$topic_activities = get_activities_by_time(&$discussion_activities,$topic->time_created);
-			}
+            $current_date       = $topic->time_created;
+            $previous_date      = !$previous_result?false:$previous_result[0]->time_created;
+			$flag_readed        = check_entity_relationship($user_guid, ENLIGHTN_READED,$topic->id);
+			$topic_activities   = get_activities_by_time(&$discussion_activities,$current_date,$previous_date);
 			if ($key === 0) {
 				echo elgg_view('enlightn/post_header', array());
 			}
 			if(!$flag_readed) {
 				add_entity_relationship($user_guid, ENLIGHTN_QUEUE_READED,$topic->id);
 			}
-		    echo elgg_view("enlightn/topicpost",array('entity' => $topic
+            echo elgg_view("enlightn/topic_activities",array('entity' => $topic
+														, 'activities' => $topic_activities));
+            echo elgg_view("enlightn/topicpost",array('entity' => $topic
 		    											, 'query' => $words
 		    											, 'flag_readed' => $flag_readed));
-			echo elgg_view("enlightn/topic_activities",array('entity' => $topic
-														, 'activities' => $topic_activities));
+            if ($key + $offset + 1 === $total_results) {
+                echo elgg_view("enlightn/topic_activities",array('entity' => $topic
+														, 'activities' => $discussion_activities));
+            }
 		} else {
 			echo  elgg_view("enlightn/discussion_short", array('entity' => $topic
 												, 'current' => $key===0?true:false

@@ -259,7 +259,8 @@
 			,'enlightn:newmessage:subject' => 'Re: %s '
 			,'enlightn:newmessage:body' => 'Hi %s,
 
-%s add a new message to the discussion "%s"
+%s add a new message to the discussion "%s" :
+%s
 
 <a href="%s">Access the discussion</a>'
 
@@ -288,10 +289,9 @@ Team Enlightn'
             //Invite
 			,'enlightn:invite:subject' => '%s'
 			,'enlightn:invite:body' => 'Hi %s,
-
-%s has invited to follow the discussion "%s
-
-<a href="%s">Follow the discussion</a>'
+%s has invited to follow the discussion
+<p><strong>"%s"</strong></p>
+<p><a href="%s"><span class="tag">View discussion</span></a></p>'
 
 	);
 	add_translation("en",$english);

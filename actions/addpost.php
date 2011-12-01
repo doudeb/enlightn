@@ -32,7 +32,10 @@ $json_return = create_enlightn_discussion ($user_guid, $access_id,$message, $tit
 $enlightn->flush_cache(array('entity_guid' => $guid),'search');
 $enlightn->flush_cache(array('user_guid' => $user_guid,'access_level' => ENLIGHTN_ACCESS_PU),'search');
 $enlightndiscussion = get_entity($guid);
-$followers = get_discussion_members($guid);
+$annotation         = get_annotation($json_return['success']);
+$content            = elgg_view("enlightn/mail/message_content",array('message' => $annotation->value));
+// url for the email
+$url = "{$CONFIG->url}pg/enlightn/discuss/" . $enlightndiscussion->guid;$followers = get_discussion_members($guid);
 foreach($followers as $follower) {
 	$enlightn->flush_cache(array('user_guid' => $follower->guid,'access_level' => ENLIGHTN_ACCESS_PR),'search');
 	$enlightn->flush_cache(array('user_guid' => $follower->guid,'access_level' => ENLIGHTN_ACCESS_IN),'search');
@@ -41,8 +44,8 @@ foreach($followers as $follower) {
     // Send email
     if ($follower->{"notification:method:".NOTIFICATION_EMAIL_MESSAGE_FOLLOWED} == '1' && $follower->guid != $user->guid) {
         notify_user($follower->guid, $user_guid,
-                sprintf(elgg_echo('enlightn:newmessage:subject'), $enlightndiscussion->title),
-                sprintf(elgg_echo('enlightn:newmessage:body'), $follower->name, $user->name, $enlightndiscussion->title, $url),
+                sprintf(elgg_echo('enlightn:newmessage:subject',$follower->language), $enlightndiscussion->title),
+                sprintf(elgg_echo('enlightn:newmessage:body',$follower->language), $follower->name, $user->name, $enlightndiscussion->title,$content, $url),
                 NULL);
     }
 }

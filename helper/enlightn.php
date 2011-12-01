@@ -184,24 +184,32 @@ function sort_entity_activities ($activities) {
 	if (!is_array($activities)) {
 		return false;
 	}
-	foreach ($activities as $activity) {
-		if (in_array($activity->relationship, array('member','membership_request'))) {
-			$sorted_activities[][$activity->time_created] = $activity;
+	foreach ($activities as $relation_ship) {
+		if (in_array($relation_ship->relationship, array('member','membership_request'))) {
+            //echo '<pre>' . $relation_ship->relationship . ':' . $relation_ship->guid_one . '/' . elgg_view_friendly_time($relation_ship->time_created);
+			$sorted_activities[$relation_ship->relationship][] = $relation_ship;
 		}
 	}
 	return $sorted_activities;
 }
 
-function get_activities_by_time ($activities,$time_created_max) {
-	$sorted_activities = array();
+function get_activities_by_time ($activities,$current_date,$previous_date) {
+	$sorted_activities  = array();
 	if (!is_array($activities)) {
 		return false;
 	}
-	foreach ($activities as $time_created=>$activity) {
-		if (key($activity) >= $time_created_max) {
-			$sorted_activities[] = $activity;
-			unset($activities[$time_created]);
-		}
+	foreach ($activities as $activity_type=>$activity) {
+        foreach ($activity as $key=>$relation_ship) {
+            //echo "<pre>";
+            //var_dump($time_created_max < $relation_ship->time_created, $time_created_min > $relation_ship->time_created);
+            //echo '<pre>' . $relation_ship->relationship . ':' . $relation_ship->guid_one . '/' . elgg_view_friendly_time($relation_ship->time_created) . ' current : ' . elgg_view_friendly_time($current_date) . ' | next : ' . elgg_view_friendly_time($previous_date);
+
+            if (($current_date <= $relation_ship->time_created && !$previous_date)
+                    || ($previous_date && $relation_ship->time_created >= $previous_date && $relation_ship->time_created >= $current_date)) {
+                $sorted_activities[$activity_type][] = $relation_ship;
+                unset($activities[$activity_type][$key]);
+            }
+        }
 	}
 	return $sorted_activities;
 }
@@ -251,6 +259,7 @@ function get_embeded_src ($message) {
 }
 
 function get_and_format_href (&$message) {
+    return false;
     $formated_links = array();
 	$regexp         = REG_HREF;
 
@@ -333,6 +342,9 @@ function get_embeded_title ($links) {
 			default:
 				break;
 		}
+        if (empty($links[$type][$key]['title'])) {
+            $links[$type][$key]['title'] = $link['link'];
+        }
 	}
 	return $links;
 }
@@ -831,6 +843,7 @@ function create_enlightn_discussion ($user_guid, $access_id,$message, $title,$ta
 
 function add_folowers ($userto,$enlightndiscussion) {
     global $enlightn,$CONFIG;
+    $user = get_loggedin_user();
     foreach ($userto as $key => $usertoid) {
         // Remove cache for private access, need to be deployed on user side
         if ($enlightndiscussion->access_id == ACCESS_PRIVATE) {
@@ -847,11 +860,11 @@ function add_folowers ($userto,$enlightndiscussion) {
                 // Add membership requested
                 add_entity_relationship($usertoid->guid, 'membership_request', $enlightndiscussion->guid);
                 // Send email
-                $url = "{$CONFIG->url}pg/enlightn";
-                if (in_array($usertoid->{"notification:method:".NOTIFICATION_EMAIL_INVITE}, array(null, '1'))) {
+                $url = "{$CONFIG->url}pg/enlightn/discuss/" . $enlightndiscussion->guid;
+                if (!in_array($usertoid->{"notification:method:".NOTIFICATION_EMAIL_INVITE}, array(0))) {
                     notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
-                            sprintf(elgg_echo('enlightn:invite:subject'), $enlightndiscussion->title),
-                            sprintf(elgg_echo('enlightn:invite:body'), $usertoid->name, $user_guid, $enlightndiscussion->title, $url),
+                            sprintf(elgg_echo('enlightn:invite:subject',$usertoid->language), $enlightndiscussion->title),
+                            sprintf(elgg_echo('enlightn:invite:body',$usertoid->language), $usertoid->name, $user->name, $enlightndiscussion->title, $url),
                             NULL);
                 }
 
