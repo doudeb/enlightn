@@ -25,6 +25,7 @@ if (strip_tags($message,'<img>') == "" || trim($message) == "") {
 disable_right($guid);
 // Check that user is a group member
 $user_guid 				= get_loggedin_userid();
+$user_ent               = get_user($user_guid);
 // Let's see if we can get an form topic with the specified GUID, and that it's a group forum topic
 $json_return = create_enlightn_discussion ($user_guid, $access_id,$message, $title,$tags, $userto,$guid);
 
@@ -35,7 +36,9 @@ $enlightndiscussion = get_entity($guid);
 $annotation         = get_annotation($json_return['success']);
 $content            = elgg_view("enlightn/mail/message_content",array('message' => $annotation->value));
 // url for the email
-$url = "{$CONFIG->url}pg/enlightn/discuss/" . $enlightndiscussion->guid;$followers = get_discussion_members($guid);
+$url = "{$CONFIG->url}enlightn/discuss/" . $enlightndiscussion->guid;
+$followers = get_discussion_members($guid);
+
 foreach($followers as $follower) {
 	$enlightn->flush_cache(array('user_guid' => $follower->guid,'access_level' => ENLIGHTN_ACCESS_PR),'search');
 	$enlightn->flush_cache(array('user_guid' => $follower->guid,'access_level' => ENLIGHTN_ACCESS_IN),'search');
@@ -45,7 +48,7 @@ foreach($followers as $follower) {
     if ($follower->{"notification:method:".NOTIFICATION_EMAIL_MESSAGE_FOLLOWED} == '1' && $follower->guid != $user->guid) {
         notify_user($follower->guid, $user_guid,
                 sprintf(elgg_echo('enlightn:newmessage:subject',$follower->language), $enlightndiscussion->title),
-                sprintf(elgg_echo('enlightn:newmessage:body',$follower->language), $follower->name, $user->name, $enlightndiscussion->title,$content, $url),
+                sprintf(elgg_echo('enlightn:newmessage:body',$follower->language), $follower->name, $user_ent->name, $enlightndiscussion->title,$content, $url),
                 NULL);
     }
 }

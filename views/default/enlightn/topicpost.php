@@ -7,7 +7,7 @@
 	 *
 	 * @uses $vars['entity'] The posted comment to view
 	 */
-$discussion 	= get_annotation($vars['entity']->id);
+$discussion 	= elgg_get_annotation_from_id($vars['entity']->id);
 $flag_readed	= $vars['flag_readed'];
 $post_owner 	= get_user($discussion->owner_guid);
 $has_words		= stripos($discussion->value,$vars['query']);
@@ -19,14 +19,15 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
 ?>
                     <li class="msg<?php echo false===$flag_readed?' unread open-msg':' read' ?><?php echo $has_words?' open-msg':'' ?>">
                         <div class="toolbar">
-                        	<?php if (is_array($src_embeded)) {
+                        	<?php if (count($src_embeded) > 0) {
 								echo '<span class="inclosed ico"></span>';
                         	}?>
                             <span class="date"><?php echo elgg_view_friendly_time($discussion->time_created)?></span>
                         </div>
                         <div class="statusbar">
+                            <span><input class="checkbox" type="checkbox" value="<?php echo $discussion->id; ?>"/></span>
                             <!--<span class="star ico"></span>-->
-                            <span id="read<?php echo $discussion->id?>" class="read ico"></span>
+                            <!--<span id="read<?php echo $discussion->id?>" class="read ico"></span>-->
                         </div>
                         <div class="excerpt">
                             <?php echo elgg_view('input/user_photo',array('class'=>'thumb-photo','user_ent'=>$post_owner));?>
@@ -54,5 +55,10 @@ $src_embeded	= elgg_get_entities_from_relationship(array(
 		});
         if ($('#expand span').hasClass('arrow-top')) {
             $("#read<?php echo $discussion->id; ?>").parent().parent().addClass('open-msg');
+        }
+        if ($('#forwardActionButton').css('display') === 'block') {
+            $('#feed.detail .msg .checkbox').each(function (key,item) {
+                $(item).css('display', 'block');
+             });
         }
 </script>

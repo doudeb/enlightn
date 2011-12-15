@@ -1,6 +1,7 @@
 <?php
 include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 //Some basic var
+elgg_load_js('elgg.friendspicker');
 gatekeeper();
 global $enlightn;
 $user_guid 				= get_loggedin_userid();

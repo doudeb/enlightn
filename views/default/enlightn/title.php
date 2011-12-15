@@ -22,17 +22,14 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
 			<div id="detail" class="msg <?php echo false===$flag_readed?'':'read' ?> <?php echo  false===$flag_favorite?'':'starred'?>">
                 <div class="header">
     				<?php echo elgg_view("enlightn/follow", array('entity' => $vars['entity'], 'user_guid' => $vars['user_guid']));?>
-                    <h2><?php echo $post->title; ?></h2>
+                    <h2><span id="discussionTitle"><?php echo $post->title; ?></span></h2>
                     <span id="favorite<?php echo $post->guid; ?>" class="star ico"></span>
                     <span class="<?php echo $post->access_id==ACCESS_PRIVATE?'lock':'unlock'; ?> ico"></span>
 
                 </div><!-- header -->
 
                 <div class="actions">
-
-
                     <span class="tags">
-
                         <ul>
                         	<?php
                         	if (is_array($tags)) {

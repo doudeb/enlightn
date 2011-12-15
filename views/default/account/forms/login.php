@@ -38,7 +38,7 @@ body, #body {
             <p><?php echo elgg_view('input/text', array('internalname' => 'username',  'placeholder'=>elgg_echo(''))); ?></p>
             <p><h2><?php echo elgg_echo('password');?> :</h2></p>
             <p><?php echo elgg_view('input/password', array('internalname' => 'password',  'placeholder'=>elgg_echo(''))); ?></p>
-            <p><?php echo elgg_view('input/submit', array('value' => elgg_echo('login'))); ?><input type="checkbox" name="persistent" value="true" />&nbsp;<label><?php echo elgg_echo('user:persistent')?></label></p>
+            <p><?php echo elgg_view('input/submit', array('value' => elgg_echo('login'), 'class'=>'submit')); ?><input type="checkbox" name="persistent" value="true" />&nbsp;<label><?php echo elgg_echo('user:persistent')?></label></p>
             <br />
         </form>
         <p>

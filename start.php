@@ -13,36 +13,38 @@ function enlightn_init() {
 	$enlightn		= new enlightn();
     // Extend system CSS with our own styles
     //elgg_extend_view('css', 'enlightn/css');
+    elgg_extend_view('page/elements/head','page_elements/header');
     elgg_extend_view('js/initialise_elgg','enlightn/cloud/js');
     elgg_extend_view('js/initialise_elgg','enlightn/js');
     elgg_extend_view('profile/editicon','enlightn/helper/redirect');
 	// Try to remove the dashboard page
-    unregister_plugin_hook('validate', 'input', 'htmlawed_filter_tags');
-    register_plugin_hook('index','system','new_index');
-	register_plugin_hook('validate', 'input', 'enlightn_filter_tags', 1);
+	elgg_register_plugin_hook_handler('validate', 'input', 'enlightn_filter_tags');
+    elgg_unregister_plugin_hook_handler('validate', 'input', 'htmlawed_filter_tags');
+    elgg_register_plugin_hook_handler('index','system','new_index');
     //register_plugin_hook('siteid','system','set_site_id');
 	// register for search
-	register_entity_type('enlightn','');
+	elgg_register_entity_type('enlightn','');
 	// Register a page handler, so we can have nice URLs
-	register_page_handler('enlightn','enlightn_page_handler');
+	elgg_register_page_handler('enlightn','enlightn_page_handler');
 	// Register some actions
-	register_action("enlightn/edit",false, $CONFIG->pluginspath . "enlightn/actions/discussion_edit.php");
-	register_action("enlightn/addpost",false, $CONFIG->pluginspath . "enlightn/actions/addpost.php");
-	register_action("enlightn/join",false, $CONFIG->pluginspath . "enlightn/actions/join.php");
-	register_action("enlightn/invite",false, $CONFIG->pluginspath . "enlightn/actions/invite.php");
-	register_action("enlightn/follow",false, $CONFIG->pluginspath . "enlightn/actions/follow.php");
-	register_action("enlightn/read",false, $CONFIG->pluginspath . "enlightn/actions/read.php");
-	register_action("enlightn/favorite",false, $CONFIG->pluginspath . "enlightn/actions/favorite.php");
-	register_action("enlightn/upload",false, $CONFIG->pluginspath . "enlightn/actions/upload.php");
-	register_action("enlightn/save_notifications",false, $CONFIG->pluginspath . "enlightn/actions/save_notifications.php");
-	register_action("enlightn/profile_edit",false, $CONFIG->pluginspath . "enlightn/actions/profile_edit.php");
+    $action_path = elgg_get_plugins_path() . 'enlightn/actions/';
+	elgg_register_action("enlightn/edit",$action_path . "discussion_edit.php");
+	elgg_register_action("enlightn/addpost",$action_path . "addpost.php");
+	elgg_register_action("enlightn/join",$action_path . "join.php");
+	elgg_register_action("enlightn/invite",$action_path . "invite.php");
+	elgg_register_action("enlightn/follow",$action_path . "follow.php");
+	elgg_register_action("enlightn/read",$action_path . "read.php");
+	elgg_register_action("enlightn/favorite",$action_path . "favorite.php");
+	elgg_register_action("enlightn/upload",$action_path . "upload.php");
+	elgg_register_action("enlightn/save_notifications",$action_path . "save_notifications.php");
+	elgg_register_action("enlightn/profile_edit",$action_path . "profile_edit.php");
 	//collection
-	register_action("enlightn/collection/addcollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/addcollection.php");
-	register_action("enlightn/collection/removefromcollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/removefromcollection.php");
-	register_action("enlightn/collection/addtocollection",false, $CONFIG->pluginspath . "enlightn/actions/collection/addtocollection.php");
+	elgg_register_action("enlightn/collection/addcollection",$action_path . "collection/addcollection.php");
+	elgg_register_action("enlightn/collection/removefromcollection",$action_path . "collection/removefromcollection.php");
+	elgg_register_action("enlightn/collection/addtocollection",$action_path . "collection/addtocollection.php");
 
     // Register entity type
-    register_entity_type('object',ENLIGHTN_DISCUSSION);
+    elgg_register_entity_type('object',ENLIGHTN_DISCUSSION);
     // Load profile settings
     $profile_settings = get_profile_settings();
     if (!empty($profile_settings['timezone'])) {
@@ -54,11 +56,13 @@ function enlightn_init() {
     //Register notification handler
     register_notification_handler(NOTIFICATION_EMAIL_INVITE,'email_invite_notify_handler');
     register_notification_handler(NOTIFICATION_EMAIL_MESSAGE_FOLLOWED,'email_message_followed_notify_handler');
-    register_elgg_event_handler('shutdown','system', 'enlightn_purge_readed_queue',1000);
+    elgg_register_event_handler('shutdown','system', 'enlightn_purge_readed_queue',1000);
+    // do we need to overrule default email notifications
+    register_notification_handler("email", "html_email_handler_notification_handler");
 }
 function new_index($hook, $type, $return, $params) {
 	if (isloggedin()) {
-		forward('pg/enlightn/');
+		forward('enlightn/');
 		return true;
 	} else {
 		$title = elgg_echo('enlightn:login');
@@ -93,24 +97,24 @@ function enlightn_page_handler($page) {
 	}
 	switch ($page[0]) {
 		case "invitations":
-			include($CONFIG->pluginspath . "enlightn/invitations.php");
+			include(elgg_get_plugins_path() . "enlightn/invitations.php");
 			break;
 		case "discuss":
 			set_input('entity_guid', $page[1]);
 			set_context('discuss');
-			include($CONFIG->pluginspath . "enlightn/discuss.php");
+			include(elgg_get_plugins_path() . "enlightn/discuss.php");
 			break;
 		case "cloud":
 			set_context('cloud');
 			if ($page[1] == 'cloud_embed') {
 				set_context('cloud_embed');
 			}
-			include($CONFIG->pluginspath . "enlightn/cloud.php");
+			include(elgg_get_plugins_path() . "enlightn/cloud.php");
 			break;
 		case "upload":
 			set_input('entity_guid', $page[1]);
 			set_input('internal_id', $page[2]);
-			include($CONFIG->pluginspath . "enlightn/upload.php");
+			include(elgg_get_plugins_path() . "enlightn/upload.php");
 			break;
 		case "collection":
 	        if ($user = get_user_by_username($page[0])) {
@@ -118,33 +122,33 @@ function enlightn_page_handler($page) {
 	        }
 			set_context('collection');
 			$action = $page[1];
-			include($CONFIG->pluginspath . "enlightn/collection.php");
+			include(elgg_get_plugins_path() . "enlightn/collection.php");
 			break;
 		case "directory":
 			set_context('directory');
 			$collection_id = $page[1];
-			include($CONFIG->pluginspath . "enlightn/directory.php");
+			include(elgg_get_plugins_path() . "enlightn/directory.php");
 			break;
 		case "profile":
 			set_context('profile');
 			set_input('username', $page[1]);
-			include($CONFIG->pluginspath . "enlightn/profile.php");
+			include(elgg_get_plugins_path() . "enlightn/profile.php");
 			break;
 		case "settings":
             set_context('enlightn:settings');
    			$page[1]?set_input('tab', $page[1]):set_input('tab', 'account');
-            include($CONFIG->pluginspath . "enlightn/settings.php");
+            include(elgg_get_plugins_path() . "enlightn/settings.php");
 			break;
 		case "download":
             set_context('enlightn:download');
             set_input('file_guid', $page[1]);
-			include($CONFIG->pluginspath . "enlightn/download.php");
+			include(elgg_get_plugins_path() . "enlightn/download.php");
 			break;
         case "home":
         default:
             set_context('home');
 			set_input('discussion_type', $page[0]=='home'?ENLIGHTN_ACCESS_PU:$page[0]);
-			include($CONFIG->pluginspath . "enlightn/home.php");
+			include(elgg_get_plugins_path() . "enlightn/home.php");
 			break;
 		}
 }

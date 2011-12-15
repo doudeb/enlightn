@@ -1,7 +1,10 @@
 			<div id="feed" class="detail">
                 <div class="s-actions">
                     <ul>
-                        <li id="expand"><?php echo elgg_echo("enlightn:expandall"); ?> / <?php echo elgg_echo("enlightn:collapseall"); ?> <span class="arrow"></span></li>
+                        <li id="viewDiscussion"><?php echo elgg_echo("enlightn:viewdiscussion"); ?></li>
+                        <li>|</li>
+                        <li id="viewDiscussionCloud"><?php echo elgg_echo("enlightn:viewcloud"); ?></li>
+                        <li id="expand" class="right"><?php echo elgg_echo("enlightn:expandall"); ?> / <?php echo elgg_echo("enlightn:collapseall"); ?> <span class="arrow"></span></li>
                     </ul>
                 </div>
                 <ol id="discussion_list_container"></ol>

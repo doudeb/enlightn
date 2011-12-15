@@ -49,6 +49,7 @@ input, textarea {
 .arrow,
 .notif,
 .list_select,
+.discussion-action,
 #header  .logo,
 #header  .tabs li a,
 #post .status-box,
@@ -76,19 +77,14 @@ input, textarea {
 #feed .actions,
 #feed .actions ul li:hover,
 #feed .more,
-#new-post form .privacy .value,
-#new-post .textarea .toolbar li,
-#new-post button.submit,
-#settings_edit button.submit,
-#new-post button.reset,
-#login-box .submit_button,
-#login .submit_button,
+form .privacy .value,
+.textarea .toolbar li,
+input[type=submit],
+button.submit,
 #sidebar .folders .menu .up,
 #sidebar .folders .menu .down,
 #presence .header,
 #layer .close,
-#cloud button.submit,
-#settings_edit .button,
 #facebox .close {
     background: url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/sprite-x.png') repeat-x scroll 0 0 transparent;
 }
@@ -114,7 +110,8 @@ input, textarea {
     width:50px
 }
 
-.follow, .button {
+.follow,
+.button {
     background-position:0 -321px;
     border:1px solid #8eac15;
     -moz-border-radius:2px;
@@ -128,6 +125,7 @@ input, textarea {
     height: 18px;
     line-height: 18px;
     padding: 0 6px;
+    min-width : 85px;
 }
 
 .follow {
@@ -149,8 +147,8 @@ input, textarea {
     color:#43520a;/*NEW*/
 }
 
-
-span.follow:hover, span.button:hover {
+span.follow:hover,
+span.button:hover {
     background-color:#bbdc03;
     background-image:none;
 }
@@ -171,7 +169,9 @@ span.ignore:hover {
     color:#fff;
 }
 
-.follow .ico, .button .ico {
+.follow .ico,
+.discussion-action,
+.button .ico {
     display: inline-block;
     height: 15px;
     vertical-align: middle;
@@ -468,11 +468,11 @@ img.online {
     margin-right:10px;
 }
 
-#new-post.fixed {
+#new-discussion.fixed {
     display : block;
     margin-bottom:25px;
 }
-#new-post.open {
+#new-discussion.open {
     top : 69px;
     left : 50%;
     width : 620px;
@@ -512,18 +512,18 @@ img.online {
     color: #9c9c9c;
 }
 
-#new-post,
+#new-discussion,
 #post.open .status-box,
 #post.open .photo {
     display:none;
 }
 
-#new-post.open {
+#new-discussion.open {
     display:block;
     overflow: hidden;
 }
 
-#new-post form .privacy {
+#new-discussion form .privacy {
     border:1px solid #8fad15;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
@@ -534,7 +534,7 @@ img.online {
     float : left;
 }
 
-#new-post form .privacy .value {
+#new-discussion form .privacy .value {
     background-color:#bbdc03;
     background-position:0 -451px;
     color:#fff;
@@ -548,7 +548,7 @@ img.online {
 }
 
 /*NEW*/
-#new-post form .private .value {
+#new-discussion form .private .value {
     background-image:none;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E20780', endColorstr='#F973BC');
 	background: -webkit-gradient(linear, left top, left bottom, from(#E20780), to(#F973BC));
@@ -556,15 +556,15 @@ img.online {
 }
 /*NEW*/
 
-#new-post form .privacy .private-val, #new-post form .private .public-val {
+#new-discussion form .privacy .private-val, #new-discussion form .private .public-val {
     display:none;
 }
 
-#new-post form .private .private-val {
+#new-discussion form .private .private-val {
     display:block;
 }
 
-#new-post form .private .private-val .ico {
+#new-discussion form .private .private-val .ico {
     background-position: -104px -151px;
     display: inline-block;
     height: 14px;
@@ -573,7 +573,7 @@ img.online {
     width: 11px;
 }
 
-#new-post form .privacy .cursor {
+#new-discussion form .privacy .cursor {
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     -khtml-border-radius:5px;
@@ -595,9 +595,9 @@ img.online {
     width: 40px;
 }
 
-#new-post form .title,
-#new-post .textarea,
-#new-post form .dest ul {
+form .title,
+.textarea,
+form .dest ul {
     background-color:#fff;
     border:1px solid #ccc;
     -moz-border-radius:5px;
@@ -609,20 +609,20 @@ img.online {
     padding:7px 9px;
 }
 
-#new-post form .title {
+form .title {
     width: 600px;
     margin-bottom : 10px;
 }
 
-#new-post .textarea {
+.textarea {
     height:85px;
 }
 
-#new-post form .dest ul {
+form .dest ul {
     padding:1px 9px;
 }
 
-#new-post .textarea .toolbar {
+.textarea .toolbar {
     background-color:#e5e5e5;
     border:1px solid #ccc;
     -moz-border-radius:5px 5px 0 0;
@@ -634,7 +634,7 @@ img.online {
     padding: 4px;
 }
 
-#new-post .textarea .toolbar li {
+.textarea .toolbar li {
     background-color:#fff;
     background-position: 0 -381px;
     border:1px solid #bbb;
@@ -650,29 +650,29 @@ img.online {
     width: 24px;
 }
 
-#new-post .textarea .toolbar li .ico {
+.textarea .toolbar li .ico {
     display:block;
     height: 22px;
     width: 24px;
 }
 
-#new-post .textarea .toolbar .bold .ico { background-position:-11px -177px; }
-#new-post .textarea .toolbar .italic .ico { background-position:-39px -177px; }
-#new-post .textarea .toolbar .stroke .ico { background-position:-67px -177px; }
+.textarea .toolbar .bold .ico { background-position:-11px -177px; }
+.textarea .toolbar .italic .ico { background-position:-39px -177px; }
+.textarea .toolbar .stroke .ico { background-position:-67px -177px; }
 
-#new-post .textarea .toolbar .ul .ico { background-position:-105px -177px; }
-#new-post .textarea .toolbar .ol .ico { background-position:-133px -177px; }
-#new-post .textarea .toolbar .quote .ico { background-position:-161px -177px; }
+.textarea .toolbar .ul .ico { background-position:-105px -177px; }
+.textarea .toolbar .ol .ico { background-position:-133px -177px; }
+.textarea .toolbar .quote .ico { background-position:-161px -177px; }
 
-#new-post .textarea .toolbar .a-left .ico { background-position:-194px -177px; }
-#new-post .textarea .toolbar .a-center .ico { background-position:-222px -177px; }
-#new-post .textarea .toolbar .a-right .ico { background-position:-250px -177px; }
+.textarea .toolbar .a-left .ico { background-position:-194px -177px; }
+.textarea .toolbar .a-center .ico { background-position:-222px -177px; }
+.textarea .toolbar .a-right .ico { background-position:-250px -177px; }
 
-#new-post .textarea .toolbar .link .ico { background-position:-284px -177px; }
-#new-post .textarea .toolbar .video .ico { background-position:-309px -177px; }
-#new-post .textarea .toolbar .pict .ico { background-position:-335px -177px; }
-#new-post .textarea .toolbar .doc .ico { background-position:-362px -177px; }
-#new-post .textarea .toolbar .disable {
+.textarea .toolbar .link .ico { background-position:-284px -177px; }
+.textarea .toolbar .video .ico { background-position:-309px -177px; }
+.textarea .toolbar .pict .ico { background-position:-335px -177px; }
+.textarea .toolbar .doc .ico { background-position:-362px -177px; }
+.textarea .toolbar .disable {
     float : right;
     background-image:none;
     background-color:#e5e5e5;
@@ -683,19 +683,19 @@ img.online {
     border-radius:0px;
 }
 
-#new-post .textarea .toolbar li:hover {
+.textarea .toolbar li:hover {
     background-image:none;
 }
 
-#new-post .textarea .toolbar li.new-gp {
+.textarea .toolbar li.new-gp {
     margin-left:7px;
 }
 
-#new-post .textarea .toolbar .form-open  {
+.textarea .toolbar .form-open  {
     background-image: none;
 }
 
-#new-post .textarea .toolbar .video .form {
+.textarea .toolbar .video .form {
     background-color: #FFFFFF;
     border: 1px solid #CCCCCC;
     display:none;
@@ -704,16 +704,16 @@ img.online {
     position: absolute;
 }
 
-#new-post .textarea .toolbar .form-open .form {
+.textarea .toolbar .form-open .form {
     display:block;
 }
 
-#new-post .textarea .toolbar .video .form .caption {
+.textarea .toolbar .video .form .caption {
     color: #666666;
     font-size: 93%;
 }
 
-#new-post .textarea .toolbar .video .form input {
+.textarea .toolbar .video .form input {
     color: #666;
     display: block;
     font-size: 87%;
@@ -721,27 +721,27 @@ img.online {
     width: 150px;
 }
 
-#new-post form .dest {
+form .dest {
     vertical-align : middle;
     display : inline-block;
     #float:left;
     #display: block;
 }
-#new-post form .dest input,
-#new-post form .dest ul {
+form .dest input,
+form .dest ul {
     width: 450px;
     height : 19px;
     #border : 0px;
 }
-#new-post form .dest li {
+form .dest li {
     #padding : 0px;
 }
 
-#new-post form label {
+form label {
     margin : 0px 0px 10px 10px;
 }
 
-#new-post form .tags {
+form .tags {
     margin-top : 10px;
     clear : left;
 }
@@ -791,23 +791,23 @@ img.online {
     display : none;
     margin-left : 10px;
 }
-#new-post form .sending {
-    float:right;
+.sending {
+    #float:right;
+    text-align: right;
 }
 
-#new-post form .sending .checkbox {
+form .sending .checkbox {
     vertical-align: middle;
 }
 
-#new-post form .sending .reply {
+form .sending .reply {
     background-position: -228px -152px;
     display: inline-block;
     height: 15px;
     vertical-align: middle;
     width: 15px;
 }
-#settings_edit button[type="submit"],
-#new-post button[type="submit"] {
+button[type="submit"] {
     background-position: 0 -411px;
     border: 1px solid #8eac15;
     -moz-border-radius:3px;
@@ -824,7 +824,7 @@ img.online {
     cursor : pointer;
 }
 
-#new-post button[type="reset"] {
+button[type="reset"] {
     background-position:0 -191px;
     border: 1px solid #999;
     -moz-border-radius:3px;
@@ -842,24 +842,22 @@ img.online {
 }
 
 
-##settings_edit  button.submit:hover,
-#new-post button.submit:hover {
+button.submit:hover {
     background-color:#bbdc03;
     background-image:none;
 }
 
-#new-post button[type="reset"]:hover {
+button[type="reset"]:hover {
     background-color:#ddd;
     background-image:none;
 }
 
-##settings_edit  button.submit:active,
-#new-post button.submit:active {
+button.submit:active {
     background-color:#9dbd20;
     background-image:none;
 }
 
-#new-post button[type="reset"]:active {
+button[type="reset"]:active {
     background-color:#eee;
     background-image:none;
 }
@@ -941,12 +939,12 @@ img.online {
     height:6px;
     margin: -2px 0 0 4px;
     vertical-align: middle;
-    width:10px
+    width:10px;
 }
 
 #feed .actions .checkbox {
     height:15px;
-    margin-top: -3px;
+    margin-top: 4px;
     margin-left: 1px
     vertical-align: middle;
     width:15px;
@@ -954,7 +952,7 @@ img.online {
 
 #feed .s-actions {
     border-bottom:1px solid #ccc;
-    padding:5px 0 3px;
+    padding:10px 0 5px;
 }
 
 #feed .s-actions li {
@@ -962,7 +960,6 @@ img.online {
     cursor:pointer;
     display:inline;
     font-size:87%;
-    margin-right:15px;
     vertical-align: top;
 }
 
@@ -1009,6 +1006,11 @@ img.online {
 
 #feed.detail .msg {
     padding:3px 10px;
+}
+
+#feed.detail .checkbox {
+    display: inline-block;
+    margin-left: 8px;
 }
 
 /*home message hover and cursor*/
@@ -1096,6 +1098,7 @@ img.online {
 #discussion_list_container .unread {
     background-color : #e5e5e5;
 }
+
 .msg .read {
     background-position:-50px -127px;
     display:block;
@@ -1107,9 +1110,11 @@ img.online {
     background-position:-74px -127px;
 }
 
+#feed.detail .msg .checkbox,
 #feed.detail .msg .read {
     display:inline-block;
     margin-top: 21px;
+    margin-left: 0px;
     vertical-align: top;
 }
 #feed.detail .read {
@@ -1379,6 +1384,150 @@ img.online {
     margin-right:10px;
 }
 
+/** CLONED CONTENT */
+
+#clonedMessages .statusbar {
+    display : none;
+}
+
+#clonedMessages .msg .read {
+    padding:0px 0px 0px 100px;
+    width : 500px;
+}
+
+#clonedMessages .thumb-photo {
+    width : 25px;
+    height : 25px;
+}
+#feed.detail #clonedMessages .msg .participants {
+    float: left;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 5px;
+    margin-top: 8px;
+}
+
+#feed.detail #clonedMessages .msg .thumb-photo {
+    margin-right: 0px;
+}
+
+#feed.detail #clonedMessages .msg .date {
+    margin-top: 8px;
+}
+
+#feed #clonedMessages .open-msg .content {
+    margin-left: 41px;
+    margin-top: 0px;
+}
+
+#feed #clonedMessages .open-msg .toolbar {
+    height : 25px;
+    list-style-type: none;
+}
+
+#feed.detail #clonedMessages .msg .excerpt p {
+    margin-top: 8px;
+    margin-left: 8px;
+}
+
+#feed.detail #clonedMessages .msg,
+#feed.detail #clonedMessages .msg:hover {
+    background-color:transparent;
+}
+
+
+#clonedMessages {
+    margin-top: 20px;
+    border-left : 2px solid #cccccc;
+}
+
+#feed.detail .msg .checkbox {
+    display : none;
+}
+.discussion-action {
+    background-position: -352px -33px;
+    height:24px;
+    margin: 0 0 0 -2px;
+    vertical-align: middle;
+    width:20px;
+    border:1px solid #8eac15;
+    border-left:0px;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    -khtml-border-radius:2px;
+    border-radius:2px;
+    color:#43520a;
+    cursor:pointer;
+    z-index : 2000;
+}
+
+.discussion-action-menu {
+    color: #000;
+    cursor:pointer;
+    margin : 23px 0px 0px -97px;
+    display : none;
+    border:1px solid #8eac15;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    -khtml-border-radius:2px;
+    border-radius:2px;
+    text-align: right;
+    position: absolute;
+    width : 116px;
+}
+
+.discussion-action-menu li {
+    background-color : #fff;
+    border-bottom : 1px solid #8eac15;
+    padding : 3px 5px 3px 0px;
+}
+
+.discussion-action-menu li:last-child {
+    border : none;
+}
+
+.discussion-action-menu li:hover {
+    background-color:#e2e2e2;
+}
+
+.discussion-action:hover {
+    border-bottom : none;
+    background-color : #fff;
+    -moz-border-radius:0px;
+    -webkit-border-radius:0px;
+    -khtml-border-radius:0px;
+    border-radius:0px;
+}
+
+.discussion-action:hover .discussion-action-menu {
+    display:block;
+}
+
+.forward {
+    display : none;
+    background-color:#e3f3a2;
+    text-align :right;
+    #margin : 10px;
+    padding : 8px;
+    border:1px solid #cccccc;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    margin-bottom: 20px;
+}
+
+.forwardMessage {
+    float: left;
+    font-weight: 900;
+    margin-top: 6px;
+}
+
+form #clonedMessages {
+    margin-bottom: 20px;
+    max-height : 100px;
+    overflow-y: scroll;
+}
 
 /** SEARCH */
 #search {
@@ -1419,6 +1568,8 @@ img.online {
     height:20px;
     vertical-align: middle;
     width:20px;
+    margin-left : 0;
+    padding-left : 0;
 }
 
 #search .filters {
@@ -1605,7 +1756,7 @@ img.online {
     font-size: 100%;
     font-weight: bold;
     height: 16px;
-    margin:-4px 0 0 10px;
+    margin: -3px 0 0 10px;
     padding:5px 0;
     text-align: center;
     vertical-align: middle;
@@ -1729,7 +1880,8 @@ img.online {
     vertical-align: middle;
 }
 
-#detail .follow {
+#detail .follow,
+#detail .discussion-action {
     float:right;
 }
 
@@ -2011,7 +2163,7 @@ img.online {
     width:60px;
 }
 
-#cloud .photo {
+#cloud_content .photo {
    border:0;
    padding : 0;
    float : none;
@@ -2055,19 +2207,22 @@ img.online {
 }
 
 
-#cloud .user .bottom {
+#cloud_content .user .bottom {
     color: #999999;
     float: left;
     font-size: 87%;
     margin-top: 30px;
 }
-
-#cloud .msg .excerpt p {
+#feed.detail #cloud_content .msg .excerpt p,
+#cloud_content .msg .excerpt p {
     margin-top:2px;
     display : block;
 }
 
-#cloud .msg .participants {
+#feed.detail #cloud_content .msg .participants {
+    margin : 0px;
+}
+#cloud_content .msg .participants {
     margin-top: 15px;
 }
 
@@ -2210,6 +2365,11 @@ img.online {
     border-right : 1px solid #ccc;
 }
 
+
+
+#settings_edit fieldset {
+    border : 0px;
+}
 #settings_edit p {
     clear : both;
     vertical-align: middle;
@@ -2610,7 +2770,6 @@ img.online {
     margin : 10px;
 }
 
-#login-box .loginbox input[type='submit'],
 #login .box input[type='submit'] {
     background-position: 0 -411px;
     border: 1px solid #8eac15;
@@ -2655,8 +2814,7 @@ LOST PASSWORD
 /**
 RTE EDITOR
 **/
-.frameBody
-{
+.frameBody {
     margin:0;
     width:100%;
     height:100%;
@@ -3582,7 +3740,7 @@ ul#friends_collections_accordian {
 /* ***************************************
 	FRIENDS PICKER SLIDER
 *************************************** */
-.friendsPicker_container h3 {
+.friends-picker-container h3 {
 	font-size:4em !important;
 	text-align: left;
 	margin:0 0 10px 0 !important;
@@ -3590,17 +3748,17 @@ ul#friends_collections_accordian {
 	background: none !important;
 	padding:0 !important;
 }
-.friendsPicker .friendsPicker_container .panel ul {
+.friends-picker .friends-picker-container .panel ul {
 	text-align: left;
 	margin: 0;
 	padding:0;
 }
-.friendsPicker_wrapper {
+.friends-picker-wrapper {
 	margin: 0;
 	padding:0;
 	position: relative;
 }
-.friendsPicker {
+.friends-picker {
 	position: relative;
 	overflow: hidden;
 	margin: 0;
@@ -3617,39 +3775,39 @@ ul#friends_collections_accordian {
 	-moz-border-radius: 8px;
 	margin:0 10px 10px 10px;
 }
-.friendsPicker .friendsPicker_container { /* long container used to house end-to-end panels. Width is calculated in JS  */
+.friends-picker .friends-picker-container { /* long container used to house end-to-end panels. Width is calculated in JS  */
 	position: relative;
 	left: 0;
 	top: 0;
 	list-style-type: none;
 }
-.friendsPicker .friendsPicker_container .panel {
+.friends-picker .friends-picker-container .panel {
 	float:left;
 	height: 100%;
 	position: relative;
-	width: 678px;
+	width: 730px;
 	margin: 0;
 	padding:0;
 }
-.friendsPicker .friendsPicker_container .panel .wrapper {
+.friends-picker .friends-picker-container .panel .wrapper {
 	margin: 0;
 	padding:4px 10px 10px 10px;
 	min-height: 230px;
 }
-.friendsPickerNavigation {
+.friends-picker-navigation {
 	margin: 0 0 10px 0;
 	padding:0;
 }
-.friendsPickerNavigation ul {
+.friends-picker-navigation ul {
 	list-style: none;
 	padding-left: 0;
 }
-.friendsPickerNavigation ul li {
+.friends-picker-navigation ul li {
 	float: left;
 	margin:0;
 	background:white;
 }
-.friendsPickerNavigation a {
+.friends-picker-navigation a {
 	font-weight: bold;
 	font-size: 110%;
 	text-align: center;
@@ -3667,19 +3825,19 @@ ul#friends_collections_accordian {
 .tabHasContent {
 	background: white; color:#333333 !important;
 }
-.friendsPickerNavigation li a:hover {
+.friends-picker-navigation li a:hover {
 	background: #333333;
 	color:white !important;
 }
-.friendsPickerNavigation li a.current {
+.friends-picker-navigation li a.current {
 	background: #4690D6;
 	color:white !important;
 }
-.friendsPickerNavigationAll {
+.friends-picker-navigationAll {
 	margin:0px 0 0 20px;
 	float:left;
 }
-.friendsPickerNavigationAll a {
+.friends-picker-navigationAll a {
 	font-weight: bold;
 	text-align: left;
 	font-size:0.8em;
@@ -3690,39 +3848,39 @@ ul#friends_collections_accordian {
 	padding: 0 4px 0 4px;
 	width:auto;
 }
-.friendsPickerNavigationAll a:hover {
+.friends-picker-navigationAll a:hover {
 	background: #4690D6;
 	color:white;
 }
-.friendsPickerNavigationL, .friendsPickerNavigationR {
+.friends-picker-navigation-l, .friends-picker-navigation-r {
 	position: absolute;
 	top: 46px;
 	text-indent: -9000em;
 }
-.friendsPickerNavigationL a, .friendsPickerNavigationR a {
+.friends-picker-navigation-l a, .friends-picker-navigation-r a {
 	display: block;
-	height: 43px;
-	width: 43px;
+	height: 40px;
+	width: 40px;
 }
-.friendsPickerNavigationL {
+.friends-picker-navigation-l {
 	right: 48px;
 	z-index:1;
 }
-.friendsPickerNavigationR {
+.friends-picker-navigation-r {
 	right: 0;
 	z-index:1;
 }
-.friendsPickerNavigationL {
-	background: url("<?php echo $vars['url']; ?>_graphics/friends_picker_arrows.gif") no-repeat left top;
+.friends-picker-navigation-l {
+	background: url("<?php echo $vars['url']; ?>_graphics/friendspicker.png") no-repeat left top;
 }
-.friendsPickerNavigationR {
-	background: url("<?php echo $vars['url']; ?>_graphics/friends_picker_arrows.gif") no-repeat -60px top;
+.friends-picker-navigation-r {
+	background: url("<?php echo $vars['url']; ?>_graphics/friendspicker.png") no-repeat -60px top;
 }
-.friendsPickerNavigationL:hover {
-	background: url("<?php echo $vars['url']; ?>_graphics/friends_picker_arrows.gif") no-repeat left -44px;
+.friends-picker-navigation-l:hover {
+	background: url("<?php echo $vars['url']; ?>_graphics/friendspicker.png") no-repeat left -44px;
 }
-.friendsPickerNavigationR:hover {
-	background: url("<?php echo $vars['url']; ?>_graphics/friends_picker_arrows.gif") no-repeat -60px -44px;
+.friends-picker-navigation-r:hover {
+	background: url("<?php echo $vars['url']; ?>_graphics/friendspicker.png") no-repeat -60px -44px;
 }
 .friends_collections_controls a.delete_collection {
 	display:block;

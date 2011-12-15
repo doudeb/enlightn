@@ -8,15 +8,16 @@
 	// new groups default to open membership
 
 ?>
-    <div id="new-post">
+    <div id="new-discussion">
         <form id="discussion_edit" action="<?php echo $vars['url']; ?>action/enlightn/edit" enctype="multipart/form-data" method="post">
             <?php echo elgg_view('input/securitytoken'); ?>
             <p><input class="title" type="text" name="title" id="title" placeholder="<?php echo elgg_echo("enlightn:title") ?>" value="" /></p>
-            <div id="submission"></div>
+            <div id="new-discussion-submission"></div>
             <?php echo elgg_view("input/longtext",array(
                                     'internalname' => 'description',
                                     'internalid' => 'description',
                                     'value' => $vars['entity']->description)); ?>
+            <?php echo elgg_view("enlightn/discussion/clone_messages",array()); ?>
             <div class="privacy private">
                 <span class="private-val value"><span class="ico"></span><?php echo elgg_echo('enlightn:buttonprivate') ?></span>
 

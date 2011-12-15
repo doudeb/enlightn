@@ -104,7 +104,7 @@ if (is_array($vars['collections'])) {
 if (!$callback) {
 	?>
 
-	<div class="friends_picker">
+	<div class="friends-picker">
 
 	<?php
 
@@ -152,10 +152,10 @@ if (!isset($vars['replacement'])) {
 	}
 ?>
 
-<div class="friendsPicker_wrapper">
+<div class="friends-picker-wrapper">
 
-<div id="friendsPicker<?php echo $friendspicker; ?>">
-	<div class="friendsPicker_container">
+<div id="friends-picker<?php echo $friendspicker; ?>">
+	<div class="friends-picker-container">
 <?php
 
 // Initialise letters
@@ -278,7 +278,7 @@ if (!isset($vars['replacement'])) {
 
 <script type="text/javascript">
 	// initialise picker
-	$("div#friendsPicker<?php echo $friendspicker; ?>").friendsPicker(<?php echo $friendspicker; ?>);
+	$("div#friends-picker<?php echo $friendspicker; ?>").friendsPicker(<?php echo $friendspicker; ?>);
 </script>
 <script>
 $(document).ready(function () {
@@ -289,7 +289,7 @@ if (sizeof($activeletters) > 0)
 	foreach($activeletters as $letter) {
 		$tab = strpos($chararray, $letter) + 1;
 ?>
-$("div#friendsPickerNavigation<?php echo $friendspicker; ?> li.tab<?php echo $tab; ?> a").addClass("tabHasContent");
+$("div#friends-picker-navigation<?php echo $friendspicker; ?> li.tab<?php echo $tab; ?> a").addClass("tabHasContent");
 <?php
 	}
 

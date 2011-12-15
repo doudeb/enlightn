@@ -233,8 +233,32 @@ function get_search_criteria () {
       	});
       	return false;
 	}
-
+    function showHideForward () {
+        $('#feed.detail .msg .checkbox').each(function (key,item) {
+            $(item).toggle();
+        });
+        $('#new-post').fadeToggle();
+        $('#forwardActionButton').fadeToggle();
+    }
 $(document).ready(function(){
+	$('#forwardParts').click( function() {
+        var title = $("#discussionTitle").html(),
+            entity_guid = $("#topic_guid").val(),
+            cloned = new Array();
+
+        $('#discussion_list_container li input[type=checkbox]:checked').each(function (key,item) {
+            loadContent('#clonedMessages','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php?annotation_id=' + $(item).val() + '&entity_guid=' + entity_guid, 'append');
+            cloned.push($(item).val());
+        });
+        showNewDiscussionBox(title, false, false, cloned);
+    });
+	$('#forwardAction').click( function() {
+        showHideForward();
+    });
+	$('#forwardCancel').click( function() {
+        showHideForward();
+    });
+
 	$('#search .filters li input').click( function(){
 		currElement = $(this);
 		items_checked = [];
@@ -260,39 +284,40 @@ $(document).ready(function(){
 		});
 		$('#subtype_checked').val(items_checked.join("','"));
 	});
-
+    $('#viewDiscussionCloud').click( function(){
+       $('#discussion_list_container').attr('id','cloud_content');
+       loadContent('#cloud_content','<?php echo $vars['url'] ?>/mod/enlightn/ajax/get_my_cloud.php?limit=100&guid='  + $('#entity_guid').val());
+    });
+    $('#viewDiscussion').click( function(){
+        $('#cloud_content').html('');
+        $('#cloud_content').attr('id','discussion_list_container');
+        loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
+    });
     $('#search .s-actions').click( function(){
         $('#search .toggle-search-filters').toggleClass('full');
         $(this).find('span').toggleClass('arrow-top');
     });
-});
-
-
-
-	$(document).ready(function(){
-		$('#expand').click( function(){
-            $('#expand span').toggleClass('arrow-top');
-			$("#discussion_list_container li").each(function () {
-                if ($('#expand span').hasClass('arrow-top')) {
-                    $(this).addClass('open-msg');
-                } else {
-                    $(this).removeClass('open-msg');
-                }
-			});
-		});
-
-		$('#privacy_cursor').click( function(){
-			if($(this).parent().hasClass('private')) {
-				$(this).parent().removeClass('private');
-				$(this).parent().addClass('public');
-				$('#membership').val(<?php echo ACCESS_PUBLIC?>);
-			} else {
-				$(this).parent().removeClass('public');
-				$(this).parent().addClass('private');
-				$('#membership').val(<?php echo ACCESS_PRIVATE?>);
-			}
-		});
-
+    $('#expand').click( function(){
+        $('#expand span').toggleClass('arrow-top');
+        $("#discussion_list_container li").each(function () {
+            if ($('#expand span').hasClass('arrow-top')) {
+                $(this).addClass('open-msg');
+            } else {
+                $(this).removeClass('open-msg');
+            }
+        });
+    });
+    $('#privacy_cursor').click( function(){
+        if($(this).parent().hasClass('private')) {
+            $(this).parent().removeClass('private');
+            $(this).parent().addClass('public');
+            $('#membership').val(<?php echo ACCESS_PUBLIC?>);
+        } else {
+            $(this).parent().removeClass('public');
+            $(this).parent().addClass('private');
+            $('#membership').val(<?php echo ACCESS_PRIVATE?>);
+        }
+    });
     $('#autoReply').click(function () {
         $('#add_post .sending .submit').toggle();
     });
@@ -384,19 +409,11 @@ $(document).ready(function(){
         showNewDiscussionBox();
 	});
 	    var options = {
-	        target:        '#submission',   // target element(s) to be updated with server response
+	        target:        '#new-discussion-submission',   // target element(s) to be updated with server response
 	        beforeSubmit:  loading,  // pre-submit callback
 	        success:       autoClose,  // post-submit callback
-
-	        // other available options:
-	        //url:       url         // override for form's 'action' attribute
-	      	type:      'post',        // 'get' or 'post', override for form's 'method' attribute
-	        dataType:  'json',        // 'xml', 'script', or 'json' (expected server response type)
-	        clearForm: true        // clear all form fields after successful submit
-	        //resetForm: true        // reset the form after successful submit
-
-	        // $.ajax options can be used here too, for example:
-	        //timeout:   3000
+            type:      'post',        // 'get' or 'post', override for form's 'method' attribute
+	        dataType:  'json'
 	    };
 
 	    // bind to the form's submit event
@@ -407,45 +424,58 @@ $(document).ready(function(){
 	});
 
 	function loading () {
-		$('#submission').prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif" alt="loading">');
+		$('#new-discussion-submission').prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif" alt="loading">');
 	}
 
 	function autoClose (data) {
         if(data.success) {
-        	$('#new-post').removeClass('open');
+        	$('#new-discussion').removeClass('open');
             $(".rte-zone").contents().find(".frameBody").html('');
-            $("#new-post .textarea").css('height','185');
+            $("#new-discussion .textarea").css('height','185');
        		$(".rte-zone").contents().find(".frameBody").css('height','185');
             tokenInputName = $('#discussion_edit input:text[name=invite]').attr('id');
-            $('#submission').html('');
+            $('#new-discussion-submission').html('');
+            $('#clonedMessages').html('');
             $('#' + tokenInputName).tokenInput("clear");
             $('#privacy_cursor').parent().removeClass('public');
 			$('#privacy_cursor').parent().addClass('private');
 			$('#membership').val(<?php echo ACCESS_PRIVATE?>);
             $(".dialog-overlay").css('display','none');
-            changeMessageList();
+            if ($('#forwardActionButton').css('display') === 'block') {
+                showHideForward();
+            } else {
+                changeMessageList();
+            }
         } else {
-            $('#submission').html(data.message);
+            $('#new-discussion-submission').html(data.message);
         }
 
 	}
-    function showNewDiscussionBox() {
-        var boxElm = $('#new-post')
+    function showNewDiscussionBox(title,message,dest,cloned) {
+        var boxElm = $('#new-discussion');
         if (boxElm.addClass('open')) {
             boxElm.draggable();
-            $("#new-post .textarea").css('height','185');
+            $("#new-discussion .textarea").css('height','185');
             $(".dialog-overlay").css('display','block');
+            if (title) {
+                $("#title").val(title);
+            }
+            if (cloned) {
+                clonedIds = cloned.join(',');
+                $('#cloned_ids').val(clonedIds);
+            }
         }
        	$('button:[type="reset"] ').click( function(){
-            $('#new-post').removeClass('open');
+            $('#new-discussion').removeClass('open');
             $(".rte-zone").contents().find(".frameBody").html('');
             tokenInputName = $('#discussion_edit input:text[name=invite]').attr('id');
-            $('#submission').html('');
+            $('#new-discussion-submission').html('');
             $('#' + tokenInputName).tokenInput("clear");
             $('#privacy_cursor').parent().removeClass('public');
 			$('#privacy_cursor').parent().addClass('private');
 			$('#membership').val(<?php echo ACCESS_PRIVATE?>);
-            $(".dialog-overlay").css('display','none');
+            $('#clonedMessages').html('');
+           $(".dialog-overlay").css('display','none');
         });
         $('#add-tags').click(function () {
             $('#tags-input').toggle();
@@ -534,6 +564,8 @@ if(typeof $.fn.rte === "undefined") {
             var css = "";
             if(opts.content_css_url) {
                 css = "<link type='text/css' rel='stylesheet' href='" + opts.content_css_url + "' />";
+            } else {
+                css = "<style>* {font-family: Arial, Helvetica, sans-serif;margin : 0; padding :0; font-size: 13px; }</style>";
             }
             var doc = "<html><head>"+css+"</head><body class='frameBody' id='iframe" + element_id + "'>"+content+"</body></html>";
             tryEnableDesignMode(doc, function() {

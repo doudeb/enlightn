@@ -48,7 +48,7 @@ $search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unr
 $nb_results = count($search_results);
 if ($nb_results > 0) {
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s",$search_results[0]->created) . " GMT");
-	header("Query-uid: " . md5($last_search));
+	header("Query-uid: " . md5($user_guid.$entity_guid.$access_level.$unreaded_only.$words.$from_users.$date_begin.$date_end.$subtype.$offset.$limit));
 	header("Fetch-rows: " . $nb_results);
 	if ($fetch_modified === '1') {
 		//echo json_encode(array('last-modified' => $search_results[0]->created));

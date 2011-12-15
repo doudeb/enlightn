@@ -16,6 +16,7 @@ $offset			= get_input('offset', 0);
 $limit			= get_input('limit', 10);
 $types 			= get_tags(0,10,'simpletype','object','file',$user_guid);
 $context		= get_input('context');
+$guid   		= get_input('guid');
 if ($context) {
 	set_context($context);
 }
@@ -24,7 +25,7 @@ $date_begin 	= strtotime($date_begin);
 $date_end 		= strtotime($date_end);
 
 elgg_get_access_object()->set_ignore_access(true);
-$files = $enlightn->get_my_cloud($user_guid,$subtype,$words,$from_users,$date_begin, $date_end,$limit,$offset);
+$files = $enlightn->get_my_cloud($user_guid,$subtype,$words,$from_users,$date_begin, $date_end,$guid,$limit,$offset);
 echo elgg_view('enlightn/cloud/media', array(
 							'entities' => $files,
 							'internalname' => $internalname,

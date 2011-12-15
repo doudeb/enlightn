@@ -421,8 +421,8 @@ function create_embeded_entities ($message,$entity) {
 function enlightn_collections_submenu_items() {
         global $CONFIG;
         $user = get_loggedin_user();
-        add_submenu_item(elgg_echo('friends:collections'), $CONFIG->wwwroot . "pg/enlightn/collection/" . $user->username);
-        add_submenu_item(elgg_echo('friends:collections:add'), $CONFIG->wwwroot . "pg/enlightn/collection/add");
+        add_submenu_item(elgg_echo('friends:collections'), $CONFIG->wwwroot . "enlightn/collection/" . $user->username);
+        add_submenu_item(elgg_echo('friends:collections:add'), $CONFIG->wwwroot . "enlightn/collection/add");
 }
 
 /**
@@ -618,8 +618,8 @@ function enlightn_filter_tags($hook, $entity_type, $returnvalue, $params) {
 	if (!is_array($var)) {
 		$return = strip_tags($var, $htmlawed_config);
 	} else {
-			array_walk_recursive($var, 'strip_tags', $htmlawed_config);
-			$return = $var;
+        array_walk_recursive($var, 'strip_tags', $htmlawed_config);
+        $return = $var;
 	}
 
 	return $return;
@@ -796,7 +796,7 @@ function create_enlightn_discussion ($user_guid, $access_id,$message, $title,$ta
         // Before we can set metadata, we need to save the topic
         if (!$enlightndiscussion->save()) {
             $return['message'] = elgg_echo("grouptopic:error");
-            //forward("pg/groups/forum/{$group_guid}/");
+            //forward("groups/forum/{$group_guid}/");
         }
     } else {
         $enlightndiscussion = get_entity($guid);
@@ -860,7 +860,7 @@ function add_folowers ($userto,$enlightndiscussion) {
                 // Add membership requested
                 add_entity_relationship($usertoid->guid, 'membership_request', $enlightndiscussion->guid);
                 // Send email
-                $url = "{$CONFIG->url}pg/enlightn/discuss/" . $enlightndiscussion->guid;
+                $url = "{$CONFIG->url}enlightn/discuss/" . $enlightndiscussion->guid;
                 if (!in_array($usertoid->{"notification:method:".NOTIFICATION_EMAIL_INVITE}, array(0))) {
                     notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
                             sprintf(elgg_echo('enlightn:invite:subject',$usertoid->language), $enlightndiscussion->title),
@@ -949,4 +949,253 @@ function create_attachement ($annotation_id, $filename, $content) {
     generate_preview($file->guid);
     add_entity_relationship($file->guid,ENLIGHTN_EMBEDED,$annotation_id);
     return $guid;
+}
+
+	function html_email_handler_notification_handler(ElggEntity $from, ElggUser $to, $subject, $message, array $params = NULL){
+		global $CONFIG;
+
+		if (empty($from)) {
+			throw new NotificationException(sprintf(elgg_echo('NotificationException:MissingParameter'), 'from'));
+		}
+
+		if (empty($to)) {
+			throw new NotificationException(sprintf(elgg_echo('NotificationException:MissingParameter'), 'to'));
+		}
+
+		if(empty($message)){
+			throw new NotificationException(sprintf(elgg_echo('NotificationException:MissingParameter'), 'message'));
+		}
+
+		if (empty($to->email)) {
+			throw new NotificationException(sprintf(elgg_echo('NotificationException:NoEmailAddress'), $to->guid));
+		}
+
+		// To
+		if(!empty($to->name)){
+			$to = $to->name . " <" . $to->email . ">";
+		} else {
+			$to = $to->email;
+		}
+
+		// From
+		// If there's an email address, use it - but only if its not from a user.
+		if (!($from instanceof ElggUser) && !empty($from->email)) {
+			if(!empty($from->name)){
+				$from = $from->name . " <" . $from->email . ">";
+			} else {
+				$from = $from->email;
+			}
+		} elseif ($CONFIG->site && !empty($CONFIG->site->email)) {
+			// Use email address of current site if we cannot use sender's email
+			if(!empty($CONFIG->site->name)){
+				$from = $CONFIG->site->name . " <" . $CONFIG->site->email . ">";
+			} else {
+				$from = $CONFIG->site->email;
+			}
+		} else {
+			// If all else fails, use the domain of the site.
+			if(!empty($CONFIG->site->name)){
+				$from = $CONFIG->site->name . " <noreply@" . get_site_domain($CONFIG->site_guid) . ">";
+			} else {
+				$from = "noreply@" . get_site_domain($CONFIG->site_guid);
+			}
+		}
+
+		// generate HTML mail body
+		$html_message = elgg_view("html_email_handler/notification/body", array("title" => $subject, "message" => parse_urls($message)));
+		if(defined("XML_DOCUMENT_NODE")){
+			if($transform = html_email_handler_css_inliner($html_message)){
+				$html_message = $transform;
+			}
+		}
+
+		// set options for sending
+		$options = array(
+			"to" => $to,
+			"from" => $from,
+			"subject" => $subject,
+			"html_message" => $html_message,
+			"plaintext_message" => $message
+		);
+
+		return html_email_handler_send_email($options);
+	}
+
+	/**
+	 *
+	 * This function sends out a full HTML mail. It can handle several options
+	 *
+	 * This function requires the options 'to' and ('html_message' or 'plaintext_message')
+	 *
+	 * @param $options Array in the format:
+	 * 		to => STR|ARR of recipients in RFC-2822 format (http://www.faqs.org/rfcs/rfc2822.html)
+	 * 		from => STR of senden in RFC-2822 format (http://www.faqs.org/rfcs/rfc2822.html)
+	 * 		subject => STR with the subject of the message
+	 * 		html_message => STR with the HTML version of the message
+	 * 		plaintext_message STR with the plaintext version of the message
+	 * 		cc => NULL|STR|ARR of CC recipients in RFC-2822 format (http://www.faqs.org/rfcs/rfc2822.html)
+	 * 		bcc => NULL|STR|ARR of BCC recipients in RFC-2822 format (http://www.faqs.org/rfcs/rfc2822.html)
+	 *
+	 * @return BOOL true|false
+	 */
+	function html_email_handler_send_email(array $options = null){
+		global $CONFIG;
+		$result = false;
+
+		// make site email
+		if(!empty($CONFIG->site->email)){
+			if(!empty($CONFIG->site->name)){
+				$site_from = $CONFIG->site->name . " <" . $CONFIG->site->email . ">";
+			} else {
+				$site_from = $CONFIG->site->email;
+			}
+		} else {
+			// no site email, so make one up
+			if(!empty($CONFIG->site->name)){
+				$site_from = $CONFIG->site->name . " <noreply@" . get_site_domain($CONFIG->site_guid) . ">";
+			} else {
+				$site_from = "noreply@" . get_site_domain($CONFIG->site_guid);
+			}
+		}
+
+		// set default options
+		$default_options = array(
+			"to" => array(),
+			"from" => $site_from,
+			"subject" => "",
+			"html_message" => "",
+			"plaintext_message" => "",
+			"cc" => array(),
+			"bcc" => array()
+		);
+
+		// merge options
+		$options = array_merge($default_options, $options);
+
+		// check options
+		if(!empty($options["to"]) && !is_array($options["to"])){
+			$options["to"] = array($options["to"]);
+		}
+		if(!empty($options["cc"]) && !is_array($options["cc"])){
+			$options["cc"] = array($options["cc"]);
+		}
+		if(!empty($options["bcc"]) && !is_array($options["bcc"])){
+			$options["bcc"] = array($options["bcc"]);
+		}
+
+		// can we send a message
+		if(!empty($options["to"]) && (!empty($options["html_message"]) || !empty($options["plaintext_message"]))){
+			// start preparing
+			$boundary = uniqid($CONFIG->site->name);
+
+			// start building headers
+			if(!empty($options["from"])){
+				$headers .= "From: " . $options["from"] . PHP_EOL;
+			} else {
+				$headers .= "From: " . $site_from . PHP_EOL;
+			}
+			$headers .= "X-Mailer: PHP/" . phpversion() . PHP_EOL;
+			$headers .= "MIME-Version: 1.0" . PHP_EOL;
+			$headers .= "Content-Type: multipart/alternative; boundary=\"" . $boundary . "\"" . PHP_EOL . PHP_EOL;
+
+			// check CC mail
+			if(!empty($options["cc"])){
+				$headers .= "Cc: " . implode(", ", $options["cc"]) . PHP_EOL;
+			}
+
+			// check BCC mail
+			if(!empty($options["bcc"])){
+				$headers .= "Bcc: " . implode(", ", $options["bcc"]) . PHP_EOL;
+			}
+
+			// TEXT part of message
+			if(!empty($options["plaintext_message"])){
+				$message .= "--" . $boundary . PHP_EOL;
+				$message .= "Content-Type: text/plain; charset=\"utf-8\"" . PHP_EOL;
+				$message .= "Content-Transfer-Encoding: base64" . PHP_EOL . PHP_EOL;
+
+				$message .= chunk_split(base64_encode($options["plaintext_message"])) . PHP_EOL . PHP_EOL;
+			}
+
+			// HTML part of message
+			if(!empty($options["html_message"])){
+				$message .= "--" . $boundary . PHP_EOL;
+				$message .= "Content-Type: text/html; charset=\"utf-8\"" . PHP_EOL;
+				$message .= "Content-Transfer-Encoding: base64" . PHP_EOL . PHP_EOL;
+
+				$message .= chunk_split(base64_encode($options["html_message"])) . PHP_EOL;
+			}
+
+			// Final boundry
+			$message .= "--" . $boundary . "--" . PHP_EOL;
+
+			// convert to to correct format
+			$to = implode(", ", $options["to"]);
+			$result = mail($to, $options["subject"], $message, $headers);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * This function converts CSS to inline style, the CSS needs to be found in a <style> element
+	 *
+	 * @param $html_text => STR with the html text to be converted
+	 * @return false | converted html text
+	 */
+	function html_email_handler_css_inliner($html_text){
+        global $CONFIG;
+		$result = false;
+        // include CSS coverter if needed
+        if(!class_exists("Emogrifier")){
+            require_once $CONFIG->pluginspath . "enlightn/helper/emogrifier/emogrifier.php";
+        }
+		if(!empty($html_text) && defined("XML_DOCUMENT_NODE")){
+			$css = "";
+
+			$dom = new DOMDocument();
+			$dom->loadHTML($html_text);
+
+			$styles = $dom->getElementsByTagName("style");
+
+			if(!empty($styles)){
+				$style_count = $styles->length;
+
+				for($i = 0; $i < $style_count; $i++){
+					$css .= $styles->item($i)->nodeValue;
+				}
+			}
+
+			$emo = new Emogrifier($html_text, $css);
+			$result = $emo->emogrify();
+		}
+
+		return $result;
+	}
+
+function generate_cloned_message ($cloned_ids) {
+    elgg_set_ignore_access(true);
+    $cloned_content = '';
+    if (strstr($cloned_ids, ',')) {
+        $cloned_ids = explode(',', $cloned_ids);
+        if (is_array($cloned_ids)) {
+            foreach ($cloned_ids as $key => $annotation_id) {
+                $annotation = elgg_get_annotation_from_id($annotation_id);
+                $cloned_content .= elgg_view("enlightn/topicpost",array('entity' => $annotation
+		    											, 'query' => false
+		    											, 'flag_readed' => false));
+            }
+        }
+        $cloned_content = elgg_view("enlightn/discussion/clone_messages",array('cloned_content' => $cloned_content));
+    }
+    return $cloned_content;
+}
+
+function enlightn_hook_forward_system($hook, $type, $returnvalue, $params) {
+    $message = system_messages();
+    if (isset($message['success']) && array_pop($message['success']) == elgg_echo('loginok')) {
+        return elgg_get_site_url() . '/WHATEVERURL'; // replace this
+    }
+
+    return $returnvalue;
 }

@@ -15,6 +15,16 @@ $url 			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?di
 		});
 	});
 </script>
+<?php if ($is_follow && in_array(get_context(), array('discuss'))) {?>
+<span class="discussion-action">
+    <span class="discussion-action-val"></span>
+    <span class="ico"></span>
+    <ul class="discussion-action-menu">
+        <li id="forwardAction"><?php echo elgg_echo("enlightn:forward")?></li>
+        <li id="markAsUnreadAction"><?php echo elgg_echo("enlightn:removeasread")?></li>
+    </ul>
+</span>
+<?php } ?>
 <span class="follow<?php echo $is_follow?' unfollow':' '?>" id="follow<?php echo $vars['entity']->guid?>">
     <span class="ico"></span>
     <span class="follow-val"><?php echo elgg_echo("enlightn:buttonfollow"); ?></span>

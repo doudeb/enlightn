@@ -33,7 +33,7 @@ $short_title    	= substr($entity->title,0,55);
                         </div>
                         <div class="excerpt" id="excerpt<?php echo $post->entity_guid; ?>">
                             <?php echo elgg_view('input/user_photo',array('class'=>'thumb-photo','user_ent'=>$post_owner));?>
-                            <h3><a href="<?php echo $vars['url'] ?>/pg/enlightn/discuss/<?php echo $vars['entity']->guid; ?>"><?php echo $short_title?></a><?php echo $flag_readed?></h3>
+                            <h3><a href="<?php echo $vars['url'] ?>enlightn/discuss/<?php echo $vars['entity']->guid; ?>"><?php echo $short_title?></a><?php echo $flag_readed?></h3>
                             <span class="participants"><strong><?php echo $post_owner->name?></strong> <?php echo elgg_view("enlightn/discussion_members",array('entity' => $post
 														, 'limit' => 3));?></span>
 	                        <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>
@@ -46,7 +46,7 @@ $short_title    	= substr($entity->title,0,55);
 
 <script>
 		$("#excerpt<?php echo $post->entity_guid; ?>").click( function(){
-			$(location).attr('href','<?php echo $vars['url'] ?>pg/enlightn/discuss/<?php echo $vars['entity']->guid; ?>');
+			$(location).attr('href','<?php echo $vars['url'] ?>enlightn/discuss/<?php echo $vars['entity']->guid; ?>');
 		});
 		$("#read<?php echo $post->id; ?>").click( function(){
 			$("#read<?php echo $post->id; ?>").parent().parent().toggleClass("read unread");

@@ -39,7 +39,7 @@ $plugin_elements = load_plugin_manifest('enlightn');
         }
 
         a, a:link, a:hover, a:visited {
-            color: #000000;
+            color: #656c6e;
             outline:none;
         }
 
@@ -71,7 +71,7 @@ $plugin_elements = load_plugin_manifest('enlightn');
             margin:0 auto;
             position: relative;
             width:600px;
-            background-color: #000;
+            background-color: #656c6e;
         }
 
         #header .logo {
@@ -102,7 +102,7 @@ $plugin_elements = load_plugin_manifest('enlightn');
         }
         /** FOOTER */
         #footer {
-            background-color: #000;
+            background-color: #656c6e;
             clear:both;
             padding: 20px 0;
             margin: 0 auto;
@@ -145,7 +145,7 @@ $plugin_elements = load_plugin_manifest('enlightn');
         </style>
         <div id="header">
             <div class="nav">
-                <a href="<?php echo $vars['url']; ?>pg/enlightn/" alt="<?php echo elgg_echo('PUBLIC')?>"><img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/logo.png" title="<?php echo $CONFIG->sitename ?>" class="logo"></a>
+                <a href="<?php echo $vars['url']; ?>/enlightn/" alt="<?php echo elgg_echo('PUBLIC')?>"><img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/logo.png" title="<?php echo $CONFIG->sitename ?>" class="logo"></a>
             </div>
         </div>
         <div id="page">
@@ -155,15 +155,15 @@ $plugin_elements = load_plugin_manifest('enlightn');
             </div>
         </div>
         <div id="footer">
-            <div class="footer-right">
-                <p>- <a href="<?php echo $vars['url']; ?>pg/enlightn/cloud"><?php echo elgg_echo("enlightn:mycloud"); ?></a></p>
-                <p>- <a href="<?php echo $vars['url']; ?>pg/enlightn/directory"><?php echo elgg_echo("enlightn:viewdirectory"); ?></a></p>
+            <!--<div class="footer-right">
+                <p>- <a href="<?php echo $vars['url']; ?>enlightn/cloud"><?php echo elgg_echo("enlightn:mycloud"); ?></a></p>
+                <p>- <a href="<?php echo $vars['url']; ?>enlightn/directory"><?php echo elgg_echo("enlightn:viewdirectory"); ?></a></p>
             </div>
             <div class="footer-left">
-                <p>- <a href="<?php echo $vars['url']; ?>pg/profile/<?php echo $user->username?>"><?php echo elgg_echo("enlightn:accesstomyprofil"); ?></a></p>
-                <p>- <a href="<?php echo $vars['url']; ?>pg/enlightn/home/<?php echo ENLIGHTN_ACCESS_IN; ?>"><?php echo elgg_echo("enlightn:mydiscussion"); ?></a></p>
+                <p>- <a href="<?php echo $vars['url']; ?>profile/<?php echo $user->username?>"><?php echo elgg_echo("enlightn:accesstomyprofil"); ?></a></p>
+                <p>- <a href="<?php echo $vars['url']; ?>enlightn/home/<?php echo ENLIGHTN_ACCESS_IN; ?>"><?php echo elgg_echo("enlightn:mydiscussion"); ?></a></p>
             </div>
-            <div class="copyright"><?php echo $plugin_elements['copyright']?> - <?php echo $plugin_elements['version']?></div>
+            <div class="copyright"><?php echo $plugin_elements['copyright']?> - <?php echo $plugin_elements['version']?></div>-->
         </div>
     </body>
 </html>

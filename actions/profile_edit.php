@@ -16,5 +16,5 @@ foreach ($current_settings as $key => $value) {
     }
 }
 
-forward($CONFIG->url . 'pg/enlightn/settings/profile');
+forward($CONFIG->url . 'enlightn/settings/profile');
 ?>

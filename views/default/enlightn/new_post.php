@@ -1,7 +1,12 @@
-			<div id="new-post" class="fixed">
+            <div class="forward" id="forwardActionButton">
+                <span class="forwardMessage"><?php echo elgg_echo("enlightn:selectparttoforward"); ?></span>
+                <button type="reset" class="submit" id="forwardCancel"><?php echo elgg_echo("enlightn:buttoncancel"); ?></button>
+                <button type="submit" class="submit" id="forwardParts"><?php echo elgg_echo('enlightn:buttonforward'); ?></button>
+            </div>
+            <div id="new-post" class="fixed">
 				<form id="add_post" action="<?php echo $vars['url']; ?>action/enlightn/addpost" enctype="multipart/form-data" method="post">
 					<?php
-					$url_cloud = $vars['url'] . 'pg/enlightn/cloud/' . $vars['entity']->guid . '/new_post';
+					$url_cloud = $vars['url'] . 'enlightn/cloud/' . $vars['entity']->guid . '/new_post';
 					echo elgg_view('input/longtext',array('internalname' => 'new_post',
 										'internalid' => 'new_post'
 										, 'url_cloud' => $url_cloud)); ?>
@@ -17,26 +22,11 @@
 				</form>
 			</div>
 <script>
-$(document).ready(function(){
-    $(".rte-zone").contents().find(".frameBody").focus();
-	$('#fake_input').click( function(){
-		$('#fake_input').fadeOut();
-		$('#edit_discussion').fadeIn();
-		var iframeRte = document.getElementsByTagName('iframe');
-		iframeRte[0].contentWindow.focus();
-	});
-
-	$('#close_new_discussion').click( function(){
-		$('#edit_discussion').fadeOut();
-		$('#fake_input').fadeIn();
-	});
-});
-
 	$(document).ready(function() {
 	    var options = {
 	        target:        '#submission',   // target element(s) to be updated with server response
 	        beforeSubmit:  loadingNewPost,  // pre-submit callback
-	        success:       autoClose,  // post-submit callback
+	        success:       autoCloseNewPost,  // post-submit callback
 	        // other available options:
 	        //url:       url         // override for form's 'action' attribute
 	      	type:      'post',        // 'get' or 'post', override for form's 'method' attribute
@@ -63,7 +53,7 @@ $(document).ready(function(){
 		return true;
 	}
 
-	function autoClose (data) {
+	function autoCloseNewPost (data) {
         if(data.success) {
             $(".rte-zone").contents().find(".frameBody").html('');
             $(".rte-zone").contents().find(".frameBody").css('height','85');

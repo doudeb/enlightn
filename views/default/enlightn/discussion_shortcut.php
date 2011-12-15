@@ -15,7 +15,7 @@ $unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
 <script language="javascript">
 changeShortCutList = function (accessLevel,offset,discussionId) {
     if ($('#discussion_type').val() != accessLevel) {
-        $(location).attr('href','<?php echo $vars['url'] ?>pg/enlightn/' + accessLevel);
+        $(location).attr('href','<?php echo $vars['url'] ?>enlightn/' + accessLevel);
         return true;
     }
     currElement 	= $('#discussion_selector_' + accessLevel);
@@ -81,7 +81,7 @@ function changeShortCutMenu (task, data, textStatus, XMLHttpRequest) {
                 } else {
                     liClass = ' class="' + classReaded +'"';
                 }
-                items.push('<li id="' + item.guid + '"' + liClass + '><a href="<?php echo $vars['url']; ?>pg/enlightn/discuss/' + item.guid +'">' +  item.title + '</li>');
+                items.push('<li id="' + item.guid + '"' + liClass + '><a href="<?php echo $vars['url']; ?>enlightn/discuss/' + item.guid +'">' +  item.title + '</li>');
             } else {
                 accessLevel = item;
             }

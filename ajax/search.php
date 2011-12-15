@@ -21,20 +21,25 @@ $access_level	= sanitise_int(get_input('discussion_type', 4));
 $entity_guid	= sanitise_int(get_input('entity_guid', 0));
 $fetch_modified	= sanitise_int(get_input('fetch_modified', 0));
 $unreaded_only	= sanitise_int(get_input('unreaded_only', 0));
+$annotation_id	= sanitise_int(get_input('annotation_id', 0));
 
 
 $last_search	= serialize(array('user_guid' => $user_guid,'entity_guid' => $entity_guid,'access_level' => $access_level,'unreaded_only' => $unreaded_only,'words' => $words,'from_users' => $from_users,'date_begin' => $date_begin,'date_end' => $date_end,'subtype' => $subtype,'offset' => $offset,'limit' => $limit));
 $date_begin 	= strtotime($date_begin);
 $date_end 		= strtotime($date_end);
 
-if ($entity_guid > 0) {
+if ($annotation_id > 0) {
+    disable_right($entity_guid);
+    $search_results[0]		= elgg_get_annotation_from_id($annotation_id);
+    $last_modified			= $search_results[0]->time_created;
+} elseif ($entity_guid > 0) {
     disable_right($entity_guid);
 	$discussion_activities  = get_entity_relationships($entity_guid,true);
 	$discussion_activities  = array_reverse($discussion_activities);
 	$discussion_activities  = sort_entity_activities($discussion_activities);
     $discussion				= get_entity($entity_guid);
-	$search_results			= $discussion->getAnnotations('', $limit, $offset, "desc");
-    $previous_result        = $offset>0?$discussion->getAnnotations('', 1, abs($offset-$limit), "desc"):false;
+	$search_results			= $discussion->getAnnotations(ENLIGHTN_DISCUSSION, $limit, $offset, "desc");
+    $previous_result        = $offset>0?$discussion->getAnnotations(ENLIGHTN_DISCUSSION, 1, abs($offset-$limit), "desc"):false;
     $total_results          = $discussion->countAnnotations('');
     //$search_results         = array_reverse($search_results);
 	$last_modified			= $search_results[0]->time_created;
@@ -58,7 +63,11 @@ if ($nb_results > 0) {
 		return;
 	}
 	foreach ($search_results as $key => $topic) {
-		if ((int)$entity_guid > 0) {
+        if ($annotation_id > 0) {
+            echo elgg_view("enlightn/topicpost",array('entity' => $topic
+		    											, 'query' => $words
+		    											, 'flag_readed' => true));
+        } elseif ((int)$entity_guid > 0) {
             $current_date       = $topic->time_created;
             $previous_date      = !$previous_result?false:$previous_result[0]->time_created;
 			$flag_readed        = check_entity_relationship($user_guid, ENLIGHTN_READED,$topic->id);

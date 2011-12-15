@@ -6,5 +6,5 @@
  */
 
 if (get_context() !== 'enlightn:settings') {
-    forward('pg/enlightn/settings/');
+    forward('enlightn/settings/');
 }

@@ -67,7 +67,7 @@
                         .find('li').removeClass('current');
                     $('#sidebar .addform')
                         /* Add list and tag to users */
-                        .after('<li id="area'+ data.id +'" class="dropable current" style="display:none" data-listId="'+ data.id +'" data-listName="'+ name +'"><span class="arrow"></span><a class="cat" href="<?php echo $vars['url'] . 'pg/enlightn/directory/';?>'+ data.id +'"><span class="count">'+ formUserIds.length +'</span>'+ name +'<span class="ico '+ privacyClass +'"></span></a></li>')
+                        .after('<li id="area'+ data.id +'" class="dropable current" style="display:none" data-listId="'+ data.id +'" data-listName="'+ name +'"><span class="arrow"></span><a class="cat" href="<?php echo $vars['url'] . 'enlightn/directory/';?>'+ data.id +'"><span class="count">'+ formUserIds.length +'</span>'+ name +'<span class="ico '+ privacyClass +'"></span></a></li>')
                         .find('.count').text('').end()
                         .find('.form').hide()
                             .find('input').val('').end()

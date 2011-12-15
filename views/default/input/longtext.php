@@ -33,7 +33,7 @@ if (isset($vars['value'])) {
 <script type="text/javascript">
 $(document).ready(function(){
 	$("<?php echo isset($vars['internalid'])?'#'.$vars['internalid']:'textarea[name=' .$vars['internalname'] .']'?>").rte({
-    	content_css_url: "<?php echo $vars['url']; ?>_css/css.css?lastcache=<?php echo $vars['config']->lastcache; ?>&viewtype=<?php echo $vars['view']; ?>",
+    	content_css_url: "<?php echo $vars['url']; ?>css/elgg.<?php echo $vars['config']->lastcache; ?>.css?viewtype=<?php echo $vars['view']; ?>",
     	media_url: "<?php echo $vars['url']; ?>mod/enlightn/media/graphics/"
 	});
 });

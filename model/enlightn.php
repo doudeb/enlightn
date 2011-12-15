@@ -225,7 +225,7 @@ Limit 150)";
 		return  $this->get_data($query, $key_cache);
 	}
 
-public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$from_users = false,$date_begin = false, $date_end = false,$limit = 10, $offset = 0) {
+public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$from_users = false,$date_begin = false, $date_end = false, $guid = false,$limit = 10, $offset = 0) {
 		$file_subtype_id = get_subtype_id('object','file');
 		if (!$file_subtype_id) {
 			return false;
@@ -271,6 +271,12 @@ public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$f
 				$user= "Or ent.owner_guid = " . $user_guid;
 			}
 		}
+        #guid
+        if ($guid) {
+            $join[]  = "Inner Join entity_relationships rel_embed On ent.guid = rel_embed.guid_one And rel_embed.relationship = '" . ENLIGHTN_EMBEDED . "'
+                        Inner Join annotations a On rel_embed.guid_two = a.id";
+            $where[] = "And a.entity_guid = $guid";
+        }
 		$join	= implode(' ',$join);
 		$where	= implode(' ',$where);
 		$query = "Select Distinct ent.*
@@ -295,7 +301,7 @@ And  (
 $where
 Order By ent.time_created Desc
 Limit $offset,$limit";
-		//echo "<pre>" .$query;
+//echo "<pre>" .$query;
 		return  $this->get_data($query, $key_cache, 'entity_row_to_elggstar');
 	}
 

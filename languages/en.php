@@ -147,6 +147,11 @@
 			,'enlightn:attachmentlist' => ''
 			,'enlightn:activity:member' => ' has now join the discussion'
 			,'enlightn:activity:membership_request' => ' has received an invite to join a discussion'
+			,'enlightn:forward' => 'Forward parts'
+			,'enlightn:selectparttoforward' => 'Select parts to forward'
+			,'enlightn:buttonforward' => 'Forward'
+			,'enlightn:viewcloud' => 'View cloud'
+			,'enlightn:viewdiscussion' => 'View discussion'
 
 			//PROFILE
 			,'enlightn:profilelastmessage' => 'Discussions'

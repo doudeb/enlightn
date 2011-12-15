@@ -1,8 +1,8 @@
 <?php
 if (get_input('username')) {
-	forward($vars['url'] . 'pg/enlightn/profile/' .get_input('username'));
+	forward($vars['url'] . 'enlightn/profile/' .get_input('username'));
 }
-forward($vars['url'] . 'pg/enlightn/');
+forward($vars['url'] . 'enlightn/');
 
 exit();
 /**

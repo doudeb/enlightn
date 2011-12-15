@@ -57,7 +57,7 @@
             $('#mediaUpload').submit(function() {
 	            var options = {
 				    success:    function() {
-				        $('#layer .content').load('<?php echo $vars['url'] . 'pg/enlightn/cloud'; ?>');
+				        $('#layer .content').load('<?php echo $vars['url'] . 'enlightn/cloud'; ?>');
 				    }
 				};
             	$(this).ajaxSubmit(options);
