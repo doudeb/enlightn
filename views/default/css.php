@@ -791,6 +791,10 @@ form .tags {
     display : none;
     margin-left : 10px;
 }
+
+#tags-result {
+    margin : 10px 0 10x 0;
+}
 .sending {
     #float:right;
     text-align: right;
@@ -1913,11 +1917,13 @@ form #clonedMessages {
 }
 
 #detail .users-invited,
+#detail .tags,
 #detail .author {
     display:none;
 }
 
 #detail.full .users-invited ,
+#detail.full .tags ,
 #detail.full .author {
     display:block;
 }

@@ -1199,3 +1199,18 @@ function enlightn_hook_forward_system($hook, $type, $returnvalue, $params) {
 
     return $returnvalue;
 }
+
+function tag_text ($text) {
+    require_once 'Text/LanguageDetect.php';
+    require_once elgg_get_plugins_path() . 'enlightn/model/treetagger.class.php';
+    $tmp_text_path  = '/tmp/' . md5($text);
+    file_put_contents($tmp_text_path, $text);
+    $langage        = new Text_LanguageDetect();
+    $langage        = $langage->detect($text, 1);
+    $langage        = key($langage);
+    $tagger         = new treeTagger($langage,$tmp_text_path);
+    $tags           = $tagger->tag_text();
+    unlink($tmp_text_path);
+
+    return $tags;
+}

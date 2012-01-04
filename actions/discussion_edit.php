@@ -7,7 +7,7 @@ global $enlightn;
 // Get input data
 $title 				= strip_tags(get_input('title'));
 $message 			= get_input('description',null);
-$tags 				= get_input('interests');
+$tags 				= get_input('tags');
 $access_id 			= get_input('membership');
 $user_guid			= get_loggedin_userid(); // you need to be logged in to comment on a group forum
 $userto 			= get_input('invite');

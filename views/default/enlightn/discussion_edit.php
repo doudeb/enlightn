@@ -1,13 +1,3 @@
-<?php
-	/**
-	 * Elgg groups plugin
-	 *
-	 * @package ElggGroups
-	 */
-
-	// new groups default to open membership
-
-?>
     <div id="new-discussion">
         <form id="discussion_edit" action="<?php echo $vars['url']; ?>action/enlightn/edit" enctype="multipart/form-data" method="post">
             <?php echo elgg_view('input/securitytoken'); ?>
@@ -45,8 +35,12 @@
                                                         'internalname' => 'interests',
                                                         'internalid' => 'interests',
                                                         'value' => $vars['entity']->interests,
-                                                        )); ?></span>
+                                                        ));
+                                                        echo elgg_view("input/hidden",array(
+                                                        'internalname' => 'tags',
+                                                        'internalid' => 'tags')); ?></span>
                 </span>
+                <div id="tags-result"></div>
             </div>
             <div class="sending">
                 <button type="reset" class="submit"><?php echo elgg_echo("enlightn:buttoncancel"); ?></button>

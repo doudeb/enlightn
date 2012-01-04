@@ -32,7 +32,6 @@ End
 Order By e.time_created desc";
 		return  get_data($query, 'entity_row_to_elggstar');
 	}
-
 	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $unreaded_only = 0,$words, $from_users = '', $date_begin = false, $date_end =false, $subtype = '', $offset = 0, $limit = 10) {
 		$key_cache = $this->generate_key_cache(get_defined_vars(), 'search');
         $force 	= array();

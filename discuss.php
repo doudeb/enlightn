@@ -4,12 +4,13 @@ include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 gatekeeper();
 $user_guid 			= get_loggedin_userid();
 $user_ent			= get_user($user_guid);
-$entity_guid		= get_input('entity_guid');
+$guid               = get_input('entity_guid');
+global $enlightn;
 if (!$user_guid || !$user_ent) {
 	forward();
 }
-disable_right($entity_guid);
-$topic 				= get_entity($entity_guid);
+disable_right($guid);
+$topic 				= get_entity($guid);
 if (!$topic) forward();
 /**
  * Left part
@@ -28,8 +29,10 @@ $new_post			=  elgg_view("enlightn/new_post", array('entity' => $topic
 $left 				.= $new_post;
 unset($new_post);
 //posts
-$posts				=  elgg_view("enlightn/posts", array('entity' => $topic
+$cloud_discussion   = $enlightn->get_my_cloud($user_guid,$subtype,$words,$from_users,$date_begin, $date_end,$guid,100,0);
+$posts				= elgg_view("enlightn/posts", array('entity' => $topic
 												,'user_ent' => $user_ent
+												,'cloud_discussion' => $cloud_discussion
 												,'user_guid' => $user_guid));
 $left 				.= $posts;
 unset($post);
@@ -48,3 +51,13 @@ unset($discussion_shortcut);
 $body 				= $left . $right;
 // Display page
 page_draw(elgg_echo('enlightn:main'),$body);
+
+switch ($variable) {
+    case $value:
+
+
+        break;
+
+    default:
+        break;
+}

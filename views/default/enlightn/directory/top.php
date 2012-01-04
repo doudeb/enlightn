@@ -192,7 +192,7 @@
                                 ;
 
                                 /* List of userId added */
-                                var addedUserIds = []
+                                var addedUserIds = [];
                                 $('#feed .selected-user').each(function() {
                                     if($(this).find('.tag' + listId).length == 0) {
                                         addedUserIds.push($(this).attr('data-userId'));

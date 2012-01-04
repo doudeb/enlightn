@@ -1,8 +1,5 @@
 <?php
 include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
-//$topic      = get_annotation(5567);
-//$content    = elgg_view("enlightn/mail/message_content",array('message' => $topic->value));
-//echo elgg_view("html_email_handler/notification/body",array('message' => $content));die();
 //Some basic var
 gatekeeper();
 global $enlightn;

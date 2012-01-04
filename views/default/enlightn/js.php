@@ -37,6 +37,15 @@ function Task(item, url, params, datatype, callback) {
     this.callback = callback;
 }
 
+Array.prototype.in_array = function(p_val) {
+	for(var i = 0, l = this.length; i < l; i++) {
+		if(this[i] == p_val) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function ajaxGet(task, callback) {
         // call an option callback from the task
         $.get(task.url,task.params, function(data, textStatus, XMLHttpRequest){
@@ -173,7 +182,7 @@ function get_search_criteria () {
 	} else {
 		var unreaded_only = $('#showunread').attr('checked')=='checked'?1:0;
 	}
-	if(words) {
+	if(words || subtype || from_users || date_begin || date_end) {
 		discussion_type = 4;
 		$('#discussion_type').val(discussion_type);
 		currElement = '#discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>';
@@ -241,6 +250,56 @@ function get_search_criteria () {
         $('#forwardActionButton').fadeToggle();
     }
 $(document).ready(function(){
+    $('#add-tags')
+        .click(function () {
+        $('#tags-input')
+            .toggle();
+    });
+    $('#tags-result')
+        .click(function(e) {
+            if($(e.target).hasClass('del')) {
+                var
+                    tag = $(e.target).parent('.tag');
+                tag.remove();
+            }
+        });
+     $('#interests')
+        .keydown(function(e) {
+                if(e.keyCode == 13) {
+                    if($('#interests').val() == '') {
+                        alert('<?php elgg_echo("enlightn:errorlistnoname"); ?>');
+                        return false;
+                    }
+                    $('#tags-result').append('<span class="tag">' + $('#interests').val() + ' <span class="del">&times;</span></span>').fadeIn(1000);
+                    $('#tags').val($('#tags').val() + ',' + $('#interests').val());
+                    $('#interests').val('');
+                    return false;
+                }
+            });
+       $('.textarea')
+        .mouseleave(function(e) {
+                var text = $('#title').val() + $(".rte-zone").contents().find(".frameBody").html(),
+                    elm = $('#tags-result'),
+                    tags = $('#tags-result .tag');
+                    addedKeywords = [];
+                tags.each(function() {
+                    addedKeywords.push($(this).attr('data-keyword'));
+                });
+                if (text.length === 0) {
+                    return false;
+                }
+                elm.prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif">');
+                $.post('<?php echo "{$vars['url']}mod/enlightn/ajax/tagger.php";?>', {text: text}, function(data) {
+                    $.each(data, function(keyword, accurency){
+                        if (accurency > 1 && !addedKeywords.in_array(keyword)) {
+                            elm.append('<span class="tag" data-keyword="' + keyword + '">'+ keyword +' <span class="del">&times;</span></span>');
+                        }
+                    });
+                    elm.find('img').remove();
+                },'json');
+                $('#tags').val(addedKeywords.join(','));
+            });
+
 	$('#forwardParts').click( function() {
         var title = $("#discussionTitle").html(),
             entity_guid = $("#topic_guid").val(),
@@ -475,10 +534,8 @@ $(document).ready(function(){
 			$('#privacy_cursor').parent().addClass('private');
 			$('#membership').val(<?php echo ACCESS_PRIVATE?>);
             $('#clonedMessages').html('');
-           $(".dialog-overlay").css('display','none');
-        });
-        $('#add-tags').click(function () {
-            $('#tags-input').toggle();
+            $('#tags-result').html('');
+            $(".dialog-overlay").css('display','none');
         });
     }
 
