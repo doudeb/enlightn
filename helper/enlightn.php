@@ -1182,6 +1182,7 @@ function create_attachement ($annotation_id, $filename, $content) {
 	}
 
 function generate_cloned_message ($cloned_ids) {
+    if(empty($cloned_ids)) return false;
     $cloned_content = '';
     elgg_set_ignore_access(true);
     $cloned_ids = explode(',', $cloned_ids);

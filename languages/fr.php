@@ -149,7 +149,7 @@
 			,'enlightn:selectparttoforward' => 'Transférer'
 			,'enlightn:buttonforward' => 'Valider'
 			,'enlightn:viewcloud' => 'Cloud'
-			,'enlightn:viewdiscussion' => 'Message(s)'
+			,'enlightn:viewdiscussion' => 'Messages'
 
 			//PROFILE
 			,'enlightn:profilelastmessage' => 'Ses discussions'

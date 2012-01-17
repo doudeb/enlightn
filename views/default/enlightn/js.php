@@ -287,7 +287,7 @@ $(document).ready(function(){
                 tags.each(function() {
                     addedKeywords.push($(this).attr('data-keyword'));
                 });
-                if (text.length <= 5) {
+                if (text.length <= 10) {
                     return false;
                 }
                 if (elm.html().indexOf('loading.gif') != -1) {
@@ -301,6 +301,12 @@ $(document).ready(function(){
                         }
                     });
                     elm.find('img').remove();
+                    if (addedKeywords.length == '0') {
+                        tags = $('#tags-result .tag');
+                        tags.each(function() {
+                            addedKeywords.push($(this).attr('data-keyword'));
+                        });
+                    }
                 },'json');
                 $('#tags').val(addedKeywords.join(','));
             });
@@ -317,6 +323,9 @@ $(document).ready(function(){
         showNewDiscussionBox(title, false, false, cloned);
     });
 	$('#forwardAction').click( function() {
+        if ($('#viewDiscussionCloud').hasClass('current')) {
+            $('#viewDiscussion').triggerHandler("click");
+        }
         showHideForward();
     });
 	$('#forwardCancel').click( function() {

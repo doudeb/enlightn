@@ -1540,7 +1540,7 @@ button[type="reset"]:active {
 form #clonedMessages {
     margin-bottom: 20px;
     max-height : 100px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 /** SEARCH */
