@@ -301,7 +301,6 @@ $(document).ready(function(){
                         }
                     });
                     if (addedKeywords.length == 0) {
-                    alert(addedKeywords.length);
                         tags = $('#tags-result .tag');
                         tags.each(function() {
                             addedKeywords.push($(this).attr('data-keyword'));
