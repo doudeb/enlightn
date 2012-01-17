@@ -4,7 +4,7 @@ $cloud_discussion   = count($vars['cloud_discussion']);
         <div id="feed" class="detail">
                 <div class="s-actions">
                     <ul>
-                        <li id="viewDiscussion"><?php echo elgg_echo("enlightn:viewdiscussion"); ?></li>
+                        <li id="viewDiscussion" class="current"><?php echo elgg_echo("enlightn:viewdiscussion"); ?></li>
                         <li>|</li>
                         <li id="viewDiscussionCloud"><?php echo elgg_echo("enlightn:viewcloud"); ?> (<?php echo $cloud_discussion>0?$cloud_discussion:0;?>)</li>
                         <li id="expand" class="right"><?php echo elgg_echo("enlightn:expandall"); ?> / <?php echo elgg_echo("enlightn:collapseall"); ?> <span class="arrow"></span></li>

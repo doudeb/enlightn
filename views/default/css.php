@@ -793,7 +793,7 @@ form .tags {
 }
 
 #tags-result {
-    margin : 10px 0 10x 0;
+    margin : 10px 0 10px 0;
 }
 .sending {
     #float:right;
@@ -987,6 +987,11 @@ button[type="reset"]:active {
     background-position: -321px -128px;
 }
 
+#feed .s-actions li.current {
+    color:#000;
+    cursor:none;
+}
+
 #feed h2 {
     border-bottom:1px solid #666;
     font-size:87%;
@@ -1042,6 +1047,10 @@ button[type="reset"]:active {
 
 #feed.detail .msg .toolbar {
     width:auto;
+}
+
+#feed.detail .embederToNew {
+    display : none;
 }
 
 #feed .msg .statusbar {
@@ -1428,6 +1437,7 @@ button[type="reset"]:active {
     height : 25px;
     list-style-type: none;
 }
+
 
 #feed.detail #clonedMessages .msg .excerpt p {
     margin-top: 8px;

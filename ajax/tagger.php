@@ -11,5 +11,6 @@ include_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php")
 gatekeeper();
 $user_guid 		= get_loggedin_userid();
 $text 			= get_input('text','');
+$text 			= strip_tags($text);
 $tags           = tag_text($text);
 echo json_encode($tags);

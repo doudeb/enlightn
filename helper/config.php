@@ -37,5 +37,6 @@
 	define('REG_HREF', "/<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>/siU");
     #bins
     define('PATH_TO_TREETAGGER','/usr/local/bin/treetagger/cmd/');
+    define('PATH_TO_TMP','/tmp/');
 
     $sn_linkers = array('skype','linkedin','twitter','viadeo','facebook','google','flickr','youtube','vimeo','myspace','netvibes');

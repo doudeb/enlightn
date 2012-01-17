@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * @author Edouard Bardet
+ * @desc Here you can find manys uglys functions that should be converted...
+ *       To be continued
+ */
+
+
 	/**
 	 * Grabs groups by invitations
 	 * Have to override all access until there's a way override access to getter functions.
@@ -1174,20 +1182,19 @@ function create_attachement ($annotation_id, $filename, $content) {
 	}
 
 function generate_cloned_message ($cloned_ids) {
-    elgg_set_ignore_access(true);
     $cloned_content = '';
-    if (strstr($cloned_ids, ',')) {
-        $cloned_ids = explode(',', $cloned_ids);
-        if (is_array($cloned_ids)) {
-            foreach ($cloned_ids as $key => $annotation_id) {
-                $annotation = elgg_get_annotation_from_id($annotation_id);
-                $cloned_content .= elgg_view("enlightn/topicpost",array('entity' => $annotation
-		    											, 'query' => false
-		    											, 'flag_readed' => false));
-            }
+    elgg_set_ignore_access(true);
+    $cloned_ids = explode(',', $cloned_ids);
+    if (is_array($cloned_ids)) {
+        foreach ($cloned_ids as $key => $annotation_id) {
+            $annotation = elgg_get_annotation_from_id($annotation_id);
+            $cloned_content .= elgg_view("enlightn/topicpost",array('entity' => $annotation
+                                                    , 'query' => false
+                                                    , 'flag_readed' => false));
         }
-        $cloned_content = elgg_view("enlightn/discussion/clone_messages",array('cloned_content' => $cloned_content));
     }
+    $cloned_content = elgg_view("enlightn/discussion/clone_messages",array('cloned_content' => $cloned_content));
+    elgg_set_ignore_access(false);
     return $cloned_content;
 }
 
@@ -1200,7 +1207,7 @@ function enlightn_hook_forward_system($hook, $type, $returnvalue, $params) {
     return $returnvalue;
 }
 
-function tag_text ($text) {
+function tag_text ($text, $offset = 0, $limit = 10) {
     require_once 'Text/LanguageDetect.php';
     require_once elgg_get_plugins_path() . 'enlightn/model/treetagger.class.php';
     $tmp_text_path  = '/tmp/' . md5($text);
@@ -1213,4 +1220,21 @@ function tag_text ($text) {
     unlink($tmp_text_path);
 
     return $tags;
+}
+
+
+function doc_to_txt ($file_name = false) {
+    if(!$file_name) return false;
+    $text                       = false;
+    $info                       = pathinfo($file_name);
+    $converted_file             = PATH_TO_TMP . $info['filename'] . '.txt';
+    $handle                     = popen("abiword --plugin AbiCommand 2>&1", "w");
+    fwrite($handle, "converttotext \"$file_name\" \"$converted_file\" \n");
+    sleep(3);
+    pclose($handler);
+    if(file_exists($converted_file)) {
+        $text                   = file_get_contents($converted_file);
+        unlink($converted_file);
+    }
+    return $text;
 }

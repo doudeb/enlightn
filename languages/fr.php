@@ -41,6 +41,7 @@
 			,'request' => 'Envoyer'
 			,'register' => 'Inscription'
 			,'user:password:text' => ''
+            ,'enlightn:loginboxheadline' => 'Email 2.0 for your company'
 
 			//HEADER
 			,'enlightn' => ""
@@ -144,6 +145,11 @@
 			,'enlightn:downloaddocument' => 'Télécharger'
 			,'enlightn:activity:member' => ' a rejoint la discussion'
 			,'enlightn:activity:membership_request' => ' a été invité à rejoindre la discussion'
+			,'enlightn:forward' => 'Faire suivre'
+			,'enlightn:selectparttoforward' => 'Transférer'
+			,'enlightn:buttonforward' => 'Valider'
+			,'enlightn:viewcloud' => 'Cloud'
+			,'enlightn:viewdiscussion' => 'Message(s)'
 
 			//PROFILE
 			,'enlightn:profilelastmessage' => 'Ses discussions'

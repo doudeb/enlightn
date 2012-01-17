@@ -60,7 +60,7 @@
             $("#post .textarea").css('height','85');
             $(".rte-zone").contents().find(".frameBody").focus();
             $('#submission').html('');
-            loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
+            $('#viewDiscussion').triggerHandler("click");
             return true;
        } else {
             $('#submission').html(data.message);

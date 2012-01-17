@@ -23,7 +23,9 @@ if (empty($title) || empty($message)) {
 	$json_return['message'] = elgg_echo('enlightn:missingData');
     // Otherwise, save the topic
 } else {
-   $message     .= generate_cloned_message($cloned_ids);
+       file_put_contents('/tmp/debug', $cloned_ids);
+
+   $message     .= ' ' . generate_cloned_message($cloned_ids);
    $json_return = create_enlightn_discussion ($user_guid, $access_id,$message, $title,$tags, $userto);
 }
 echo json_encode($json_return);

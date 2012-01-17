@@ -40,7 +40,7 @@ class treeTagger {
         }
     }
 
-    private function sort_tagger_result () {
+    private function sort_tagger_result ($offset = 0, $limit = 10) {
         if (!is_array($this->tagger_result)) {
                 return false;
         }
@@ -58,13 +58,23 @@ class treeTagger {
         }
         asort($this->sorted_tagger_result);
         $this->sorted_tagger_result           = array_reverse($this->sorted_tagger_result);
+        $iItems = 0;
+        $iStart = 0;
+        foreach($this->sorted_tagger_result as $key=>$line) {
+            $iStart++;
+            if ($iStart <= $offset || $iItems >= $limit) {
+                unset($this->sorted_tagger_result[$key]);
+            } else {
+                $iItems++;
+            }
+        }
     }
 
-    public function tag_text () {
+    public function tag_text ($offset = 0, $limit = 10) {
         $this->set_dictionary();
         $this->execute_tagger();
         $this->format_tagger_result();
-        $this->sort_tagger_result();
+        $this->sort_tagger_result($offset, $limit);
         return $this->sorted_tagger_result;
     }
 

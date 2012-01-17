@@ -25,7 +25,15 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                     <h2><span id="discussionTitle"><?php echo $post->title; ?></span></h2>
                     <span id="favorite<?php echo $post->guid; ?>" class="star ico"></span>
                     <span class="<?php echo $post->access_id==ACCESS_PRIVATE?'lock':'unlock'; ?> ico"></span>
-
+                    <?php
+                        if (is_array($tags)) {
+                            echo "<p>";
+                            foreach ($tags as $tag) {
+                                echo "<span class='tag'>$tag</span>";
+                            }
+                            echo "</p>";
+                        }
+                        ?>
                 </div><!-- header -->
 
                 <div class="users">
@@ -63,15 +71,6 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                     <span class="label"><?php echo elgg_echo('enlightn:postcreated')?></span>
                     <?php echo elgg_view('input/user_photo',array('user_ent'=>$post_owner));?>
                     <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>
-                    <?php
-                        if (is_array($tags)) {
-                            echo "<p>";
-                            foreach ($tags as $tag) {
-                                echo "<span class='tag'>$tag</span>";
-                            }
-                            echo "</p>";
-                        }
-                        ?>
                 </div>
                 <span class="toggle ico"></span>
             </div>

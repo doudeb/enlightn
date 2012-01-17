@@ -56,7 +56,7 @@ function enlightn_init() {
     //Register notification handler
     register_notification_handler(NOTIFICATION_EMAIL_INVITE,'email_invite_notify_handler');
     register_notification_handler(NOTIFICATION_EMAIL_MESSAGE_FOLLOWED,'email_message_followed_notify_handler');
-    elgg_register_event_handler('shutdown','system', 'enlightn_purge_readed_queue',1000);
+    elgg_register_event_handler('init','system', 'enlightn_purge_readed_queue',1000);
     // do we need to overrule default email notifications
     register_notification_handler("email", "html_email_handler_notification_handler");
 }

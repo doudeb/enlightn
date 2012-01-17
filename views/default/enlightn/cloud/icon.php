@@ -57,13 +57,51 @@
 			}
         break;
 		default :
-			if (!empty($mime) && elgg_view_exists("file/icon/{$mime}")) {
-				echo elgg_view("file/icon/{$mime}", $vars);
-			} else if (!empty($mime) && elgg_view_exists("file/icon/" . substr($mime,0,strpos($mime,'/')) . "/default")) {
-				echo elgg_view("file/icon/" . substr($mime,0,strpos($mime,'/')) . "/default", $vars);
-			} else {
-				echo "<img src=\"". elgg_view('file/icon/default',$vars) ."\" border=\"0\" />";
-			}
+             $mapping = array(
+                        'application/excel' => 'excel',
+                        'application/msword' => 'word',
+                        'application/pdf' => 'pdf',
+                        'application/powerpoint' => 'ppt',
+                        'application/vnd.ms-excel' => 'excel',
+                        'application/vnd.ms-powerpoint' => 'ppt',
+                        'application/vnd.oasis.opendocument.text' => 'openoffice',
+                        'application/x-gzip' => 'archive',
+                        'application/x-rar-compressed' => 'archive',
+                        'application/x-stuffit' => 'archive',
+                        'application/zip' => 'archive',
+
+                        'text/directory' => 'vcard',
+                        'text/v-card' => 'vcard',
+
+                        'application' => 'application',
+                        'audio' => 'music',
+                        'text' => 'text',
+                        'video' => 'video',
+                );
+
+                if ($mime) {
+                        $base_type = substr($mime, 0, strpos($mime, '/'));
+                } else {
+                        $mime = 'none';
+                        $base_type = 'none';
+                }
+
+                if (isset($mapping[$mime])) {
+                        $type = $mapping[$mime];
+                } elseif (isset($mapping[$base_type])) {
+                        $type = $mapping[$base_type];
+                } else {
+                        $type = 'general';
+                }
+
+                if ($size == 'large') {
+                        $ext = '_lrg';
+                } else {
+                        $ext = '';
+                }
+
+                $url = $vars['url'] . "mod/file/graphics/icons/{$type}{$ext}.gif";
+                echo "<img class=\"photo\" src=\"" . $url ."\" border=\"0\" />";
 		break;
 	}
 

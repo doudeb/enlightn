@@ -23,48 +23,92 @@ source <?php echo $CONFIG->sitename; ?>
 
 }
 
-source <?php echo $CONFIG->sitename; ?>_main : <?php echo $CONFIG->sitename; ?>
+source <?php echo $CONFIG->sitename; ?>_metastrings_main : <?php echo $CONFIG->sitename; ?>
 {
         sql_query_pre          = SET NAMES utf8
-        sql_query               = Select a.id \
-                                        , title.guid \
-                                        , title.title \
-                                        , (Select string From enlightn_dev.metastrings Where a.value_id = id) as content \
-                                        , a.time_created created \
-                                From enlightn_dev.annotations a \
-                                Inner Join enlightn_dev.objects_entity title On title.guid = a.entity_guid \
-                                Where a.id>=$start AND a.id<=$end
-        sql_attr_uint           = guid
-        sql_attr_timestamp      = created
+        sql_query              = Select msv.id \
+                                    , msv.string \
+                                    , msv.id as value_id \
+                                    , 0 as guid \
+                                    From metastrings msv \
+									Inner join annotations a On a.value_id = msv.id \
+                                    And msv.id>=$start AND msv.id<=$end
         sql_query_range         = SELECT 1, counter.count_value \
                                         From indexer_counter counter \
-                                        Where counter.entity = '<?php echo $CONFIG->sitename; ?>'
-        #sql_query_range                = SELECT 1 , 100000
+                                        Where counter.entity = 'metastrings'
+        sql_attr_uint           = value_id
+        sql_attr_uint           = guid
+        #sql_query_range        = SELECT 1 , 100000
         #sql_range_step         = 100
-        sql_query_post_index    = replace into indexer_counter (id,entity,count_value) values (1,'<?php echo $CONFIG->sitename; ?>',$maxid);
+        sql_query_post_index    = replace into indexer_counter (id,entity,count_value) values (1,'metastrings',$maxid);
         #sql_query_info          = SELECT * FROM enlightn_dev.annotations WHERE id=$id
 }
 
-source <?php echo $CONFIG->sitename; ?>_delta : <?php echo $CONFIG->sitename; ?>_main
+source <?php echo $CONFIG->sitename; ?>_metastrings_delta : <?php echo $CONFIG->sitename; ?>_metastrings_main
 {
-        sql_query_range         = SELECT counter.count_value, (Select Max(id) From annotations) \
+        sql_query_pre          = SET NAMES utf8
+        sql_query_range        = SELECT counter.count_value, (Select Max(id) From metastrings) \
                                         From indexer_counter counter \
-                                        Where entity = '<?php echo $CONFIG->sitename; ?>'
+                                        Where entity = 'metastrings'
 
         sql_query_post_index   = SET NAMES utf8;
 }
 
 
-index <?php echo $CONFIG->sitename; ?>_main
+index <?php echo $CONFIG->sitename; ?>_metastrings_main
 {
-	source			= <?php echo $CONFIG->sitename; ?>_main
-	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/<?php echo $CONFIG->sitename; ?>_main
+	source			= <?php echo $CONFIG->sitename; ?>_metastrings_main
+	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/<?php echo $CONFIG->sitename; ?>_metastrings_main
 }
 
-index <?php echo $CONFIG->sitename; ?>_delta : <?php echo $CONFIG->sitename; ?>_main
+index <?php echo $CONFIG->sitename; ?>_metastrings_delta : <?php echo $CONFIG->sitename; ?>_metastrings_main
 {
-	source			= <?php echo $CONFIG->sitename; ?>_delta
-	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/<?php echo $CONFIG->sitename; ?>_delta
+	source			= <?php echo $CONFIG->sitename; ?>_metastrings_delta
+	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/<?php echo $CONFIG->sitename; ?>_metastrings_delta
+}
+
+
+source <?php echo $CONFIG->sitename; ?>_desc_title_main : <?php echo $CONFIG->sitename; ?>
+{
+        sql_query_pre          = SET NAMES utf8
+        sql_query              = Select desc_title.guid id \
+                                            , concat (desc_title.title, desc_title.description) as string\
+                                            , a.value_id as value_id \
+                                            , desc_title.guid \
+                                    From objects_entity desc_title \
+                                    Inner Join annotations a On a.entity_guid = desc_title.guid \
+                                    Where desc_title.guid>=$start AND desc_title.guid<=$end
+        sql_query_range        = SELECT 1, counter.count_value \
+                                        From indexer_counter counter \
+                                        Where counter.entity = 'desc_title'
+        sql_attr_uint          = value_id
+        sql_attr_uint          = guid
+        #sql_range_step        = 100
+        sql_query_post_index   = replace into indexer_counter (id,entity,count_value) values (1,'desc_title',$maxid);
+        #sql_query_info        = SELECT * FROM annotations WHERE id=$id
+}
+
+source <?php echo $CONFIG->sitename; ?>_desc_title_delta : <?php echo $CONFIG->sitename; ?>_desc_title_main
+{
+        sql_query_pre          = SET NAMES utf8
+        sql_query_range        = SELECT counter.count_value, (Select Max(guid) From objects_entity) \
+                                        From indexer_counter counter \
+                                        Where entity = 'desc_title'
+
+        sql_query_post_index   = SET NAMES utf8;
+}
+
+
+index <?php echo $CONFIG->sitename; ?>_desc_title_main
+{
+	source			= <?php echo $CONFIG->sitename; ?>_desc_title_main
+	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/<?php echo $CONFIG->sitename; ?>_desc_title_main
+}
+
+index <?php echo $CONFIG->sitename; ?>_desc_title_delta : <?php echo $CONFIG->sitename; ?>_desc_title_main
+{
+	source			= <?php echo $CONFIG->sitename; ?>_desc_title_delta
+	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/<?php echo $CONFIG->sitename; ?>_desc_title_delta
 }
 
 indexer

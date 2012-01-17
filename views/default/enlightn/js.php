@@ -250,6 +250,7 @@ function get_search_criteria () {
         $('#forwardActionButton').fadeToggle();
     }
 $(document).ready(function(){
+    var deletedKeywords = [];
     $('#add-tags')
         .click(function () {
         $('#tags-input')
@@ -260,6 +261,7 @@ $(document).ready(function(){
             if($(e.target).hasClass('del')) {
                 var
                     tag = $(e.target).parent('.tag');
+                deletedKeywords.push(tag.attr('data-keyword'));
                 tag.remove();
             }
         });
@@ -270,7 +272,7 @@ $(document).ready(function(){
                         alert('<?php elgg_echo("enlightn:errorlistnoname"); ?>');
                         return false;
                     }
-                    $('#tags-result').append('<span class="tag">' + $('#interests').val() + ' <span class="del">&times;</span></span>').fadeIn(1000);
+                    $('#tags-result').append('<span class="tag" data-keyword="' + $('#interests').val() + '">' + $('#interests').val() + ' <span class="del">&times;</span></span>').fadeIn(1000);
                     $('#tags').val($('#tags').val() + ',' + $('#interests').val());
                     $('#interests').val('');
                     return false;
@@ -285,13 +287,16 @@ $(document).ready(function(){
                 tags.each(function() {
                     addedKeywords.push($(this).attr('data-keyword'));
                 });
-                if (text.length === 0) {
+                if (text.length <= 5) {
+                    return false;
+                }
+                if (elm.html().indexOf('loading.gif') != -1) {
                     return false;
                 }
                 elm.prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif">');
                 $.post('<?php echo "{$vars['url']}mod/enlightn/ajax/tagger.php";?>', {text: text}, function(data) {
                     $.each(data, function(keyword, accurency){
-                        if (accurency > 1 && !addedKeywords.in_array(keyword)) {
+                        if (accurency > 1 && !addedKeywords.in_array(keyword) && !deletedKeywords.in_array(keyword)) {
                             elm.append('<span class="tag" data-keyword="' + keyword + '">'+ keyword +' <span class="del">&times;</span></span>');
                         }
                     });
@@ -346,11 +351,16 @@ $(document).ready(function(){
     $('#viewDiscussionCloud').click( function(){
        $('#discussion_list_container').attr('id','cloud_content');
        loadContent('#cloud_content','<?php echo $vars['url'] ?>/mod/enlightn/ajax/get_my_cloud.php?limit=100&guid='  + $('#entity_guid').val());
+       $('#viewDiscussion').toggleClass('current');
+       $(this).toggleClass('current');
     });
     $('#viewDiscussion').click( function(){
         $('#cloud_content').html('');
         $('#cloud_content').attr('id','discussion_list_container');
         loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
+        $('#viewDiscussionCloud').toggleClass('current');
+        $(this).toggleClass('current');
+
     });
     $('#search .s-actions').click( function(){
         $('#search .toggle-search-filters').toggleClass('full');
@@ -621,8 +631,6 @@ if(typeof $.fn.rte === "undefined") {
             var css = "";
             if(opts.content_css_url) {
                 css = "<link type='text/css' rel='stylesheet' href='" + opts.content_css_url + "' />";
-            } else {
-                css = "<style>* {font-family: Arial, Helvetica, sans-serif;margin : 0; padding :0; font-size: 13px; }</style>";
             }
             var doc = "<html><head>"+css+"</head><body class='frameBody' id='iframe" + element_id + "'>"+content+"</body></html>";
             tryEnableDesignMode(doc, function() {
@@ -765,7 +773,7 @@ if(typeof $.fn.rte === "undefined") {
             iframeDoc.keyup(function(e) {
                 var body = $('body', iframeDoc);
                	var scrollHeight = $('body', iframeDoc)[0].scrollHeight;
-                if(scrollHeight > parseInt(body.css('height'))-14) {
+                if(scrollHeight > (parseInt(body.css('height'))-14) && scrollHeight < 300) {
                     $('.textarea').css('height',scrollHeight+28);
                     $('.rte-zone').css('height',scrollHeight);
                 }

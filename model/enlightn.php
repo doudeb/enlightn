@@ -39,7 +39,7 @@ Order By e.time_created desc";
 		$where	= array();
         $having = array();
 		$group	= array();
-        $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', ENLIGHTN_DISCUSSION, null);
+        $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null);
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1
@@ -111,9 +111,11 @@ Order By e.time_created desc";
 		if ($words) {
             $sphinx_enabled = get_plugin_setting('sphinx_enabled','enlightn');
             if ($sphinx_enabled == 1) {
+                $limit   = 100;
                 $force   = array();
-                $join [] = "Inner Join sphinx_search sphinx On ent.guid = sphinx.guid";
-                $where[] = "And sphinx.query='@(title,content) $words;mode=extended;offset=$offset;limit=10;sort=extended:@weight desc'";
+                $join [] = "Inner Join annotations a On ent.guid = a.entity_guid
+                            Inner Join sphinx_metastrings msv On a.value_id = msv.id";
+                $where[] = "And msv.query='$words;mode=extended2;offset=$offset;limit=150;sort=extended:@weight desc'";
                 //remove offset when going throught sphinx... not needed as it's the main data source.
                 if ($offset > 0) {
                     $offset = 0;
@@ -164,7 +166,7 @@ Order By e.time_created desc";
                     $having
         			Order By ent.time_updated Desc
             		Limit $offset,$limit";
-		//echo "<pre>" . $query;//die();
+		//echo "<pre>" . $query;die();
 		return  $this->get_data($query, $key_cache, null);
 	}
 
@@ -240,15 +242,32 @@ public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$f
 			$where[] = "And mst.string In ('$simpletype')";
 		}
 		if ($words) {
-			$join [] = "Inner Join objects_entity ent_title On ent.guid = ent_title.guid";
-			$where[] = "And
+            $sphinx_enabled = get_plugin_setting('sphinx_enabled','enlightn');
+            if ($sphinx_enabled == 1) {
+                $force   = array();
+                $join [] = "Inner Join annotations a On ent.guid = a.entity_guid
+                            Inner Join sphinx_metastrings msv On a.value_id = msv.id";
+                $where[] = "And msv.query='$words;mode=extended2;offset=$offset;limit=150;sort=extended:@weight desc'";
+                //remove offset when going throught sphinx... not needed as it's the main data source.
+                if ($offset > 0) {
+                    $offset = 0;
+                }
+                $limit  = 100;
+            } else {
+                $join [] = "Inner Join objects_entity ent_title On ent.guid = ent_title.guid
+                            Left Join annotations a On ent.guid = a.entity_guid
+                            Left Join metastrings msv On a.value_id = msv.id";
+                $where[] = "And
                                 Case
                                     When length('$words') > 2 And length('$words') <= @@ft_min_word_len Then
-                                        ent_title.title Like concat('%', '$words', '%') Or ent_title.description Like concat('%', '$words', '%')
+                                        ent_title.title Like concat('%', '$words', '%')
+                                        Or ent_title.description Like concat('%', '$words', '%')
+                                        Or msv.string Like concat('%', '$words', '%')
                                     When length('$words') > @@ft_min_word_len Then
-                                        MATCH (ent_title.title,ent_title.description) AGAINST ('$words' IN BOOLEAN MODE)
+                                        MATCH (ent_title.title,ent_title.description,msv.string) AGAINST ('$words' IN BOOLEAN MODE)
                                     Else true
                                 End";
+            }
 
 		}
 		#date
@@ -300,7 +319,7 @@ And  (
 $where
 Order By ent.time_created Desc
 Limit $offset,$limit";
-//echo "<pre>" .$query;
+//echo "<pre>" .$query;die();
 		return  $this->get_data($query, $key_cache, 'entity_row_to_elggstar');
 	}
 
