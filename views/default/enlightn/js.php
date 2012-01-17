@@ -300,13 +300,15 @@ $(document).ready(function(){
                             elm.append('<span class="tag" data-keyword="' + keyword + '">'+ keyword +' <span class="del">&times;</span></span>');
                         }
                     });
-                    elm.find('img').remove();
-                    if (addedKeywords.length == '0') {
+                    if (addedKeywords.length == 0) {
+                    alert(addedKeywords.length);
                         tags = $('#tags-result .tag');
                         tags.each(function() {
                             addedKeywords.push($(this).attr('data-keyword'));
                         });
+                        $('#tags').val(addedKeywords.join(','));
                     }
+                    elm.find('img').remove();
                 },'json');
                 $('#tags').val(addedKeywords.join(','));
             });
