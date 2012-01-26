@@ -26,6 +26,7 @@
                                                                     'internalid' => 'invite',
                                                                     'value' => $vars['entity']->invite,
                                                                     )); ?>
+                <div id="user_suggest"></div>
             </div>
             <div class="tags">
                 <span class="add">

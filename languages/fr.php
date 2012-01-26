@@ -74,6 +74,7 @@
 			,'enlightn:buttonpost' => 'Envoyer'
 			,'enlightn:missingData' => 'Oups, il manque un titre à votre discussion.'
 			,'enlightn:discussion_sucessfully_created' => ''
+            ,'enlightn:discussionusersuggest' => 'Suggestion de participant'
 
 			//HOME - NEW TOPIC - UPLOAD
 			,'enlightn:uploadcloud' => 'Votre fichier se trouve dans le cloud?'
@@ -116,6 +117,7 @@
 			,'enlightn:request' => 'Invitations reçues'
 			,'enlightn:favorites' => 'Mes favoris'
 			,'enlightn:sent' => 'Envoyés'
+			,'enlightn:trendingtopic' => 'Trending topic'
 
 			//HOME - LEFT COLUMN
 			,'enlightn:seemore' => 'Voir plus'

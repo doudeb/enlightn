@@ -397,6 +397,16 @@ function create_embeded_entities ($message,$entity) {
 				$file->simpletype 	= $type;
 				$guid 				= $file->save();
                 generate_preview($file->guid);
+                //annotate with the link content
+                $content            = doc_to_txt($file);
+                if ($content) {
+                    $file->annotate(ENLIGHTN_DISCUSSION, $content, $file->access_id);
+                    $tags = tag_text($content);
+                    if(is_array($tags)) {
+                        $tags = array_keys($tags);
+                        $file->tags = $tags;
+                    }
+                }
 			} else {
 				$file 				= $file[0];
 				$guid 				= true;
@@ -1224,16 +1234,76 @@ function tag_text ($text, $offset = 0, $limit = 10) {
 }
 
 
-function doc_to_txt ($file_name = false) {
-    if(!$file_name) return false;
+function doc_to_txt ($file_entity = false) {
+    if(!$file_entity instanceof ElggFile) return false;
     $text                       = false;
-    $info                       = pathinfo($file_name);
+    $info                       = pathinfo($file_entity->filename);
     $converted_file             = PATH_TO_TMP . $info['filename'] . '.txt';
-    $handle                     = popen("abiword --plugin AbiCommand 2>&1", "w");
-    fwrite($handle, "converttotext \"$file_name\" \"$converted_file\" \n");
-    sleep(3);
-    pclose($handler);
-    if(file_exists($converted_file)) {
+    switch ($file_entity->mimetype) {
+        case 'application/pdf':
+            ob_start();
+            exec('pdftotext "' . $file_entity->getFilenameOnFilestore() . '" "' . $converted_file . '"');
+            ob_end_clean();
+            break;
+        case 'application/vnd.ms-powerpoint':
+            ob_start();
+            exec('catppt "' . $file_entity->getFilenameOnFilestore() . '"',$text);
+            if (is_array($text)) {
+                $text = implode(' ', $text);
+            }
+            ob_end_clean();
+            break;
+        case 'application/excel':
+        case 'application/vnd.ms-excel':
+            ob_start();
+            exec('xls2csv "' . $file_entity->getFilenameOnFilestore() . '"', $text);
+            if (is_array($text)) {
+                $text = implode(' ', $text);
+            }
+            ob_end_clean();
+            break;
+        case 'application/msword':
+        case 'application/rtf':
+        case 'application/vnd.oasis.opendocument.text':
+        case 'text/richtext':
+        case 'text/rtf':
+        case 'text/xml':
+            $handle             = popen("abiword --plugin AbiCommand 2>&1", "w");
+            fwrite($handle, "converttotext \"". $file_entity->getFilenameOnFilestore() . "\" \"$converted_file\" \n");
+            sleep(3);
+            pclose($handler);
+            break;
+        case 'txt':
+        case 'txt/csv':
+            $text                = file_get_contents($file_entity->filename);
+            break;
+        case 'text/html':
+            require_once elgg_get_plugins_path() . 'enlightn/helper/Readability.php';
+            $html                = file_get_contents($file_entity->originalfilename);
+            if (function_exists('tidy_parse_string')) {
+                $tidy           = tidy_parse_string($html, array(), 'UTF8');
+                $tidy->cleanRepair();
+                $html           = $tidy->value;
+            }
+            $readability        = new Readability($html, $file_entity->originalfilename);
+           // process it
+            $result             = $readability->init();
+            // does it look like we found what we wanted?
+            if ($result) {
+                $text           =  $readability->getTitle()->textContent .  "\n\n";
+                $content        = $readability->getContent()->innerHTML;
+                if (function_exists('tidy_parse_string')) {
+                    $tidy       = tidy_parse_string($content, array('indent'=>true, 'show-body-only' => true), 'UTF8');
+                    $tidy->cleanRepair();
+                    $content    = $tidy->value;
+                }
+                $text           .= $content;
+            }
+            break;
+        default:
+            break;
+    }
+    if(file_exists($converted_file) && !$text) {
         $text                   = file_get_contents($converted_file);
         unlink($converted_file);
     }

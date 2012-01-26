@@ -27,6 +27,7 @@ global $sn_linkers;
                     ?>
                     </ul>
 				</div><!-- end details -->
+
 			</div><!-- end profile_sidebar -->
 			<ol class="folders">
                 <li class="current" id="lastMessage"><span class="arrow"></span><a class="cat" href="#" onclick="$('#current_url').val('<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php?');loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php?from_users=<?php echo $user->guid?>');$(this).parent().addClass('current');$('#lastCloud').removeClass('current');"><?php echo elgg_echo('enlightn:profilelastmessage')?></a></li>

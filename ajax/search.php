@@ -21,11 +21,15 @@ $entity_guid	= sanitise_int(get_input('entity_guid', 0));
 $fetch_modified	= sanitise_int(get_input('fetch_modified', 0));
 $unreaded_only	= sanitise_int(get_input('unreaded_only', 0));
 $annotation_id	= sanitise_int(get_input('annotation_id', 0));
+$tags 			= get_input('tags');
 
 
 $last_search	= serialize(array('user_guid' => $user_guid,'entity_guid' => $entity_guid,'access_level' => $access_level,'unreaded_only' => $unreaded_only,'words' => $words,'from_users' => $from_users,'date_begin' => $date_begin,'date_end' => $date_end,'subtype' => $subtype,'offset' => $offset,'limit' => $limit));
 $date_begin 	= strtotime($date_begin);
 $date_end 		= strtotime($date_end);
+if (strlen($tags) > 0) {
+    $tags       = explode(',',$tags);
+}
 
 if ($annotation_id > 0) {
     disable_right($entity_guid);
@@ -43,7 +47,7 @@ if ($annotation_id > 0) {
     //$search_results         = array_reverse($search_results);
 	$last_modified			= $search_results[0]->time_created;
 } else {
-	$search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
+	$search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$tags,$offset,$limit);
 	$_SESSION['last_search'] = $last_search;
 	$last_modified			= $search_results[0]->created;
     if ($access_level == ENLIGHTN_ACCESS_IN) {
@@ -95,7 +99,7 @@ if ($nb_results > 0) {
 												, 'discussion_unreaded' => $discussion_unreaded));
 		}
 	}
-    if ($key >=9) {
+    if ($key >=9 || $words = '') {
         echo elgg_view('input/seemore', array());
     }
 }

@@ -10,7 +10,7 @@
  */
 
 // Let the system know that the friends picker is in use
-global $pickerinuse;
+global $pickerinuse, $enlightn;
 $pickerinuse = true;
 $chararray = '*';
 $chararray .= elgg_echo('friendspicker:chararray');
@@ -192,9 +192,18 @@ if (!isset($vars['replacement'])) {
 					foreach ($my_collection_members as $collection_id=>$collection_members) {
 						if (in_array($friend->getGUID(),$collection_members)) {
 							$collection = get_access_collection($collection_id);
-							echo '<span class="tag tag' . $collection->id .'" data-tagId="' . $collection->id .'">' . $collection->name . ' <span class="del">&times;</span></span>';
+							echo '<span class="tag mlList tag' . $collection->id .'" data-tagId="' . $collection->id .'">' . $collection->name . ' <span class="del">&times;</span></span>';
 						}
 					}
+				}
+                $user_active_tags = $enlightn->get_tags($friend->getGUID());
+				if (is_array($user_active_tags)) {
+                    echo "<p>";
+					foreach ($user_active_tags as $key=>$tag) {
+						echo '<span class="tag" data-keyword="' . $tag->tag .'">' . $tag->tag . '</span>';
+					}
+                    echo "</p>";
+
 				}
                 echo '</li>';
 				if ($vars['highlight'] == 'all'

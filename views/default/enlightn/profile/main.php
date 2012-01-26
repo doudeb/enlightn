@@ -1,6 +1,7 @@
 <?php
 $user		= $vars['user'];
 $settings	= $vars['settings'];
+$tags       = $vars['tags'];
 ?>
 
 <div id="main">
@@ -9,9 +10,18 @@ $settings	= $vars['settings'];
 	    <div class="header">
 			<p><h2><?php echo $user->name?></h2></p>
 			<p><h3><?php echo $settings['jobtitle']?></h3></p>
+            <?php
+                if (is_array($tags)) {
+                    echo "<p>";
+                    foreach ($tags as $tag) {
+                        echo "<span class='tag' data-keyword='" . $tag->tag . "'>" . $tag->tag . "</span>";
+                    }
+                    echo "</p>";
+                }
+            ?>
 			<div class="job_location"><?php echo $settings['department']?> <?php echo !empty($settings['location'])?', ' . $settings['location']:''?></div>
 		</div> <!-- end header -->
-		<div id="feed">
+        <div id="feed">
 			<div class="actions">
 				<ul>
 				</ul>

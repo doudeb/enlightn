@@ -29,7 +29,11 @@ if (empty($vars['title'])) {
 }
 echo elgg_view('page/elements/head', $vars);
 //echo elgg_view('page_elements/header', $vars);
-echo elgg_view('messages/list', array('object' => $vars['sysmessages']));
+?>
+	<div class="elgg-page-messages">
+		<?php echo elgg_view('page/elements/messages', array('object' => $vars['sysmessages'])); ?>
+	</div>
+<?php
 if (get_context() === 'main') {
     echo $vars['body'];
     return;

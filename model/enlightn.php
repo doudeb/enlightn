@@ -4,6 +4,7 @@
 class enlightn {
 
 	var $cache;
+    var $site_guid;
 
 	function __construct() {
 		static $cache;
@@ -12,6 +13,13 @@ class enlightn {
 		} else {
             $this->cache = false;
         }
+        $site = elgg_trigger_plugin_hook("siteid", "system");
+        if ($site === null || $site === false) {
+            $this->site_guid = (int) datalist_get('default_site');
+        } else {
+            $this->site_guid = $site;
+        }
+
 	}
 
 	function get_discussion ($user_guid, $discussion_type = 0) {
@@ -32,7 +40,8 @@ End
 Order By e.time_created desc";
 		return  get_data($query, 'entity_row_to_elggstar');
 	}
-	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $unreaded_only = 0,$words, $from_users = '', $date_begin = false, $date_end =false, $subtype = '', $offset = 0, $limit = 10) {
+
+	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $unreaded_only = 0,$words, $from_users = '', $date_begin = false, $date_end =false, $subtype = '', $tags = array(),$offset = 0, $limit = 10) {
 		$key_cache = $this->generate_key_cache(get_defined_vars(), 'search');
         $force 	= array();
 		$join	= array();
@@ -40,6 +49,7 @@ Order By e.time_created desc";
         $having = array();
 		$group	= array();
         $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null);
+        $where[]= "And ent.site_guid = " . $this->site_guid;
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1
@@ -111,11 +121,11 @@ Order By e.time_created desc";
 		if ($words) {
             $sphinx_enabled = get_plugin_setting('sphinx_enabled','enlightn');
             if ($sphinx_enabled == 1) {
-                $limit   = 100;
                 $force   = array();
+                $limit   =100;
                 $join [] = "Inner Join annotations a On ent.guid = a.entity_guid
-                            Inner Join sphinx_metastrings msv On a.value_id = msv.id";
-                $where[] = "And msv.query='$words;mode=extended2;offset=$offset;limit=150;sort=extended:@weight desc'";
+                            Inner Join sphinx_search msv On a.value_id = msv.id";
+                $where[] = "And msv.query='$words;mode=extended2;offset=$offset;limit=100;index=metastrings_main,metastrings_delta,desc_title_main,desc_title_delta;indexweights=metastrings_main,1,metastrings_delta,1,desc_title_main,2,desc_title_delta,2;sort=extended:@weight desc'";
                 //remove offset when going throught sphinx... not needed as it's the main data source.
                 if ($offset > 0) {
                     $offset = 0;
@@ -151,6 +161,18 @@ Order By e.time_created desc";
 			}
 			$where[] = "And ent.time_created Between $date_begin And $date_end";
 		}
+        #tags
+
+        if (is_array($tags)) {
+            $tags_meta_id = get_metastring_id('tags');
+            foreach ($tags as $tag) {
+                $sanitised_tags[] = '"' . sanitise_string($tag) . '"';
+            }
+            $tags_in = implode(',', $sanitised_tags);
+            $where[] = "And mst.string In($tags_in)";
+            $join [] = "Inner join metadata md on ent.guid = md.entity_guid And md.name_id = $tags_meta_id";
+            $join [] = "Inner join metastrings mst on md.value_id = mst.id";
+        }
 		$force 	= implode(' ',$force);
 		$join	= implode(' ',$join);
 		$where	= implode(' ',$where);
@@ -172,13 +194,16 @@ Order By e.time_created desc";
 
 	public function count_unreaded_discussion ($user_guid, $entity_guid = 0) {
 		$key_cache = $this->generate_key_cache(get_defined_vars(), 'unreaded');
+        $where  = " And ent.site_guid = " . $this->site_guid;
 		if (!$user_guid) {
 			return false;
 		}
 		$query = "(Select Distinct " . ENLIGHTN_ACCESS_PU . "  as access_level
 		,a.entity_guid
 From annotations a
+Inner Join entities ent On a.entity_guid = ent.guid
 Where a.access_id  = " . ACCESS_PUBLIC . "
+$where
 And Not Exists (Select rel.id
 					From entity_relationships As rel
 					Where a.id = rel.guid_two
@@ -190,6 +215,7 @@ Union
 (Select Distinct " . ENLIGHTN_ACCESS_PR . " as access_level
 		,a.entity_guid
 From annotations a
+Inner Join entities ent On a.entity_guid = ent.guid
 Inner Join entity_relationships As rel On a.entity_guid = rel.guid_two
 								And rel.guid_one = $user_guid
 								And rel.relationship = '" . ENLIGHTN_FOLLOW . "'
@@ -198,12 +224,14 @@ Left Join entity_relationships As rel_readed On a.id = rel_readed.guid_two
 												And rel_readed.relationship = '" . ENLIGHTN_READED . "'
 Where a.access_id  = " . ACCESS_PRIVATE . "
 And rel_readed.id Is Null
+$where
 Limit 150)
 Union
 #Favorite
 (Select Distinct " . ENLIGHTN_ACCESS_FA . " as access_level
 		,a.entity_guid
 From annotations a
+Inner Join entities ent On a.entity_guid = ent.guid
 Inner Join entity_relationships As rel On a.entity_guid = rel.guid_two
 								And rel.guid_one = $user_guid
 								And rel.relationship = '" . ENLIGHTN_FAVORITE . "'
@@ -212,15 +240,19 @@ Left Join entity_relationships As rel_readed On a.id = rel_readed.guid_two
 												And rel_readed.relationship = '" . ENLIGHTN_READED . "'
 Where a.access_id  in (" . ACCESS_PRIVATE . "," . ACCESS_PUBLIC . ")
 And rel_readed.id Is Null
+$where
 Limit 150)
 Union
 #request
 (Select Distinct " . ENLIGHTN_ACCESS_IN . " as access_level
 		,a.entity_guid
 From annotations a
+Inner Join entities ent On a.entity_guid = ent.guid
 Inner Join entity_relationships As rel_req On a.entity_guid = rel_req.guid_one
 											And rel_req.guid_two = $user_guid
 											And rel_req.relationship = '" . ENLIGHTN_INVITED . "'
+Where 1
+$where
 Limit 150)";
 		//echo $query;
 		return  $this->get_data($query, $key_cache);
@@ -236,6 +268,7 @@ public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$f
 		if (!$user_guid) {
 			return false;
 		}
+        $where[]= "And ent.site_guid = " . $this->site_guid;
 		if ($simpletype) {
 			$join[] = "Inner Join metadata mtd On mtd.entity_guid = ent.guid
 						Inner Join metastrings mst On mtd.value_id = mst.id";
@@ -424,4 +457,42 @@ Limit $offset,$limit";
 		return  get_data($query);
 
     }
+    public function get_tags ($user_guid, $tags_name = false, $mode = false, $limit = 10) {
+        $tags_meta_id = get_metastring_id('tags');
+        $select = ", tag_used.owner_guid";
+        if (is_array($tags_name)) {
+            $tags_name = implode("','", $tags_name);
+            $where = " And tag_name.string In ('$tags_name')";
+        } else {
+            $where = " And tag_name.string != ''";
+        }
+
+        if ($user_guid) {
+            $where .= " And tag_used.owner_guid = $user_guid ";
+        }
+
+        if ($mode == 'trending' && $user_guid) {
+            $where = " And tag_name.string != ''
+                        And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where tag_used.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And tag_used.access_id  = " . ACCESS_PRIVATE . ")
+                                  Or tag_used.access_id  = " . ACCESS_PUBLIC . ')
+                        And tag_used.time_created Between (UNIX_TIMESTAMP()-(7*24*60*60)) And UNIX_TIMESTAMP()';
+            $select = "";
+        }
+
+        $query = "Select  tag_name.string as tag
+                            $select
+                            , count(tag_used.id) as total
+                    From metadata tag_used
+                    Inner Join metastrings tag_name On tag_used.value_id = tag_name.id And tag_used.name_id = $tags_meta_id
+                    Where 1
+                    $where
+                    Group By tag_name.string
+                            $select
+                    Order By count(tag_used.id) Desc
+                    Limit $limit;";
+        //echo "<pre>"; die($query);
+		return  get_data($query);
+
+    }
+
 }

@@ -22,7 +22,6 @@ $(".embederToNew").click(function(){
 		foreach($entities as $entity) {
 			if ($entity instanceof ElggEntity) {
 				$mime = $entity->mimetype;
-
 				$enttype = $entity->getType();
 				$entsubtype = $entity->getSubtype();
 

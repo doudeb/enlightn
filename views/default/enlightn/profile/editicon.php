@@ -32,9 +32,9 @@
 </div>
 
 <div id="profile_picture_form">
-	<form action="<?php echo $vars['url']; ?>action/profile/iconupload" method="post" enctype="multipart/form-data">
+	<form action="<?php echo $vars['url']; ?>action/avatar/upload" method="post" enctype="multipart/form-data">
 	<?php echo elgg_view('input/securitytoken'); ?>
-	<input type="hidden" name="username" value="<?php echo $currentuser->username; ?>" />
+	<input type="hidden" name="guid" value="<?php echo $currentuser->guid; ?>" />
 	<p><label><?php echo elgg_echo("profile:editicon"); ?></label><br />
 
 		<?php
@@ -129,13 +129,14 @@
 
 <div class="clearfloat"></div>
 
-<form action="<?php echo $vars['url']; ?>action/profile/cropicon" method="post" />
+<form action="<?php echo $vars['url']; ?>action/avatar/crop" method="post" />
 	<?php echo elgg_view('input/securitytoken'); ?>
+	<input type="hidden" name="guid" value="<?php echo $vars['user']->guid; ?>" />
 	<input type="hidden" name="username" value="<?php echo $vars['user']->username; ?>" />
-	<input type="hidden" name="x_1" value="<?php echo $vars['user']->x1; ?>" id="x_1" />
-    <input type="hidden" name="x_2" value="<?php echo $vars['user']->x2; ?>" id="x_2" />
-    <input type="hidden" name="y_1" value="<?php echo $vars['user']->y1; ?>" id="y_1" />
-    <input type="hidden" name="y_2" value="<?php echo $vars['user']->y2; ?>" id="y_2" />
+	<input type="hidden" name="x1" value="<?php echo $vars['user']->x1; ?>" id="x_1" />
+    <input type="hidden" name="x2" value="<?php echo $vars['user']->x2; ?>" id="x_2" />
+    <input type="hidden" name="y1" value="<?php echo $vars['user']->y1; ?>" id="y_1" />
+    <input type="hidden" name="y2" value="<?php echo $vars['user']->y2; ?>" id="y_2" />
 	<input type="submit" name="submit" value="<?php echo elgg_echo("profile:createicon"); ?>" />
 </form>
 

@@ -729,7 +729,7 @@ form .dest {
 }
 form .dest input,
 form .dest ul {
-    width: 450px;
+    width: 454px;
     height : 19px;
     #border : 0px;
 }
@@ -746,7 +746,16 @@ form .tags {
     clear : left;
 }
 
+form .user_suggest {
+    margin : 0 2px 0 0;
+    color:#2d87e1;
+    cursor : pointer;
+}
 
+#user_suggest {
+    width: 454px;
+    font-size:87%;
+}
 
 .add {
     cursor:pointer;
@@ -1111,6 +1120,8 @@ button[type="reset"]:active {
 #discussion_list_container .unread {
     background-color : #e5e5e5;
 }
+
+
 
 .msg .read {
     background-position:-50px -127px;
@@ -1852,6 +1863,10 @@ form #clonedMessages {
     padding: 5px 7px;
 }
 
+#sidebar .tag {
+    cursor : pointer;
+}
+
 /** DETAIL */
 #nav_unreaded_<?php echo ENLIGHTN_ACCESS_PU?> {
     display : none;
@@ -2028,6 +2043,11 @@ form #clonedMessages {
     padding: 2px 4px;
 }
 
+
+.tag.mlList {
+    background-color: #e5e5e5;
+}
+
 .tag .del {
     font-size:109%;
 }
@@ -2036,6 +2056,15 @@ form #clonedMessages {
     color:#000;
     cursor:pointer;
     font-weight:bold;
+}
+
+#discussion_selector_tags p,
+#sidebar p {
+    margin : 0 10px 0 10px;
+}
+
+#discussion_selector_tags .tag {
+    margin : 0 3px 5px 0;
 }
 
 #mover {
@@ -2253,13 +2282,13 @@ form #clonedMessages {
 }
 
 #profile .header {
-	height : 130px;
+	height : 110px;
 	padding-left: 130px;
 	padding-top: 10px;
 }
 
 #profile .job_location {
-	padding-top: 30px;
+	#padding-top: 30px;
 }
 
 #profile_sidebar {
@@ -2286,6 +2315,10 @@ form #clonedMessages {
     width : 150px;
     border-bottom:1px solid #bbb;
     margin-left : 35px;
+}
+
+#profile span.tag {
+    margin-bottom: 10px;
 }
 
  .details  {
@@ -4416,3 +4449,29 @@ div.usericon a.icon img {
         color:#666666;
         font-size: 90%;
 }
+
+.elgg-page-messages {
+        width: 500px;
+}
+.elgg-system-messages p {
+        margin: 0;
+}
+.elgg-message {
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 2px solid #ddd;
+        cursor: pointer;
+}
+.elgg-message.elgg-state-error {
+        background: #fbe3e4;
+        color: #8a1f11;
+        border-color: #fbc2c4;
+        font-weight: bold;
+}
+.elgg-message.elgg-state-success {
+        background: #e6efc2;
+        color: #264409;
+        border-color: #c6d880;
+}
+
+

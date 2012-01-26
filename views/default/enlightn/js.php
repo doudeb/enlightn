@@ -182,10 +182,20 @@ function get_search_criteria () {
 	} else {
 		var unreaded_only = $('#showunread').attr('checked')=='checked'?1:0;
 	}
-	if(words || subtype || from_users || date_begin || date_end) {
+    if (typeof $('#search_tags').val() == 'undefined') {
+		var search_tags = '';
+	} else {
+		var search_tags = $('#search_tags').val();
+	}
+	if(words || subtype || from_users || date_begin || date_end || search_tags) {
 		discussion_type = 4;
 		$('#discussion_type').val(discussion_type);
-		currElement = '#discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>';
+        if (search_tags) {
+            currElement = '#discussion_selector_tags';
+        } else {
+            currElement = '#discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>';
+        }
+
 		$(".folders li").each(function () {
 			$(this).removeClass('current');
 		});
@@ -196,7 +206,6 @@ function get_search_criteria () {
 		$(currElement).removeClass('current');
 	}
 
-
 	var search_criteria = '?q=' + encodeURIComponent(words)
 							+ '&date_begin=' + date_begin
 							+ '&date_end=' + date_end
@@ -205,7 +214,10 @@ function get_search_criteria () {
 							+ '&subtype=' + subtype
 							+ '&discussion_type=' + discussion_type
 							+ '&entity_guid=' + entity_guid
-							+ '&unreaded_only=' + unreaded_only;
+							+ '&unreaded_only=' + unreaded_only
+							+ '&tags=' + search_tags;
+
+
 	return search_criteria;
 }
 
@@ -260,9 +272,15 @@ $(document).ready(function(){
         .click(function(e) {
             if($(e.target).hasClass('del')) {
                 var
-                    tag = $(e.target).parent('.tag');
+                    tag = $(e.target).parent('.tag'),
+                    tags = $('#tags-result .tag'),
+                    addedKeywords = [];
                 deletedKeywords.push(tag.attr('data-keyword'));
                 tag.remove();
+                tags.each(function() {
+                    addedKeywords.push($(this).attr('data-keyword'));
+                });
+                $('#tags').val(addedKeywords.join(','));
             }
         });
      $('#interests')
@@ -280,7 +298,7 @@ $(document).ready(function(){
             });
        $('.textarea')
         .mouseleave(function(e) {
-                var text = $('#title').val() + $(".rte-zone").contents().find(".frameBody").html(),
+                var text = $('#title').val() + '  ' + $(".rte-zone").contents().find(".frameBody").html(),
                     elm = $('#tags-result'),
                     tags = $('#tags-result .tag');
                     addedKeywords = [];
@@ -308,9 +326,28 @@ $(document).ready(function(){
                         $('#tags').val(addedKeywords.join(','));
                     }
                     elm.find('img').remove();
+                    //got keyword... let's suggest
+                    $.get('<?php echo "{$vars['url']}mod/enlightn/ajax/get_user_by_tags.php";?>', {tags: $('#tags').val()}, function(data) {
+                        if (data) {
+                            user_elm = $('#user_suggest');
+                            user_elm.html('');
+                            user_elm.append('<?php echo elgg_echo('enlightn:discussionusersuggest')?> :');
+                            $.each(data, function(user_guid, user_name){
+                                user_elm.append('<span class="user_suggest" data-user-id="' + user_guid + '" data-user-name="' + user_name + '">'+ user_name +'</span>');
+                            });
+                            $(".user_suggest").click(function () {
+                                var elm = $(this),
+                                    token_elm  = $('input[name="invite"]');
+                                token_elm.tokenInput("add", {id: elm.attr('data-user-id'), name: elm.attr('data-user-name')});
+                                elm.remove();
+                                return false;
+                            });
+                        }
+                    },'json');
                 },'json');
                 $('#tags').val(addedKeywords.join(','));
             });
+
 
 	$('#forwardParts').click( function() {
         var title = $("#discussionTitle").html(),
@@ -331,6 +368,21 @@ $(document).ready(function(){
     });
 	$('#forwardCancel').click( function() {
         showHideForward();
+    });
+
+	$('#discussion_selector_tags .tag').click( function() {
+        tags = $('#discussion_selector_tags .tag');
+        tags.each(function() {
+            $(this).css('font-weight','normal');
+        });
+
+        if ($('#search_tags').val() != $(this).attr('data-keyword')) {
+            $('#search_tags').val($(this).attr('data-keyword'));
+            $(this).css('font-weight','bold');
+        } else {
+            $('#search_tags').val('');
+        }
+        changeMessageList('discussion_selector_tags','tags');
     });
 
 	$('#search .filters li input').click( function(){
@@ -520,6 +572,7 @@ $(document).ready(function(){
 			$('#privacy_cursor').parent().addClass('private');
 			$('#membership').val(<?php echo ACCESS_PRIVATE?>);
             $(".dialog-overlay").css('display','none');
+            $('#user_suggest').html('');
             if ($('#forwardActionButton').css('display') === 'block') {
                 showHideForward();
             } else {
@@ -556,6 +609,7 @@ $(document).ready(function(){
             $('#clonedMessages').html('');
             $('#tags-result').html('');
             $(".dialog-overlay").css('display','none');
+            $('#user_suggest').html('');
         });
     }
 

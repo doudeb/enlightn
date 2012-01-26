@@ -33,11 +33,20 @@ class treeTagger {
     private function explode_result_line ($result,$key) {
         $data   = explode ("\t",$result);
         if (preg_match($this->tagger_patern, $data[1])) {
-
                 $this->tagger_result[$key]    = $data;
         } else {
                 unset($this->tagger_result[$key]);
         }
+    }
+
+    private function clean_tag ($tag) {
+        $tag            = trim($tag);
+        $tag            = elgg_strtolower($tag);
+        if (strstr($tag,'|')) {
+            $tag        = explode ("|",$tag);
+            $tag        = $tag[0];
+        }
+        return $tag;
     }
 
     private function sort_tagger_result ($offset = 0, $limit = 10) {
@@ -50,10 +59,13 @@ class treeTagger {
                 } else {
                         $tag    = $line[2];
                 }
-                if (isset( $this->sorted_tagger_result[$tag])) {
-                        $this->sorted_tagger_result[$tag]    +=  1;
-                } else {
-                        $this->sorted_tagger_result[$tag]     =  1;
+                $tag            = $this->clean_tag($tag);
+                if (is_not_null($tag)) {
+                    if (isset( $this->sorted_tagger_result[$tag])) {
+                            $this->sorted_tagger_result[$tag]    +=  1;
+                    } else {
+                            $this->sorted_tagger_result[$tag]     =  1;
+                    }
                 }
         }
         asort($this->sorted_tagger_result);

@@ -21,7 +21,7 @@ function enlightn_init() {
 	elgg_register_plugin_hook_handler('validate', 'input', 'enlightn_filter_tags');
     elgg_unregister_plugin_hook_handler('validate', 'input', 'htmlawed_filter_tags');
     elgg_register_plugin_hook_handler('index','system','new_index');
-    //register_plugin_hook('siteid','system','set_site_id');
+
 	// register for search
 	elgg_register_entity_type('enlightn','');
 	// Register a page handler, so we can have nice URLs
@@ -56,7 +56,8 @@ function enlightn_init() {
     //Register notification handler
     register_notification_handler(NOTIFICATION_EMAIL_INVITE,'email_invite_notify_handler');
     register_notification_handler(NOTIFICATION_EMAIL_MESSAGE_FOLLOWED,'email_message_followed_notify_handler');
-    elgg_register_event_handler('init','system', 'enlightn_purge_readed_queue',1000);
+    elgg_register_event_handler('shutdown','system', 'enlightn_purge_readed_queue',1000);
+    elgg_register_event_handler('login', 'user','enlightn_verify_user_site_guid');
     // do we need to overrule default email notifications
     register_notification_handler("email", "html_email_handler_notification_handler");
 }
@@ -72,14 +73,6 @@ function new_index($hook, $type, $return, $params) {
 	}
 }
 
-
-function set_site_id() {
-	$site_guid = getenv('site_guid');
-	if ($site_guid) {
-		return $site_guid;
-	}
-	return false;
-}
 
 register_elgg_event_handler('init','system','enlightn_init');
 // Look if required profile fiels have been created
@@ -172,4 +165,13 @@ function init_enlightn_profile_fields () {
                 set_plugin_setting('user_defined_fields', TRUE, 'profile');
         }
     }
+}
+
+function enlightn_verify_user_site_guid($login, $user, ElggUser $user) {
+    $site = elgg_trigger_plugin_hook("siteid", "system");
+    if ($site === null || $site === false) {
+        $site = (int) datalist_get('default_site');
+    }
+    if($user->isAdmin()) return true;
+    return $user->site_guid == $site;
 }

@@ -23,7 +23,7 @@ source <?php echo $CONFIG->sitename; ?>
 
 }
 
-source <?php echo $CONFIG->sitename; ?>_metastrings_main : <?php echo $CONFIG->sitename; ?>
+source metastrings_main : <?php echo $CONFIG->sitename; ?>
 {
         sql_query_pre          = SET NAMES utf8
         sql_query              = Select msv.id \
@@ -44,7 +44,7 @@ source <?php echo $CONFIG->sitename; ?>_metastrings_main : <?php echo $CONFIG->s
         #sql_query_info          = SELECT * FROM enlightn_dev.annotations WHERE id=$id
 }
 
-source <?php echo $CONFIG->sitename; ?>_metastrings_delta : <?php echo $CONFIG->sitename; ?>_metastrings_main
+source metastrings_delta : metastrings_main
 {
         sql_query_pre          = SET NAMES utf8
         sql_query_range        = SELECT counter.count_value, (Select Max(id) From metastrings) \
@@ -55,20 +55,20 @@ source <?php echo $CONFIG->sitename; ?>_metastrings_delta : <?php echo $CONFIG->
 }
 
 
-index <?php echo $CONFIG->sitename; ?>_metastrings_main
+index metastrings_main
 {
-	source			= <?php echo $CONFIG->sitename; ?>_metastrings_main
-	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/<?php echo $CONFIG->sitename; ?>_metastrings_main
+	source			= metastrings_main
+	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/metastrings_main
 }
 
-index <?php echo $CONFIG->sitename; ?>_metastrings_delta : <?php echo $CONFIG->sitename; ?>_metastrings_main
+index metastrings_delta : metastrings_main
 {
-	source			= <?php echo $CONFIG->sitename; ?>_metastrings_delta
-	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/<?php echo $CONFIG->sitename; ?>_metastrings_delta
+	source			= metastrings_delta
+	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/metastrings_delta
 }
 
 
-source <?php echo $CONFIG->sitename; ?>_desc_title_main : <?php echo $CONFIG->sitename; ?>
+source desc_title_main : <?php echo $CONFIG->sitename; ?>
 {
         sql_query_pre          = SET NAMES utf8
         sql_query              = Select desc_title.guid id \
@@ -88,7 +88,7 @@ source <?php echo $CONFIG->sitename; ?>_desc_title_main : <?php echo $CONFIG->si
         #sql_query_info        = SELECT * FROM annotations WHERE id=$id
 }
 
-source <?php echo $CONFIG->sitename; ?>_desc_title_delta : <?php echo $CONFIG->sitename; ?>_desc_title_main
+source desc_title_delta : desc_title_main
 {
         sql_query_pre          = SET NAMES utf8
         sql_query_range        = SELECT counter.count_value, (Select Max(guid) From objects_entity) \
@@ -99,16 +99,16 @@ source <?php echo $CONFIG->sitename; ?>_desc_title_delta : <?php echo $CONFIG->s
 }
 
 
-index <?php echo $CONFIG->sitename; ?>_desc_title_main
+index desc_title_main
 {
-	source			= <?php echo $CONFIG->sitename; ?>_desc_title_main
-	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/<?php echo $CONFIG->sitename; ?>_desc_title_main
+	source			= desc_title_main
+	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/desc_title_main
 }
 
-index <?php echo $CONFIG->sitename; ?>_desc_title_delta : <?php echo $CONFIG->sitename; ?>_desc_title_main
+index desc_title_delta : desc_title_main
 {
-	source			= <?php echo $CONFIG->sitename; ?>_desc_title_delta
-	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/<?php echo $CONFIG->sitename; ?>_desc_title_delta
+	source			= desc_title_delta
+	path			= <?php echo $CONFIG->dataroot; ?>sphinx/indexes/desc_title_delta
 }
 
 indexer

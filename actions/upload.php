@@ -91,7 +91,7 @@
 		$file->setMimeType($_FILES['upload']['type']);
 		$file->originalfilename = $_FILES['upload']['name'];
         $file->description = $file->originalfilename;
-		$file->simpletype = get_general_file_type($_FILES['upload']['type']);
+		$file->simpletype = file_get_simple_type($_FILES['upload']['type']);
 		if (!in_array($file->simpletype,(array(ENLIGHTN_LINK,ENLIGHTN_MEDIA,ENLIGHTN_IMAGE,ENLIGHTN_DOCUMENT)))) {
 			$file->simpletype = ENLIGHTN_DOCUMENT;
 		}
@@ -154,9 +154,9 @@
 	if ($new_file) {
 		if ($guid) {
             generate_preview($file->guid);
-            $file_description = doc_to_txt($file->getFilenameOnFilestore());
+            $file_description = doc_to_txt($file);
             if ($file_description) {
-                $file->annotate(ENLIGHTN_DISCUSSION, $file_description, $fine->access_id);
+                $file->annotate(ENLIGHTN_DISCUSSION, $file_description, $file->access_id);
                 $tags = tag_text($file_description);
                 if(is_array($tags)) {
                     $tags = array_keys($tags);

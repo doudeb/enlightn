@@ -14,11 +14,11 @@ if (!$user_guid || !$user_ent) {
 	forward();
 }
 
-$left  =  elgg_view('enlightn/profile/main',array('user' => $user, 'settings'=>$user_settings));
+$tags       = $enlightn->get_tags(get_loggedin_userid(),false,false);
 
-$search_filters = elgg_view('enlightn/profile/sidebar',array('user' => $user, 'settings'=>$user_settings));
-$right .= $search_filters;
-unset($search_filters);
-$body = $left . $right;
+$main  =  elgg_view('enlightn/profile/main',array('user' => $user, 'settings'=>$user_settings, 'tags'=> $tags));
+
+$right = elgg_view('enlightn/profile/sidebar',array('user' => $user, 'settings'=>$user_settings));
+$body = $main . $right;
 
 page_draw(elgg_echo('enlightn:profile'),$body);

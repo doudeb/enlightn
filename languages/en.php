@@ -74,6 +74,7 @@
 			,'enlightn:buttonpost' => 'Post'
 			,'enlightn:missingData' => 'Oops, do you want to sent your post without subject?'
 			,'enlightn:discussion_sucessfully_created' => ''
+			,'enlightn:discussionusersuggest' => 'User suggestion'
 
 			//HOME - NEW TOPIC - UPLOAD
 			,'enlightn:uploadyourfile' => 'Upload your file'
@@ -117,6 +118,7 @@
 			,'enlightn:request' => 'Request'
 			,'enlightn:favorites' => 'My favorites'
 			,'enlightn:sent' => 'Sent'
+			,'enlightn:trendingtopic' => 'Trending topic'
 
 			//HOME - LEFT COLUMN
 			,'enlightn:seemore' => 'See more'
