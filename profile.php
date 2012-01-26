@@ -14,7 +14,7 @@ if (!$user_guid || !$user_ent) {
 	forward();
 }
 
-$tags       = $enlightn->get_tags(get_loggedin_userid(),false,false);
+$tags       = $enlightn->get_tags($user_guid,false,false);
 
 $main  =  elgg_view('enlightn/profile/main',array('user' => $user, 'settings'=>$user_settings, 'tags'=> $tags));
 
