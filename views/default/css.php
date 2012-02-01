@@ -94,6 +94,7 @@ button.submit,
 }
 
 /* generic rules */
+
 .photo {
     background-color: #fff;
     border: 1px solid #ccc;
@@ -110,6 +111,7 @@ button.submit,
     width:50px
 }
 
+input[type=submit],
 .follow,
 .button {
     background-position:0 -321px;
@@ -796,7 +798,8 @@ form .user_suggest {
     display : none;
 }
 
-#tags-input {
+#tags-input,
+#tags-input-file {
     display : none;
     margin-left : 10px;
 }
@@ -1695,6 +1698,7 @@ form #clonedMessages {
     width:240px;
 }
 
+#uploader .s-actions,
 #search .s-actions {
     color: #2C75E2;
     cursor:pointer;
@@ -1705,6 +1709,7 @@ form #clonedMessages {
     margin-top: 4px;
 }
 
+#uploader .s-actions .arrow,
 #search .s-actions .arrow {
     background-position: -299px -128px;
     display: inline-block;
@@ -1714,8 +1719,13 @@ form #clonedMessages {
     width: 10px;
 }
 
+#uploader .s-actions .arrow-top,
 #search .s-actions .arrow-top {
     background-position: -321px -128px;
+}
+
+#uploader .tags {
+    display : none;
 }
 
 #search .toggle-search-filters {
@@ -2431,6 +2441,7 @@ form #clonedMessages {
     margin-top : -8px;
 }
 
+.elgg-form  label,
 #settings_edit label {
     width : 250px;
     display : block;
@@ -2440,7 +2451,9 @@ form #clonedMessages {
     vertical-align: middle;
 }
 
+.elgg-form input[type=text],
 #settings_edit input[type=text],
+.elgg-form input[type=password],
 #settings_edit input[type=password],
 #settings_edit select,
 #settings_edit textarea {
@@ -2452,6 +2465,7 @@ form #clonedMessages {
     border-radius:5px;
 }
 
+.elgg-form input[type=submit],
 #settings_edit button.submit {
     margin-left: 260px;
     margin-top: 15px;
@@ -2723,7 +2737,6 @@ form #clonedMessages {
 #layer input {
     border-color: #999999;
     margin: 3px 0px;
-    width: 463px;
 }
 
 #layer .new-bloc {
@@ -2733,6 +2746,12 @@ form #clonedMessages {
 .embeded_preview {
 	overflow: hidden;
 }
+
+#uploader .caption {
+    margin-top: -20px;
+    color : #2c75e2;
+}
+
 
 /** LOGIN **/
 
@@ -4205,7 +4224,7 @@ SYSTEM MESSSAGES
         padding:3px 10px 3px 10px;
         z-index: 8000;
         margin:0;
-        position:fixed;
+        position:relative;
         top:30px;
         width:969px;
         -webkit-border-radius: 4px;
@@ -4474,4 +4493,6 @@ div.usericon a.icon img {
         border-color: #c6d880;
 }
 
-
+fieldset {
+    border : none;
+}

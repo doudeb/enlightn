@@ -398,7 +398,7 @@ function create_embeded_entities ($message,$entity) {
 				$guid 				= $file->save();
                 generate_preview($file->guid);
                 //annotate with the link content
-                $content            = doc_to_txt($file);
+                $content            = doc_to_txt($file->originalfilename,$mime);
                 if ($content) {
                     $file->annotate(ENLIGHTN_DISCUSSION, $content, $file->access_id);
                     $tags = tag_text($content);
@@ -614,7 +614,7 @@ function disable_right ($guid) {
    		return elgg_set_ignore_access(true);
     }
     $is_embeded_and_followed = $enlightn->is_embeded_and_followed($guid);
-    if(is_array($is_embeded_and_followed)) {
+    if($is_embeded_and_followed[0]->guid) {
     	return elgg_set_ignore_access(true);
     }
     return false;
@@ -1234,20 +1234,19 @@ function tag_text ($text, $offset = 0, $limit = 10) {
 }
 
 
-function doc_to_txt ($file_entity = false) {
-    if(!$file_entity instanceof ElggFile) return false;
+function doc_to_txt ($file_path, $mime_type) {
     $text                       = false;
-    $info                       = pathinfo($file_entity->filename);
+    $info                       = pathinfo($file_path);
     $converted_file             = PATH_TO_TMP . $info['filename'] . '.txt';
-    switch ($file_entity->mimetype) {
+    switch ($mime_type) {
         case 'application/pdf':
             ob_start();
-            exec('pdftotext "' . $file_entity->getFilenameOnFilestore() . '" "' . $converted_file . '"');
+            exec('pdftotext "' . $file_path . '" "' . $converted_file . '"');
             ob_end_clean();
             break;
         case 'application/vnd.ms-powerpoint':
             ob_start();
-            exec('catppt "' . $file_entity->getFilenameOnFilestore() . '"',$text);
+            exec('catppt "' . $file_path . '"',$text);
             if (is_array($text)) {
                 $text = implode(' ', $text);
             }
@@ -1256,7 +1255,7 @@ function doc_to_txt ($file_entity = false) {
         case 'application/excel':
         case 'application/vnd.ms-excel':
             ob_start();
-            exec('xls2csv "' . $file_entity->getFilenameOnFilestore() . '"', $text);
+            exec('xls2csv "' . $file_path . '"', $text);
             if (is_array($text)) {
                 $text = implode(' ', $text);
             }
@@ -1268,29 +1267,29 @@ function doc_to_txt ($file_entity = false) {
         case 'text/richtext':
         case 'text/rtf':
         case 'text/xml':
-            $handle             = popen("abiword --plugin AbiCommand 2>&1", "w");
-            fwrite($handle, "converttotext \"". $file_entity->getFilenameOnFilestore() . "\" \"$converted_file\" \n");
+            $handle              = popen("abiword --plugin AbiCommand 2>&1", "w");
+            fwrite($handle, "converttotext \"". $file_path . "\" \"$converted_file\" \n");
             sleep(3);
             pclose($handler);
             break;
         case 'txt':
         case 'txt/csv':
-            $text                = file_get_contents($file_entity->filename);
+            $text                = file_get_contents($file_path);
             break;
         case 'text/html':
             require_once elgg_get_plugins_path() . 'enlightn/helper/Readability.php';
-            $html                = file_get_contents($file_entity->originalfilename);
+            $html                = file_get_contents($file_path);
             if (function_exists('tidy_parse_string')) {
                 $tidy           = tidy_parse_string($html, array(), 'UTF8');
                 $tidy->cleanRepair();
                 $html           = $tidy->value;
             }
-            $readability        = new Readability($html, $file_entity->originalfilename);
+            $readability        = new Readability($html, $file_path);
            // process it
             $result             = $readability->init();
             // does it look like we found what we wanted?
             if ($result) {
-                $text           =  $readability->getTitle()->textContent .  "\n\n";
+                $text           = $readability->getTitle()->textContent .  "\n\n";
                 $content        = $readability->getContent()->innerHTML;
                 if (function_exists('tidy_parse_string')) {
                     $tidy       = tidy_parse_string($content, array('indent'=>true, 'show-body-only' => true), 'UTF8');
@@ -1308,4 +1307,13 @@ function doc_to_txt ($file_entity = false) {
         unlink($converted_file);
     }
     return $text;
+}
+
+
+function verify_last_forward () {
+    $last_forward = $_SESSION['last_forward_from'];
+    if (!$last_forward) return false;
+    if (!strstr($last_forward,elgg_get_site_url() . 'enlightn/')) {
+        $_SESSION['last_forward_from'] = elgg_get_site_url();
+    }
 }

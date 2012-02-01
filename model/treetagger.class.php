@@ -46,6 +46,7 @@ class treeTagger {
             $tag        = explode ("|",$tag);
             $tag        = $tag[0];
         }
+        $tag            = str_replace(array('"',"'",'!','£','$','%','^','&','*','(',')','}','{','@',':','#','~','/','?','<','>','/','\\','.',',','|','-','=','_','+','¬','`'), '', $tag);
         return $tag;
     }
 
@@ -60,7 +61,7 @@ class treeTagger {
                         $tag    = $line[2];
                 }
                 $tag            = $this->clean_tag($tag);
-                if (is_not_null($tag)) {
+                if (is_not_null($tag) && strlen($tag) > 2) {
                     if (isset( $this->sorted_tagger_result[$tag])) {
                             $this->sorted_tagger_result[$tag]    +=  1;
                     } else {

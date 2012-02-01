@@ -42,8 +42,8 @@ body, #body {
             <br />
         </form>
         <p>
-            <a href="<?php echo $vars['url']?>account/forgotten_password.php"><?php echo elgg_echo('user:password:lost')?></a>
-            <?php echo ($register_enabled == 1) ? " | <a href=\"{$vars['url']}pg/register/\"><span class=''>" . elgg_echo('register') . "</span></a> " : ""?>
+            <a href="<?php echo $vars['url']?>forgotpassword"><?php echo elgg_echo('user:password:lost')?></a>
+            <?php echo ($register_enabled == 1) ? " | <a href=\"{$vars['url']}register/\"><span class=''>" . elgg_echo('register') . "</span></a> " : ""?>
         </p>
     </div>
     <div class="headline">

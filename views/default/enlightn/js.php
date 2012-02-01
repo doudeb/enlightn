@@ -442,11 +442,11 @@ $(document).ready(function(){
         if($(this).parent().hasClass('private')) {
             $(this).parent().removeClass('private');
             $(this).parent().addClass('public');
-            $('#membership').val(<?php echo ACCESS_PUBLIC?>);
+            $('#membership').val(<?php echo ENLIGHTN_ACCESS_PUBLIC?>);
         } else {
             $(this).parent().removeClass('public');
             $(this).parent().addClass('private');
-            $('#membership').val(<?php echo ACCESS_PRIVATE?>);
+            $('#membership').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
         }
     });
     $('#autoReply').click(function () {
@@ -570,7 +570,7 @@ $(document).ready(function(){
             $('#' + tokenInputName).tokenInput("clear");
             $('#privacy_cursor').parent().removeClass('public');
 			$('#privacy_cursor').parent().addClass('private');
-			$('#membership').val(<?php echo ACCESS_PRIVATE?>);
+			$('#membership').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
             $(".dialog-overlay").css('display','none');
             $('#user_suggest').html('');
             if ($('#forwardActionButton').css('display') === 'block') {
@@ -605,7 +605,7 @@ $(document).ready(function(){
             $('#' + tokenInputName).tokenInput("clear");
             $('#privacy_cursor').parent().removeClass('public');
 			$('#privacy_cursor').parent().addClass('private');
-			$('#membership').val(<?php echo ACCESS_PRIVATE?>);
+			$('#membership').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
             $('#clonedMessages').html('');
             $('#tags-result').html('');
             $(".dialog-overlay").css('display','none');

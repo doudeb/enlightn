@@ -60,6 +60,8 @@ function enlightn_init() {
     elgg_register_event_handler('login', 'user','enlightn_verify_user_site_guid');
     // do we need to overrule default email notifications
     register_notification_handler("email", "html_email_handler_notification_handler");
+    verify_last_forward();
+
 }
 function new_index($hook, $type, $return, $params) {
 	if (isloggedin()) {
@@ -74,7 +76,7 @@ function new_index($hook, $type, $return, $params) {
 }
 
 
-register_elgg_event_handler('init','system','enlightn_init');
+elgg_register_event_handler('init','system','enlightn_init');
 // Look if required profile fiels have been created
 
 /**
@@ -172,6 +174,8 @@ function enlightn_verify_user_site_guid($login, $user, ElggUser $user) {
     if ($site === null || $site === false) {
         $site = (int) datalist_get('default_site');
     }
-    if($user->isAdmin()) return true;
-    return $user->site_guid == $site;
+    if ($user->site_guid == $site || $user->isAdmin()) {
+        return true;
+    }
+    return false;
 }

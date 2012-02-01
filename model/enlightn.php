@@ -48,14 +48,15 @@ Order By e.time_created desc";
 		$where	= array();
         $having = array();
 		$group	= array();
-        $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null);
+        $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null)?elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null):1;
+
         $where[]= "And ent.site_guid = " . $this->site_guid;
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1
 			default:
 				$force[] = "#Force Index (idx_annotations_time)";
-				$where[] = "And ent.access_id = " . ACCESS_PUBLIC;
+				$where[] = "And ent.access_id = " . ENLIGHTN_ACCESS_PUBLIC;
 				break;
 			case 2:#Private Followed And Public Folowed 2
 				$force[] = "#Force Index (idx_annotations_time)";
@@ -68,9 +69,9 @@ Order By e.time_created desc";
 				$where[] = "";
 				break;
 			case 4:#Private Folowed or Public 4
-				//$join[] = "Left Join entity_relationships As rel_all On a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And a.access_id  = " . ACCESS_PRIVATE;
-                $where[] = "And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where ent.guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And ent.access_id  = " . ACCESS_PRIVATE . ")
-                                  Or ent.access_id  = " . ACCESS_PUBLIC . ')';
+				//$join[] = "Left Join entity_relationships As rel_all On a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And a.access_id  = " . ENLIGHTN_ACCESS_PRIVATE;
+                $where[] = "And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where ent.guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And ent.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
+                                  Or ent.access_id  = " . ENLIGHTN_ACCESS_PUBLIC . ')';
 				break;
 			case 5:#Invited aka request 5
 				#$force[] = "Force Index (idx_annotations_time)";
@@ -202,7 +203,7 @@ Order By e.time_created desc";
 		,a.entity_guid
 From annotations a
 Inner Join entities ent On a.entity_guid = ent.guid
-Where a.access_id  = " . ACCESS_PUBLIC . "
+Where a.access_id  = " . ENLIGHTN_ACCESS_PUBLIC . "
 $where
 And Not Exists (Select rel.id
 					From entity_relationships As rel
@@ -222,7 +223,7 @@ Inner Join entity_relationships As rel On a.entity_guid = rel.guid_two
 Left Join entity_relationships As rel_readed On a.id = rel_readed.guid_two
 												And rel_readed.guid_one = $user_guid
 												And rel_readed.relationship = '" . ENLIGHTN_READED . "'
-Where a.access_id  = " . ACCESS_PRIVATE . "
+Where a.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . "
 And rel_readed.id Is Null
 $where
 Limit 150)
@@ -238,7 +239,7 @@ Inner Join entity_relationships As rel On a.entity_guid = rel.guid_two
 Left Join entity_relationships As rel_readed On a.id = rel_readed.guid_two
 												And rel_readed.guid_one = $user_guid
 												And rel_readed.relationship = '" . ENLIGHTN_READED . "'
-Where a.access_id  in (" . ACCESS_PRIVATE . "," . ACCESS_PUBLIC . ")
+Where a.access_id  in (" . ENLIGHTN_ACCESS_PRIVATE . "," . ENLIGHTN_ACCESS_PUBLIC . ")
 And rel_readed.id Is Null
 $where
 Limit 150)
@@ -337,8 +338,8 @@ Where ent.subtype = $file_subtype_id #File type
 And  (
 		Case
             When ent.owner_guid = $user_guid Then True
-			When ent.access_id = " . ACCESS_PUBLIC . " Then True
-			When ent.access_id = " . ACCESS_PRIVATE . " Then
+			When ent.access_id = " . ENLIGHTN_ACCESS_PUBLIC . " Then True
+			When ent.access_id = " . ENLIGHTN_ACCESS_PRIVATE . " Then
 				Exists(Select rel_follow.id
 						From entity_relationships rel_embed
 						Inner Join annotations a On rel_embed.guid_two = a.id
@@ -447,18 +448,18 @@ Limit $offset,$limit";
         }
         $query = "Select a.entity_guid
                     From annotations a
+                    Inner Join entities ent On a.entity_guid = ent.guid And ent.site_guid = " . $this->site_guid . "
                     Inner Join entity_relationships As rel_embed On a.id = rel_embed.guid_two And rel_embed.relationship = '" . ENLIGHTN_EMBEDED . "'
                     Where (Exists (Select id From entity_relationships As rel_all Where a.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '" . ENLIGHTN_FOLLOW . "' And a.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
                            Or Exists (Select id From entity_relationships As rel_all Where a.entity_guid = rel_all.guid_one And rel_all.guid_two = $user_guid And rel_all.relationship = '" . ENLIGHTN_INVITED . "' And a.access_id  = 0)
-                           Or a.access_id  = " . ACCESS_PUBLIC . ")
+                           Or a.access_id  = " . ENLIGHTN_ACCESS_PUBLIC . ")
                     And rel_embed.guid_one = $guid
                     Limit 1";
-        //echo "<pre>"; die($query);
 		return  get_data($query);
 
     }
     public function get_tags ($user_guid, $tags_name = false, $mode = false, $limit = 10) {
-        $tags_meta_id = get_metastring_id('tags');
+        $tags_meta_id = get_metastring_id('tags')?get_metastring_id('tags'):0;
         $select = ", tag_used.owner_guid";
         if (is_array($tags_name)) {
             $tags_name = implode("','", $tags_name);
@@ -466,15 +467,14 @@ Limit $offset,$limit";
         } else {
             $where = " And tag_name.string != ''";
         }
-
         if ($user_guid) {
             $where .= " And tag_used.owner_guid = $user_guid ";
         }
 
         if ($mode == 'trending' && $user_guid) {
             $where = " And tag_name.string != ''
-                        And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where tag_used.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And tag_used.access_id  = " . ACCESS_PRIVATE . ")
-                                  Or tag_used.access_id  = " . ACCESS_PUBLIC . ')
+                        And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where tag_used.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And tag_used.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
+                                  Or tag_used.access_id  = " . ENLIGHTN_ACCESS_PUBLIC . ')
                         And tag_used.time_created Between (UNIX_TIMESTAMP()-(7*24*60*60)) And UNIX_TIMESTAMP()';
             $select = "";
         }
@@ -484,6 +484,7 @@ Limit $offset,$limit";
                             , count(tag_used.id) as total
                     From metadata tag_used
                     Inner Join metastrings tag_name On tag_used.value_id = tag_name.id And tag_used.name_id = $tags_meta_id
+                    Inner Join entities ent On tag_used.entity_guid = ent.guid And ent.site_guid = " . $this->site_guid . "
                     Where 1
                     $where
                     Group By tag_name.string

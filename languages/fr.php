@@ -81,6 +81,8 @@
 			,'enlightn:titlefile' => 'Titre du document'
 			,'enlightn:tagsfile' => 'Mots-clés'
 			,'enlightn:uploadembed' => 'Joindre à la discussion'
+            ,'enlightn:editmytitle' => 'Modifier'
+            ,'enlightn:editkeyword' => 'Editer les mots cléfs'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Lus'

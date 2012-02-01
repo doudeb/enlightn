@@ -18,7 +18,7 @@
 		$container_guid = get_loggedin_userid();
 	}
 	$guid = (int) get_input('file_guid');
-	$tags = get_input("tags");
+	$tags = get_input("filetags");
 
 	// check whether this is a new file or an edit
 	$new_file = true;
@@ -154,15 +154,6 @@
 	if ($new_file) {
 		if ($guid) {
             generate_preview($file->guid);
-            $file_description = doc_to_txt($file);
-            if ($file_description) {
-                $file->annotate(ENLIGHTN_DISCUSSION, $file_description, $file->access_id);
-                $tags = tag_text($file_description);
-                if(is_array($tags)) {
-                    $tags = array_keys($tags);
-                    $file->tags = $tags;
-                }
-            }
 			add_to_river('river/object/file/create', 'create', get_loggedin_userid(), $file->guid);
             echo elgg_view('enlightn/new_link', array('type' => $file->simpletype, 'link' => $file->filename . '?fetched=1', 'guid' => $file->guid, 'title'=>$file->title));
 

@@ -82,6 +82,8 @@
 			,'enlightn:titlefile' => 'File title'
 			,'enlightn:tagsfile' => 'Tags'
 			,'enlightn:uploadembed' => 'Upload a document to the discussion'
+			,'enlightn:editmytitle' => 'Edit title'
+            ,'enlightn:editkeyword' => 'Edit keyword'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Read'

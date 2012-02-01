@@ -25,5 +25,3 @@ if (is_array($tags)) {
 }
 
 echo json_encode($json_return);
-
-
