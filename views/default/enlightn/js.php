@@ -83,6 +83,7 @@ function loadResults (task, data, textStatus, XMLHttpRequest) {
     if (typeof lastModified != 'undefined') {
         $('<input />', {
             'id' : 'lastModified' + queryUid
+            ,'name': 'lastModified'
             ,'type': 'hidden'
             ,'value' : lastModified}).insertAfter(task.item);
     }
@@ -238,8 +239,15 @@ function get_search_criteria () {
 		$('#discussion_type').val(discussion_type);
 		$('#see_more_discussion_list_offset').val(0);
 		if (currElement == '#discussion_selector_sent') {
-			$('input[name="from_users"]').val('<?php echo get_loggedin_userid()?>');
+			$('input[name="from_users"]').val('<?php echo elgg_get_logged_in_user_guid()?>');
 		}
+        //reseting all searching crits
+        $('#subtype_checked').val('');
+        $('#searchInput').val('');
+        $('input[name="from_users"]').val('');
+        $('#date_end').val('');
+        $('#date_begin').val('');
+
 		loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria());
 		$(currElement).addClass('current');
 		$(currElement + '_tabs').addClass('current');
@@ -458,14 +466,13 @@ $(document).ready(function(){
 	});
 	$('#selectNone').click( function(){
 		$("#discussion_list_container li").each(function () {
-			if($(this).find('.statusbar').find(':checkbox').is(':checked')) {
-				$(this).find('.statusbar').find(':checkbox').attr('checked', 'false');
-			}
+            $(this).find('.statusbar').find(':checkbox').attr('checked', false);
 		});
 
 	});
 	$('#selectUnread').click( function(){
 		$("#discussion_list_container li").each(function () {
+            $(this).find('.statusbar').find(':checkbox').attr('checked', false);
 			if(!$(this).hasClass('read')) {
 				$(this).find('.statusbar').find(':checkbox').attr('checked', !$(this).find('.statusbar').find(':checkbox').is(':checked'));
 			}
@@ -474,6 +481,7 @@ $(document).ready(function(){
 	});
 	$('#selectRead').click( function(){
 		$("#discussion_list_container li").each(function () {
+            $(this).find('.statusbar').find(':checkbox').attr('checked', false);
 			if($(this).hasClass('read')) {
 				$(this).find('.statusbar').find(':checkbox').attr('checked', !$(this).find('.statusbar').find(':checkbox').is(':checked'));
 			}

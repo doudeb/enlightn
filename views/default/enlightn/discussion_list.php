@@ -10,6 +10,7 @@ $url_follow			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/fol
                             <ul>
                                 <li id="selectRead"><?php echo elgg_echo("enlightn:read")?></li>
                                 <li id="selectUnread"><?php echo elgg_echo("enlightn:unread")?></li>
+                                <li id="selectNone"><?php echo elgg_echo("enlightn:selectnone")?></li>
                             </ul>
                         </li>
                         <li><?php echo elgg_echo("enlightn:action")?><span class="arrow"></span>

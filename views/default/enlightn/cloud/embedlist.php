@@ -11,7 +11,7 @@ $tags			= $file->getTags();
                             <div class="cloud_thumb"><?php echo elgg_view("enlightn/cloud/icon", array("mimetype" => $file->mimetype, 'thumbnail' => $file->thumbnail, 'file_guid' => $file->guid, 'size' => 'small')); ?></div>
                             <div class="excerpt" id="excerpt<?php echo $file->guid; ?>">
                                 <h3><?php echo $file->title?></h3>
-                                <?php if(get_context() == 'cloud_embed') {?>
+                                <?php if(elgg_get_context() == 'cloud_embed') {?>
                                     <span class="follow send-msg embeder" id="<?php echo $file->guid; ?>">&nbsp;<?php echo elgg_echo('enlightn:attach')?></span>
                                 <?php } else { ?>
                                     <span class="follow send-msg embederToNew" id="<?php echo $file->guid; ?>">&nbsp;<?php echo elgg_echo('enlightn:attachtoanewdiscussion')?></span>

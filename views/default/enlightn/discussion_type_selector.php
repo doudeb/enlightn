@@ -1,7 +1,7 @@
 <?php
 global $enlightn;
 $unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
-$tags       = $enlightn->get_tags(get_loggedin_userid(),false,'trending');
+$tags       = $enlightn->get_tags(elgg_get_logged_in_user_guid(),false,'trending');
 ?>
   			<ol class="folders">
        			<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PU?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_<?php echo ENLIGHTN_ACCESS_PU?>', <?php echo ENLIGHTN_ACCESS_PU?>);" href="#"><?php echo elgg_echo('enlightn:public'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_PU)?></a></li>

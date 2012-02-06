@@ -5,6 +5,6 @@
  * and open the template in the editor.
  */
 
-if (get_context() !== 'enlightn:settings') {
+if (elgg_get_context() !== 'enlightn:settings') {
     forward('enlightn/settings/');
 }

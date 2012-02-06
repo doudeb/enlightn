@@ -2,7 +2,7 @@
 $user               = $vars['user'];
 $settings           = $vars['settings'];
 $current            = $vars['current'];
-$email_activated    = get_plugin_setting('email_activated','enlightn');
+$email_activated    = elgg_get_plugin_setting('email_activated','enlightn');
 global $sn_linkers;
 $sn_linkers_select[0] = elgg_echo('enlightn:selectasociallink');
 foreach ($sn_linkers as $key => $name) {
@@ -13,7 +13,7 @@ foreach ($sn_linkers as $key => $name) {
 
 ?>
 	<div id="settings">
-        <img class="big-photo" src="<?php echo $user->getIcon('large')?>" />
+        <img class="big-photo" src="<?php echo $user->getIconURL('large')?>" />
 	    <div class="header">
             <p><h1><?php echo sprintf(elgg_echo('enlightn:settingsheader'),$user->name)?></h1></p>
         </div>
@@ -39,7 +39,7 @@ foreach ($sn_linkers as $key => $name) {
                 if ($user->language) {
                     $value = $user->language;
                 }
-                $form_body .= elgg_view("input/pulldown", array('internalname' => 'language', 'value' => $value, 'options_values' => get_installed_translations())) . '</p>';
+                $form_body .= elgg_view("input/dropdown", array('name' => 'language', 'value' => $value, 'options_values' => get_installed_translations())) . '</p>';
                 $form_body .= '<p><button type="submit" class="submit">' . elgg_echo("enlightn:buttonpost") . '</button></p>';
 
                 echo elgg_view('input/form', array('action' => "{$vars['url']}action/usersettings/save", 'body' => $form_body));
@@ -63,8 +63,8 @@ foreach ($sn_linkers as $key => $name) {
                 <p><label>' . elgg_echo('profile:department') . '</label> <input type="text" name="department"  value="' . $settings['department'] . '" /></p>
                 <p><label>' . elgg_echo('profile:location') . '</label> <input type="text" name="location"  value="' . $settings['location'] . '" /></p>';
 
-                $form_body .= '<p><label>' . elgg_echo('profile:timezone') . '</label>' . elgg_view("input/pulldown", array('internalname' =>  'timezone', 'options_values' => get_time_zone(), 'value'=>$settings['timezone'])) . '</p>';
-                $form_body .= '<p><label>' . elgg_echo('profile:addasociallink') . '</label>' . elgg_view("input/pulldown", array('internalname' => 'socialLinkAdd','internalid' => 'socialLinkAdd', 'options_values' => $sn_linkers_select)) . '</p>';
+                $form_body .= '<p><label>' . elgg_echo('profile:timezone') . '</label>' . elgg_view("input/dropdown", array('name' =>  'timezone', 'options_values' => get_time_zone(), 'value'=>$settings['timezone'])) . '</p>';
+                $form_body .= '<p><label>' . elgg_echo('profile:addasociallink') . '</label>' . elgg_view("input/dropdown", array('name' => 'socialLinkAdd','id' => 'socialLinkAdd', 'options_values' => $sn_linkers_select)) . '</p>';
                 foreach ($sn_linkers as $key => $name) {
                     if (isset($settings[$name]) && !empty ($settings[$name])) {
                         $form_body .= '<p><label><img class="photo_linker" src="' .  $vars['url'] . 'mod/enlightn/media/graphics/linker/' . $name . '.png"  /></label> <input type="text" name="' . $name . '" value="' . $settings[$name] . '" /></p>';
@@ -112,7 +112,7 @@ foreach ($sn_linkers as $key => $name) {
                      </select>
                      <input type="text" size="4" name="emailport"  id="emailport" value="' . ($settings['emailport']?$settings['emailport']:'143') . '" style="width:25px"/></p></p>
                      <p><button type="submit" class="submit">' . elgg_echo("enlightn:buttonpost") . '</button></p>';
-                     echo elgg_view('input/form', array('action' => "{$vars['url']}action/enlightn/profile_edit", 'body' => $form_body, 'internalid' => 'email1'));
+                     echo elgg_view('input/form', array('action' => "{$vars['url']}action/enlightn/profile_edit", 'body' => $form_body, 'id' => 'email1'));
                      ?>
             </div>
 	</div><!-- end profile -->

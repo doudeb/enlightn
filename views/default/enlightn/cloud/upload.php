@@ -1,5 +1,5 @@
 <?php
-	echo elgg_view('enlightn/cloud/tabs',array('tab' => 'upload', 'internalname'=>$vars['internalname']));
+	echo elgg_view('enlightn/cloud/tabs',array('tab' => 'upload', 'internalname'=>$vars['name']));
 	if (!elgg_view_exists('file/upload')) {
 		echo "<p>" . elgg_echo('embed:file:required') . "</p>";
 	} else {

@@ -8,14 +8,16 @@ $url 			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?di
 		$('#follow<?php echo $vars['entity']->guid?>').click( function(){
 			loadContent("#loader",'<?php echo $url ?>');
 			$(this).toggleClass("unfollow");
+            $('input[name="lastModified"]').val('');
 		});
 		$('#ignore<?php echo $vars['entity']->guid?>').click( function(){
 			loadContent("#loader",'<?php echo $url ?>&ignore=1');
 			$(this).toggle();
+            $('input[name="lastModified"]').val('');
 		});
 	});
 </script>
-<?php if ($is_follow && in_array(get_context(), array('discuss'))) {?>
+<?php if ($is_follow && in_array(elgg_get_context(), array('discuss'))) {?>
 <span class="discussion-action">
     <span class="discussion-action-val"></span>
     <span class="ico"></span>
@@ -32,7 +34,7 @@ $url 			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?di
     <span class="followed-val"><?php echo elgg_echo("enlightn:bunttonfollowed"); ?></span>
 </span>
 <?php
-if ($is_invited && in_array(get_context(), array(ENLIGHTN_INVITED,'discuss'))) {?>
+if ($is_invited && in_array(elgg_get_context(), array(ENLIGHTN_INVITED,'discuss'))) {?>
 <span class="follow ignore" id="ignore<?php echo $vars['entity']->guid?>">
     <span class="ico"></span>
     <span class="unfollow-val"><?php echo elgg_echo("enlightn:buttonignore")?></span>

@@ -1,7 +1,7 @@
 <div id="main">
 	<div id="cloud">
 	    <div class="header">
-	    	<?php if (get_context() != 'cloud_embed') { ?>
+	    	<?php if (elgg_get_context() != 'cloud_embed') { ?>
                 <div id="join">
                     <button class="submit" type="submit"><?php echo elgg_echo('enlightn:cloudnew');?></button>
                 </div>
@@ -27,13 +27,13 @@ $(document).ready(function(){
 	$("#cloud_previous").click(function(){
 		if ($('#see_more_discussion_list_offset').val() > 0) {
 			$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())-10);
-  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo get_context()?>' + get_search_criteria());
+  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
 		}
 	  	return false;
 	});
 	$("#cloud_next").click(function(){
 		$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())+10);
-  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo get_context()?>' + get_search_criteria());
+  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
 
 	  	return false;
 	});

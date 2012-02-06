@@ -1,13 +1,3 @@
-
-	function elggUpdateContent(content, entityname) {
-		content = ' ' + content + ' ';
-		<?php
-			echo elgg_view('embed/addcontentjs');
-		?>
-		$.facebox.close();
-	}
-
-
 /*
  * Facebox (for jQuery)
  * version: 1.2 (05/05/2008)

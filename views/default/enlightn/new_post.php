@@ -7,8 +7,8 @@
 				<form id="add_post" action="<?php echo $vars['url']; ?>action/enlightn/addpost" enctype="multipart/form-data" method="post">
 					<?php
 					$url_cloud = $vars['url'] . 'enlightn/cloud/' . $vars['entity']->guid . '/new_post';
-					echo elgg_view('input/longtext',array('internalname' => 'new_post',
-										'internalid' => 'new_post'
+					echo elgg_view('input/longtext',array('name' => 'new_post',
+										'id' => 'new_post'
 										, 'url_cloud' => $url_cloud)); ?>
 					<input type="hidden" name="topic_guid" value="<?php echo $vars['entity']->guid; ?>" />
 					<input type="hidden" name="group_guid" value="<?php echo $vars['entity']->container_guid; ?>" />

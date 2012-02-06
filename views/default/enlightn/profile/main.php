@@ -6,7 +6,7 @@ $tags       = $vars['tags'];
 
 <div id="main">
 	<div id="profile">
-	    <img class="big-photo" src="<?php echo $user->getIcon('large')?>" />
+	    <img class="big-photo" src="<?php echo $user->getIconURL('large')?>" />
 	    <div class="header">
 			<p><h2><?php echo $user->name?></h2></p>
 			<p><h3><?php echo $settings['jobtitle']?></h3></p>

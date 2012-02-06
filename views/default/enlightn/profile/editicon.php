@@ -24,7 +24,7 @@
 	<label><?php echo elgg_echo('profile:currentavatar'); ?></label>
 	<?php
 
-		$user_avatar = $currentuser->getIcon('medium');
+		$user_avatar = $currentuser->getIconURL('medium');
 		echo "<img src=\"{$user_avatar}\" alt=\"avatar\" />";
 
 	?>
@@ -39,7 +39,7 @@
 
 		<?php
 
-			echo elgg_view("input/file",array('internalname' => 'profileicon'));
+			echo elgg_view("input/file",array('name' => 'avatar'));
 		?>
 		<br /><input type="submit" class="submit_button" value="<?php echo elgg_echo("upload"); ?>" />
 	</p>
@@ -55,7 +55,7 @@
 
     //display the current user photo
 
-    $user_master_image = $currentuser->getIcon('master');
+    $user_master_image = $currentuser->getIconURL('master');
 
 ?>
 </p>

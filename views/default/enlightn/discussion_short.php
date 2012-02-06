@@ -9,7 +9,7 @@
 
 //retreive the last comment
 disable_right($vars['entity']->guid);
-$post 				= get_annotation($vars['entity']->id);
+$post 				= elgg_get_annotation_from_id($vars['entity']->id);
 $flag_readed 		= elgg_view("enlightn/message_unreaded", array('entity' => $vars['entity']));
 $flag_folowed 		= check_entity_relationship($vars['user_guid'], ENLIGHTN_FOLLOW,$post->entity_guid);
 $flag_favorite 		= check_entity_relationship($vars['user_guid'], ENLIGHTN_FAVORITE,$post->entity_guid);
@@ -41,9 +41,6 @@ $short_title    	= substr($entity->title,0,55);
                             <p><?php echo enlightn_search_highlight_words($vars['query'],$short_description);?></p>
                         </div>
                     </li>
-	<?php //echo elgg_view("enlightn/count_unreaded", array('entity' => $vars['entity'], 'discussion_unreaded' => $vars['discussion_unreaded']));?>
-
-
 <script>
 		$("#excerpt<?php echo $post->entity_guid; ?>").click( function(){
 			$(location).attr('href','<?php echo $vars['url'] ?>enlightn/discuss/<?php echo $vars['entity']->guid; ?>');

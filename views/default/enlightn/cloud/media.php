@@ -15,7 +15,7 @@ $(".embederToNew").click(function(){
 });
 </script>
 <?php
-	$context = get_context();
+	$context = elgg_get_context();
 	$entities = $vars['entities'];
 	if (is_array($entities) && !empty($entities)) {
 
