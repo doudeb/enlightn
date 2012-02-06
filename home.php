@@ -3,7 +3,7 @@ include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 //Some basic var
 gatekeeper();
 global $enlightn;
-$user_guid 				= get_loggedin_userid();
+$user_guid 				= elgg_get_logged_in_user_guid();
 $user_ent				= get_user($user_guid);
 $discussion_unreaded	= $enlightn->count_unreaded_discussion($user_guid);
 $discussion_type        = get_input('discussion_type',1);
@@ -47,4 +47,4 @@ unset($discussion_type_selector);
 //Compile into a layout
 $body = $left . $right;
 // Display page
-page_draw(elgg_echo('enlightn:main'),$body);
+echo elgg_view_page(elgg_echo('enlightn:main'),$body,'enlightn');

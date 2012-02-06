@@ -16,9 +16,9 @@ $widgettypes = get_widget_types();
 $owner = page_owner_entity();
 
 
-$area1widgets = get_widgets(page_owner(),get_context(),1);
-$area2widgets = get_widgets(page_owner(),get_context(),2);
-$area3widgets = get_widgets(page_owner(),get_context(),3);
+$area1widgets = get_widgets(page_owner(),elgg_get_context(),1);
+$area2widgets = get_widgets(page_owner(),elgg_get_context(),2);
+$area3widgets = get_widgets(page_owner(),elgg_get_context(),3);
 
 if (empty($area1widgets) && empty($area2widgets) && empty($area3widgets)) {
 	if (isset($vars['area3'])) {
@@ -81,7 +81,7 @@ if ($owner && $owner->canEdit()) {
 	<td colspan="2" align="left" valign="top">
 
 	<?php
-	if(get_context() == "profile"){
+	if(elgg_get_context() == "profile"){
 	?>
 			<h2 class="profile_box"><?php echo elgg_echo("widgets:profilebox"); ?></h2>
 			<div id="profile_box_widgets">
@@ -95,7 +95,7 @@ if ($owner && $owner->canEdit()) {
 
 	<td rowspan="2" align="left" valign="top">
 		<h2><?php echo elgg_echo("widgets:rightcolumn"); ?></h2>
-		<div id="rightcolumn_widgets" <?php if(get_context() == "profile")echo "class=\"long\""; ?>>
+		<div id="rightcolumn_widgets" <?php if(elgg_get_context() == "profile")echo "class=\"long\""; ?>>
 		<?php
 			$rightcolumn_widgets = "";
 			if (is_array($area3widgets) && sizeof($area3widgets) > 0) {
@@ -234,7 +234,7 @@ if ($owner && $owner->canEdit()) {
 <textarea style="display:none" name="debugField2" id="debugField2"><?php echo $middlecolumn_widgets; ?></textarea>
 <textarea style="display:none" name="debugField3" id="debugField3"><?php echo $rightcolumn_widgets; ?></textarea>
 
-<input type="hidden" name="context" value="<?php echo get_context(); ?>" />
+<input type="hidden" name="context" value="<?php echo elgg_get_context(); ?>" />
 <input type="hidden" name="owner" value="<?php echo page_owner(); ?>" />
 
 <?php
@@ -269,7 +269,7 @@ $token = generate_action_token($ts);
 	</td>
 	<td rowspan="2" align="left" valign="top" height="100%">
 		<?php
-		if (get_loggedin_userid() == page_owner()) {
+		if (elgg_get_logged_in_user_guid() == page_owner()) {
 		?>
 		<!-- customise page button -->
 		<a href="javascript:void(0);" class="toggle_customise_edit_panel"><?php echo(elgg_echo('dashboard:configure')); ?></a>

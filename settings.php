@@ -5,7 +5,7 @@ include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 //Some basic var
 gatekeeper();
 global $enlightn, $profile_settings,$sn_linkers;
-$user_guid 				= get_loggedin_userid();
+$user_guid 				= elgg_get_logged_in_user_guid();
 $user   				= get_user($user_guid);
 $current				= get_input('tab');
 
@@ -22,4 +22,4 @@ $right .= $search_filters ."</div>";
 unset($search_filters);
 $body = $left . $right;
 
-page_draw(elgg_echo('enlightn:settings'),$body);
+echo elgg_view_page(elgg_echo('enlightn:settings'),$body,'enlightn');

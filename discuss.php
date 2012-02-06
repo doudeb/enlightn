@@ -2,7 +2,7 @@
 include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 //Some basic var
 gatekeeper();
-$user_guid 			= get_loggedin_userid();
+$user_guid 			= elgg_get_logged_in_user_guid();
 $user_ent			= get_user($user_guid);
 $guid               = get_input('entity_guid');
 global $enlightn;
@@ -50,14 +50,4 @@ unset($discussion_shortcut);
 //Compile into a layout
 $body 				= $left . $right;
 // Display page
-page_draw(elgg_echo('enlightn:main'),$body);
-
-switch ($variable) {
-    case $value:
-
-
-        break;
-
-    default:
-        break;
-}
+echo elgg_view_page(elgg_echo('enlightn:main'),$body,'enlightn');

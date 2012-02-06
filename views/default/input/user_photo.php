@@ -21,5 +21,5 @@ if ($is_online) {
 ?>
 
 <a href="<?php echo $vars['url']?>enlightn/profile/<?php echo $user_ent->username?>" target="_blank">
-    <img class="<?php echo $class?>" src="<?php echo $user_ent->getIcon()?>" title="<?php echo $user_ent->name?><?php echo $is_online?' / Online':''?>" />
+    <img class="<?php echo $class?>" src="<?php echo $user_ent->getIconURL()?>" title="<?php echo $user_ent->name?><?php echo $is_online?' / Online':''?>" />
 </a>

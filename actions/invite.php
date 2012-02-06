@@ -15,7 +15,7 @@ $url = $CONFIG->wwwroot . "pg/enlightn";
 // Get input data
 $userto 			= get_input('invite');
 $userto				= parse_user_to($userto);
-$user 				= get_loggedin_userid();
+$user 				= elgg_get_logged_in_user_guid();
 $guid               = get_input('discussion_guid');
 disable_right($guid);
 $enlightndiscussion = get_entity($guid);

@@ -2824,7 +2824,9 @@ form #clonedMessages {
 }
 
 #login-box .loginbox input,
-#login .box input {
+#login .box input[type='text'] ,
+#login .box input[type='password'] ,
+#login .box input[type='checkbox'] {
     background-color:#fff;
     border:1px solid #bbb;
     -moz-border-radius:5px;
@@ -2836,22 +2838,6 @@ form #clonedMessages {
     box-shadow:inset 1px 1px 4px #ccc;
     font-size:200%;
     margin : 10px;
-}
-
-#login .box input[type='submit'] {
-    background-position: 0 -411px;
-    border: 1px solid #8eac15;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    -khtml-border-radius:3px;
-    border-radius:3px;
-    color: #FFFFFF;
-    font-size: 116%;
-    font-weight: bold;
-    margin-left: 10px;
-    outline:none;
-    padding: 3px 15px;
-    text-shadow: 1px 1px 1px #43520A;
 }
 
 
@@ -4495,4 +4481,9 @@ div.usericon a.icon img {
 
 fieldset {
     border : none;
+}
+
+.elgg-page-header,
+.elgg-page-footer {
+    display : none;
 }

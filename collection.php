@@ -21,7 +21,7 @@ switch ($action) {
 	default:
 		$title = elgg_echo('friends:collections');
 		$content = elgg_view_title($title);
-		$content .= enlightn_view_access_collections(get_loggedin_userid());
+		$content .= enlightn_view_access_collections(elgg_get_logged_in_user_guid());
 	break;
 }
 

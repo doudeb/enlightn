@@ -442,7 +442,7 @@ Limit $offset,$limit";
 	}
 
     public function is_embeded_and_followed ($guid) {
-        $user_guid = get_loggedin_userid();
+        $user_guid = elgg_get_logged_in_user_guid();
         if (!$user_guid) {
             return false;
         }
@@ -464,18 +464,13 @@ Limit $offset,$limit";
         if (is_array($tags_name)) {
             $tags_name = implode("','", $tags_name);
             $where = " And tag_name.string In ('$tags_name')";
-        } else {
-            $where = " And tag_name.string != ''";
         }
         if ($user_guid) {
             $where .= " And tag_used.owner_guid = $user_guid ";
         }
 
         if ($mode == 'trending' && $user_guid) {
-            $where = " And tag_name.string != ''
-                        And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where tag_used.entity_guid = rel_all.guid_two And rel_all.guid_one = $user_guid And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And tag_used.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
-                                  Or tag_used.access_id  = " . ENLIGHTN_ACCESS_PUBLIC . ')
-                        And tag_used.time_created Between (UNIX_TIMESTAMP()-(7*24*60*60)) And UNIX_TIMESTAMP()';
+            $where = ' And tag_used.time_created Between (UNIX_TIMESTAMP()-(7*24*60*60)) And UNIX_TIMESTAMP()';
             $select = "";
         }
 
@@ -485,7 +480,9 @@ Limit $offset,$limit";
                     From metadata tag_used
                     Inner Join metastrings tag_name On tag_used.value_id = tag_name.id And tag_used.name_id = $tags_meta_id
                     Inner Join entities ent On tag_used.entity_guid = ent.guid And ent.site_guid = " . $this->site_guid . "
-                    Where 1
+                    Where tag_name.string != ''
+                        And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where tag_used.entity_guid = rel_all.guid_two And rel_all.guid_one = " . elgg_get_logged_in_user_guid() . " And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And tag_used.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
+                                  Or tag_used.access_id  = " . ENLIGHTN_ACCESS_PUBLIC . ")
                     $where
                     Group By tag_name.string
                             $select

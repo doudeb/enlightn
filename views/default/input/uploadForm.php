@@ -6,7 +6,7 @@
             <?php echo elgg_echo('enlightn:uploadyourfile')?>
         </span>
             <?php
-            if (get_context() != 'cloud') {
+            if (elgg_get_context() != 'cloud') {
             ?>
             <span class="caption cloud_access"><a href="<?php echo $vars['url']; ?>enlightn/cloud/cloud_embed" rel="[facebox]" rev="iframe|1600" id="cloudLink"><?php echo elgg_echo("enlightn:uploadcloud"); ?></a></span>
             <?php
@@ -17,7 +17,7 @@
             <h2 id="filetitle_preview"></h2> <span id="editmytitle" class="caption cloud_access"><?php echo elgg_echo("enlightn:editmytitle"); ?></span>
 			<input type="text" placeholder="<?php echo elgg_echo('enlightn:titlefile')?>" name="title" id="filetitle"/>
 	        <?php
-	        	echo elgg_view('input/hidden', array('internalname' => 'access_id','value' => $access_id));
+	        	echo elgg_view('input/hidden', array('name' => 'access_id','value' => $access_id));
    				echo elgg_view('input/securitytoken');
 	        ?>
 	        <div class="new-bloc" id="submitBloc">
@@ -30,11 +30,11 @@
                     <span class="ico"></span>
                     <span class="caption" id="add-tags-file"><?php echo elgg_echo("enlightn:tags") ?></span>
                     <span id="tags-input-file">&nbsp;<?php echo elgg_view("input/tags",array(
-                                                        'internalname' => 'interests-file',
-                                                        'internalid' => 'interests-file'));
+                                                        'name' => 'interests-file',
+                                                        'id' => 'interests-file'));
                                                         echo elgg_view("input/hidden",array(
-                                                        'internalname' => 'filetags',
-                                                        'internalid' => 'filetags')); ?></span>
+                                                        'name' => 'filetags',
+                                                        'id' => 'filetags')); ?></span>
                 </span>
                 <div id="tags-result-file"></div>
             </div>
@@ -183,8 +183,8 @@
                     $('#upload').val('');
                     $('#uploader .tags').toggle();
                     $('#editkeyword').toggle();
-                    <?php if(get_context() == 'cloud') {?>
-                    loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo get_context()?>&' + get_search_criteria());
+                    <?php if(elgg_get_context() == 'cloud') {?>
+                    loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>&' + get_search_criteria());
                     <?php } else { ?>
                     updateRte(data);
                     <?php } ?>

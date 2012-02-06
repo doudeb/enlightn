@@ -4,7 +4,7 @@ include_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php")
 
 //Some basic var
 gatekeeper();
-$user_guid = get_loggedin_userid();
+$user_guid = elgg_get_logged_in_user_guid();
 
 //retreive last activity
 echo elgg_view('enlightn/discussion_edit',array());

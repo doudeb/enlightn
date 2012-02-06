@@ -3,7 +3,7 @@ include_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php")
 
 
 gatekeeper();
-$user_guid 			= get_loggedin_userid();
+$user_guid 			= elgg_get_logged_in_user_guid();
 // get the entity from id
 elgg_get_access_object()->set_ignore_access(true);
 $limit 				= get_input('limit',10);

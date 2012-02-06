@@ -15,7 +15,7 @@
 	$access_id = ACCESS_PRIVATE;
 	$container_guid = (int) get_input('container_guid', 0);
 	if ($container_guid == 0) {
-		$container_guid = get_loggedin_userid();
+		$container_guid = elgg_get_logged_in_user_guid();
 	}
 	$guid = (int) get_input('file_guid');
 	$tags = get_input("filetags");
@@ -154,7 +154,7 @@
 	if ($new_file) {
 		if ($guid) {
             generate_preview($file->guid);
-			add_to_river('river/object/file/create', 'create', get_loggedin_userid(), $file->guid);
+			add_to_river('river/object/file/create', 'create', elgg_get_logged_in_user_guid(), $file->guid);
             echo elgg_view('enlightn/new_link', array('type' => $file->simpletype, 'link' => $file->filename . '?fetched=1', 'guid' => $file->guid, 'title'=>$file->title));
 
 		} else {

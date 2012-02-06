@@ -95,6 +95,7 @@
 			,'enlightn:setasfavorite' => 'Mettre en favori'
 			,'enlightn:removeasfavorite' => 'Supprimer de mes favoris'
 			,'enlightn:showunread' => 'Afficher non lus'
+			,'enlightn:selectnone' => 'Aucun'
 
 			//HOME - SEARCH
 			,'enlightn:search' => 'Recherche'

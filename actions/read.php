@@ -9,7 +9,7 @@
 	gatekeeper();
 	global $CONFIG,$enlightn;
 	$url 				= $CONFIG->wwwroot . "pg/enlightn";
-	$user_guid 			= get_loggedin_userid();
+	$user_guid 			= elgg_get_logged_in_user_guid();
 	$discussion_guid 	= get_input('discussion_guid');
 	// @todo fix for #287
 	// disable access to get entity.

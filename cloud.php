@@ -5,7 +5,7 @@ include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 //Some basic var
 gatekeeper();
 global $enlightn;
-$user_guid 				= get_loggedin_userid();
+$user_guid 				= elgg_get_logged_in_user_guid();
 $user_ent				= get_user($user_guid);
 if (!$user_guid || !$user_ent) {
 	forward();
@@ -18,4 +18,4 @@ $right .= $search_filters ."</div>";
 unset($search_filters);
 $body = $left . $right;
 
-page_draw(elgg_echo('enlightn:cloud'),$body);
+echo elgg_view_page(elgg_echo('enlightn:cloud'),$body,'enlightn');

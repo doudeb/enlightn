@@ -8,7 +8,7 @@
 include_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php");
 gatekeeper();
 
-set_page_owner(get_loggedin_userid());
+set_page_owner(elgg_get_logged_in_user_guid());
 
 $user = get_loggedin_user();
 

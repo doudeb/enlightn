@@ -14,8 +14,8 @@ function enlightn_init() {
     // Extend system CSS with our own styles
     //elgg_extend_view('css', 'enlightn/css');
     elgg_extend_view('page/elements/head','page_elements/header');
-    elgg_extend_view('js/initialise_elgg','enlightn/cloud/js');
-    elgg_extend_view('js/initialise_elgg','enlightn/js');
+    elgg_extend_view('js/elgg','enlightn/cloud/js');
+    elgg_extend_view('js/elgg','enlightn/js');
     elgg_extend_view('profile/editicon','enlightn/helper/redirect');
 	// Try to remove the dashboard page
 	elgg_register_plugin_hook_handler('validate', 'input', 'enlightn_filter_tags');
@@ -86,7 +86,6 @@ elgg_register_event_handler('init','system','enlightn_init');
  */
 function enlightn_page_handler($page) {
 	global $CONFIG,$enlightn;
-
 	if (!isset($page[0])) {
 		$page[0] = 'home';
 	}
@@ -96,13 +95,13 @@ function enlightn_page_handler($page) {
 			break;
 		case "discuss":
 			set_input('entity_guid', $page[1]);
-			set_context('discuss');
+			elgg_set_context('discuss');
 			include(elgg_get_plugins_path() . "enlightn/discuss.php");
 			break;
 		case "cloud":
 			set_context('cloud');
 			if ($page[1] == 'cloud_embed') {
-				set_context('cloud_embed');
+				elgg_set_context('cloud_embed');
 			}
 			include(elgg_get_plugins_path() . "enlightn/cloud.php");
 			break;
@@ -120,28 +119,28 @@ function enlightn_page_handler($page) {
 			include(elgg_get_plugins_path() . "enlightn/collection.php");
 			break;
 		case "directory":
-			set_context('directory');
+			elgg_set_context('directory');
 			$collection_id = $page[1];
 			include(elgg_get_plugins_path() . "enlightn/directory.php");
 			break;
 		case "profile":
-			set_context('profile');
+			elgg_set_context('profile');
 			set_input('username', $page[1]);
 			include(elgg_get_plugins_path() . "enlightn/profile.php");
 			break;
 		case "settings":
-            set_context('enlightn:settings');
+            elgg_set_context('enlightn:settings');
    			$page[1]?set_input('tab', $page[1]):set_input('tab', 'account');
             include(elgg_get_plugins_path() . "enlightn/settings.php");
 			break;
 		case "download":
-            set_context('enlightn:download');
+            elgg_set_context('enlightn:download');
             set_input('file_guid', $page[1]);
 			include(elgg_get_plugins_path() . "enlightn/download.php");
 			break;
         case "home":
         default:
-            set_context('home');
+            elgg_set_context('home');
 			set_input('discussion_type', $page[0]=='home'?ENLIGHTN_ACCESS_PU:$page[0]);
 			include(elgg_get_plugins_path() . "enlightn/home.php");
 			break;

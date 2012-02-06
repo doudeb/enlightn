@@ -12,8 +12,8 @@
 	$(document).ready(function(){
 		$('#search_submit').click( function(){
 			<?php
-				if (in_array(get_context(),array('cloud','cloud_embed'))) {
-					echo "loadContent('#cloud_content','" . $vars['url'] . "mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '?context=" . get_context() . "');";
+				if (in_array(elgg_get_context(),array('cloud','cloud_embed'))) {
+					echo "loadContent('#cloud_content','" . $vars['url'] . "mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '?context=" . elgg_get_context() . "');";
 				} else {
 					echo "changeMessageList('#discussion_selector_search'," .ENLIGHTN_ACCESS_AL.");";
 				}

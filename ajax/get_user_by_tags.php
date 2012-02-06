@@ -9,7 +9,7 @@ include_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php")
 //Some basic var
 gatekeeper();
 global $enlightn;
-$user_guid		= get_loggedin_userid();
+$user_guid		= elgg_get_logged_in_user_guid();
 $tags           = get_input('tags',false);
 if ($tags)
     $tags           = explode(',',$tags);

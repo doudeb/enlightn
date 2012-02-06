@@ -7,7 +7,7 @@ $api = new Embedly_API(array(
 
 //Some basic var
 gatekeeper();
-$user_guid = get_loggedin_userid();
+$user_guid = elgg_get_logged_in_user_guid();
 //tying with embedly
 $url = get_input('url');
 $media_uid = md5($url);
@@ -23,5 +23,5 @@ if (!isset($oembed[0]->error_code)) {
 	echo elgg_view('enlightn/fetched',array('type' => 'url'
 											,'entity' => $embedUrl
 											,'media_uid' => $media_uid));
-											
+
 }

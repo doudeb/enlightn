@@ -4,12 +4,13 @@ include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 elgg_load_js('elgg.friendspicker');
 gatekeeper();
 global $enlightn;
-$user_guid 				= get_loggedin_userid();
+$user_guid 				= elgg_get_logged_in_user_guid();
 $user_ent				= get_user($user_guid);
 $user_search			= get_input('userSearch');
 
 if (!empty($user_search)) {
-	$site_members			= search_for_user($user_search);
+	$site_members			= elgg_trigger_plugin_hook('search','user',array('query' => $user_search, 'limit'=>100));
+    $site_members           = $site_members["entities"];
 } else {
 	$site_members			= get_site_members($CONFIG->site_guid,100000);
 }
@@ -47,4 +48,4 @@ unset($collection_list);
 //Compile into a layout
 $body = $left . $right;
 // Display page
-page_draw(elgg_echo('enlightn:directory'),$body);
+echo elgg_view_page(elgg_echo('enlightn:directory'),$body,'enlightn');

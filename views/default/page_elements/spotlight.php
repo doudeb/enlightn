@@ -39,7 +39,7 @@
 	<div class="collapsable_box_content" <?php if ($closed) echo "style=\"display:none\"" ?>>
 <?php
 
-	$context = get_context();
+	$context = elgg_get_context();
 	if (!empty($context) && elgg_view_exists("spotlight/{$context}")) {
 		echo elgg_view("spotlight/{$context}");
 	} else {

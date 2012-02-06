@@ -24,7 +24,7 @@ if (strip_tags($message,'<img>') == "" || trim($message) == "") {
 
 disable_right($guid);
 // Check that user is a group member
-$user_guid 				= get_loggedin_userid();
+$user_guid 				= elgg_get_logged_in_user_guid();
 $user_ent               = get_user($user_guid);
 // Let's see if we can get an form topic with the specified GUID, and that it's a group forum topic
 $json_return = create_enlightn_discussion ($user_guid, $access_id,$message, $title,$tags, $userto,$guid);
@@ -33,7 +33,7 @@ $json_return = create_enlightn_discussion ($user_guid, $access_id,$message, $tit
 $enlightn->flush_cache(array('entity_guid' => $guid),'search');
 $enlightn->flush_cache(array('user_guid' => $user_guid,'access_level' => ENLIGHTN_ACCESS_PU),'search');
 $enlightndiscussion = get_entity($guid);
-$annotation         = get_annotation($json_return['success']);
+$annotation         = elgg_get_annotation_from_id($json_return['success']);
 $content            = elgg_view("enlightn/mail/message_content",array('message' => $annotation->value));
 // url for the email
 $url = "{$CONFIG->url}enlightn/discuss/" . $enlightndiscussion->guid;

@@ -7,13 +7,13 @@
  * @subpackage Core
  *
  * @uses $vars['value'] The current value, if any
- * @uses $vars['internalname'] The name of the input field
+ * @uses $vars['name'] The name of the input field
  *
  */
 ?>
 <script>
 	$(function() {
-		$( "#<?php echo $vars['internalname']?>" ).datepicker({
+		$( "#<?php echo $vars['name']?>" ).datepicker({
 			dateFormat: 'yy-mm-dd',
 			showButtonPanel: true,
 			showOn: "button",
@@ -22,4 +22,4 @@
 		});
 	});
 </script>
-<input type="text" name="<?php echo $vars['internalname']; ?>" id="<?php echo $vars['internalname']; ?>" value="<?php echo $val; ?>" />
+<input type="text" name="<?php echo $vars['name']; ?>" id="<?php echo $vars['name']; ?>" value="<?php echo $val; ?>" />

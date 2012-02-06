@@ -6,7 +6,7 @@
  */
 gatekeeper();
 global $CONFIG;
-$user_guid              = get_loggedin_userid();
+$user_guid              = elgg_get_logged_in_user_guid();
 $current_settings       = get_profile_settings($user_guid);
 
 foreach ($current_settings as $key => $value) {

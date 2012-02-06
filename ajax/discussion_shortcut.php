@@ -4,7 +4,7 @@ include_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php")
 
 //Some basic var
 gatekeeper();
-$user_guid 		= get_loggedin_userid();
+$user_guid 		= elgg_get_logged_in_user_guid();
 global $enlightn;
 /**
  * @todo set it to cache
@@ -44,7 +44,7 @@ if (empty($access_level)) {
 }
 $results['access_level'] = $access_level;
 //var_dump($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
-$search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
+$search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$tag,$offset,$limit);
 $nb_results = count($search_results);
 if ($nb_results > 0) {
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s",$search_results[0]->created) . " GMT");

@@ -10,13 +10,13 @@
 	gatekeeper();
 	global $CONFIG,$enlightn;
 	$url 				= $CONFIG->wwwroot . "pg/enlightn";
-	$user_guid 			= get_loggedin_userid();
+	$user_guid 			= elgg_get_logged_in_user_guid();
 	$discussion_guid 	= get_input('discussion_guid');
 	$annotation_id	 	= get_input('annotation_id');
 	$ignore_request	 	= get_input('ignore',false);
 
 	if (!$discussion_guid && !empty ($annotation_id)) {
-		$post 			= get_annotation($annotation_id);
+		$post 			= elgg_get_annotation_from_id($annotation_id);
 		$discussion_guid= $post->entity_guid;
 	}
 	// @todo fix for #287

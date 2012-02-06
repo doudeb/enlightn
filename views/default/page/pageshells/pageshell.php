@@ -34,13 +34,13 @@ echo elgg_view('page/elements/head', $vars);
 		<?php echo elgg_view('page/elements/messages', array('object' => $vars['sysmessages'])); ?>
 	</div>
 <?php
-if (get_context() === 'main') {
+if (elgg_get_context() === 'main') {
     echo $vars['body'];
     return;
 }
 echo elgg_view('page_elements/elgg_topbar', $vars);
 
-if (get_context() !== 'cloud_embed') {
+if (elgg_get_context() !== 'cloud_embed') {
 	echo elgg_view('page_elements/header_contents', $vars);
 }
 ?>
@@ -50,7 +50,7 @@ if (get_context() !== 'cloud_embed') {
 </div><!-- end div id page-->
 <!-- footer -->
 <?php
-if (get_context() !== 'cloud_embed') {
+if (elgg_get_context() !== 'cloud_embed') {
 	echo elgg_view('page_elements/footer', $vars);
 }
 ?>

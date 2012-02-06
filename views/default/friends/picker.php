@@ -15,10 +15,10 @@ $pickerinuse = true;
 $chararray = elgg_echo('friendspicker:chararray');
 
 // Initialise internalname
-if (!isset($vars['internalname'])) {
+if (!isset($vars['name'])) {
 	$internalname = "friend";
 } else {
-	$internalname = $vars['internalname'];
+	$internalname = $vars['name'];
 }
 
 // Are we highlighting default or all?

@@ -1,13 +1,13 @@
  <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
-  $('#picker_<?php echo $vars['internalid']?>').farbtastic('#<?php echo $vars['internalid']?>');
-  $('#<?php echo $vars['internalid']?>').click ( function() {
-  		$('#picker_<?php echo $vars['internalid']?>').fadeIn();
+  $('#picker_<?php echo $vars['id']?>').farbtastic('#<?php echo $vars['id']?>');
+  $('#<?php echo $vars['id']?>').click ( function() {
+  		$('#picker_<?php echo $vars['id']?>').fadeIn();
   });
-  $('#<?php echo $vars['internalid']?>').focusout ( function() {
-  		$('#picker_<?php echo $vars['internalid']?>').fadeOut();
+  $('#<?php echo $vars['id']?>').focusout ( function() {
+  		$('#picker_<?php echo $vars['id']?>').fadeOut();
   });
 });
 
  </script>
-<input type="text" id="<?php echo $vars['internalid']?>" name="<?php echo $vars['internalname']?>" value="<?php echo $vars['value']?>" /><div id="picker_<?php echo $vars['internalid']?>" style="display:none"></div>
+<input type="text" id="<?php echo $vars['id']?>" name="<?php echo $vars['name']?>" value="<?php echo $vars['value']?>" /><div id="picker_<?php echo $vars['id']?>" style="display:none"></div>

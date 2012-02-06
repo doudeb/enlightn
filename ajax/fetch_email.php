@@ -20,7 +20,7 @@ require_once(dirname(dirname(__FILE__)) . "/model/format.class.php");
 //Some basic var
 gatekeeper();
 global $enlightn, $profile_settings;
-$user_guid = get_loggedin_userid();
+$user_guid = elgg_get_logged_in_user_guid();
 
 $imapStream = new IMAP($profile_settings['emailserver'],$profile_settings['emailport'],$profile_settings['emaillogin'],$profile_settings['emailpasswd'],$profile_settings['emailservtype']);
 $messages = $imapStream->imap_search("UNSEEN");

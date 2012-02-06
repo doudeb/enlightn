@@ -378,7 +378,7 @@ function create_embeded_entities ($message,$entity) {
 			$desc 			= $link["link"];
 			$file			= elgg_get_entities_from_metadata(array('metadata_names' => 'filename', 'metadata_values' => $link["link"]));
 			if (!$file) {
-				$container_guid 	= get_loggedin_userid();
+				$container_guid 	= elgg_get_logged_in_user_guid();
 				$file 				= new FilePluginFile();
 				$file->subtype 		= "file";
 				$file->title 		= $title;
@@ -568,11 +568,12 @@ function get_profile_settings ($user_guid = false) {
             'myspace'=> 'text',
             'netvibes'=> 'text');
     if (!$user_guid) {
-        $user_guid = get_loggedin_userid();
+        $user_guid = elgg_get_logged_in_user_guid();
     }
     foreach ($profile_defaults as $key => $fields) {
-        $metadata = get_metadata_byname($user_guid, $key);
-        $value = $metadata->value;
+        $metadata = elgg_get_metadata(array('owner_guids'=> $user_guid, 'metadata_names'=>$key));
+
+        $value = $metadata[0]->value;
         $profile_settings[$key] = $value;
     }
 
@@ -601,7 +602,7 @@ function get_time_zone () {
  */
 function disable_right ($guid) {
     global $enlightn;
-    $user_guid = get_loggedin_userid();
+    $user_guid = elgg_get_logged_in_user_guid();
     if (!$user_guid) {
         return false;
     }
@@ -738,8 +739,8 @@ function generate_preview ($guid) {
 
 function enlightn_purge_readed_queue () {
     global $enlightn;
-    if(in_array(get_context(), array('home','discuss','profile'))) {
-        $user_guid      = get_loggedin_userid();
+    if(in_array(elgg_get_context(), array('home','discuss','profile'))) {
+        $user_guid      = elgg_get_logged_in_user_guid();
         $readed_queue   = enlightn_get_relationships($user_guid , ENLIGHTN_QUEUE_READED);
         if(is_array($readed_queue)) {
             foreach ($readed_queue as $key => $relationship) {
@@ -773,7 +774,7 @@ function enlightn_get_relationships($guid_one, $relationship) {
 }
 
 function count_unreaded_messages ($guid) {
-    $user_guid = get_loggedin_userid();
+    $user_guid = elgg_get_logged_in_user_guid();
     $query = "Select Count(a.id) as messages_unreaded
                 From annotations a
                 Where Not Exists(Select rel.id
@@ -1264,6 +1265,7 @@ function doc_to_txt ($file_path, $mime_type) {
         case 'application/msword':
         case 'application/rtf':
         case 'application/vnd.oasis.opendocument.text':
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
         case 'text/richtext':
         case 'text/rtf':
         case 'text/xml':
