@@ -173,7 +173,7 @@ function enlightn_verify_user_site_guid($login, $user, ElggUser $user) {
     if ($site === null || $site === false) {
         $site = (int) datalist_get('default_site');
     }
-    if ($user->site_guid == $site || $user->isAdmin()) {
+    if ($user->site_guid == $site) {
         return true;
     }
     return false;

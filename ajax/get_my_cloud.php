@@ -24,7 +24,7 @@ if ($context) {
 $date_begin 	= strtotime($date_begin);
 $date_end 		= strtotime($date_end);
 
-
+elgg_set_ignore_access(TRUE);
 $files = $enlightn->get_my_cloud($user_guid,$subtype,$words,$from_users,$date_begin, $date_end,$guid,$limit,$offset);
 echo elgg_view('enlightn/cloud/media', array(
 							'entities' => $files,

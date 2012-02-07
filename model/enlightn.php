@@ -223,8 +223,7 @@ Inner Join entity_relationships As rel On a.entity_guid = rel.guid_two
 Left Join entity_relationships As rel_readed On a.id = rel_readed.guid_two
 												And rel_readed.guid_one = $user_guid
 												And rel_readed.relationship = '" . ENLIGHTN_READED . "'
-Where a.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . "
-And rel_readed.id Is Null
+Where rel_readed.id Is Null
 $where
 Limit 150)
 Union

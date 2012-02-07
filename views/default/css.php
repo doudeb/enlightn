@@ -2041,7 +2041,7 @@ form #clonedMessages {
 
 .tag {
     background-color: #CFE965;
-    border: 1px solid #8EAC15;
+    #border: 1px solid #8EAC15;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;

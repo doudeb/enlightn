@@ -241,12 +241,6 @@ function get_search_criteria () {
 		if (currElement == '#discussion_selector_sent') {
 			$('input[name="from_users"]').val('<?php echo elgg_get_logged_in_user_guid()?>');
 		}
-        //reseting all searching crits
-        $('#subtype_checked').val('');
-        $('#searchInput').val('');
-        $('input[name="from_users"]').val('');
-        $('#date_end').val('');
-        $('#date_begin').val('');
 
 		loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria());
 		$(currElement).addClass('current');

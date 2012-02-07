@@ -615,7 +615,7 @@ function disable_right ($guid) {
    		return elgg_set_ignore_access(true);
     }
     $is_embeded_and_followed = $enlightn->is_embeded_and_followed($guid);
-    if($is_embeded_and_followed[0]->guid) {
+    if($is_embeded_and_followed[0]->entity_guid) {
     	return elgg_set_ignore_access(true);
     }
     return false;

@@ -22,7 +22,7 @@
 			,'password' => 'Contraseña'
 			,'passwordagain' => 'Reescribe tu contraseña'
 			,'RegistrationException:PasswordMismatch' => 'Escribe la misma contraseña en los dos campos.'
-			,'registerok' => 'Bienvenid@ a Enlightn, el email 2.0. Te hemos enviado un mail de confirmación. Por favor da click para validar tu inscripción.'
+			,'registerok' => 'Te hemos enviado un mail de confirmación. Por favor da click para validar tu inscripción.'
 			,'registerbad' => 'Ups, no se pudo crear tu cuenta. Por favor inténtalo de nuevo.'
 			,'registration:emailnotvalid' => 'Ups, tu email es incorrecto. Vuelve a intentarlo.'
 			,'registration:passwordnotvalid' => 'Por razones de seguridad tu contraseña debe tener un mínimo de 6 caracteres.'
@@ -41,6 +41,7 @@
 			,'request' => 'Enviar'
 			,'register' => 'Registrar'
 			,'user:password:text' => ''
+			,'enlightn:loginboxheadline' => 'Email 2.0 para tu empresa'
 
 			//HEADER
 			,'enlightn' => ""
@@ -73,12 +74,16 @@
 			,'enlightn:buttonpost' => 'Enviar'
 			,'enlightn:missingData' => 'Ups, olvidaste el título de tu conversación.'
 			,'enlightn:conversación_sucessfully_created' => ''
+			,'enlightn:discussionusersuggest' => 'Sugerencia de contacto'
 
 			//HOME - NEW TOPIC - UPLOAD
+			,'enlightn:uploadyourfile' => 'Cargar tu archivo'
 			,'enlightn:uploadcloud' => '¿Tu archivo se encuentra en el cloud?'
 			,'enlightn:titlefile' => 'Título del archivo'
 			,'enlightn:tagsfile' => 'Tags'
 			,'enlightn:uploadembed' => 'Adjunta a la conversación'
+			,'enlightn:editmytitle' => 'Editar titulo'
+            ,'enlightn:editkeyword' => 'Editar palabra clave'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Leída'
@@ -91,6 +96,7 @@
 			,'enlightn:setasfavorite' => 'Marcar como favorito'
 			,'enlightn:removeasfavorite' => 'Borrar de tus favoritos'
             ,'enlightn:showunread' => 'Solo no leídos'
+            ,'enlightn:selectnone' => 'Ninguna'
 
 			//HOME - SEARCH
 			,'enlightn:search' => 'Buscar'
@@ -115,6 +121,7 @@
 			,'enlightn:request' => 'Invitaciones recibidas'
 			,'enlightn:favorites' => 'Mis favoritas'
 			,'enlightn:sent' => 'Enviadas'
+			,'enlightn:trendingtopic' => 'Tema de interés'
 
 			//HOME - LEFT COLUMN
 			,'enlightn:seemore' => 'Ver más'
@@ -142,8 +149,14 @@
 			,'enlightn:viewvideo' => 'Ver en el sitio'
 			,'enlightn:viewimage' => 'Expandir'
 			,'enlightn:downloaddocument' => 'Descargar'
+			,'enlightn:attachmentlist' => ''
 			,'enlightn:activity:member' => ' se ha unido a la conversación'
 			,'enlightn:activity:membership_request' => ' ha sido invitad@ a la conversación'
+			,'enlightn:forward' => 'Reenviar mensajes'
+			,'enlightn:selectparttoforward' => 'Seleccionar mensajes a reenviar'
+			,'enlightn:buttonforward' => 'Forward'
+			,'enlightn:viewcloud' => 'Ver cloud'
+			,'enlightn:viewdiscussion' => 'Ver discusión'
 
 			//PROFILE
 			,'enlightn:profilelastmessage' => 'Sus conversacións'
@@ -170,6 +183,8 @@
 			,'enlightn:file:type:image' => 'Images' //don't translate please
 			,'enlightn:file:type:doc' => 'Documents' //don't translate please
 			,'enlightn:file:type:link' => 'Articles' //don't translate please
+            ,'enlightn:attach' => 'Adjuntar'
+            ,'enlightn:attachtoanewdiscussion' => 'Adjuntar'
 
 			//SETTINGS
             ,'enlightn:settingsheader' => '%s' //don't translate please
@@ -255,10 +270,10 @@
 			,'enlightn:newmessage:subject' => 'Re: %s '
 			,'enlightn:newmessage:body' => 'Hola %s,
 
-%s ha añadido un mensaje a la conversación "%s"
+Se ha añadido un mensaje a la conversación "%s"
+%s
 
-<a href="%s">Entrar a la conversación</a>
-Nos vemos en ' . $CONFIG->sitename
+<a href="%s">Entrar a la conversación</a>'
 
 			//$follower (to)  $user (from)  $topic (title)  $url
 
@@ -267,10 +282,14 @@ Nos vemos en ' . $CONFIG->sitename
 			,'uservalidation:email:validate:body' => 'Hola %s,
 
 Te acabas de registrar en %s.
-Para acceder por favor confirma tu dirección de email haciendo click en el link de abajo:
+Para acceder, por favor confirma tu dirección de email haciendo click en el link de abajo:
+
 %s
 
-Nos vemos en ' . $CONFIG->sitename
+Si no puedes hacer click en el link, cópialo y pégalo en tu navegador manualmente.
+
+Nos vemos en %s,
+El equipo Enlightn'
 
 			//Email validated
 			,'email:validate:success:subject' => 'Bienvenid@ a %s'
@@ -285,10 +304,9 @@ El equipo Enlightn'
 			,'enlightn:invite:subject' => '%s'
 			,'enlightn:invite:body' => 'Hola %s,
 
-%s te invita a unirte a la conversación "%s
+%s te invita a unirte a la conversación <p><strong>"%s"</strong></p>
 
-<a href="%s">Únete a la conversación</a>
-Nos vemos en ' . $CONFIG->sitename
+<p><a href="%s"><span class="tag">Únete a la  conversación</span></a></p>'
 
 	);
 	add_translation("es",$spain);
