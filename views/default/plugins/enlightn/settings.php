@@ -4,7 +4,7 @@
 $shinx_enabled = $vars['entity']->sphinx_enabled=='1'?'1':'0';
 echo  elgg_echo('enlightn:sphinx_enabled') . ' : <br />';
 		echo elgg_view('input/radio', array(
-			'internalname' => 'params[sphinx_enabled]',
+			'name' => 'params[sphinx_enabled]',
 			'options' => array(
 				elgg_echo('option:no') => '0',
 				elgg_echo('option:yes')=>'1'
@@ -17,7 +17,7 @@ echo  elgg_echo('enlightn:sphinx_enabled') . ' : <br />';
 $register_enabled = $vars['entity']->register_enabled=='1'?'1':'0';
 echo  elgg_echo('enlightn:register_enabled') . ' : <br />';
 		echo elgg_view('input/radio', array(
-			'internalname' => 'params[register_enabled]',
+			'name' => 'params[register_enabled]',
 			'options' => array(
 				elgg_echo('option:no') => '0',
 				elgg_echo('option:yes')=>'1'
@@ -30,7 +30,7 @@ echo  elgg_echo('enlightn:register_enabled') . ' : <br />';
 $disable_registration_email = $vars['entity']->disable_registration_email=='1'?'1':'0';
 echo  elgg_echo('enlightn:disable_registration_email') . ' : <br />';
 		echo elgg_view('input/radio', array(
-			'internalname' => 'params[disable_registration_email]',
+			'name' => 'params[disable_registration_email]',
 			'options' => array(
 				elgg_echo('option:no') => '0',
 				elgg_echo('option:yes')=>'1'
@@ -43,7 +43,7 @@ echo  elgg_echo('enlightn:disable_registration_email') . ' : <br />';
 $email_activated = $vars['entity']->email_activated=='1'?'1':'0';
 echo  elgg_echo('enlightn:email_activated') . ' : <br />';
 		echo elgg_view('input/radio', array(
-			'internalname' => 'params[email_activated]',
+			'name' => 'params[email_activated]',
 			'options' => array(
 				elgg_echo('option:no') => '0',
 				elgg_echo('option:yes')=>'1'
@@ -57,7 +57,7 @@ echo  elgg_echo('enlightn:email_activated') . ' : <br />';
 $css_sidebar_folders = $vars['entity']->css_sidebar_folders!=''?$vars['entity']->css_sidebar_folders:'#2D87E1';
 echo  elgg_echo('enlightn:css_sidebar_folders') . ' : <br />';
 		echo elgg_view('input/colorpicker', array(
-			'internalname' => 'params[css_sidebar_folders]',
+			'name' => 'params[css_sidebar_folders]',
 			'internalid' => 'css_sidebar_folders',
 			'value' => $css_sidebar_folders
 		));

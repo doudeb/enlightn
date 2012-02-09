@@ -4,10 +4,9 @@ header('Content-type: text/html; charset=utf-8');
 
 $version = get_version();
 $release = get_version(true);
-$user    = get_loggedin_user();
+$user    = elgg_get_logged_in_user_guid();
 $title = $vars["title"];
 $message = nl2br($vars["message"]);
-$plugin_elements = load_plugin_manifest('enlightn');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
@@ -153,17 +152,6 @@ $plugin_elements = load_plugin_manifest('enlightn');
                 <?php if(!empty($title)) //echo elgg_view_title($title); ?>
                 <?php echo $message; ?>
             </div>
-        </div>
-        <div id="footer">
-            <!--<div class="footer-right">
-                <p>- <a href="<?php echo $vars['url']; ?>enlightn/cloud"><?php echo elgg_echo("enlightn:mycloud"); ?></a></p>
-                <p>- <a href="<?php echo $vars['url']; ?>enlightn/directory"><?php echo elgg_echo("enlightn:viewdirectory"); ?></a></p>
-            </div>
-            <div class="footer-left">
-                <p>- <a href="<?php echo $vars['url']; ?>profile/<?php echo $user->username?>"><?php echo elgg_echo("enlightn:accesstomyprofil"); ?></a></p>
-                <p>- <a href="<?php echo $vars['url']; ?>enlightn/home/<?php echo ENLIGHTN_ACCESS_IN; ?>"><?php echo elgg_echo("enlightn:mydiscussion"); ?></a></p>
-            </div>
-            <div class="copyright"><?php echo $plugin_elements['copyright']?> - <?php echo $plugin_elements['version']?></div>-->
         </div>
     </body>
 </html>

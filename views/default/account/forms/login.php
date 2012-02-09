@@ -24,9 +24,9 @@ body, #body {
         <form action="<?php echo $login_url?>action/login" method="post">
             <?php echo elgg_view('input/securitytoken'); ?>
             <p><h2><?php echo elgg_echo('username');?> :</h2></p>
-            <p><?php echo elgg_view('input/text', array('internalname' => 'username',  'placeholder'=>elgg_echo(''))); ?></p>
+            <p><?php echo elgg_view('input/text', array('name' => 'username',  'placeholder'=>elgg_echo(''))); ?></p>
             <p><h2><?php echo elgg_echo('password');?> :</h2></p>
-            <p><?php echo elgg_view('input/password', array('internalname' => 'password',  'placeholder'=>elgg_echo(''))); ?></p>
+            <p><?php echo elgg_view('input/password', array('name' => 'password',  'placeholder'=>elgg_echo(''))); ?></p>
             <p><?php echo elgg_view('input/submit', array('value' => elgg_echo('login'), 'class'=>'submit')); ?><input type="checkbox" name="persistent" value="true" />&nbsp;<label><?php echo elgg_echo('user:persistent')?></label></p>
             <br />
         </form>

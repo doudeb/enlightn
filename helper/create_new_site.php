@@ -33,11 +33,34 @@ try {
     $site->access_id = ACCESS_LOGGED_IN;
     $site->email     = $email;
     $guid            = $site->save();
+
+    $CONFIG->site_guid  = $site->guid;
+    $CONFIG->site       = $site;
+
+    set_config('view', 'default', $site->getGUID());
+    set_config('language', 'en', $site->getGUID());
+    set_config('default_access', ACCESS_LOGGED_IN, $site->getGUID());
+    set_config('allow_registration', TRUE, $site->getGUID());
+    set_config('walled_garden', FALSE, $site->getGUID());
+    set_config('allow_user_default_access', '', $site->getGUID());
+    set_config('https_login', TRUE, $site->getGUID());
+    set_config('sitename', $sitename, $site->getGUID());
+    set_config('siteemail', $email, $site->getGUID());
+    set_config('site', $site->getGUID(), $site->getGUID());
+
+    elgg_generate_plugin_entities();
+    $plugins = elgg_get_plugins('any');
+    foreach ($plugins as $plugin) {
+        if ($plugin->getManifest()) {
+            if ($plugin->getManifest()->getActivateOnInstall()) {
+                $plugin->activate();
+            }
+        }
+    }
+
 } catch (Exception $e) {
     exit ("\nFatal : " . $e->getMessage());
 }
-$CONFIG->site_guid  = $site->guid;
-$CONFIG->site       = $site;
 
 echo "\nNew site entity created : " . $site->guid;
 echo "\nNow create site admin....";
