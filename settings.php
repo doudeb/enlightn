@@ -13,7 +13,7 @@ if (!$user_guid || !$user) {
 	forward();
 }
 
-set_page_owner($user_guid);
+elgg_set_page_owner_guid($user_guid);
 
 $left  =  elgg_view('enlightn/settings/main',array('user' => $user, 'settings'=>$profile_settings, 'current'=>$current));
 

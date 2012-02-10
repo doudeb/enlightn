@@ -525,7 +525,7 @@ img.online {
     overflow: hidden;
 }
 
-#new-discussion form .privacy {
+form .privacy {
     border:1px solid #8fad15;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
@@ -536,7 +536,7 @@ img.online {
     float : left;
 }
 
-#new-discussion form .privacy .value {
+form .privacy .value {
     background-color:#bbdc03;
     background-position:0 -451px;
     color:#fff;
@@ -558,15 +558,15 @@ img.online {
 }
 /*NEW*/
 
-#new-discussion form .privacy .private-val, #new-discussion form .private .public-val {
+form .privacy .private-val, form .private .public-val {
     display:none;
 }
 
-#new-discussion form .private .private-val {
+form .private .private-val {
     display:block;
 }
 
-#new-discussion form .private .private-val .ico {
+form .private .private-val .ico {
     background-position: -104px -151px;
     display: inline-block;
     height: 14px;
@@ -575,7 +575,7 @@ img.online {
     width: 11px;
 }
 
-#new-discussion form .privacy .cursor {
+form .privacy .cursor {
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     -khtml-border-radius:5px;
@@ -1757,7 +1757,7 @@ form #clonedMessages {
 }
 
 #sidebar .folders li a.cat {
-    color: <?php echo ($css_sidebar_folders = get_plugin_setting('css_sidebar_folders','enlightn'))?$css_sidebar_folders:'#8d8187';?>;
+    color: <?php echo ($css_sidebar_folders = elgg_get_plugin_setting('css_sidebar_folders','enlightn'))?$css_sidebar_folders:'#8d8187';?>;
     display: block;
     font-size: 124%;
     font-weight: bold;

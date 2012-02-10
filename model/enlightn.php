@@ -120,7 +120,7 @@ Order By e.time_created desc";
 		}
 		#Words
 		if ($words) {
-            $sphinx_enabled = get_plugin_setting('sphinx_enabled','enlightn');
+            $sphinx_enabled = elgg_get_plugin_setting('sphinx_enabled','enlightn');
             if ($sphinx_enabled == 1) {
                 $force   = array();
                 $limit   =100;
@@ -260,6 +260,7 @@ Limit 150)";
 
 public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$from_users = false,$date_begin = false, $date_end = false, $guid = false,$limit = 10, $offset = 0) {
 		$file_subtype_id = get_subtype_id('object','file');
+        $join = array();
 		if (!$file_subtype_id) {
 			return false;
 		}

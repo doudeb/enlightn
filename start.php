@@ -64,13 +64,13 @@ function enlightn_init() {
 
 }
 function new_index($hook, $type, $return, $params) {
-	if (isloggedin()) {
+	if (elgg_is_logged_in()) {
 		forward('enlightn/');
 		return true;
 	} else {
 		$title = elgg_echo('enlightn:login');
 		$content = elgg_view("account/forms/login");
-        page_draw($title, $content);
+        echo elgg_view_page($title, $content);
 		return true;
 	}
 }
@@ -99,7 +99,7 @@ function enlightn_page_handler($page) {
 			include(elgg_get_plugins_path() . "enlightn/discuss.php");
 			break;
 		case "cloud":
-			set_context('cloud');
+			elgg_set_context('cloud');
 			if ($page[1] == 'cloud_embed') {
 				elgg_set_context('cloud_embed');
 			}

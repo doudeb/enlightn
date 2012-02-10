@@ -13,6 +13,11 @@
 
 			//GENERAL
 			'systemmessages:dismiss' => 'Cerrar'
+            ,'avatar:upload:success' => 'Tu foto ha sido cargada exitosamente.'
+            ,'avatar:upload:fail' => 'La operación ha fallado.'
+            ,'avatar:resize:fail' => 'La operación ha fallado.'
+            ,'avatar:crop:success' => 'Tu foto ha sido recortada exitosamente'
+            ,'avatar:crop:fail' => 'La operación ha fallado.'
 
 			//REGISTRATION FORM
 			,'register' => 'Regístrate' //title of the page AND label of the register button: keep it short!
@@ -156,7 +161,7 @@
 			,'enlightn:selectparttoforward' => 'Seleccionar mensajes a reenviar'
 			,'enlightn:buttonforward' => 'Forward'
 			,'enlightn:viewcloud' => 'Ver cloud'
-			,'enlightn:viewdiscussion' => 'Ver discusión'
+			,'enlightn:viewdiscussion' => 'Ver conversación'
 
 			//PROFILE
 			,'enlightn:profilelastmessage' => 'Sus conversacións'
@@ -262,15 +267,6 @@
 			,'friendlytime:days:singular' => "ayer"
 			,'friendlytime:date_format' => 'j F Y à H:i'
 
-            //ELGG SYS
-            ,'email:confirm:success' => "Tu email ha sido confirmado!"
-            ,'avatar:upload:success' => 'Tu foto ha sido cargada exitosamente.'
-            ,'avatar:upload:fail' => 'La operación ha fallado.'
-            ,'avatar:resize:fail' => 'La operación ha fallado.'
-            ,'avatar:crop:success' => 'Tu foto ha sido recortada exitosamente'
-            ,'avatar:crop:fail' => 'La operación ha fallado.'
-            ,'notifications:usersettings:save:ok' => "Tus preferencias han sido registradas."
-            ,'notifications:usersettings:save:fail' => "Tus preferencias no han sido registradas."
 			//LOG OUT
 			,'logoutsucceed' => 'Hasta pronto'
 

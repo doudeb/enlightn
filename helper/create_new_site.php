@@ -47,6 +47,7 @@ try {
     set_config('sitename', $sitename, $site->getGUID());
     set_config('siteemail', $email, $site->getGUID());
     set_config('site', $site->getGUID(), $site->getGUID());
+    set_config('site_guid', $site->getGUID(), $site->getGUID());
 
     elgg_generate_plugin_entities();
     $plugins = elgg_get_plugins('any');

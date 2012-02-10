@@ -7,15 +7,16 @@ global $enlightn, $CONFIG;
 $user_guid 				= elgg_get_logged_in_user_guid();
 $user_ent				= get_user($user_guid);
 $user_search			= get_input('userSearch');
+$site                   = $CONFIG->site;
 
 if (!empty($user_search)) {
-	$site_members			= elgg_trigger_plugin_hook('search','user',array('query' => $user_search, 'limit'=>100));
-    $site_members           = $site_members["entities"];
+	$site_members		= elgg_trigger_plugin_hook('search','user',array('query' => $user_search, 'limit'=>100));
+    $site_members       = $site_members["entities"];
 } else {
-	$site_members			= get_site_members($CONFIG->site_guid,100000);
+	$site_members       = $site->getMembers(array("limit"=>1000));
 }
 if (isset($collection_id)) {
-	$site_members			= get_members_of_access_collection($collection_id);
+	$site_members		= get_members_of_access_collection($collection_id);
 }
 $collections			= array();
 $public_collection 		= get_user_access_collections(0);

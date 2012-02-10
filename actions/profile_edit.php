@@ -8,7 +8,6 @@ gatekeeper();
 global $CONFIG;
 $user_guid              = elgg_get_logged_in_user_guid();
 $current_settings       = get_profile_settings($user_guid);
-
 foreach ($current_settings as $key => $value) {
     $new_value = get_input($key);
     if($new_value && !empty($new_value) && $value != $new_value) {

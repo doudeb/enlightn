@@ -22,7 +22,22 @@
 	        ?>
 	        <div class="new-bloc" id="submitBloc">
                  <div id="submissionUpload"></div>
-                 <input type="submit" value="<?php echo elgg_echo('enlightn:buttonpost')?>" name="<?php echo elgg_echo('enlightn:upload')?>">
+                <?php
+                if (elgg_get_context() == 'cloud') {
+                ?>
+                <div class="privacy private">
+                    <span class="private-val value"><span class="ico"></span><?php echo elgg_echo('enlightn:buttonprivate') ?></span>
+                    <span class="cursor" id="file_privacy_cursor"></span>
+                    <span class="public-val value"><?php echo elgg_echo('enlightn:buttonpublic') ?></span>
+                    <?php echo elgg_view("input/hidden",array(
+                                            'name' => 'access_id',
+                                            'id' => 'access_id',
+                                            'value' => ACCESS_PRIVATE)); ?>
+                </div>
+                <?php
+                }
+                ?>
+                <div class="sending"><button type="submit" class="submit"><?php echo elgg_echo('enlightn:buttonpost')?></button></div>
 	        </div>
             <div class="s-actions" id="editkeyword"><?php echo elgg_echo("enlightn:editkeyword"); ?><span class="arrow"/></div>
             <div class="tags">
@@ -149,8 +164,11 @@
        	$('#embedContent').css('display','none');
        	$('#uploader').css('display','none');
         $('#upload').css('display','block');
+        $('#uploader .tags').html('');
         $('#uploader .tags').toggle();
         $('#editkeyword').toggle();
+        $('#submissionUpload').val('');
+        $('#access_id').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
 	});
 
 	$('#cloudLink').click(function(){
@@ -180,9 +198,12 @@
                     $('#filename').val('');
                     $('#filetags').val('');
                     $('#filetitle').val('');
+                    $('#submissionUpload').val('');
                     $('#upload').val('');
+                    $('#uploader .tags').html('');
                     $('#uploader .tags').toggle();
                     $('#editkeyword').toggle();
+                    $('#access_id').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
                     <?php if(elgg_get_context() == 'cloud') {?>
                     loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>&' + get_search_criteria());
                     <?php } else { ?>
@@ -198,4 +219,15 @@
 		$('#submissionUpload').html('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
 		return true;
 	}
+    $('#file_privacy_cursor').click( function(){
+        if($(this).parent().hasClass('private')) {
+            $(this).parent().removeClass('private');
+            $(this).parent().addClass('public');
+            $('#access_id').val(<?php echo ENLIGHTN_ACCESS_PUBLIC?>);
+        } else {
+            $(this).parent().removeClass('public');
+            $(this).parent().addClass('private');
+            $('#access_id').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
+        }
+    });
 </script>

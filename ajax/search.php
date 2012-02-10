@@ -51,7 +51,7 @@ if ($annotation_id > 0) {
 	$_SESSION['last_search'] = $last_search;
 	$last_modified			= $search_results[0]->created;
     if ($access_level == ENLIGHTN_ACCESS_IN) {
-        set_context(ENLIGHTN_INVITED);
+        elgg_set_context(ENLIGHTN_INVITED);
     }
 }
 $discussion_unreaded	= $enlightn->count_unreaded_discussion($user_guid);

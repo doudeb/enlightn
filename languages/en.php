@@ -74,7 +74,7 @@
 			,'enlightn:buttonpost' => 'Post'
 			,'enlightn:missingData' => 'Oops, do you want to sent your post without subject?'
 			,'enlightn:discussion_sucessfully_created' => ''
-			,'enlightn:discussionusersuggest' => 'User suggestion'
+			,'enlightn:discussionusersuggest' => 'Consider including'
 
 			//HOME - NEW TOPIC - UPLOAD
 			,'enlightn:uploadyourfile' => 'Upload your file'

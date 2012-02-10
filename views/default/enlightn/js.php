@@ -141,7 +141,7 @@ function updateDiscussionUnread (task, data, textStatus, XMLHttpRequest) {
 }
 
 
-function get_search_criteria () {
+function get_search_criteria (fromLink) {
 	if (typeof $('#subtype_checked').val() == 'undefined') {
 		var subtype = '';
 	} else {
@@ -193,18 +193,17 @@ function get_search_criteria () {
 		$('#discussion_type').val(discussion_type);
         if (search_tags) {
             currElement = '#discussion_selector_tags';
-        } else {
+        } else if(!fromLink) {
             currElement = '#discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>';
+        } else  {
+            currElement = '#discussion_selector_sent';
         }
+        $(".folders li").each(function () {
+            $(this).removeClass('current');
+        });
 
-		$(".folders li").each(function () {
-			$(this).removeClass('current');
-		});
-		$(currElement).addClass('current');
-		$(currElement).css('display','block');
-	} else {
-		currElement = '#discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>';
-		$(currElement).removeClass('current');
+        $(currElement).addClass('current');
+        $(currElement).css('display','block');
 	}
 
 	var search_criteria = '?q=' + encodeURIComponent(words)
@@ -231,18 +230,11 @@ function get_search_criteria () {
 		if(typeof discussion_type == undefined) {
 			discussion_type = $('#discussion_type').val();
 		}
-		if (discussion_type == 4) {
-			currElement = '#discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>';
-			$(currElement).css('display','block');
-		}
 
 		$('#discussion_type').val(discussion_type);
 		$('#see_more_discussion_list_offset').val(0);
-		if (currElement == '#discussion_selector_sent') {
-			$('input[name="from_users"]').val('<?php echo elgg_get_logged_in_user_guid()?>');
-		}
 
-		loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria());
+        loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria(true));
 		$(currElement).addClass('current');
 		$(currElement + '_tabs').addClass('current');
 		$(".folders li").each(function () {

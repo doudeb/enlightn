@@ -571,9 +571,18 @@ function get_profile_settings ($user_guid = false) {
         $user_guid = elgg_get_logged_in_user_guid();
     }
     foreach ($profile_defaults as $key => $fields) {
+        $value = false;
         $metadata = elgg_get_metadata(array('owner_guids'=> $user_guid, 'metadata_names'=>$key));
-
-        $value = $metadata[0]->value;
+        if (count($metadata) > 1) {
+            foreach ($metadata as $meta) {
+                if($meta->access_id == ENLIGHTN_ACCESS_PUBLIC) {
+                    $value = $meta->value;
+                }
+            }
+            if (!$value) $value = $metadata[0]->value;
+        } else {
+            $value = $metadata[0]->value;
+        }
         $profile_settings[$key] = $value;
     }
 
