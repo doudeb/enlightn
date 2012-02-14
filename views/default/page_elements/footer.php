@@ -14,5 +14,6 @@ $en_plugin          = elgg_get_calling_plugin_entity();
     <?php if(elgg_is_logged_in()) { ?>
      <div id="debug"></div>
     <?php } ?>
+
 </body>
 </html>

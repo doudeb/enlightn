@@ -188,7 +188,7 @@ function get_search_criteria (fromLink) {
 	} else {
 		var search_tags = $('#search_tags').val();
 	}
-	if(words || subtype || from_users || date_begin || date_end || search_tags) {
+	if(words || subtype || date_begin || date_end || search_tags) {
 		discussion_type = 4;
 		$('#discussion_type').val(discussion_type);
         if (search_tags) {
@@ -230,6 +230,10 @@ function get_search_criteria (fromLink) {
 		if(typeof discussion_type == undefined) {
 			discussion_type = $('#discussion_type').val();
 		}
+
+        if (currElement != '#discussion_selector_sent') {
+            $('input[name="from_users"]').val('');
+        }
 
 		$('#discussion_type').val(discussion_type);
 		$('#see_more_discussion_list_offset').val(0);
@@ -308,7 +312,7 @@ $(document).ready(function(){
                 elm.prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif">');
                 $.post('<?php echo "{$vars['url']}mod/enlightn/ajax/tagger.php";?>', {text: text}, function(data) {
                     $.each(data, function(keyword, accurency){
-                        if (accurency > 1 && !addedKeywords.in_array(keyword) && !deletedKeywords.in_array(keyword)) {
+                        if (keyword && !addedKeywords.in_array(keyword) && !deletedKeywords.in_array(keyword)) {
                             elm.append('<span class="tag" data-keyword="' + keyword + '">'+ keyword +' <span class="del">&times;</span></span>');
                         }
                     });
@@ -522,8 +526,8 @@ $(document).ready(function(){
         newElm.append('<label><img class="photo_linker" src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/linker/' + elmSelected.text() + '.png"  /></label>');
         newElm.append($('<input />', {
 	            		'name' : elm.attr('value')
-	    				,'type': 'text'
-			 			,'value' : linkerUrl[elmSelected.text()]}));
+	    				,'type': 'text'}));
+        newElm.append(' ' + '<em>' + linkerUrl[elmSelected.text()] + '</em>');
     });
     $(".player").click(function () {
         elm = $(this);
@@ -567,6 +571,7 @@ $(document).ready(function(){
 			$('#membership').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
             $(".dialog-overlay").css('display','none');
             $('#user_suggest').html('');
+            $('#tags-result .tags').html('');
             if ($('#forwardActionButton').css('display') === 'block') {
                 showHideForward();
             } else {
@@ -604,6 +609,7 @@ $(document).ready(function(){
             $('#tags-result').html('');
             $(".dialog-overlay").css('display','none');
             $('#user_suggest').html('');
+            $('#tags-result .tags').html('');
         });
     }
 

@@ -1,6 +1,6 @@
 <?php
 global $enlightn;
-$unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
+$unreaded   = sort_unreaded_for_nav($vars['discussion_unreaded']);
 $tags       = $enlightn->get_tags(elgg_get_logged_in_user_guid(),false,'trending');
 ?>
   			<ol class="folders">

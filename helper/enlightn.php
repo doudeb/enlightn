@@ -438,7 +438,7 @@ function create_embeded_entities ($message,$entity) {
  */
 function enlightn_collections_submenu_items() {
         global $CONFIG;
-        $user = get_loggedin_user();
+        $user = elgg_get_logged_in_user_entity();
         add_submenu_item(elgg_echo('friends:collections'), $CONFIG->wwwroot . "enlightn/collection/" . $user->username);
         add_submenu_item(elgg_echo('friends:collections:add'), $CONFIG->wwwroot . "enlightn/collection/add");
 }
@@ -872,7 +872,7 @@ function create_enlightn_discussion ($user_guid, $access_id,$message, $title,$ta
 
 function add_folowers ($userto,$enlightndiscussion) {
     global $enlightn,$CONFIG;
-    $user = get_loggedin_user();
+    $user = elgg_get_logged_in_user_entity();
     foreach ($userto as $key => $usertoid) {
         // Remove cache for private access, need to be deployed on user side
         if ($enlightndiscussion->access_id == ACCESS_PRIVATE) {
@@ -1233,6 +1233,8 @@ function tag_text ($text, $offset = 0, $limit = 10) {
     require_once 'Text/LanguageDetect.php';
     require_once elgg_get_plugins_path() . 'enlightn/model/treetagger.class.php';
     $tmp_text_path  = '/tmp/' . md5($text);
+    $text 			= strip_tags($text);
+    $text           = str_replace(array('!','£','$','%','^','&','*','(',')','}','{','@',':','#','~','/','?','<','>','/','\\','.',',','|','-','=','_','+','¬','`','<br>','&nbsp;'), '', $text);
     file_put_contents($tmp_text_path, $text);
     $langage        = new Text_LanguageDetect();
     $langage        = $langage->detect($text, 1);

@@ -21,6 +21,7 @@ $private_collection		= get_user_access_collections($user_guid);
 $collections			= array_merge($public_collection?$public_collection:array(),
 										$private_collection?$private_collection:array());
 //$userfound = search_for_user($username);
+$CONFIG->search_info['min_chars']   = 10;
 $userfound                          = elgg_trigger_plugin_hook('search','user',array('query' => $username, 'limit'=>10));
 $userfound                          = $userfound["entities"];
 if (is_array($userfound)) {
@@ -41,7 +42,7 @@ if (is_array($userfound)) {
 }
 if (is_array($collections)) {
 	foreach ($collections as $key => $collection) {
-        if (strstr($collection->name, $username)) {
+        if (strstr(strtolower($collection->name), strtolower($username))) {
     		$usertojson[++$i]['id'] 	= 'C_'.$collection->id;
         	$usertojson[$i]['name'] 	= $collection->name;
             $usertojson[$i]['pic']      = '<div class="users_small list_select"></div>';

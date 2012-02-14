@@ -34,8 +34,8 @@ $short_title    	= substr($entity->title,0,55);
                         <div class="excerpt" id="excerpt<?php echo $post->entity_guid; ?>">
                             <?php echo elgg_view('input/user_photo',array('class'=>'thumb-photo','user_ent'=>$post_owner));?>
                             <h3><a href="<?php echo $vars['url'] ?>enlightn/discuss/<?php echo $vars['entity']->guid; ?>"><?php echo $short_title?></a><?php echo $flag_readed?></h3>
-                            <span class="participants"><strong><?php echo $post_owner->name?></strong> <?php echo elgg_view("enlightn/discussion_members",array('entity' => $post
-														, 'limit' => 3));?></span>
+                            <span class="participants"><?php echo $post_owner->name?> <?php echo elgg_view("enlightn/discussion_members",array('entity' => $post
+														, 'limit' => 0));?></span>
 	                        <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>
 
                             <p><?php echo enlightn_search_highlight_words($vars['query'],$short_description);?></p>
@@ -48,9 +48,11 @@ $short_title    	= substr($entity->title,0,55);
 		$("#read<?php echo $post->id; ?>").click( function(){
 			$("#read<?php echo $post->id; ?>").parent().parent().toggleClass("read unread");
 			loadContent('#loader','<?php echo $url_read?>');
+            $('input[name="lastModified"]').val('');
 		});
 		$("#favorite<?php echo $post->entity_guid; ?>").click( function(){
 			$(this).parent().toggleClass("starred");
 			loadContent('#loader','<?php echo $url_favorite?>');
+            $('input[name="lastModified"]').val('');
 		});
 </script>

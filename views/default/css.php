@@ -1165,15 +1165,18 @@ button[type="reset"]:active {
 }
 
 #feed .msg h3 {
-    font-size: 110%;
+    color: #444950;
+    font-size: 115%;
     font-weight: bold;
-    overflow:hidden;
+    height: 20px;
+    max-width: 435px;
+    overflow: hidden;
     white-space: nowrap;
-    height : 15px;
 }
 
 #feed .msg a {
 	color : #444950;
+    font-size: 115%;
 }
 
 
@@ -1183,11 +1186,11 @@ button[type="reset"]:active {
 
 
 #feed .msg .participants {
+    color: #808080;
     display: block;
-    font-size: 93%;
-    margin-top: 2px;
-    margin-bottom: 4px;
-	color : #444950;
+    font-size: 90%;
+    margin-bottom: 3px;
+    margin-top: 1px;
     white-space: nowrap;
 }
 
@@ -1201,10 +1204,10 @@ button[type="reset"]:active {
 }
 
 #feed .msg .excerpt p {
-    color: #8b97a1;
-    font-size: 87%;
-    margin-top:8px;
-    display : none;
+    color: #808080;
+    display: none;
+    font-size: 85%;
+    margin-top: 3px;
 }
 
 #feed.detail .msg .excerpt p {
@@ -1220,9 +1223,9 @@ button[type="reset"]:active {
     max-width : 500px;
 }
 #feed .msg .date {
-    color: #8b97a1;
-    font-size: 87%;
-	text-decoration:none;
+    color: #808080;
+    font-size: 85%;
+    text-decoration: none;
 }
 
 #feed.detail .msg .date {
@@ -2210,12 +2213,10 @@ form #clonedMessages {
 }
 
 .cloud_thumb {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    float:left;
-    padding: 1px;
+    float: left;
     margin: 0 6px;
-    width:60px;
+    padding: 1px;
+    width: 60px;
 }
 
 #cloud_content .photo {
@@ -2268,18 +2269,16 @@ form #clonedMessages {
     font-size: 87%;
     margin-top: 30px;
 }
-#feed.detail #cloud_content .msg .excerpt p,
-#cloud_content .msg .excerpt p {
-    margin-top:2px;
+.cloudContent {
+    margin : 0px;
     display : block;
 }
 
 #feed.detail #cloud_content .msg .participants {
     margin : 0px;
+    float : none;
 }
-#cloud_content .msg .participants {
-    margin-top: 15px;
-}
+
 
 /** PROFILE */
 

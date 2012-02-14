@@ -178,14 +178,14 @@ if (!isset($vars['replacement'])) {
 
 			echo "<ol>";
 			foreach($users[$letter] as $friend) {
-                $user_settings          = get_profile_settings($friend->getGUID());
+                $job_title  = elgg_get_metadata(array('guid'=> $friend->getGUID(), 'metastring_names'=>'jobtitle'));
  				echo '<li id="user' . $friend->getGUID() . '" class="user" data-userId="' . $friend->getGUID() . '">
-                             <a href="' . $vars['url'] . 'enlightn/profile/' . $friend->username .'">
+                             <a href="' . $vars['url'] . 'enlightn/profile/' . $friend->username .'" target="_blank">
                                  <span class="follow send-msg">' . elgg_echo('enlightn:seehisprofil') . '</span>
                             </a>
                             ' . elgg_view('input/user_photo',array('user_ent'=>$friend, 'class'=>'photo')) . '
                             <a href="' . $vars['url'] . 'enlightn/profile/' . $friend->username .'">' . $friend->name . '</a>
-                            <p>' . $user_settings['jobtitle'] .'</p>
+                            <p>' . $job_title[0]->value .'</p>
                             ';
 				$member_collection = array();
 				if (is_array($my_collection_members)) {

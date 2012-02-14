@@ -111,7 +111,7 @@
                 if ($(this).attr('data-keyword')) addedKeywords.push($(this).attr('data-keyword'));
             });
             $.each(data, function(keyword, accurency) {
-                if (accurency > 1 && keyword &&!addedKeywords.in_array(keyword) && !deletedKeywords.in_array(keyword)) {
+                if (keyword &&!addedKeywords.in_array(keyword) && !deletedKeywords.in_array(keyword)) {
                     elm.append('<span class="tag" data-keyword="' + keyword + '">'+ keyword +' <span class="del">&times;</span></span>');
                 }
             });
@@ -176,12 +176,6 @@
        	$('#uploader').css('display','none');
 	});
 
-	if (typeof $('#entity_access_id') != undefined) {
-		$('#access_id').val($('#entity_access_id').val());
-	}
-	if (typeof $('#membership') != undefined) {
-		$('#access_id').val($('#membership').val());
-	}
     // wait for the DOM to be loaded
     //$(document).ready(function() {
         // bind 'myForm' and provide a simple callback function

@@ -46,7 +46,7 @@ class treeTagger {
             $tag        = explode ("|",$tag);
             $tag        = $tag[0];
         }
-        $tag            = str_replace(array('"',"'",'!','£','$','%','^','&','*','(',')','}','{','@',':','#','~','/','?','<','>','/','\\','.',',','|','-','=','_','+','¬','`'), '', $tag);
+        $tag            = str_replace(array('!','£','$','%','^','&','*','(',')','}','{','@',':','#','~','/','?','<','>','/','\\','.',',','|','-','=','_','+','¬','`'), '', $tag);
         return $tag;
     }
 
@@ -102,6 +102,10 @@ class treeTagger {
         case 'english' :
                 $this->dictionary       = 'tree-tagger-english';
                 $this->tagger_patern    = '/NN|NP/';
+                break;
+        case 'spanish' :
+                $this->dictionary       = 'tree-tagger-spanish-utf8';
+                $this->tagger_patern    = '/NP|NC/';
                 break;
         case 'french' :
         default :
