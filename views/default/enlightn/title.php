@@ -59,8 +59,8 @@ $url_invite			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/inv
                         <span class="caption" id="invite-form">
                             <?php echo elgg_view("enlightn/helper/adduser",array(
                                                                     'placeholder' => elgg_echo('enlightn:fromuser'),
-                                                                    'internalname' => 'invite_to_folow',
-                                                                    'internalid' => 'invite_to_folow',
+                                                                    'name' => 'invite_to_folow',
+                                                                    'id' => 'invite_to_folow',
                                                                     )); ?>
                             <span id="invite_button" class="button"><?php echo elgg_echo("enlightn:buttonsend"); ?></span>
                         </span>

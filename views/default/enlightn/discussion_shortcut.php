@@ -1,5 +1,6 @@
 <?php
-$unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
+$unreaded           = sort_unreaded_for_nav($vars['discussion_unreaded']);
+$discussion_type    = get_last_search_value('access_level');
 ?>
 			<ol class="folders" id="list_selector">
                 <li class="current" id="discussion_selector_<?php echo ENLIGHTN_ACCESS_PU?>"><span class="arrow"></span><a class="cat" onclick="$('#unreaded_only').val(0);changeShortCutList(<?php echo ENLIGHTN_ACCESS_PU?>,undefined,<?php echo $vars['discussion_id']?>);return false;" href="#"><?php echo elgg_echo('enlightn:public'); ?><?php echo echo_unreaded($unreaded, ENLIGHTN_ACCESS_PU)?></a></li>
@@ -11,7 +12,7 @@ $unreaded = sort_unreaded_for_nav($vars['discussion_unreaded']);
         </div>
     </div>
 </div>
-<input type="hidden" name="discussion_type" id="discussion_type" value="<?php echo get_last_search_value('access_level')?get_last_search_value('access_level'):ENLIGHTN_ACCESS_PU;?>">
+<input type="hidden" name="discussion_type" id="discussion_type" value="<?php echo $discussion_type?$discussion_type:ENLIGHTN_ACCESS_PU;?>">
 <script language="javascript">
 changeShortCutList = function (accessLevel,offset,discussionId) {
     if ($('#discussion_type').val() != accessLevel) {
@@ -57,10 +58,6 @@ function changeShortCutMenu (task, data, textStatus, XMLHttpRequest) {
 		accessLevel = '';
 	}
 
-	if (typeof task.params.offset == 'undefined') {
-		task.params.offset = 0;
-    }
-
     if (typeof oldElement != 'undefined') {
         oldElement.html('');
     }
@@ -82,8 +79,6 @@ function changeShortCutMenu (task, data, textStatus, XMLHttpRequest) {
                     liClass = ' class="' + classReaded +'"';
                 }
                 items.push('<li id="' + item.guid + '"' + liClass + '><a href="<?php echo $vars['url']; ?>enlightn/discuss/' + item.guid +'">' +  item.title + '</li>');
-            } else {
-                accessLevel = item;
             }
         });
         items.push('</ol><span class="down" id="shortcuted_messages_next"><span class="arrow"></span></span></div>');

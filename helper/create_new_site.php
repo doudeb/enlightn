@@ -30,7 +30,7 @@ try {
     $site            = new ElggSite();
     $site->name      = $sitename;
     $site->url       = $url;
-    $site->access_id = ACCESS_LOGGED_IN;
+    $site->access_id = ACCESS_PUBLIC;
     $site->email     = $email;
     $guid            = $site->save();
 
@@ -46,14 +46,14 @@ try {
     set_config('https_login', TRUE, $site->getGUID());
     set_config('sitename', $sitename, $site->getGUID());
     set_config('siteemail', $email, $site->getGUID());
-    set_config('site', $site->getGUID(), $site->getGUID());
     set_config('site_guid', $site->getGUID(), $site->getGUID());
+    set_config('site_id', $site->getGUID(), $site->getGUID());
 
     elgg_generate_plugin_entities();
     $plugins = elgg_get_plugins('any');
     foreach ($plugins as $plugin) {
         if ($plugin->getManifest()) {
-            if ($plugin->getManifest()->getActivateOnInstall()) {
+            if ($plugin->getManifest()->getActivateOnInstall() && in_array($plugin->title, array('uservalidationbyemail','search','logbrowser','file','enlightn','group'))) {
                 $plugin->activate();
             }
         }

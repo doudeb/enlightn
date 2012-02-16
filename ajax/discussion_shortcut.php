@@ -20,7 +20,7 @@ $from_users 	= $last_search['from_users'];
 $subtype	 	= $last_search['subtype'];
 $offset			= get_input('offset');
 $limit			= $last_search['limit'];
-$access_level	= get_input('access_level');
+$access_level	= get_input('access_level',$last_search['access_level']);
 $entity_guid	= 0;
 $fetch_modified	= 0;
 $unreaded_only	= $last_search['unreaded_only'];
@@ -39,10 +39,6 @@ if (empty($limit)) {
 	$limit = 10;
 }
 
-if (empty($access_level)) {
-	$access_level = $last_search['access_level'];
-}
-$results['access_level'] = $access_level;
 //var_dump($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$offset,$limit);
 $search_results 		= $enlightn->search($user_guid,$entity_guid,$access_level,$unreaded_only,$words,$from_users,$date_begin,$date_end,$subtype,$tag,$offset,$limit);
 $nb_results = count($search_results);

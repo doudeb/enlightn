@@ -133,7 +133,7 @@
 			,'enlightn:buttonignore' => 'Ignore'
 
 			//DETAILS OF A DISCUSSION
-			,'enlightn:andothers' => ' and others'
+			,'enlightn:andothers' => ' and %d others'
 			,'enlightn:invitedusers' => 'Invite users:'
 			,'enlightn:userinvited' => 'Your invitation has been successfully sent.'
 			,'enlightn:discussioninvite' => 'Invite people'

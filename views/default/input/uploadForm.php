@@ -86,8 +86,12 @@
     });
 
 	$('#editkeyword').click(function() {
+        $(this).find('span').toggleClass('arrow-top');
         $('#uploader .tags').toggle();
-        $(this).toggle();
+        if($('#uploader .tags').css('display') == 'none') {
+            $('#tags-result-file').html('');
+            return false;
+        }
         addedKeywords = [];
         deletedKeywords = [];
         var text = $('#filetitle').val(),
@@ -162,13 +166,14 @@
 
 	$('#closeUploader').click(function(){
        	$('#embedContent').css('display','none');
-       	$('#uploader').css('display','none');
         $('#upload').css('display','block');
-        $('#uploader .tags').html('');
-        $('#uploader .tags').toggle();
-        $('#editkeyword').toggle();
+        $('#upload').val('');
+        $('#tags-result-file').html('');
         $('#submissionUpload').val('');
+        $('#filetitle_preview').html('');
         $('#access_id').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
+        $('#filetags').val('');
+        $('#filetitle').val('');
 	});
 
 	$('#cloudLink').click(function(){
@@ -194,9 +199,7 @@
                     $('#filetitle').val('');
                     $('#submissionUpload').val('');
                     $('#upload').val('');
-                    $('#uploader .tags').html('');
-                    $('#uploader .tags').toggle();
-                    $('#editkeyword').toggle();
+                    $('#tags-result-file').html('');
                     $('#access_id').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
                     <?php if(elgg_get_context() == 'cloud') {?>
                     loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>&' + get_search_criteria());

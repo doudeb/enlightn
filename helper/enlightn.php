@@ -432,16 +432,6 @@ function create_embeded_entities ($message,$entity) {
 	return $new_message;
 }
 
-/**
- * Adds collection submenu items
- *
- */
-function enlightn_collections_submenu_items() {
-        global $CONFIG;
-        $user = elgg_get_logged_in_user_entity();
-        add_submenu_item(elgg_echo('friends:collections'), $CONFIG->wwwroot . "enlightn/collection/" . $user->username);
-        add_submenu_item(elgg_echo('friends:collections:add'), $CONFIG->wwwroot . "enlightn/collection/add");
-}
 
 /**
  * Displays a user's access collections, using the friends/collections view
@@ -844,10 +834,18 @@ function create_enlightn_discussion ($user_guid, $access_id,$message, $title,$ta
     $enlightndiscussion->save();//trigger entities save, in order to update the update_time;
 	//link attachement
 	if (is_array($message['guids'])) {
-		foreach ($message['guids'] as $embeded_guids) {
-			add_entity_relationship($embeded_guids,ENLIGHTN_EMBEDED,$annotationid);
-            update_entity_access ($embeded_guids,$enlightndiscussion->access_id); //update access_id
+        $new_tags = array();
+		foreach ($message['guids'] as $embeded_guid) {
+            disable_right($embeded_guid);
+            $embeded_ent = get_entity($embeded_guid);
+            add_entity_relationship($embeded_guid,ENLIGHTN_EMBEDED,$annotationid);
+            update_entity_access ($embeded_guid,$enlightndiscussion->access_id); //update access_id
+            $new_tags = array_merge($new_tags,!is_array($embeded_ent->getTags())?array():$embeded_ent->getTags());
 		}
+        $tags = array_merge($new_tags,!is_array($enlightndiscussion->getTags())?array():$enlightndiscussion->getTags());
+        $tags = array_unique($tags);
+        $enlightndiscussion->tags = $tags;
+        $enlightndiscussion->save();
 	}
 	// add to river
 	add_to_river('enlightn/river/create','create',$user_guid,$enlightndiscussion->guid,$enlightndiscussion->access_id, 0, $annotationid);
@@ -1234,7 +1232,7 @@ function tag_text ($text, $offset = 0, $limit = 10) {
     require_once elgg_get_plugins_path() . 'enlightn/model/treetagger.class.php';
     $tmp_text_path  = '/tmp/' . md5($text);
     $text 			= strip_tags($text);
-    $text           = str_replace(array('!','£','$','%','^','&','*','(',')','}','{','@',':','#','~','/','?','<','>','/','\\','.',',','|','-','=','_','+','¬','`','<br>','&nbsp;'), '', $text);
+    $text           = str_replace(array('!','£','$','%','^','&','*','(',')','}','{','@',':','#','~','/','?','<','>','/','\\','|','-','=','_','+','¬','`','<br>','&nbsp;', 'http://', 'www.', '.html'), ' ', $text);
     file_put_contents($tmp_text_path, $text);
     $langage        = new Text_LanguageDetect();
     $langage        = $langage->detect($text, 1);
