@@ -16,7 +16,7 @@
 					<!-- display the post button -->
 					<div id="submission"></div>
                     <div class="sending">
-                        <input class="checkbox" type="checkbox" id="autoReply"/><span class="reply ico"></span>
+                        <!--<input class="checkbox" type="checkbox" id="autoReply"/><span class="reply ico"></span>-->
                         <button type="submit" class="submit"><?php echo elgg_echo('enlightn:buttonsend'); ?></button>
                     </div>
 				</form>

@@ -33,8 +33,9 @@ $(document).ready(function(){
 		    $('<span />', {
 		            'id' : elm,
 		            'style' : 'width : ' + bwidth + '; left : ' + elmLeft,
+                    'html' : '<span class="close">&times;</span>',
 		    'class': 'bubble'}).insertAfter(e);
-			loadContent('#' + elm,'<?php echo $vars['url']; ?>mod/enlightn/ajax/embed_preview.php?guid=' + $(e).attr('id'));
+			loadContent('#' + elm,'<?php echo $vars['url']; ?>mod/enlightn/ajax/embed_preview.php?guid=' + $(e).attr('id'),'append');
 		} else {
 			if (($('#' +elm).css('display')) == 'block') {
 				$('#' +elm).css('display','none');

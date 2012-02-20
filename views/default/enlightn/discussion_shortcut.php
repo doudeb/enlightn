@@ -97,7 +97,7 @@ function changeShortCutMenu (task, data, textStatus, XMLHttpRequest) {
         }
     });
     $('#shortcuted_messages_next').click( function(){
-        if (task.params.offset == '') {
+        if (typeof task.params.offset == 'undefined' || task.params.offset == '') {
             nextOffset = 10;
             changeShortCutList(task.params.access_level,nextOffset,task.item);
         } else if (parseInt(task.params.offset) >= 0) {

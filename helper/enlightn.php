@@ -388,9 +388,11 @@ function create_embeded_entities ($message,$entity) {
 				$file->setFilename($link["link"]);
                 if ($type === ENLIGHTN_IMAGE) {
                     $file->thumbnail = $link["link"];
-                    $mime = 'link/image';
+                    $mime           = 'link/image';
                 } else {
-                    $mime = 'text/html';
+                    $mime           = 'text/html';
+                    $content        = doc_to_txt($link["link"],$mime);
+                    file_put_contents('/tmp/testRead', $content);
                 }
                 $file->setMimeType($mime);
 				$file->originalfilename = $link["link"];
@@ -398,7 +400,6 @@ function create_embeded_entities ($message,$entity) {
 				$guid 				= $file->save();
                 generate_preview($file->guid);
                 //annotate with the link content
-                $content            = doc_to_txt($file->originalfilename,$mime);
                 if ($content) {
                     $file->annotate(ENLIGHTN_DISCUSSION, $content, $file->access_id);
                     $tags = tag_text($content);

@@ -2641,8 +2641,14 @@ form #clonedMessages {
     width: 220px;
 }
 
-#presence .chat .close {
+#presence .chat .close,
+.bubble .close {
     float:right;
+}
+
+.bubble .close {
+    margin-right: -10px;
+    margin-top: -10px;
 }
 
 #presence .chat .arrow {

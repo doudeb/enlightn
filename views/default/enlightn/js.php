@@ -142,6 +142,21 @@ function updateDiscussionUnread (task, data, textStatus, XMLHttpRequest) {
 
 
 function get_search_criteria (fromLink) {
+    if (fromLink) {
+        $('#search_tags').val('');
+        $('#subtype_checked').val('');
+        $('#searchInput').val('');
+        $('input[name="from_users"]').val('');
+        $('#date_end').val('');
+        $('#date_begin').val('');
+        $('#search_tags').val('');
+        tags = $('#discussion_selector_tags .tag');
+        tags.each(function() {
+            $(this).css('font-weight','normal');
+        });
+    }
+
+
 	if (typeof $('#subtype_checked').val() == 'undefined') {
 		var subtype = '';
 	} else {
@@ -237,9 +252,10 @@ function get_search_criteria (fromLink) {
 
 		$('#discussion_type').val(discussion_type);
 		$('#see_more_discussion_list_offset').val(0);
+        fromLink = discussion_type=='tags'||discussion_type==<?php echo ENLIGHTN_ACCESS_AL?>?false:true;
+        loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria(fromLink));
 
-        loadContent('#discussion_list_container','<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php' + get_search_criteria(true));
-		$(currElement).addClass('current');
+        $(currElement).addClass('current');
 		$(currElement + '_tabs').addClass('current');
 		$(".folders li").each(function () {
 			if($(this).attr('id') != $(currElement).attr('id')) {

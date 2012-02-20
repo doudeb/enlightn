@@ -51,6 +51,7 @@ Order By e.time_created desc";
         $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null)?elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null):1;
 
         $where[]= "And ent.site_guid = " . $this->site_guid;
+        $order[] = "ent.time_updated Desc";
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1
@@ -122,14 +123,19 @@ Order By e.time_created desc";
 		if ($words) {
             $sphinx_enabled = elgg_get_plugin_setting('sphinx_enabled','enlightn');
             if ($sphinx_enabled == 1) {
+                $dblink  = get_db_link('read');
+                execute_query("Drop Table If Exists tmp_search;", $dblink);
+                execute_query("Create Temporary Table tmp_search
+                                      Select weight,guid,value_id
+                                      From sphinx_search
+                                      Where query='$words;mode=extended2;offset=0;limit=100;index=metastrings_main,metastrings_delta,desc_title_main,desc_title_delta;indexweights=metastrings_main,1,metastrings_delta,1,desc_title_main,2,desc_title_delta,2;sort=extended:@weight desc';",$dblink);
                 $force   = array();
-                $limit   =100;
                 $join [] = "Inner Join annotations a On ent.guid = a.entity_guid
-                            Inner Join sphinx_search msv On a.value_id = msv.id";
-                $where[] = "And msv.query='$words;mode=extended2;offset=$offset;limit=100;index=metastrings_main,metastrings_delta,desc_title_main,desc_title_delta;indexweights=metastrings_main,1,metastrings_delta,1,desc_title_main,2,desc_title_delta,2;sort=extended:@weight desc'";
+                            Inner Join tmp_search msv On a.value_id = msv.value_id";
+                $order[0] = "msv.weight Desc";
                 //remove offset when going throught sphinx... not needed as it's the main data source.
                 if ($offset > 0) {
-                    $offset = 0;
+                    //$offset = 0;
                 }
             } else {
                 $join [] = "Inner Join objects_entity ent_title On ent_title.guid = ent.guid
@@ -178,6 +184,7 @@ Order By e.time_created desc";
 		$join	= implode(' ',$join);
 		$where	= implode(' ',$where);
 		$group	= implode(' ',$group);
+		$order	= implode(' ',$order);
 		$having	= implode(' ',$having);
 		$query 	= "Select Distinct ent.guid
                         ,  (Select Max(a.id) From annotations a Where ent.guid = a.entity_guid $from_users) id
@@ -187,7 +194,7 @@ Order By e.time_created desc";
                     Where
     				$where
                     $having
-        			Order By ent.time_updated Desc
+        			Order By $order
             		Limit $offset,$limit";
 		//echo "<pre>" . $query;die();
 		return  $this->get_data($query, $key_cache, null);
