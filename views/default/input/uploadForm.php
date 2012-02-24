@@ -115,7 +115,7 @@
                 if ($(this).attr('data-keyword')) addedKeywords.push($(this).attr('data-keyword'));
             });
             $.each(data, function(keyword, accurency) {
-                if (keyword &&!addedKeywords.in_array(keyword) && !deletedKeywords.in_array(keyword)) {
+                if (accurency > 1 && keyword &&!addedKeywords.in_array(keyword) && !deletedKeywords.in_array(keyword)) {
                     elm.append('<span class="tag" data-keyword="' + keyword + '">'+ keyword +' <span class="del">&times;</span></span>');
                 }
             });

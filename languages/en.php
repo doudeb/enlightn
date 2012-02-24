@@ -83,7 +83,10 @@
 			,'enlightn:tagsfile' => 'Tags'
 			,'enlightn:uploadembed' => 'Upload a document to the discussion'
 			,'enlightn:editmytitle' => 'Edit title'
-            ,'enlightn:editkeyword' => 'Edit keyword'
+                        ,'enlightn:editkeyword' => 'Edit keyword'
+                        ,'enlightn:savedsearch' => 'Saved search'
+                        ,'enlightn:searchmemo' => 'Save your search'
+                        ,'enlightn:prompt:cloudremovesavedsearch' => 'Do you really want to remove this saved search?'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Read'

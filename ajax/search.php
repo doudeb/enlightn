@@ -37,11 +37,11 @@ if ($annotation_id > 0) {
     $last_modified			= $search_results[0]->time_created;
 } elseif ($entity_guid > 0) {
     disable_right($entity_guid);
-	$discussion_activities  = get_entity_relationships($entity_guid,true);
-	$discussion_activities  = array_reverse($discussion_activities);
-	$discussion_activities  = sort_entity_activities($discussion_activities);
+    $discussion_activities  = get_entity_relationships($entity_guid,true);
+    $discussion_activities  = array_reverse($discussion_activities);
+    $discussion_activities  = sort_entity_activities($discussion_activities);
     $discussion				= get_entity($entity_guid);
-	$search_results			= $discussion->getAnnotations(ENLIGHTN_DISCUSSION, $limit, $offset, "desc");
+    $search_results			= $discussion->getAnnotations(ENLIGHTN_DISCUSSION, $limit, $offset, "desc");
     $previous_result        = $offset>0?$discussion->getAnnotations(ENLIGHTN_DISCUSSION, 1, abs($offset-$limit), "desc"):false;
     $total_results          = $discussion->countAnnotations('');
     //$search_results         = array_reverse($search_results);

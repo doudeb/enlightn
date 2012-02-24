@@ -42,7 +42,9 @@ function enlightn_init() {
 	elgg_register_action("enlightn/collection/addcollection",$action_path . "collection/addcollection.php");
 	elgg_register_action("enlightn/collection/removefromcollection",$action_path . "collection/removefromcollection.php");
 	elgg_register_action("enlightn/collection/addtocollection",$action_path . "collection/addtocollection.php");
-
+        //search cloud memo
+        elgg_register_action("enlightn/cloud/saveSearch",$action_path . "cloud/saveSearch.php");
+        elgg_register_action("enlightn/cloud/removeSearch",$action_path . "cloud/removeSearch.php");
     // Register entity type
     elgg_register_entity_type('object',ENLIGHTN_DISCUSSION);
     // Load profile settings

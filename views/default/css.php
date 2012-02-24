@@ -900,8 +900,8 @@ button[type="reset"]:active {
     height:22px;
     line-height:22px;
     padding:0 5px;
-	*position:relative;
-	*z-index: 2;
+    *position:relative;
+    *z-index: 2;
     cursor : pointer;
 }
 
@@ -1083,7 +1083,8 @@ button[type="reset"]:active {
     margin-right: 5px;
 }
 
-.msg .star, .msg .lock {
+.star,
+.msg .lock {
     background-position:-164px -123px;
     display:inline-block;
     height:18px;
@@ -1094,7 +1095,7 @@ button[type="reset"]:active {
     background-position: -164px -149px;
 }
 
-#feed .msg .star {
+#feed.detail .msg .star {
     clear:right;
     float:right;
     margin-right:5px;
@@ -1763,7 +1764,6 @@ form #clonedMessages {
     color: <?php echo ($css_sidebar_folders = elgg_get_plugin_setting('css_sidebar_folders','enlightn'))?$css_sidebar_folders:'#8d8187';?>;
     display: block;
     font-size: 124%;
-    font-weight: bold;
     padding: 12px 10px;
 }
 
@@ -2279,7 +2279,64 @@ form #clonedMessages {
     float : none;
 }
 
+#cloud .actions {
+    background: none;
+    border : none;
+}
 
+#cloud .star {
+    float: left;
+}
+
+#sidebar .star {
+    float: right;
+}
+
+.search-memo {
+    border :none;
+    float:left;
+    margin: 2px 0px 0px 5px;
+    cursor : pointer;
+    color : #2C75E2;
+}
+.search-memo span {
+    margin: 2px 0px 0px 5px;
+}
+.saved-search .close {
+    float : right;
+    color : #bbb;
+    margin-right : 5px;
+ }
+
+ .saved-search  {
+    background-color:#fff;
+    border:1px solid #bbb;
+    padding:4px 6px;
+    margin:16px;
+}
+ .saved-search ul {
+    margin-left : 15px;
+    margin-top : 15px;
+    color : #2C75E2;
+ 
+ }
+ 
+  .saved-search li {
+    margin-bottom : 5px;
+    cursor : pointer;
+    width : 
+ }
+ 
+ #search-memo-name {
+    width: 100px;
+    height: 15px;
+ }
+ 
+ #search-memo-post {
+    min-width: 0px;
+    width : 25px;
+    height: 21px;
+ }
 /** PROFILE */
 
 #profile .big-photo {
@@ -2647,8 +2704,9 @@ form #clonedMessages {
 }
 
 .bubble .close {
-    margin-right: -10px;
+    margin-right: -5px;
     margin-top: -10px;
+    cursor : pointer;
 }
 
 #presence .chat .arrow {

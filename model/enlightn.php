@@ -305,7 +305,9 @@ public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$f
                                         Or ent_title.description Like concat('%', '$words', '%')
                                         Or msv.string Like concat('%', '$words', '%')
                                     When length('$words') > @@ft_min_word_len Then
-                                        MATCH (ent_title.title,ent_title.description,msv.string) AGAINST ('$words' IN BOOLEAN MODE)
+                                        MATCH (ent_title.title) AGAINST ('$words' IN BOOLEAN MODE)
+                                        Or MATCH (ent_title.description) AGAINST ('$words' IN BOOLEAN MODE)
+                                        Or MATCH (msv.string) AGAINST ('$words' IN BOOLEAN MODE)
                                     Else true
                                 End";
             }

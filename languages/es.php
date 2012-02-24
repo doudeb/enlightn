@@ -88,7 +88,10 @@
 			,'enlightn:tagsfile' => 'Tags'
 			,'enlightn:uploadembed' => 'Adjunta a la conversación'
 			,'enlightn:editmytitle' => 'Editar titulo'
-            ,'enlightn:editkeyword' => 'Editar palabra clave'
+                        ,'enlightn:editkeyword' => 'Editar palabra clave'
+                        ,'enlightn:savedsearch' => 'Búsqueda guardada'
+                        ,'enlightn:searchmemo' => 'Guardar búsqueda'
+                        ,'enlightn:prompt:cloudremovesavedsearch' => '¿Estas seguro que quieres borrar la búsqueda?'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Leída'

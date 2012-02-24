@@ -20,30 +20,33 @@ $(document).ready(function(){
 	$('#discussion_list_container li .excerpt').click( function(){
 		$(this).parent().toggleClass('open-msg');
 	});
-
     function showBubble (e, linkType) {
-		elm = 'preview' + $(e).attr('id');
+	elm = 'preview' + $(e).attr('id');
         pos = $(e).position();
         elmLeft = pos.left + 'px';
         bwidth = 'auto';
         if (linkType == '<?php echo ENLIGHTN_LINK?>') {
             bwidth = '300px';
         }
-		if (!$('#' +elm).hasClass('bubble')) {
-		    $('<span />', {
-		            'id' : elm,
-		            'style' : 'width : ' + bwidth + '; left : ' + elmLeft,
-                    'html' : '<span class="close">&times;</span>',
-		    'class': 'bubble'}).insertAfter(e);
-			loadContent('#' + elm,'<?php echo $vars['url']; ?>mod/enlightn/ajax/embed_preview.php?guid=' + $(e).attr('id'),'append');
-		} else {
-			if (($('#' +elm).css('display')) == 'block') {
-				$('#' +elm).css('display','none');
-			} else {
-				$('#' +elm).css('display','block');
-			}
-		}
-		return false;
+        if (!$('#' +elm).hasClass('bubble')) {
+            $('<span />', {
+                    'id' : elm,
+                    'style' : 'width : ' + bwidth + '; left : ' + elmLeft,
+            'html' : '<span class="close">&times;</span>',
+            'class': 'bubble'}).insertAfter(e);
+                loadContent('#' + elm,'<?php echo $vars['url']; ?>mod/enlightn/ajax/embed_preview.php?guid=' + $(e).attr('id'),'append');
+        } else {
+                if (($('#' +elm).css('display')) == 'block') {
+                        $('#' +elm).css('display','none');
+                } else {
+                        $('#' +elm).css('display','block');
+                }
+        }
+  	$('.bubble .close').click( function() {
+		$('#' +elm).css('display','none');
+
+	});          
+        return false;
     }
 });
 

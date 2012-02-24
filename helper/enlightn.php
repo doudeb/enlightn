@@ -392,7 +392,6 @@ function create_embeded_entities ($message,$entity) {
                 } else {
                     $mime           = 'text/html';
                     $content        = doc_to_txt($link["link"],$mime);
-                    file_put_contents('/tmp/testRead', $content);
                 }
                 $file->setMimeType($mime);
 				$file->originalfilename = $link["link"];
@@ -889,7 +888,7 @@ function add_folowers ($userto,$enlightndiscussion) {
                 add_entity_relationship($usertoid->guid, 'membership_request', $enlightndiscussion->guid);
                 // Send email
                 $url = "{$CONFIG->url}enlightn/discuss/" . $enlightndiscussion->guid;
-                if (!in_array($usertoid->{"notification:method:".NOTIFICATION_EMAIL_INVITE}, array(0))) {
+                if ($usertoid->{"notification:method:".NOTIFICATION_EMAIL_INVITE} != 0 || $usertoid->{"notification:method:".NOTIFICATION_EMAIL_INVITE} === null) {
                     notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
                             sprintf(elgg_echo('enlightn:invite:subject',$usertoid->language), $enlightndiscussion->title),
                             sprintf(elgg_echo('enlightn:invite:body',$usertoid->language), $usertoid->name, $user->name, $enlightndiscussion->title, $url),

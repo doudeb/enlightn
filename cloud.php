@@ -14,7 +14,8 @@ if (!$user_guid || !$user_ent) {
 $left  =  elgg_view('enlightn/cloud/navigation',array());
 
 $search_filters = elgg_view('enlightn/search_filters',array());
-$right .= $search_filters ."</div>";
+$memo_search    = elgg_view('enlightn/cloud/search_memo',array('user_ent'=>$user_ent));
+$right .= $search_filters . $memo_search . "</div>";
 unset($search_filters);
 $body = $left . $right;
 

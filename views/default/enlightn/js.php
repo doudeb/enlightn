@@ -143,7 +143,6 @@ function updateDiscussionUnread (task, data, textStatus, XMLHttpRequest) {
 
 function get_search_criteria (fromLink) {
     if (fromLink) {
-        $('#search_tags').val('');
         $('#subtype_checked').val('');
         $('#searchInput').val('');
         $('input[name="from_users"]').val('');
@@ -328,7 +327,7 @@ $(document).ready(function(){
                 elm.prepend('<img src="<?php echo $vars['url'] ?>mod/enlightn/media/graphics/loading.gif">');
                 $.post('<?php echo "{$vars['url']}mod/enlightn/ajax/tagger.php";?>', {text: text}, function(data) {
                     $.each(data, function(keyword, accurency){
-                        if (keyword && !addedKeywords.in_array(keyword) && !deletedKeywords.in_array(keyword)) {
+                        if (accurency > 1 && keyword && !addedKeywords.in_array(keyword) && !deletedKeywords.in_array(keyword)) {
                             elm.append('<span class="tag" data-keyword="' + keyword + '">'+ keyword +' <span class="del">&times;</span></span>');
                         }
                     });
@@ -398,7 +397,6 @@ $(document).ready(function(){
         }
         changeMessageList('discussion_selector_tags','tags');
     });
-
 	$('#search .filters li input').click( function(){
 		currElement = $(this);
 		items_checked = [];
@@ -557,7 +555,7 @@ $(document).ready(function(){
 	        target:        '#new-discussion-submission',   // target element(s) to be updated with server response
 	        beforeSubmit:  loading,  // pre-submit callback
 	        success:       autoClose,  // post-submit callback
-            type:      'post',        // 'get' or 'post', override for form's 'method' attribute
+                type:      'post',        // 'get' or 'post', override for form's 'method' attribute
 	        dataType:  'json'
 	    };
 

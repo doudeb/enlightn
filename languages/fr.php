@@ -74,15 +74,18 @@
 			,'enlightn:buttonpost' => 'Envoyer'
 			,'enlightn:missingData' => 'Oups, il manque un titre à votre discussion.'
 			,'enlightn:discussion_sucessfully_created' => ''
-            ,'enlightn:discussionusersuggest' => 'Suggestion de participant'
+                        ,'enlightn:discussionusersuggest' => 'Suggestion de participant'
 
 			//HOME - NEW TOPIC - UPLOAD
 			,'enlightn:uploadcloud' => 'Votre fichier se trouve dans le cloud?'
 			,'enlightn:titlefile' => 'Titre du document'
 			,'enlightn:tagsfile' => 'Mots-clés'
 			,'enlightn:uploadembed' => 'Joindre à la discussion'
-            ,'enlightn:editmytitle' => 'Modifier'
-            ,'enlightn:editkeyword' => 'Editer les mots cléfs'
+                        ,'enlightn:editmytitle' => 'Modifier'
+                        ,'enlightn:editkeyword' => 'Editer les mots cléfs'
+                        ,'enlightn:savedsearch' => 'Recherches mémorisées'
+                        ,'enlightn:searchmemo' => 'Mémoriser la recherche'
+                        ,'enlightn:prompt:cloudremovesavedsearch' => 'êtes-vous sûr de vouloir supprimer cette recherche?'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Lus'
