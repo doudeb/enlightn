@@ -2359,7 +2359,7 @@ form #clonedMessages {
     font-weight: 0;
     height: auto;
     overflow: visible;
-    min-width: 350px;
+    width: 350px;
  }
 
 #feed.cloud_listing .msg .participants {
@@ -2368,7 +2368,7 @@ form #clonedMessages {
     margin-top: 0px;
     display : none;
     text-align : right;
-    width : 130px;
+    width: 115px;
 }
 
 #feed.cloud_listing .msg .date {
@@ -2395,6 +2395,10 @@ form #clonedMessages {
 #feed.cloud_listing .msg:hover .click-link,
 #feed.cloud_listing .msg:hover .expand {
     display:inline-block;
+}
+
+#feed.cloud_listing .msg:hover h3 {
+    overflow : hidden;
 }
 
 #feed.cloud_listing .msg:hover .tag {
