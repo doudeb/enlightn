@@ -1316,7 +1316,7 @@ function doc_to_txt ($file_path, $mime_type) {
     }
     if(file_exists($converted_file) && !$text) {
         $text                   = file_get_contents($converted_file);
-        unlink($converted_file);
+        //unlink($converted_file);
     }
     return $text;
 }

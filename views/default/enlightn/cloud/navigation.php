@@ -7,29 +7,55 @@
                 </div>
 	        <?php } ?>
 	        <h2><?php echo elgg_echo('enlightn:cloudmain');?></h2>
+                <p><?php echo elgg_echo('enlightn:cloudheadline');?></p>
 	    </div>
 		<input type="hidden" name="see_more_discussion_list_offset" id="see_more_discussion_list_offset" value="0">
-		<div id="feed">
-			<div class="actions">
-                            <span class="star ico"></span><div class="search-memo"><?php echo elgg_echo('enlightn:searchmemo');?></div>
-                            <ul class="right">
-                                <li><a href="" id="cloud_next"><?php echo elgg_echo("enlightn:next")?></a></li>
-                                <li><a href="" id="cloud_previous"><?php echo elgg_echo("enlightn:previous")?></a></li>
-                            </ul>
-			</div>
+		<input type="hidden" name="list_limit" id="list_limit" value="20">
+		<div id="feed" class="cloud_listing">
+                    <div class="actions">
+                        <span class="star ico"></span><div class="search-memo"><?php echo elgg_echo('enlightn:searchmemo');?></div>
+                        <ul class="right">
+                            <li><a href="" id="cloud_next"><?php echo elgg_echo("enlightn:next")?></a></li>
+                            <li><a href="" id="cloud_previous"><?php echo elgg_echo("enlightn:previous")?></a></li>
+                        </ul>
+                    </div>
+                    <div class="changeview">
+                        <ul class="right change-view-selector">
+                            <li><span class="change-full ico" id="cloud_full">cloud_full</span></li>
+                            <li><span class="change-mini ico selected" id="cloud_mini">cloud_mini</span></li>
+                        </ul>
+                    </div>
 			<?php echo elgg_view('enlightn/cloud/cloud_content',array('internal_id' => $internal_id));?>
 		</div>
 <script>
 $(document).ready(function(){
+        $('#cloud_mini').click(function(){
+            $('#feed').toggleClass('cloud_listing');
+            $(this).toggleClass('selected');
+            $('#cloud_full').toggleClass('selected');
+            $('#list_limit').val('20');
+            loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
+            return false;
+        });
+    
+         $('#cloud_full').click(function(){
+            $('#feed').toggleClass('cloud_listing');
+            $('#list_limit').val('10');
+            $(this).toggleClass('selected');
+            $('#cloud_mini').toggleClass('selected');
+            loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
+            return false;
+        });
+    
 	$("#cloud_previous").click(function(){
 		if ($('#see_more_discussion_list_offset').val() > 0) {
-			$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())-10);
-  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
+			$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())-parseInt($('#list_limit').val()));
+                        loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
 		}
 	  	return false;
 	});
 	$("#cloud_next").click(function(){
-		$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())+10);
+		$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())+parseInt($('#list_limit').val()));
   		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
 	  	return false;
 	});
@@ -59,6 +85,7 @@ $(document).ready(function(){
                 ,title = elm.attr('data-name');
             $(".search-memo").html(title);
             $(".search-memo").parent().addClass('starred');
+            $('#see_more_discussion_list_offset').val(0);
             $.each(params,function (field,value) {
                 switch(field) {
                     case 'words':
@@ -110,6 +137,10 @@ $(document).ready(function(){
                 },'json');                
             }
         });
+        $('.expand').click( function() {
+            alert('pan');
+            //$(this).parent().find('.tag_list').toggle();
+        });        
 });
 </script>
 	</div><!-- end cloud -->

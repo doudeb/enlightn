@@ -12,8 +12,11 @@
 	$(document).ready(function(){
 		$('#search_submit').click( function(){
 			<?php
-				if (in_array(elgg_get_context(),array('cloud','cloud_embed'))) {
-					echo "loadContent('#cloud_content','" . $vars['url'] . "mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '?context=" . elgg_get_context() . "');";
+				if (in_array(elgg_get_context(),array('cloud','cloud_embed'))) {?>
+                                        $(".search-memo").html('<?php echo elgg_echo('enlightn:searchmemo');?>');
+                                        $(".search-memo").parent().removeClass('starred');
+					loadContent('#cloud_content','<?php echo $vars['url']?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '?context=<?php echo elgg_get_context()?>');
+                                <?php
 				} else {
 					echo "changeMessageList('#discussion_selector_search'," .ENLIGHTN_ACCESS_AL.");";
 				}

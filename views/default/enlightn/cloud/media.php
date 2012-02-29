@@ -13,6 +13,9 @@ $(".embederToNew").click(function(){
         }
         return false;
 });
+$('.expand').click( function() {
+    $(this).parent().find('.tag').toggle();
+});
 </script>
 <?php
 	$context = elgg_get_context();

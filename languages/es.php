@@ -185,6 +185,7 @@
 
 			//CLOUD
 			,'enlightn:cloudmain' => 'Cloud'
+                        ,'enlightn:cloudheadline' => 'Biblioteca virtual de la empresa'
 			,'enlightn:cloudnew' => 'Adjuntar un documento'
 			,'enlightn:file:type:all' => 'Tous' //don't translate please
 			,'enlightn:file:type:video' => 'Videos' //don't translate please

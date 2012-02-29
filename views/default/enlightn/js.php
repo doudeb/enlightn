@@ -154,8 +154,6 @@ function get_search_criteria (fromLink) {
             $(this).css('font-weight','normal');
         });
     }
-
-
 	if (typeof $('#subtype_checked').val() == 'undefined') {
 		var subtype = '';
 	} else {
@@ -197,11 +195,17 @@ function get_search_criteria (fromLink) {
 	} else {
 		var unreaded_only = $('#showunread').attr('checked')=='checked'?1:0;
 	}
-    if (typeof $('#search_tags').val() == 'undefined') {
+        if (typeof $('#search_tags').val() == 'undefined') {
 		var search_tags = '';
 	} else {
 		var search_tags = $('#search_tags').val();
 	}
+        if (typeof $('#list_limit').val() == 'undefined') {
+		var list_limit = 10;
+	} else {
+		var list_limit = $('#list_limit').val();
+	}
+        
 	if(words || subtype || date_begin || date_end || search_tags) {
 		discussion_type = 4;
 		$('#discussion_type').val(discussion_type);
@@ -229,6 +233,7 @@ function get_search_criteria (fromLink) {
 							+ '&discussion_type=' + discussion_type
 							+ '&entity_guid=' + entity_guid
 							+ '&unreaded_only=' + unreaded_only
+							+ '&limit=' + list_limit
 							+ '&tags=' + search_tags;
 
 

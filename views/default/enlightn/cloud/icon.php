@@ -53,7 +53,7 @@
             if ($thumbnail && !$is_document) {
 				echo "<img class=\"photo\" src=\"" . $thumbnail ."\" border=\"0\" />";
 			} else {
-				echo "<img src=\"". $vars['url'] ."mod/enlightn/media/graphics/link.jpg\" border=\"0\" />";
+				echo "<img class=\"photo\" src=\"". $vars['url'] ."mod/enlightn/media/graphics/link.jpg\" border=\"0\" />";
 			}
         break;
 		default :

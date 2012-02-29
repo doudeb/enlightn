@@ -913,7 +913,8 @@ button[type="reset"]:active {
     margin:0;
 }
 
-#feed .actions ul.right li {
+#feed .actions ul.right li,
+#feed .changeview ul.right li {
     float:right;
 }
 
@@ -2321,7 +2322,7 @@ form #clonedMessages {
  
  }
  
-  .saved-search li {
+ .saved-search li {
     margin-bottom : 5px;
     cursor : pointer;
     width : 
@@ -2337,6 +2338,134 @@ form #clonedMessages {
     width : 25px;
     height: 21px;
  }
+ 
+ /** Cloud view **/
+ 
+ #feed.cloud_listing .photo {
+    float: none;
+    height: 30px;
+    width: 30px;
+ }
+
+#feed.cloud_listing .cloud_thumb {
+    float: left;
+    margin: -8px 6px 0px 0px;
+    width: 30px;
+}
+
+#feed.cloud_listing .msg h3 {
+    display : inline-block;
+    font-size: 100%;
+    font-weight: 0;
+    height: auto;
+    overflow: visible;
+    min-width: 350px;
+ }
+
+#feed.cloud_listing .msg .participants {
+    font-size: 90%;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    display : none;
+    text-align : right;
+    width : 130px;
+}
+
+#feed.cloud_listing .msg .date {
+    font-size: 90%;
+    margin: 0px;
+    display : none;
+}
+#feed.cloud_listing .msg {
+    padding: 8px 0px;
+}
+
+#feed.cloud_listing .msg .follow,
+#feed.cloud_listing .tag {
+    display : none;
+}
+
+#feed.cloud_listing .tag_list {
+    margin-top : 5px;
+}
+
+#feed.cloud_listing .msg:hover .participants,
+#feed.cloud_listing .msg:hover .date,
+#feed.cloud_listing .msg:hover .msg .follow,
+#feed.cloud_listing .msg:hover .click-link,
+#feed.cloud_listing .msg:hover .expand {
+    display:inline-block;
+}
+
+#feed.cloud_listing .msg:hover .tag {
+    //display:inline;
+}
+
+.changeview {
+    background : #ddd;
+    height: 25px;
+    padding-top: 5px;
+}
+
+.change-mini {
+    background-position: -56px -212px;
+    display: block;
+    height: 22px;
+    width: 30px;
+    text-indent: -999px;
+    cursor : pointer;
+}
+
+.change-mini.selected {
+    background-position: -127px -212px;
+}
+    
+.change-full {
+    background-position: -157px -212px;
+    display: block;
+    height: 22px;
+    width: 30px;
+    text-indent: -999px;
+    cursor : pointer;
+}
+
+.change-full.selected {
+   background-position: -86px -212px;
+}
+
+.click-link {
+    background-position: -337px -125px;
+    display: none;
+    height: 16px;
+    text-indent: -999px;
+    width: 18px;
+    float: right;
+    cursor : pointer;
+}
+
+.expand {
+    background-position: -367px -125px;
+    display: none;
+    height: 16px;
+    text-indent: -999px;
+    width: 16px;
+    float: right;
+    margin-left: 5px;
+    cursor : pointer;
+}
+#feed.cloud_listing .msg a { 
+    color: #444950;
+    font-size: 100%;
+}
+
+#feed.cloud_listing .msg a:hover { 
+    text-decoration: underline;
+}
+
+#feed.cloud_listing .msg_home { 
+    cursor: default;
+}
+
 /** PROFILE */
 
 #profile .big-photo {

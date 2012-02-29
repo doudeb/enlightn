@@ -180,6 +180,7 @@
 
 			//CLOUD
 			,'enlightn:cloudmain' => 'Cloud'
+			,'enlightn:cloudheadline' => ''
 			,'enlightn:cloudnew' => 'Add a document'
 			,'enlightn:file:type:all' => 'Tous' //don't translate please
 			,'enlightn:file:type:video' => 'Videos' //don't translate please
