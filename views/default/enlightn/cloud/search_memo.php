@@ -6,8 +6,8 @@
  * 
  */
 $user_ent           = $vars['user_ent'];
-$saved_search       = get_private_setting($user_ent->guid, 'search_cloud');
-$saved_search       = unserialize($saved_search);
+$options            = array('types'=>'object','subtypes'=>ENLIGHTN_FILTER,'owner_guids'=>$user_ent->guid);
+$saved_search       = elgg_get_entities($options);
 
 
 ?>
@@ -15,9 +15,11 @@ $saved_search       = unserialize($saved_search);
     <span><?php echo elgg_echo("enlightn:savedsearch")?></span><span class="star ico"></span>
     <ul id="saved-search-list">
     <?php
-    foreach ($saved_search as $search_name => $value) {
-        $params = json_encode($value);
-        echo "<li data-params='" . $params . "' data-name='" . $search_name . "'><span class='saved-items'>" . $search_name . "</span><span class='close'>&times;</span></li>";
+    foreach ($saved_search as $search) {
+        $params = $search->getMetadata(ENLIGHTN_FILTER_CRITERIA);
+        $params = unserialize($params);
+        $params = json_encode($params);
+        echo "<li data-params='" . $params . "' data-name='" . $search->title . "' data-guid='" . $search->guid . "'><span class='saved-items'>" . $search->title . "</span><span class='close'>&times;</span></li>";
     }
     ?>
     </ul>

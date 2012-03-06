@@ -17,7 +17,7 @@ $tags       = $enlightn->get_tags(elgg_get_logged_in_user_guid(),false,'trending
                             if (is_array($tags)) {
                                 echo "<p>";
                                 foreach ($tags as $tag) {
-                                    echo "<span class='tag' data-keyword='" . $tag->tag . "'>" . $tag->tag . "</span>";
+                                    echo "<span class='tag' data-id='" . $tag->tag_id . "'>" . $tag->tag . "</span>";
                                 }
                                 echo "</p>";
                             }
@@ -27,7 +27,6 @@ $tags       = $enlightn->get_tags(elgg_get_logged_in_user_guid(),false,'trending
         </div>
     </div>
 <input type="hidden" name="discussion_type" id="discussion_type" value="<?php echo $vars['discussion_type']?>">
-<input type="hidden" name="search_tags" id="search_tags" value="<?php echo $vars['tags']?>">
 <script language="javascript">
 var oldTitle = document.title;
 setInterval(function() {

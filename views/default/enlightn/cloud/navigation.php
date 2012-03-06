@@ -86,11 +86,32 @@ $(document).ready(function(){
             $(".search-memo").html(title);
             $(".search-memo").parent().addClass('starred');
             $('#see_more_discussion_list_offset').val(0);
+            token_elm  = $('input[name="q"]');
+            token_elm.tokenInput("clear");
+            $('#search_tags').val('');
             $.each(params,function (field,value) {
                 switch(field) {
                     case 'words':
-                        changeElm = $('#searchInput');
+                        if(!value) break;
+                        token_elm  = $('input[name="q"]');
+                        token_elm.tokenInput("add", {id: value, name: value}); 
+                        changeElm = $('input[name="q"]');
                         break;
+                    case 'tags':
+                        if(!value) break;
+                        $('#search_tags').val('');
+                        token_elm  = $('input[name="q"]');
+                        $.each(value,function (key,tag_id) {
+                            $.get('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}mod/enlightn/ajax/get_tag_data.php");?>', {tag_id: tag_id}, function(tag_ent) {
+                                if(tag_ent)  {
+                                    token_elm.tokenInput("add", {id: 'tag_' + tag_id, name: tag_ent.name}); 
+                                }                        
+                            },'json');
+                            value[key] = 'tag_' + tag_id;
+                        });
+                        value = value.join(',');
+                        changeElm = $('input[name="q"]');
+                        break;                      
                     case 'from_users':
                         token_elm  = $('input[name="from_users"]');
                         token_elm.tokenInput("clear");
@@ -128,9 +149,9 @@ $(document).ready(function(){
         
         $(".saved-search .close").click(function(){
             elm = $(this).parent();
-            title = elm.attr('data-name');
+            guid = elm.attr('data-guid');
             if(confirm("<?php echo elgg_echo('enlightn:prompt:cloudremovesavedsearch')?>")) {
-                $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/removeSearch");?>', {searchName: title}, function(result) {
+                $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/removeSearch");?>', {guid: guid}, function(result) {
                     if(result)  {
                         elm.remove();
                     }                        

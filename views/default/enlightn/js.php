@@ -159,11 +159,24 @@ function get_search_criteria (fromLink) {
 	} else {
 		var subtype = $('#subtype_checked').val();
 	}
-
-	if (typeof $('#searchInput').val() == 'undefined') {
+	if (typeof $('input[name="q"]').val() == 'undefined') {
 		var words = '';
 	} else {
-		var words = $('#searchInput').val();
+            tmp_words = $('input[name="q"]').val().split(',');
+            $('#search_tags').val('');
+            tmp_tag = [];
+            tmp_word = [];
+            for (i=0;i<tmp_words.length;i++) {
+                if (tmp_words[i].indexOf('tag_') > -1) {
+                    tmp_tag.push(tmp_words[i].replace('tag_','')); 
+                } else {
+                    tmp_word.push(tmp_words[i]);
+                }
+            }
+            if (tmp_tag.length>0) {
+                $('#search_tags').val(tmp_tag.join(','));
+            }
+            words = tmp_word.join(' ');
 	}
 	if (typeof $('input[name="from_users"]').val() == 'undefined') {
 		var from_users = '';
@@ -388,13 +401,13 @@ $(document).ready(function(){
         showHideForward();
     });
 
-	$('#discussion_selector_tags .tag').click( function() {
+    $('#discussion_selector_tags .tag').click( function() {
         tags = $('#discussion_selector_tags .tag');
         tags.each(function() {
             $(this).css('font-weight','normal');
         });
 
-        if ($('#search_tags').val() != $(this).attr('data-keyword')) {
+        if ($('#search_tags').val() != $(this).attr('data-id')) {
             $('#search_tags').val($(this).attr('data-keyword'));
             $(this).css('font-weight','bold');
         } else {

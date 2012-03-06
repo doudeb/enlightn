@@ -2,8 +2,14 @@
 
             <form id="search">
                 <div class="search-field">
-                    <input type="text" placeholder="<?php echo elgg_echo("enlightn:search")?>" id="searchInput" name="q" value="<?php echo (get_last_search_value('words') && elgg_get_context() != 'home')?get_last_search_value('words'):'';?>" />
+                    <!--<input type="text" placeholder="<?php echo elgg_echo("enlightn:search")?>" id="searchInput" name="q" value="<?php echo (get_last_search_value('words') && elgg_get_context() != 'home')?get_last_search_value('words'):'';?>" />-->
+                    <?php echo elgg_view("enlightn/helper/addtags",array(
+                                                                    'placeholder' => elgg_echo('enlightn:search'),
+                                                                    'name' => 'q',
+                                                                    'id' => 'searchInput',
+                                                                    )); ?>
                     <input type="hidden" id="last_search">
+                    <input type="hidden" name="search_tags" id="search_tags" value="<?php echo $vars['tags']?>">
                     <button class="submit" type="submit" id="search_submit"></button>
                 </div>
                 <div class="s-actions"><?php echo elgg_echo("enlightn:togglemorefilters"); ?><span class="arrow"></span></div>
