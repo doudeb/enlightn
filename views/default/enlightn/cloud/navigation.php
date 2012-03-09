@@ -82,6 +82,7 @@ $(document).ready(function(){
         $(".saved-search .saved-items").click(function(){
             elm = $(this).parents();
             params = eval('(' + elm.attr('data-params') + ')')
+                ,filter_id = elm.attr('data-guid')
                 ,title = elm.attr('data-name');
             $(".search-memo").html(title);
             $(".search-memo").parent().addClass('starred');
@@ -89,6 +90,7 @@ $(document).ready(function(){
             token_elm  = $('input[name="q"]');
             token_elm.tokenInput("clear");
             $('#search_tags').val('');
+            $('#filter_id').val(filter_id);
             $.each(params,function (field,value) {
                 switch(field) {
                     case 'words':
@@ -135,6 +137,10 @@ $(document).ready(function(){
                         var newDate = new Date(parseInt(value)*1000);
                         value = newDate.getFullYear() + '-' + (newDate.getMonth()+1) + '-' + newDate.getDate();
                         changeElm = $("#" + field);
+                        break;
+                    case 'filter_id':
+                        if(value == 0) break;
+                        changeElm = $("#" + field); 
                         break;
                     default :
                         changeElm = $("#" + field);                         

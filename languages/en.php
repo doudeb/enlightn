@@ -87,6 +87,7 @@
                         ,'enlightn:savedsearch' => 'Saved search'
                         ,'enlightn:searchmemo' => 'Save your search'
                         ,'enlightn:prompt:cloudremovesavedsearch' => 'Do you really want to remove this saved search?'
+                        ,'enlightn:applyfilter' => 'Apply filter'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Read'

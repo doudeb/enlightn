@@ -12,12 +12,12 @@ $tags       = $enlightn->get_tags(elgg_get_logged_in_user_guid(),false,'trending
 				<li id="discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>" style="display:none"><span class="arrow"></span><a class="cat"  onclick="$('#unreaded_only').val(0);changeMessageList('#discussion_selector_<?php echo ENLIGHTN_ACCESS_AL?>',<?php echo ENLIGHTN_ACCESS_AL?>)" href="#"><?php echo elgg_echo('enlightn:search'); ?></a></li>
                 <li id="discussion_selector_tags">
                     <span class="arrow"></span>
-                    <a class="cat" href="#"><?php echo elgg_echo('enlightn:trendingtopic');?> (beta)</a>
+                    <a class="cat" href="#"><?php echo elgg_echo('enlightn:trendingtopic');?></a>
                        <?php
                             if (is_array($tags)) {
                                 echo "<p>";
                                 foreach ($tags as $tag) {
-                                    echo "<span class='tag' data-id='" . $tag->tag_id . "'>" . $tag->tag . "</span>";
+                                    echo "<span class='tag' data-id='" . $tag->tag_id . "' data-name='" . $tag->tag . "'>" . $tag->tag . "</span>";
                                 }
                                 echo "</p>";
                             }

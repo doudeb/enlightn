@@ -43,15 +43,15 @@ Order By e.time_created desc";
 
 	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $unreaded_only = 0,$words, $from_users = '', $date_begin = false, $date_end =false, $subtype = '', $tags = array(),$offset = 0, $limit = 10) {
 		$key_cache = $this->generate_key_cache(get_defined_vars(), 'search');
-        $force 	= array();
+                $force 	= array();
 		$join	= array();
 		$where	= array();
-        $having = array();
+                $having = array();
 		$group	= array();
-        $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null)?elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null):1;
+                $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null)?elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null):1;
 
-        $where[]= "And ent.site_guid = " . $this->site_guid;
-        $order[] = "ent.time_updated Desc";
+                $where[]= "And ent.site_guid = " . $this->site_guid;
+                $order[] = "ent.time_updated Desc";
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1
@@ -121,35 +121,35 @@ Order By e.time_created desc";
 		}
 		#Words
 		if ($words) {
-            $sphinx_enabled = elgg_get_plugin_setting('sphinx_enabled','enlightn');
-            if ($sphinx_enabled == 1) {
-                $dblink  = get_db_link('read');
-                execute_query("Drop Table If Exists tmp_search;", $dblink);
-                execute_query("Create Temporary Table tmp_search
-                                      Select weight,guid,value_id
-                                      From sphinx_search
-                                      Where query='$words;mode=extended2;offset=0;limit=100;index=metastrings_main,metastrings_delta,desc_title_main,desc_title_delta;indexweights=metastrings_main,1,metastrings_delta,1,desc_title_main,2,desc_title_delta,2;sort=extended:@weight desc';",$dblink);
-                $force   = array();
-                $join [] = "Inner Join annotations a On ent.guid = a.entity_guid
-                            Inner Join tmp_search msv On a.value_id = msv.value_id";
-                $order[0] = "msv.weight Desc";
-                //remove offset when going throught sphinx... not needed as it's the main data source.
-                if ($offset > 0) {
-                    //$offset = 0;
-                }
-            } else {
-                $join [] = "Inner Join objects_entity ent_title On ent_title.guid = ent.guid
-                            Inner Join annotations a On ent.guid = a.entity_guid
-                            Inner Join metastrings msv On a.value_id = msv.id";
-                $where[] = "And
-                                Case
-                                    When length('$words') > 2 And length('$words') <= @@ft_min_word_len Then
-                                        ent_title.title Like concat('%', '$words', '%') Or msv.string Like concat('%', '$words', '%')
-                                    When length('$words') > @@ft_min_word_len Then
-                                        MATCH (ent_title.title,msv.string) AGAINST ('$words' IN BOOLEAN MODE)
-                                    Else true
-                                End";
-            }
+                    $sphinx_enabled = elgg_get_plugin_setting('sphinx_enabled','enlightn');
+                    if ($sphinx_enabled == 1) {
+                        $dblink  = get_db_link('read');
+                        execute_query("Drop Table If Exists tmp_search;", $dblink);
+                        execute_query("Create Temporary Table tmp_search
+                                            Select weight,guid,value_id
+                                            From sphinx_search
+                                            Where query='$words;mode=extended2;offset=0;limit=100;index=metastrings_main,metastrings_delta,desc_title_main,desc_title_delta;indexweights=metastrings_main,1,metastrings_delta,1,desc_title_main,2,desc_title_delta,2;sort=extended:@weight desc';",$dblink);
+                        $force   = array();
+                        $join [] = "Inner Join annotations a On ent.guid = a.entity_guid
+                                    Inner Join tmp_search msv On a.value_id = msv.value_id";
+                        $order[0] = "msv.weight Desc";
+                        //remove offset when going throught sphinx... not needed as it's the main data source.
+                        if ($offset > 0) {
+                            //$offset = 0;
+                        }
+                    } else {
+                        $join [] = "Inner Join objects_entity ent_title On ent_title.guid = ent.guid
+                                    Inner Join annotations a On ent.guid = a.entity_guid
+                                    Inner Join metastrings msv On a.value_id = msv.id";
+                        $where[] = "And
+                                        Case
+                                            When length('$words') > 2 And length('$words') <= @@ft_min_word_len Then
+                                                ent_title.title Like concat('%', '$words', '%') Or msv.string Like concat('%', '$words', '%')
+                                            When length('$words') > @@ft_min_word_len Then
+                                                MATCH (ent_title.title,msv.string) AGAINST ('$words' IN BOOLEAN MODE)
+                                            Else true
+                                        End";
+                    }
 		}
 		#Entity guid
 		if ($entity_guid) {
@@ -168,19 +168,23 @@ Order By e.time_created desc";
 			}
 			$where[] = "And ent.time_created Between $date_begin And $date_end";
 		}
-        #tags
+                #tags
+                if (is_array($tags)) {
+                    $tags_meta_id = get_metastring_id('tags');
+                    foreach ($tags as $tag) {
+                        $sanitised_tags[] = sanitise_int($tag);
+                    }
+                    $tags_in = implode(',', $sanitised_tags);
+                    $join [] = "Inner join metadata md on ent.guid = md.entity_guid And md.name_id = $tags_meta_id And md.value_id In($tags_in)";
 
-        if (is_array($tags)) {
-            $tags_meta_id = get_metastring_id('tags');
-            foreach ($tags as $tag) {
-                $sanitised_tags[] = '"' . sanitise_string($tag) . '"';
-            }
-            $tags_in = implode(',', $sanitised_tags);
-            $where[] = "And mst.string In($tags_in)";
-            $join [] = "Inner join metadata md on ent.guid = md.entity_guid And md.name_id = $tags_meta_id";
-            $join [] = "Inner join metastrings mst on md.value_id = mst.id";
-        }
-		$force 	= implode(' ',$force);
+                }
+                #filter
+                if($filter_id) {
+                    #$force[] = "Force Index (idx_annotations_time)";
+                    $join[] = "Inner Join entity_relationships As rel_filter On ent.guid = rel_filter.guid_one And rel_filter.guid_two = $filter_id And rel_filter.relationship = '". ENLIGHTN_FILTER_ATTACHED . "'";
+                }
+
+                $force 	= implode(' ',$force);
 		$join	= implode(' ',$join);
 		$where	= implode(' ',$where);
 		$group	= implode(' ',$group);
@@ -265,24 +269,24 @@ Limit 150)";
 		return  $this->get_data($query, $key_cache);
 	}
 
-public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$from_users = false,$date_begin = false, $date_end = false, $guid = false,$limit = 10, $offset = 0) {
-		$file_subtype_id = get_subtype_id('object','file');
+    public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$from_users = false,$date_begin = false, $date_end = false, $guid = false,$tags = false,$filter_id = false, $limit = 10, $offset = 0) {
+        $file_subtype_id = get_subtype_id('object','file');
         $join = array();
-		if (!$file_subtype_id) {
-			return false;
-		}
-		//$key_cache = $this->generate_key_cache(get_defined_vars(), 'cloud');
-		$key_cache = false;
-		if (!$user_guid) {
-			return false;
-		}
+        if (!$file_subtype_id) {
+                return false;
+        }
+        //$key_cache = $this->generate_key_cache(get_defined_vars(), 'cloud');
+        $key_cache = false;
+        if (!$user_guid) {
+                return false;
+        }
         $where[]= "And ent.site_guid = " . $this->site_guid;
-		if ($simpletype) {
-			$join[] = "Inner Join metadata mtd On mtd.entity_guid = ent.guid
-						Inner Join metastrings mst On mtd.value_id = mst.id";
-			$where[] = "And mst.string In ('$simpletype')";
-		}
-		if ($words) {
+        if ($simpletype) {
+                $join[] = "Inner Join metadata mtd On mtd.entity_guid = ent.guid
+                                        Inner Join metastrings mst On mtd.value_id = mst.id";
+                $where[] = "And mst.string In ('$simpletype')";
+        }
+        if ($words) {
             $sphinx_enabled = get_plugin_setting('sphinx_enabled','enlightn');
             if ($sphinx_enabled == 1) {
                 $force   = array();
@@ -311,36 +315,51 @@ public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$f
                                     Else true
                                 End";
             }
-
-		}
-		#date
-		if ($date_begin || $date_end) {
-			if (empty($date_begin)) {
-				$date_begin = strtotime("now");
-			}
-			if (empty($date_end)) {
-				$date_end = strtotime("now");
-			}
-			$where[] = "And ent.time_created Between $date_begin And $date_end";
-		}
-		#From user
-		if (is_array($from_users)) {
-			$from_users = implode(',',$from_users);
-			if (!empty($from_users)) {
-				$where[] = "And ent.owner_guid in ($from_users)";
-			} else {
-				$user= "Or ent.owner_guid = " . $user_guid;
-			}
-		}
+        }
+        #date
+        if ($date_begin || $date_end) {
+                if (empty($date_begin)) {
+                        $date_begin = strtotime("now");
+                }
+                if (empty($date_end)) {
+                        $date_end = strtotime("now");
+                }
+                $where[] = "And ent.time_created Between $date_begin And $date_end";
+        }
+        #From user
+        if (is_array($from_users)) {
+                $from_users = implode(',',$from_users);
+                if (!empty($from_users)) {
+                        $where[] = "And ent.owner_guid in ($from_users)";
+                } else {
+                        $user= "Or ent.owner_guid = " . $user_guid;
+                }
+        }
         #guid
         if ($guid) {
             $join[]  = "Inner Join entity_relationships rel_embed On ent.guid = rel_embed.guid_one And rel_embed.relationship = '" . ENLIGHTN_EMBEDED . "'
                         Inner Join annotations a On rel_embed.guid_two = a.id";
             $where[] = "And a.entity_guid = $guid";
         }
-		$join	= implode(' ',$join);
-		$where	= implode(' ',$where);
-		$query = "Select Distinct ent.*
+        #tags
+        if (is_array($tags)) {
+            $tags_meta_id = get_metastring_id('tags');
+            foreach ($tags as $tag) {
+                $sanitised_tags[] = sanitise_int($tag);
+            }
+            $tags_in = implode(',', $sanitised_tags);
+            $join [] = "Inner join metadata md on ent.guid = md.entity_guid And md.name_id = $tags_meta_id And md.value_id In($tags_in)";
+
+        }
+        #filter
+        if($filter_id) {
+            #$force[] = "Force Index (idx_annotations_time)";
+            #$join[] = "Left Join entity_relationships As rel_filter On ent.guid = rel_filter.guid_one And rel_filter.guid_two = $filter_id And rel_filter.relationship = '". ENLIGHTN_FILTER_ATTACHED . "'";
+            $where[] = "Or Exists(Select rel_filter.id From entity_relationships As rel_filter Where ent.guid = rel_filter.guid_one And rel_filter.guid_two = $filter_id And rel_filter.relationship = '". ENLIGHTN_FILTER_ATTACHED . "')";
+        }
+        $join	= implode(' ',$join);
+        $where	= implode(' ',$where);
+        $query      = "Select Distinct ent.*
 From entities ent
 $join
 Where ent.subtype = $file_subtype_id #File type
@@ -362,8 +381,8 @@ And  (
 $where
 Order By ent.time_created Desc
 Limit $offset,$limit";
-//echo "<pre>" .$query;die();
-		return  $this->get_data($query, $key_cache, 'entity_row_to_elggstar');
+            //echo "<pre>" .$query;die();
+            return  $this->get_data($query, $key_cache, 'entity_row_to_elggstar');
 	}
 
 	private function generate_key_cache ($args = false, $prefix = 'enlightn') {
@@ -473,6 +492,14 @@ Limit $offset,$limit";
         if (is_array($tags_name)) {
             $tags_name = implode("','", $tags_name);
             $where = " And tag_name.string In ('$tags_name')";
+        } elseif (is_string($tags_name)) {
+            $where = "And
+                            Case
+                                When length('$tags_name') > 2 And length('$tags_name') <= @@ft_min_word_len Then
+                                    tag_name.string Like concat('%', '$tags_name', '%')
+                                When length('$tags_name') > @@ft_min_word_len Then
+                                    MATCH (tag_name.string) AGAINST ('$tags_name' IN BOOLEAN MODE)
+                            End";
         }
         if ($user_guid) {
             $where .= " And tag_used.owner_guid = $user_guid ";
@@ -484,6 +511,7 @@ Limit $offset,$limit";
         }
 
         $query = "Select  tag_name.string as tag
+                            , tag_name.id as tag_id
                             $select
                             , count(tag_used.id) as total
                     From metadata tag_used
@@ -491,14 +519,15 @@ Limit $offset,$limit";
                     Inner Join entities ent On tag_used.entity_guid = ent.guid And ent.site_guid = " . $this->site_guid . "
                     Where tag_name.string != ''
                         And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where tag_used.entity_guid = rel_all.guid_two And rel_all.guid_one = " . elgg_get_logged_in_user_guid() . " And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And tag_used.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
-                                  Or tag_used.access_id  = " . ENLIGHTN_ACCESS_PUBLIC . ")
+                                  Or tag_used.access_id  = " . ENLIGHTN_ACCESS_PUBLIC . "                                  
+				  Or ent.owner_guid = " . elgg_get_logged_in_user_guid() . ")
                     $where
                     Group By tag_name.string
                             $select
                     Order By count(tag_used.id) Desc
                     Limit $limit;";
         //echo "<pre>"; die($query);
-		return  get_data($query);
+	return  get_data($query);
 
     }
 

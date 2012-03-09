@@ -86,6 +86,7 @@
                         ,'enlightn:savedsearch' => 'Recherches mémorisées'
                         ,'enlightn:searchmemo' => 'Mémoriser la recherche'
                         ,'enlightn:prompt:cloudremovesavedsearch' => 'êtes-vous sûr de vouloir supprimer cette recherche?'
+                        ,'enlightn:applyfilter' => 'Appliquer le libélé'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Lus'

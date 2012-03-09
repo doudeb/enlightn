@@ -13,6 +13,7 @@
 	$desc = get_input("description");
 	$access_id = (int) get_input("access_id",ENLIGHTN_ACCESS_PRIVATE);
 	$container_guid = (int) get_input('container_guid', 0);
+	$filter_id = (int) get_input('file_filter_id', 0);
 	if ($container_guid == 0) {
 		$container_guid = elgg_get_logged_in_user_guid();
 	}
@@ -158,6 +159,9 @@
                     }
                     generate_preview($file->guid);
                     add_to_river('river/object/file/create', 'create', elgg_get_logged_in_user_guid(), $file->guid);
+                    if($filter_id > 0) {
+                        add_entity_relationship($file->guid,ENLIGHTN_FILTER_ATTACHED,$filter_id);
+                    }
                     echo elgg_view('enlightn/new_link', array('type' => $file->simpletype, 'link' => $file->filename . '?fetched=1', 'guid' => $file->guid, 'title'=>$file->title));
 		} else {
           		// failed to save file object - nothing we can do about this

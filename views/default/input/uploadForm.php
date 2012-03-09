@@ -1,3 +1,9 @@
+<?php
+$user_ent           = elgg_get_logged_in_user_entity();
+$options            = array('types'=>'object','subtypes'=>ENLIGHTN_FILTER,'owner_guids'=>$user_ent->guid);
+$saved_search       = elgg_get_entities($options);
+?>
+
 <div id="embedContent" style="display:none">
 	<form id="mediaUpload" action="<?php echo $vars['url']; ?>action/enlightn/upload" method="post" enctype="multipart/form-data">
 	<div id="layer">
@@ -17,42 +23,43 @@
             <h2 id="filetitle_preview"></h2> <span id="editmytitle" class="caption cloud_access"><?php echo elgg_echo("enlightn:editmytitle"); ?></span>
 			<input type="text" placeholder="<?php echo elgg_echo('enlightn:titlefile')?>" name="title" id="filetitle"/>
 	        <?php
-	        	echo elgg_view('input/hidden', array('name' => 'access_id','value' => $access_id));
-   				echo elgg_view('input/securitytoken');
+	        	echo elgg_view('input/hidden', array('name' => 'access_id','value' => ACCESS_PRIVATE));
+	        	echo elgg_view('input/hidden', array('name' => 'file_filter_id','id'=> 'file_filter_id'));
+   			echo elgg_view('input/securitytoken');
 	        ?>
-	        <div class="new-bloc" id="submitBloc">
-                 <div id="submissionUpload"></div>
-                <?php
-                if (elgg_get_context() == 'cloud') {
-                ?>
-                <div class="privacy private">
-                    <span class="private-val value"><span class="ico"></span><?php echo elgg_echo('enlightn:buttonprivate') ?></span>
-                    <span class="cursor" id="file_privacy_cursor"></span>
-                    <span class="public-val value"><?php echo elgg_echo('enlightn:buttonpublic') ?></span>
-                    <?php echo elgg_view("input/hidden",array(
-                                            'name' => 'access_id',
-                                            'id' => 'access_id',
-                                            'value' => ACCESS_PRIVATE)); ?>
+                <div class="new-bloc" id="submitBloc">
+                    <div id="submissionUpload"></div>
+                    <?php
+                    if (elgg_get_context() == 'cloud') {
+                    ?>
+                    <div class="privacy private">
+                        <span class="private-val value"><span class="ico"></span><?php echo elgg_echo('enlightn:buttonprivate') ?></span>
+                        <span class="cursor" id="file_privacy_cursor"></span>
+                        <span class="public-val value"><?php echo elgg_echo('enlightn:buttonpublic') ?></span>
+                    </div>
+                    <?php
+                    }
+                    ?>
+                    <div class="saved-search-select">
+                        <span class="ico"></span><span class="saved-search-label-apply"><?php echo elgg_echo("enlightn:applyfilter"); ?><span class="arrow"/></span><span id="selected_filter"></span></span>
+                        <?php echo elgg_view("enlightn/helper/saved_search_list", array('list'=>$saved_search))?>
+                    </div>
+                    <div class="edit-keyword" id="editkeyword"><?php echo elgg_echo("enlightn:editkeyword"); ?><span class="arrow"/></div>
+                    <div class="tags">
+                        <span class="add">
+                            <span class="ico"></span>
+                            <span class="caption" id="add-tags-file"><?php echo elgg_echo("enlightn:tags") ?></span>
+                            <span id="tags-input-file">&nbsp;<?php echo elgg_view("input/tags",array(
+                                                                'name' => 'interests-file',
+                                                                'id' => 'interests-file'));
+                                                                echo elgg_view("input/hidden",array(
+                                                                'name' => 'filetags',
+                                                                'id' => 'filetags')); ?></span>
+                        </span>
+                        <div id="tags-result-file"></div>
+                    </div>
+                    <div class="sending"><button type="submit" class="submit"><?php echo elgg_echo('enlightn:buttonpost')?></button></div>
                 </div>
-                <?php
-                }
-                ?>
-                <div class="sending"><button type="submit" class="submit"><?php echo elgg_echo('enlightn:buttonpost')?></button></div>
-	        </div>
-            <div class="s-actions" id="editkeyword"><?php echo elgg_echo("enlightn:editkeyword"); ?><span class="arrow"/></div>
-            <div class="tags">
-                <span class="add">
-                    <span class="ico"></span>
-                    <span class="caption" id="add-tags-file"><?php echo elgg_echo("enlightn:tags") ?></span>
-                    <span id="tags-input-file">&nbsp;<?php echo elgg_view("input/tags",array(
-                                                        'name' => 'interests-file',
-                                                        'id' => 'interests-file'));
-                                                        echo elgg_view("input/hidden",array(
-                                                        'name' => 'filetags',
-                                                        'id' => 'filetags')); ?></span>
-                </span>
-                <div id="tags-result-file"></div>
-            </div>
 	    </div>
 	</div>
 	</form>
@@ -63,6 +70,7 @@
         var file_path = $('#upload').val(),
             filename =  file_path.substring(file_path.lastIndexOf("\\")+1);
         filename =  filename.substring(0,filename.lastIndexOf("."));
+        $('#submissionUpload').val('');
        	$('#upload').css('display','none');
        	$('#uploader').css('display','block');
        	$('#filetitle').css('display','none');
@@ -85,6 +93,18 @@
         });
     });
 
+    $(".saved-search-select li").click(function(){
+        elm = $(this)
+                , destElm = $('#file_filter_id')
+                , selectedElm = $('#selected_filter');
+        filter_id = elm.attr('data-guid')
+                , name = elm.attr('data-name');
+        if (filter_id) {
+            destElm.val(filter_id);
+            selectedElm.html(name);
+            elm.parent().toggle();
+        }
+    });
 	$('#editkeyword').click(function() {
         $(this).find('span').toggleClass('arrow-top');
         $('#uploader .tags').toggle();
@@ -174,6 +194,8 @@
         $('#access_id').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
         $('#filetags').val('');
         $('#filetitle').val('');
+        $('#file_filter_id').val('');
+        $('#selected_filter').html('');
 	});
 
 	$('#cloudLink').click(function(){
@@ -197,12 +219,18 @@
                     $('#filename').val('');
                     $('#filetags').val('');
                     $('#filetitle').val('');
+                    $('#file_privacy_cursor');
                     $('#submissionUpload').val('');
                     $('#upload').val('');
                     $('#tags-result-file').html('');
                     $('#access_id').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
+                    $('#file_privacy_cursor').parent().removeClass('public');
+                    $('#file_privacy_cursor').parent().addClass('private');
+                    $('#file_filter_id').val('');
+                    $('#selected_filter').html('');
                     <?php if(elgg_get_context() == 'cloud') {?>
                     loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>&' + get_search_criteria());
+                    $('#submissionUpload').val('');
                     <?php } else { ?>
                     updateRte(data);
                     <?php } ?>

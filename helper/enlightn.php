@@ -1255,6 +1255,9 @@ function doc_to_txt ($file_path, $mime_type) {
             exec('pdftotext "' . $file_path . '" "' . $converted_file . '"');
             ob_end_clean();
             break;
+        case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+            $text   = read_pptx($file_path);
+            break;
         case 'application/vnd.ms-powerpoint':
             ob_start();
             exec('catppt "' . $file_path . '"',$text);
@@ -1316,7 +1319,7 @@ function doc_to_txt ($file_path, $mime_type) {
     }
     if(file_exists($converted_file) && !$text) {
         $text                   = file_get_contents($converted_file);
-        //unlink($converted_file);
+        unlink($converted_file);
     }
     return $text;
 }
@@ -1328,4 +1331,19 @@ function verify_last_forward () {
     if (!strstr($last_forward,elgg_get_site_url() . 'enlightn/')) {
         $_SESSION['last_forward_from'] = elgg_get_site_url();
     }
+}
+
+function read_pptx ($file) {
+    $text = false;
+    $zip = new ZipArchive();
+    if ($zip->open($file)) {
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $filename = $zip->getNameIndex($i);
+            if(preg_match('/ppt\/slides\/slide\d{1,3}.xml/', $filename)) {
+                $text .=  ' ' .strip_tags(file_get_contents('zip://' . $file . '#' . $filename));
+            }
+        }
+        $zip->close();
+    }
+    return $text;
 }

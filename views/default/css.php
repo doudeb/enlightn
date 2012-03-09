@@ -731,8 +731,8 @@ form .dest {
 }
 form .dest input,
 form .dest ul {
-    width: 454px;
-    height : 19px;
+    width: 453px;
+    height : 28px;
     #border : 0px;
 }
 form .dest li {
@@ -950,7 +950,7 @@ button[type="reset"]:active {
     background-color:#eee;
 }
 
-#feed .actions .arrow {
+#feed .actions .arrow,
     background-position:-358px -41px;
     display:inline-block;
     height:6px;
@@ -1285,10 +1285,10 @@ button[type="reset"]:active {
 }
 
 #feed .open-msg .content .user { background-position:-485px -152px; border: none; overflow: visible; }
-.framebody .<?php echo ENLIGHTN_LINK?>, #feed .open-msg .content .<?php echo ENLIGHTN_LINK?> { background-position:-485px -176px; }
-.framebody .<?php echo ENLIGHTN_IMAGE?>, #feed .open-msg .content .<?php echo ENLIGHTN_MEDIA?> { background-position:-485px -200px; }
-.framebody .<?php echo ENLIGHTN_MEDIA?>, #feed .open-msg .content .<?php echo ENLIGHTN_IMAGE?> { background-position:-485px -224px; }
-.framebody .<?php echo ENLIGHTN_DOCUMENT?>, #feed .open-msg .content .<?php echo ENLIGHTN_DOCUMENT?> { background-position:-485px -248px; }
+.framebody .<?php echo ENLIGHTN_LINK?>, #feed .open-msg .content .<?php echo ENLIGHTN_LINK?> { background-position:-485px -176px; height: 15px; }
+.framebody .<?php echo ENLIGHTN_IMAGE?>, #feed .open-msg .content .<?php echo ENLIGHTN_MEDIA?> { background-position:-485px -200px; height: 15px; }
+.framebody .<?php echo ENLIGHTN_MEDIA?>, #feed .open-msg .content .<?php echo ENLIGHTN_IMAGE?> { background-position:-485px -224px; height: 15px;}
+.framebody .<?php echo ENLIGHTN_DOCUMENT?>, #feed .open-msg .content .<?php echo ENLIGHTN_DOCUMENT?> { background-position:-485px -248px;height: 15px; }
 
 #feed .msg .inclosed-list {
     border:1px solid #ccc;
@@ -1603,6 +1603,7 @@ form #clonedMessages {
     width:20px;
     margin-left : 0;
     padding-left : 0;
+    float: right;
 }
 
 #search .filters {
@@ -2339,12 +2340,66 @@ form #clonedMessages {
     height: 21px;
  }
  
+ .saved-search-select {
+    clear : left;
+    margin-top: 36px;
+ }
+ 
+.saved-search-label-apply ,
+.edit-keyword {
+    cursor : pointer;
+    color : #2C75E2;
+    margin-top: 5px;
+ }
+ 
+ #selected_filter {
+    margin-left : 10px;
+    background-color: #EEEEEE;
+ }
+ 
+.saved-search-select .arrow,
+.edit-keyword .arrow {
+    background-position:-358px -41px;
+    display:inline-block;
+    height:6px;
+    margin: -2px 0 0 4px;
+    vertical-align: middle;
+    width:10px;
+}
+
+.saved-search-select ul {
+    background-color : #fff;
+    border: 1px solid rgba(0, 0, 0, 0.196);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.196);
+    padding: 6px 0px;
+    display : none;
+    overflow : auto;
+    min-width : 130px;
+    position: absolute;
+}
+
+.saved-search-select ul li {
+    padding: 5px;    
+    cursor : pointer;
+    border: 1px 0px 0px 1px dotted #fff;
+}
+
+.saved-search-select ul li:hover {
+    background-color: #EEEEEE;
+    border: 1px 0px 0px 1px dotted #EEEEEE;
+}
+
+.saved-search-select .close {
+    display : none;
+}
  /** Cloud view **/
  
  #feed.cloud_listing .photo {
     float: none;
     height: 30px;
     width: 30px;
+    background-color: transparent;
+    border : 0px;
  }
 
 #feed.cloud_listing .cloud_thumb {
@@ -2360,6 +2415,7 @@ form #clonedMessages {
     height: auto;
     overflow: visible;
     width: 350px;
+    font-weight : normal;
  }
 
 #feed.cloud_listing .msg .participants {
@@ -2395,6 +2451,7 @@ form #clonedMessages {
 #feed.cloud_listing .msg:hover .click-link,
 #feed.cloud_listing .msg:hover .expand {
     display:inline-block;
+    overflow : hidden;
 }
 
 #feed.cloud_listing .msg:hover h3 {
@@ -2409,6 +2466,7 @@ form #clonedMessages {
     background : #ddd;
     height: 25px;
     padding-top: 5px;
+    border-top: 1px solid #CCCCCC;
 }
 
 .change-mini {
@@ -2520,7 +2578,7 @@ form #clonedMessages {
     margin-bottom: 10px;
 }
 
- .details  {
+.details  {
     background-color:#fff;
     border:1px solid #bbb;
     -moz-border-radius:5px;
@@ -2936,7 +2994,7 @@ form #clonedMessages {
 }
 
 #layer .new-bloc {
-    padding:20px 0 0;
+    padding:5px 0 0;
 }
 
 .embeded_preview {
@@ -4682,4 +4740,133 @@ fieldset {
 .elgg-page-header,
 .elgg-page-footer {
     display : none;
+}
+
+
+/** AUTOCOMPLETE **/
+.complete-count {
+    float : right;
+}
+
+
+ul.token-input-list-facebook {
+    overflow: hidden;
+    width: 262px;
+    border: 1px solid #8496ba;
+    cursor: text;
+    z-index: 9999;
+    background-color: #fff;
+    list-style-type: none;
+    clear: left;
+}
+
+.search-field ul.token-input-list-facebook {
+    border: 0px;
+    width: autox;
+    width: 180px;
+    overflow: visible;
+}
+
+
+
+ul.token-input-list-facebook li input {
+    border: 0;
+    width: 200px;
+    #padding: 3px 8px;
+    background-color: white;
+    box-shadow: none;
+    #margin: 2px 0;
+    -webkit-appearance: caret;
+}
+
+li.token-input-token-facebook {
+    overflow: hidden;
+    height: auto !important;
+    height: 15px;
+    margin: 3px;
+    padding: 1px 3px;
+    background-color: #eff2f7;
+    color: #000;
+    cursor: default;
+    border: 1px solid #ccd5e4;
+    font-size: 11px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    float: left;
+    white-space: nowrap;
+}
+
+li.token-input-token-facebook p {
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+
+li.token-input-token-facebook span {
+    color: #a6b3cf;
+    margin-left: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+li.token-input-selected-token-facebook {
+    background-color: #5670a6;
+    border: 1px solid #3b5998;
+    color: #fff;
+}
+
+li.token-input-input-token-facebook {
+    float: left;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+div.token-input-dropdown-facebook {
+    position: absolute;
+    width: 250px;
+    overflow: hidden;
+    border-left: 0px solid #ccc;
+    border-right: 0px solid #ccc;
+    border-bottom: 0px solid #ccc;
+    cursor: default;
+    z-index: 10000;
+}
+
+div.token-input-dropdown-facebook p {
+    margin: 0;
+    padding: 5px;
+    font-weight: bold;
+    color: #777;
+}
+
+div.token-input-dropdown-facebook ul {
+    margin: 0;
+    padding: 0;
+}
+
+div.token-input-dropdown-facebook ul li {
+    background-color: #fff;
+    padding: 3px;
+    margin: 0;
+    list-style-type: none;
+}
+
+div.token-input-dropdown-facebook ul li.token-input-dropdown-item-facebook {
+    background-color: #fff;
+}
+
+div.token-input-dropdown-facebook ul li.token-input-dropdown-item2-facebook {
+    background-color: #fff;
+}
+
+div.token-input-dropdown-facebook ul li em {
+    font-weight: bold;
+    font-style: normal;
+}
+
+div.token-input-dropdown-facebook ul li.token-input-selected-dropdown-item-facebook {
+    background-color: #3b5998;
+    color: #fff;
 }

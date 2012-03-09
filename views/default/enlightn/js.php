@@ -218,7 +218,11 @@ function get_search_criteria (fromLink) {
 	} else {
 		var list_limit = $('#list_limit').val();
 	}
-        
+        if (typeof $('#filter_id').val() == 'undefined') {
+		var filter_id = '';
+	} else {
+		var filter_id = $('#filter_id').val();
+	}        
 	if(words || subtype || date_begin || date_end || search_tags) {
 		discussion_type = 4;
 		$('#discussion_type').val(discussion_type);
@@ -247,6 +251,7 @@ function get_search_criteria (fromLink) {
 							+ '&entity_guid=' + entity_guid
 							+ '&unreaded_only=' + unreaded_only
 							+ '&limit=' + list_limit
+							+ '&filter_id=' + filter_id
 							+ '&tags=' + search_tags;
 
 
@@ -298,6 +303,9 @@ $(document).ready(function(){
         .click(function () {
         $('#tags-input')
             .toggle();
+    });
+    $(".saved-search-label-apply").click(function () {
+        $(".saved-search-select ul").toggle();      
     });
     $('#tags-result')
         .click(function(e) {
@@ -413,7 +421,9 @@ $(document).ready(function(){
         } else {
             $('#search_tags').val('');
         }
-        changeMessageList('discussion_selector_tags','tags');
+        token_elm  = $('input[name="q"]');
+        token_elm.tokenInput("clear");
+        token_elm.tokenInput("add", {id: 'tag_' + $(this).attr('data-id'), name: $(this).attr('data-name')}); 
     });
 	$('#search .filters li input').click( function(){
 		currElement = $(this);
@@ -656,7 +666,7 @@ $(document).ready(function(){
             elm.html(elm.html() + "<br/>" + content + "<br/><br/>");
         }
     }
-
+    
 /*
 * jQuery RTE plugin 0.5.1 - create a rich text form for Mozilla, Opera, Safari and Internet Explorer
 *
