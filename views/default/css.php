@@ -2290,7 +2290,7 @@ form #clonedMessages {
     float: left;
 }
 
-#sidebar .star {
+#sidebar .editlabel {
     float: right;
 }
 
@@ -2304,10 +2304,16 @@ form #clonedMessages {
 .search-memo span {
     margin: 2px 0px 0px 5px;
 }
-.saved-search .close {
+.saved-search .close,
+.saved-search .editlabel {
     float : right;
     color : #bbb;
     margin-right : 5px;
+    cursor : pointer;
+ }
+ 
+ .saved-search .close {
+    display : none;
  }
 
  .saved-search  {

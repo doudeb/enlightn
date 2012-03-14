@@ -307,6 +307,7 @@ $(document).ready(function(){
     $(".saved-search-label-apply").click(function () {
         $(".saved-search-select ul").toggle();      
     });
+    
     $('#tags-result')
         .click(function(e) {
             if($(e.target).hasClass('del')) {

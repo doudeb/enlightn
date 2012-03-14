@@ -142,6 +142,9 @@ $(document).ready(function(){
                         if(value == 0) break;
                         changeElm = $("#" + field); 
                         break;
+                    case 'subtype':
+                        changeElm = $("#subtype_checked"); 
+                        break;
                     default :
                         changeElm = $("#" + field);                         
                         break;
@@ -156,6 +159,7 @@ $(document).ready(function(){
         $(".saved-search .close").click(function(){
             elm = $(this).parent();
             guid = elm.attr('data-guid');
+            alert(guid);
             if(confirm("<?php echo elgg_echo('enlightn:prompt:cloudremovesavedsearch')?>")) {
                 $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/removeSearch");?>', {guid: guid}, function(result) {
                     if(result)  {

@@ -21,13 +21,17 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+include_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php");
 
+global $CONFIG;
+
+if (php_sapi_name() !== 'cli') exit("To be runned under commande line");
 //error_reporting(0);
 $auth = new JabberAuth();
-$auth->dbhost = "localhost";
-$auth->dbuser = "enlightn_tmp";
-$auth->dbpass = "enlightn_tmp";
-$auth->dbbase = "enlightn_tmp";
+$auth->dbhost = $CONFIG->dbhost;
+$auth->dbuser = $CONFIG->dbuser;
+$auth->dbpass = $CONFIG->dbpass;
+$auth->dbbase = $CONFIG->dbname;
 $auth->play(); // We simply start process !
 
 class JabberAuth {
@@ -87,7 +91,6 @@ class JabberAuth {
 	function readstdin()
 	{
 		$l      = fgets($this->stdin, 3); // We take the length of string
-                file_put_contents('/tmp/prout',$l);
 		$length = unpack("n", $l); // ejabberd give us something to play with ...
 		$len    = $length["1"]; // and we now know how long to read.
 		if($len > 0) { // if not, we'll fill logfile ... and disk full is just funny once
@@ -115,6 +118,7 @@ class JabberAuth {
 	
 	function myalive()
 	{
+            return true;
 		if(!is_resource($this->mysock) || !mysql_ping($this->mysock)) { // check if we have a MySQL connection and if it's valid.
 			$this->mysql(); // We try to reconnect if MySQL gone away ...
 			return mysql_ping($this->mysock); // we simply try again, to be sure ...
@@ -192,8 +196,10 @@ class JabberAuth {
 		 * $this->jabber_user
 		 * $this->jabber_pass
 		 * $this->jabber_server
-		 */
-		if(GOOD) {
+		 */                                
+
+                $exist = get_data_row("SELECT * from {$CONFIG->dbprefix}users_entity where username='" . $this->jabber_user . "' And password = '" . $this->jabber_pass . "'");
+		if($exist) {
 			return true;
 		} else {
 			return false;
@@ -208,11 +214,12 @@ class JabberAuth {
 		 * $this->jabber_pass
 		 * $this->jabber_server
 		 */
-		if(GOOD) {
-			return true;
-		} else {
+                $user = get_user_by_username($this->jabber_user);
+                if (!$user) {
 			return false;
-		}
+		} 
+		return true;
+
 	}
 	
 	function splitcomm() // simply split command and arugments into an array.
@@ -222,6 +229,7 @@ class JabberAuth {
 	
 	function mysql() // "MySQL abstraction", this opens a permanent MySQL connection, and fill the ressource
 	{
+                return true;
 		$this->mysock = mysql_pconnect($this->dbhost, $this->dbuser, $this->dbpass);
 		mysql_select_db($this->dbbase, $this->mysock);
 		$this->logg("MySQL :: ". (is_resource($this->mysock) ? "Connecté" : "Déconnecté"));

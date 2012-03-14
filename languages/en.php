@@ -88,6 +88,10 @@
                         ,'enlightn:searchmemo' => 'Save your search'
                         ,'enlightn:prompt:cloudremovesavedsearch' => 'Do you really want to remove this saved search?'
                         ,'enlightn:applyfilter' => 'Apply filter'
+                        ,'enlightn:alllabels' => 'All labels'
+                        ,'enlightn:edit' => 'Edit'
+                        ,'enlightn:close' => 'Close'
+                        ,'enlightn:enterlabelname' => 'Label name'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Read'
