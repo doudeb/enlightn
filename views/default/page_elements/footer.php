@@ -21,7 +21,7 @@ $en_plugin          = elgg_get_calling_plugin_entity();
 <script>
 
 $(document).ready(function(){
-                var jid = '<?php echo $user_ent->username ?>@<?php echo $ars['config']->sitename ?>';
+                var jid = '<?php echo $user_ent->username ?>@<?php echo $vars['config']->sitename ?>';
 		var password ='<?php echo $user_ent->password;?>';
 		var logContainer = $("#log");
 		var contactList = $("#contacts");
