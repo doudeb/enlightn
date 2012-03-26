@@ -1,18 +1,18 @@
 /*
  *      jquery.xmpp.js
- *      
+ *
  *      Copyright 2011 Alvaro Garcia <maxpowel@gmail.com>
- *      
+ *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
  *      the Free Software Foundation; either version 3 of the License, or
  *      (at your option) any later version.
- *      
+ *
  *      This program is distributed in the hope that it will be useful,
  *      but WITHOUT ANY WARRANTY; without even the implied warranty of
  *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *      GNU General Public License for more details.
- *      
+ *
  *      You should have received a copy of the GNU General Public License
  *      along with this program; if not, write to the Free Software
  *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
@@ -34,7 +34,7 @@
 	resource: null,
 	/**
 	 * Connect to the server
-	 * @params Object 
+	 * @params Object
 	 *        {jid:"user@domain.com",
 	 *          password:"qwerty",
 	 * 			resource:"Chat",
@@ -48,11 +48,7 @@
 	 */
 		connect: function(options){
 			//Generate a random number. You can use your own generator
-                        if (options.rid) {
-                            this.rid = options.rid;
-                        } else {
-                            this.rid = Math.round(Math.random()*Math.pow(10,10));
-                        }
+                        this.rid = Math.round(Math.random()*Math.pow(10,10));
                         //
 			this.jid = options.jid;
 			var split = options.jid.split("@");
@@ -62,13 +58,13 @@
 				this.url = '/http-bind'
 			else
 				this.url = options.url;
-				
+
 			var resource;
 			if(options.resource == null)
 				this.resource = "";
 			else
 				this.resource = options.resource;
-			
+
 			//Events
 			this.onMessage = options.onMessage;
 			this.onIq = options.onIq;
@@ -76,14 +72,12 @@
 			this.onError = options.onError;
 			this.onDisconnect = options.onDisconnect;
 			this.onConnect = options.onConnect;
-			
+
 			//Init connection
-			var msg = "<body rid='"+this.rid+"' xmlns='http://jabber.org/protocol/httpbind' to='"+domain+"' xml:lang='en' wait='60' hold='1' content='text/xml; charset=utf-8' ver='1.6' xmpp:version='1.0' xmlns:xmpp='urn:xmpp:xbosh'/>";
-                        alert(msg);
+			var msg = "<body rid='"+this.rid+"' xmlns='http://jabber.org/protocol/httpbind' to='"+domain+"' xml:lang='en' wait='60' hold='2' content='text/xml; charset=utf-8' ver='1.6' xmpp:version='1.0' xmlns:xmpp='urn:xmpp:xbosh'/>";
                         $.post(this.url,msg,function(data){
 				var response = $(xmpp.fixBody(data));
 				xmpp.sid = response.attr("sid");
-                                alert(response);
 				if(response.find("mechanism:contains('PLAIN')").length){
 					xmpp.loginPlain(options);
 				}else if(response.find("mechanism:contains('DIGEST-MD5')").length){
@@ -92,11 +86,11 @@
 					if(xmpp.onError != null){
 							xmpp.onError({error:"No auth method supported", data:data});
 					}
-					
-				} 
+
+				}
 			}, 'text');
 		},
-		
+
 		/**
 		* Disconnect from the server
 		* @params function callback
@@ -112,19 +106,19 @@
 				xmpp.messageHandler(data);
 				xmpp.listening = false;
 				//Do not listen anymore!
-				
+
 				//Two callbacks
 				if(callback != null)
 					callback(data);
-					
+
 				if(xmpp.onDisconnect != null)
 					xmpp.onDisconnect(data);
-				
+
 			}, 'text');
 		},
-		
+
 		loginDigestMD5: function(options){
-			
+
 			var xmpp = this;
 			this.rid++;
 			var msg = "<body rid='"+this.rid+"' xmlns='http://jabber.org/protocol/httpbind' sid='"+this.sid+"'><auth xmlns='urn:ietf:params:xml:ns:xmpp-sasl' mechanism='DIGEST-MD5'/></body>";
@@ -134,12 +128,12 @@
 				var split = options.jid.split("@");
 				var domain = split[1];
 				var username = split[0];
-				
+
 				//Code bases on Strophe
 				var attribMatch = /([a-z]+)=("[^"]+"|[^,"]+)(?:,|$)/;
 
 				var challenge = Base64.decode(response.text());
-				
+
 				var cnonce = MD5.hexdigest("" + (Math.random() * 1234567890));
 				var realm = "";
 				var host = null;
@@ -171,7 +165,7 @@
 				if (host !== null) {
 					digest_uri = digest_uri + "/" + host;
 				}
-				
+
 				var A1 = MD5.hash(username +
 								  ":" + realm + ":" + options.password) +
 					":" + nonce + ":" + cnonce;
@@ -207,24 +201,24 @@
 								if(response.find("success").length){
 									if(xmpp.onConnect != null)
 										xmpp.onConnect(data);
-											
+
 									xmpp.listen();
 								}else{
 									if(xmpp.onError != null)
 									xmpp.onError({error: "Invalid credentials", data:data});
 								}
-						
-						
+
+
 							}, 'text');
 					}else{
 							if(xmpp.onError != null)
 								xmpp.onError({error: "Invalid credentials", data:data});
 					}
 				}, 'text');
-				
+
 			}, 'text');
 		},
-		
+
 		/**
 		 * Returns the quoted string
 		 * @prams string
@@ -261,7 +255,7 @@
 							$.post(url,text,function(data){
 								if(options.onConnect != null)
 										options.onConnect(data);
-										
+
 								xmpp.listen();
 							}, 'text');
 						}, 'text');
@@ -272,39 +266,49 @@
 				}
 			}, 'text');
 		},
-		
+
 		/**
 		 * Wait for a new event
 		 */
-		listen: function(){
+		listen: function() {
 			var xmpp = this;
 			if(!this.listening){
-				this.listening = true;	
+				this.listening = true;
 				var xmpp = this;
 				if(xmpp.connections == 0)
 				{
 					this.rid = this.rid+1;
 					xmpp.connections = xmpp.connections + 1;
-					$.post(this.url,"<body rid='"+this.rid+"' xmlns='http://jabber.org/protocol/httpbind' sid='"+this.sid+"'></body>",
-							function(data)
-							{
-								xmpp.connections = xmpp.connections - 1;
-								xmpp.listening = false;
-								var body = $(xmpp.fixBody(data));
-								//When timeout the connections are 0
-								//When listener is aborted because you send message (or something)
-								// the body children are 0 but connections are > 0
-								if(body.children().length > 0 && xmpp.connections == 0)
-								{
-									xmpp.messageHandler(data);
-									xmpp.listen();
-								}
-							}, 'text');
+                                        $.ajax({
+                                            type: "POST",
+                                            url: this.url,
+                                            data: "<body rid='"+this.rid+"' xmlns='http://jabber.org/protocol/httpbind' sid='"+this.sid+"'></body>",
+                                            dataType: "text",
+                                            timeOut: 55000,
+                                            success: function(data) {
+                                                xmpp.connections = xmpp.connections - 1;
+                                                xmpp.listening = false;
+                                                var body = $(xmpp.fixBody(data));
+                                                //When timeout the connections are 0
+                                                //When listener is aborted because you send message (or something)
+                                                // the body children are 0 but connections are > 0
+                                                if(body.children().length > 0 && xmpp.connections == 0)
+                                                {
+                                                        xmpp.messageHandler(data);
+                                                        xmpp.listen();
+                                                }
+                                            },
+                                            error: function(request, status, err) {
+                                                    xmpp.connections = 0;
+                                                    xmpp.listening = false;
+                                                    xmpp.listen();
+                                            }
+                                        });
 				}
 			}
 
 		},
-		
+
 		/**
 		 * Send a raw command
 		 * @params String Raw command as plain text
@@ -313,11 +317,11 @@
 		sendCommand: function(rawCommand,callback){
 			var self = this;
 
-			this.rid = this.rid + 1;			
+			this.rid = this.rid + 1;
 			this.listening = true;
 			this.connections = this.connections + 1;
 			var command = "<body rid='"+this.rid+"' xmlns='http://jabber.org/protocol/httpbind' sid='"+this.sid+"'>"+ rawCommand+"</body>";
-			
+
 			$.post(self.url,command,function(data){
 				self.connections = self.connections - 1;
 				self.messageHandler(data);
@@ -327,7 +331,7 @@
 					callback(data);
 			}, 'text');
 		},
-		
+
 		/**
 		 * Send a text message
 		 * @params Object
@@ -343,17 +347,17 @@
 			var resource;
 			var toJid = options.to;
 			var body = options.body;
-			
+
 			if(options.resource != null)
 				toJid = toJid+"/"+options.resource;
 			else if(this.resource != "")
 				toJid = toJid+"/"+this.resource;
-			
+
 			//Remove used paramteres
 			delete options.to;
 			delete options.body;
 			delete options.resource;
-			
+
 			//Other data
 			var dataObj = $("<data>");
 			dataObj.append(data);
@@ -366,7 +370,7 @@
 			msg = message[0]+"<body>"+body+"</body>"+dataObj.html()+"</message>";
 			this.sendCommand(msg,callback);
 		},
-		
+
 		/**
 		 * Change the presence
 		 * @params String The common presences are: null, away, dnd
@@ -391,7 +395,7 @@
 				msg = "<body rid='"+xmpp.rid+"' xmlns='http://jabber.org/protocol/httpbind' sid='"+xmpp.sid+"'><message type='chat' to='"+options.to+"/Wixet' from='"+xmpp.jid+"/Wixet'><x xmlns='jabber:x:event'><composing/></x><composing xmlns='http://jabber.org/protocol/chatstates'/></message></body>";
 			else
 				msg = "<body rid='"+xmpp.rid+"' xmlns='http://jabber.org/protocol/httpbind' sid='"+xmpp.sid+"'><message type='chat' to='"+options.to+"/Wixet' from='"+xmpp.jid+"/Wixet'><x xmlns='jabber:x:event'/><active xmlns='http://jabber.org/protocol/chatstates'/></message></body>";
-			
+
 			$.post(this.url,msg,function(data){
 				xmpp.connections = xmpp.connections - 1;
 				xmpp.messageHandler(data);
@@ -402,29 +406,32 @@
 		messageHandler: function(data, context){
 			var xmpp = this;
 			var response = $(xmpp.fixBody(data));
-			
-			
+
+
 			$.each(response.find("message"),function(i,element){
 				try{
 					var e = $(element);
 					xmpp.onMessage({from: e.attr("from"), body: e.find(".body").html(),attributes:e[0].attributes,data:response.children()});
 				}catch(e){}
 			});
-			
+
 			$.each(response.find("iq"),function(i,element){
 				try{
 					xmpp.onIq(element);
 				}catch(e){}
 			});
-			
+
 			$.each(response.find("presence"),function(i,element){
 				try{
-					var e = $(element);
-					xmpp.onPresence({from: e.attr("from"), to: e.attr("to"), show: e.find("show").html()});
+					var e = $(element),
+                                            show = e.attr("show"),
+                                            type = e.attr("type");
+                                        if(typeof type != undefined) show = type;
+					xmpp.onPresence({from: e.attr("from"), to: e.attr("to"), show: show});
 				}catch(e){}
 			});
 		},
-		
+
 		/**
 		 * Replaces <body> tags because jquery does not "parse" this tag
 		 * @params String
@@ -436,7 +443,7 @@
 				return html;
 		}
 	}
-	
+
 
 })(jQuery);
 

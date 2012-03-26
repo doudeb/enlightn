@@ -1347,3 +1347,16 @@ function read_pptx ($file) {
     }
     return $text;
 }
+
+function get_labels ($user_ent) {
+    $options                = array('types'=>'object','subtypes'=>ENLIGHTN_FILTER,'owner_guids'=>$user_ent->guid, 'order_by' => 'time_created Asc');
+    $saved_search           = elgg_get_entities($options);
+    $options['owner_guids'] = false;
+    $options['access_id']   = ENLIGHTN_ACCESS_PUBLIC;
+    $options['wheres']   = array('owner_guid != ' . $user_ent->guid);
+    $saved_search_public    = elgg_get_entities($options);
+    if(count($saved_search_public) > 0) {
+        $saved_search       = array_merge($saved_search,$saved_search_public);
+    }
+    return $saved_search;
+}

@@ -52,6 +52,19 @@ echo  elgg_echo('enlightn:email_activated') . ' : <br />';
 		));
 ?>
 </p>
+<p><?php
+$chat_activated = $vars['entity']->chat_activated=='1'?'1':'0';
+echo  elgg_echo('enlightn:chat_activated') . ' : <br />';
+		echo elgg_view('input/radio', array(
+			'name' => 'params[chat_activated]',
+			'options' => array(
+				elgg_echo('option:no') => '0',
+				elgg_echo('option:yes')=>'1'
+			),
+			'value' => $chat_activated
+		));
+?>
+</p>
 <p>
 <?php
 $css_sidebar_folders = $vars['entity']->css_sidebar_folders!=''?$vars['entity']->css_sidebar_folders:'#2D87E1';

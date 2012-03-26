@@ -8,9 +8,9 @@
 
 $guid               = get_input('guid');
 $owner_guid         = elgg_get_logged_in_user_guid();
-
-$search = get_entity($guid);
-echo json_encode($search->disable());
-
+$search             = get_entity($guid);
+if ($search->owner_guid==$owner_guid) {
+    echo json_encode($search->disable());
+}
 
 exit();

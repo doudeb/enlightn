@@ -168,7 +168,7 @@ function get_search_criteria (fromLink) {
             tmp_word = [];
             for (i=0;i<tmp_words.length;i++) {
                 if (tmp_words[i].indexOf('tag_') > -1) {
-                    tmp_tag.push(tmp_words[i].replace('tag_','')); 
+                    tmp_tag.push(tmp_words[i].replace('tag_',''));
                 } else {
                     tmp_word.push(tmp_words[i]);
                 }
@@ -222,7 +222,7 @@ function get_search_criteria (fromLink) {
 		var filter_id = '';
 	} else {
 		var filter_id = $('#filter_id').val();
-	}        
+	}
 	if(words || subtype || date_begin || date_end || search_tags) {
 		discussion_type = 4;
 		$('#discussion_type').val(discussion_type);
@@ -305,9 +305,9 @@ $(document).ready(function(){
             .toggle();
     });
     $(".saved-search-label-apply").click(function () {
-        $(".saved-search-select ul").toggle();      
+        $(".saved-search-select ul").toggle();
     });
-    
+
     $('#tags-result')
         .click(function(e) {
             if($(e.target).hasClass('del')) {
@@ -323,19 +323,6 @@ $(document).ready(function(){
                 $('#tags').val(addedKeywords.join(','));
             }
         });
-     $('#interests')
-        .keydown(function(e) {
-                if(e.keyCode == 13) {
-                    if($('#interests').val() == '') {
-                        alert('<?php elgg_echo("enlightn:errorlistnoname"); ?>');
-                        return false;
-                    }
-                    $('#tags-result').append('<span class="tag" data-keyword="' + $('#interests').val() + '">' + $('#interests').val() + ' <span class="del">&times;</span></span>').fadeIn(1000);
-                    $('#tags').val($('#tags').val() + ',' + $('#interests').val());
-                    $('#interests').val('');
-                    return false;
-                }
-            });
        $('.textarea')
         .mouseleave(function(e) {
                 var text = $('#title').val() + '  ' + $(".rte-zone").contents().find(".frameBody").html(),
@@ -424,7 +411,7 @@ $(document).ready(function(){
         }
         token_elm  = $('input[name="q"]');
         token_elm.tokenInput("clear");
-        token_elm.tokenInput("add", {id: 'tag_' + $(this).attr('data-id'), name: $(this).attr('data-name')}); 
+        token_elm.tokenInput("add", {id: 'tag_' + $(this).attr('data-id'), name: $(this).attr('data-name')});
     });
 	$('#search .filters li input').click( function(){
 		currElement = $(this);
@@ -536,7 +523,7 @@ $(document).ready(function(){
     	pos = $(this).position();
     	elmTop = pos.top - 20 + 'px';
     	$('#layer').css('top',elmTop);
-    	$('#layer').css('z-index',11000);
+    	$('#layer').css('z-index',10000);
     	$('#embedContent').css('display','block');
         return false;
     });
@@ -667,7 +654,7 @@ $(document).ready(function(){
             elm.html(elm.html() + "<br/>" + content + "<br/><br/>");
         }
     }
-    
+
 /*
 * jQuery RTE plugin 0.5.1 - create a rich text form for Mozilla, Opera, Safari and Internet Explorer
 *

@@ -37,7 +37,7 @@ $(document).ready(function(){
             loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
             return false;
         });
-    
+
          $('#cloud_full').click(function(){
             $('#feed').toggleClass('cloud_listing');
             $('#list_limit').val('10');
@@ -46,7 +46,7 @@ $(document).ready(function(){
             loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
             return false;
         });
-    
+
 	$("#cloud_previous").click(function(){
 		if ($('#see_more_discussion_list_offset').val() > 0) {
 			$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())-parseInt($('#list_limit').val()));
@@ -67,15 +67,15 @@ $(document).ready(function(){
                 newSearchName = $('#search-memo-name').val();
                 /* APPEL AJAX DE CREATION */
                 $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/saveSearch");?>', {searchName: newSearchName}, function(result) {
-                    //remove class current                      
+                    //remove class current
                     if(result)  {
                         listElm = $('#saved-search-list');
                         listElm.append("<li data-params='" + JSON.stringify(result) + "'>" + $('#search-memo-name').val() + "<span class='close'>&times;</span></li>");
                         elm.parent().find('input').remove();
                         elm.parent().addClass('starred');
                         $('<span>' + newSearchName + '</span>').insertAfter(elm);
-            
-                    }                        
+
+                    }
                 },'json');
             });
         });
@@ -96,7 +96,7 @@ $(document).ready(function(){
                     case 'words':
                         if(!value) break;
                         token_elm  = $('input[name="q"]');
-                        token_elm.tokenInput("add", {id: value, name: value}); 
+                        token_elm.tokenInput("add", {id: value, name: value});
                         changeElm = $('input[name="q"]');
                         break;
                     case 'tags':
@@ -106,22 +106,22 @@ $(document).ready(function(){
                         $.each(value,function (key,tag_id) {
                             $.get('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}mod/enlightn/ajax/get_tag_data.php");?>', {tag_id: tag_id}, function(tag_ent) {
                                 if(tag_ent)  {
-                                    token_elm.tokenInput("add", {id: 'tag_' + tag_id, name: tag_ent.name}); 
-                                }                        
+                                    token_elm.tokenInput("add", {id: 'tag_' + tag_id, name: tag_ent.name});
+                                }
                             },'json');
                             value[key] = 'tag_' + tag_id;
                         });
                         value = value.join(',');
                         changeElm = $('input[name="q"]');
-                        break;                      
+                        break;
                     case 'from_users':
                         token_elm  = $('input[name="from_users"]');
                         token_elm.tokenInput("clear");
                         $.each(value,function (key,user_guid) {
                             $.get('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}mod/enlightn/ajax/get_user_data.php");?>', {guid: user_guid}, function(user_ent) {
                                 if(user_ent)  {
-                                    token_elm.tokenInput("add", {id: user_guid, name: user_ent.name}); 
-                                }                        
+                                    token_elm.tokenInput("add", {id: user_guid, name: user_ent.name});
+                                }
                             },'json');
                         });
                         value = value.join(',');
@@ -140,13 +140,13 @@ $(document).ready(function(){
                         break;
                     case 'filter_id':
                         if(value == 0) break;
-                        changeElm = $("#" + field); 
+                        changeElm = $("#" + field);
                         break;
                     case 'subtype':
-                        changeElm = $("#subtype_checked"); 
+                        changeElm = $("#subtype_checked");
                         break;
                     default :
-                        changeElm = $("#" + field);                         
+                        changeElm = $("#" + field);
                         break;
                 }
                 if (typeof changeElm != undefined) {
@@ -155,23 +155,22 @@ $(document).ready(function(){
             });
             loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>');
         });
-        
+
         $(".saved-search .close").click(function(){
             elm = $(this).parent();
             guid = elm.attr('data-guid');
-            alert(guid);
             if(confirm("<?php echo elgg_echo('enlightn:prompt:cloudremovesavedsearch')?>")) {
                 $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/removeSearch");?>', {guid: guid}, function(result) {
                     if(result)  {
                         elm.remove();
-                    }                        
-                },'json');                
+                    }
+                },'json');
             }
         });
         $('.expand').click( function() {
             alert('pan');
             //$(this).parent().find('.tag_list').toggle();
-        });        
+        });
 });
 </script>
 	</div><!-- end cloud -->

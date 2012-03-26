@@ -1,34 +1,9 @@
-<?php
-include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
-
-
-//Some basic var
-gatekeeper();
-$user_guid = elgg_get_logged_in_user_guid();
-$discussion_id = get_input('discussion_id');
-//retreive last activity
-$activity = elgg_view('enlightn/activity',array());
-$body = $activity;
-unset($activity);
-//link for discussion creation
-$discussion_new = elgg_view('enlightn/discussion_new',array());
-$body .= $discussion_new;
-unset($discussion_new);
-//Retreive request
-$discussion_request = elgg_view('enlightn/discussion_request',array('requests' => get_invitations($user_guid, true)));
-$body .= $discussion_request;
-//search filters
-$search_filters = elgg_view('enlightn/search_filters',array());
-$body .= $search_filters;
-unset($search_filters);
-//retreive last discussion subject
-$discussion_list = elgg_view('enlightn/discussion_list',array('user_guid' => $user_guid
-																, 'discussion_id' => $discussion_id));
-$body .= $discussion_list;
-unset($discussion_list);
-//Now lest's see what we are talking about
-$discussion = elgg_view('enlightn/discussion',array());
-$body .= $discussion;
-unset($discussion);
-page_draw(elgg_echo('enlightn:enlightn'),$body);
-?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <title>Enlightn</title>
+    </head>
+    <body>
+        <iframe src="https://enlightn.doudeb/enlightn/"></iframe>
+    </body>
+</html>

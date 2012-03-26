@@ -10,7 +10,7 @@
                                                                     )); ?>
                     <input type="hidden" id="last_search">
                     <input type="hidden" name="search_tags" id="search_tags" value="<?php echo $vars['tags']?>">
-                    <input type="hidden" name="search_tags" id="filter_id" value="<?php echo $vars['filter_id']?>">
+                    <input type="hidden" name="filter_id" id="filter_id" value="<?php echo $vars['filter_id']?>">
                     <button class="submit" type="submit" id="search_submit"></button>
                 </div>
                 <div class="s-actions"><?php echo elgg_echo("enlightn:togglemorefilters"); ?><span class="arrow"></span></div>

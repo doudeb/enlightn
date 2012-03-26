@@ -2311,7 +2311,7 @@ form #clonedMessages {
     margin-right : 5px;
     cursor : pointer;
  }
- 
+
  .saved-search .close {
     display : none;
  }
@@ -2326,43 +2326,43 @@ form #clonedMessages {
     margin-left : 15px;
     margin-top : 15px;
     color : #2C75E2;
- 
+
  }
- 
+
  .saved-search li {
     margin-bottom : 5px;
     cursor : pointer;
-    width : 
+    width :
  }
- 
+
  #search-memo-name {
     width: 100px;
     height: 15px;
  }
- 
+
  #search-memo-post {
     min-width: 0px;
     width : 25px;
     height: 21px;
  }
- 
+
  .saved-search-select {
     clear : left;
     margin-top: 36px;
  }
- 
+
 .saved-search-label-apply ,
 .edit-keyword {
     cursor : pointer;
     color : #2C75E2;
     margin-top: 5px;
  }
- 
+
  #selected_filter {
     margin-left : 10px;
     background-color: #EEEEEE;
  }
- 
+
 .saved-search-select .arrow,
 .edit-keyword .arrow {
     background-position:-358px -41px;
@@ -2385,7 +2385,7 @@ form #clonedMessages {
 }
 
 .saved-search-select ul li {
-    padding: 5px;    
+    padding: 5px;
     cursor : pointer;
     border: 1px 0px 0px 1px dotted #fff;
 }
@@ -2399,7 +2399,7 @@ form #clonedMessages {
     display : none;
 }
  /** Cloud view **/
- 
+
  #feed.cloud_listing .photo {
     float: none;
     height: 30px;
@@ -2487,7 +2487,7 @@ form #clonedMessages {
 .change-mini.selected {
     background-position: -127px -212px;
 }
-    
+
 .change-full {
     background-position: -157px -212px;
     display: block;
@@ -2521,16 +2521,16 @@ form #clonedMessages {
     margin-left: 5px;
     cursor : pointer;
 }
-#feed.cloud_listing .msg a { 
+#feed.cloud_listing .msg a {
     color: #444950;
     font-size: 100%;
 }
 
-#feed.cloud_listing .msg a:hover { 
+#feed.cloud_listing .msg a:hover {
     text-decoration: underline;
 }
 
-#feed.cloud_listing .msg_home { 
+#feed.cloud_listing .msg_home {
     cursor: default;
 }
 
@@ -2844,7 +2844,8 @@ form #clonedMessages {
     width: 130px;
 }
 
-#presence .header {
+#presence .header,
+.chat .header {
     color:#fff;
     cursor:pointer;
     padding:3px 5px;
@@ -2878,7 +2879,7 @@ form #clonedMessages {
     width: 10px;
 }
 
-#presence .chat {
+.chat {
     background-color: #fff;
     border: 1px solid #ccc;
     border-right-color:#000;
@@ -2886,16 +2887,13 @@ form #clonedMessages {
     -webkit-box-shadow: 2px 2px 5px #333;
     box-shadow: 2px 2px 5px #333;
     cursor: default;
-    margin-left: -227px;
-    *margin-left: -306px;
-    margin-top: -60px;
-    *margin-top: -44px;
-    min-height: 100px;
-    position: absolute;
-    width: 220px;
+    width : 180px;
+    bottom : 0;
+    max-height : 250px;
+    position: fixed;
 }
 
-#presence .chat .close,
+.chat .close,
 .bubble .close {
     float:right;
 }
@@ -2906,7 +2904,11 @@ form #clonedMessages {
     cursor : pointer;
 }
 
-#presence .chat .arrow {
+.chat .header {
+    background-color: #000;
+}
+
+.chat .arrow {
     background-position:0 -242px;
     display:block;
     float: right;
@@ -2917,14 +2919,16 @@ form #clonedMessages {
     width: 20px;
 }
 
-#presence .chat .content {
+.chat .content {
     padding:8px;
 }
 
-#presence .chat .content textarea {
+.chat .content textarea {
     border-color: #999999;
     margin-bottom: 8px;
-    width:195px;
+    width : 158px;
+    min-height : 30px;
+    font-size : 98%;
 }
 
 .popup {
@@ -2939,7 +2943,6 @@ form #clonedMessages {
     box-shadow: 2px 2px 5px #333;
     #padding:15px 20px;
 }
-
 
 /** LAYER */
 #layer {
@@ -4760,7 +4763,6 @@ ul.token-input-list-facebook {
     width: 262px;
     border: 1px solid #8496ba;
     cursor: text;
-    z-index: 9999;
     background-color: #fff;
     list-style-type: none;
     clear: left;
