@@ -1,4 +1,5 @@
 <?php
+global $CONFIG;
 if (elgg_is_logged_in()) {
     echo elgg_view('enlightn/discussion_edit');
     echo elgg_view('input/uploadForm');
@@ -20,7 +21,7 @@ $en_plugin          = elgg_get_calling_plugin_entity();
 <script>
 
 $(document).ready(function(){
-                var jid = '<?php echo $user_ent->username ?>@localhost';
+                var jid = '<?php echo $user_ent->username ?>@<?php echo $ars['config']->sitename ?>';
 		var password ='<?php echo $user_ent->password;?>';
 		var logContainer = $("#log");
 		var contactList = $("#contacts");
