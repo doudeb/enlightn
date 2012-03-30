@@ -23,8 +23,9 @@ EOT;
 $js_function =  <<<EOT
 function (item) {
     if(item.id.indexOf('tag_') == -1) {
-        submit();
         return false;
+    } else {
+
     }
 }
 EOT;
@@ -46,7 +47,7 @@ EOT;
                  , theme: 'facebook'
                  , placeholder: '<?php echo $vars['placeholder']; ?>'
                  , resultsFormatter: function(item) {
-                     return "<li><span>" + item.name + "</span><span class='complete-count'>" +  item.count + "</span></li>";
+                     return "<li><span class='" + item.class + "'>" + item.name + "</span><span class='complete-count'>" +  item.count + "</span></li>";
                  }
                  , onAdd: <?php echo $js_function ?>
             }

@@ -34,6 +34,9 @@ $_SESSION['last_search_cloud']= serialize(array('user_guid'=>$user_guid,'subtype
 
 elgg_set_ignore_access(TRUE);
 $files = $enlightn->get_my_cloud($user_guid,$subtype,$words,$from_users,$date_begin, $date_end,$guid,$tags,$filter_id,$limit,$offset);
+$total = $files['count'][0];
+unset($files['count']);
+header("found-rows: " . $total->total);
 echo elgg_view('enlightn/cloud/media', array(
 							'entities' => $files,
 							'internalname' => $internalname,

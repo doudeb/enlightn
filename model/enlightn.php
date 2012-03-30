@@ -270,6 +270,8 @@ Limit 150)";
 	}
 
     public function get_my_cloud ($user_guid, $simpletype = false, $words = false,$from_users = false,$date_begin = false, $date_end = false, $guid = false,$tags = false,$filter_id = false, $limit = 10, $offset = 0) {
+        $results = false;
+        $count = false;
         $file_subtype_id = get_subtype_id('object','file');
         $join = array();
         if (!$file_subtype_id) {
@@ -302,18 +304,9 @@ Limit 150)";
                 $join [] = "Inner Join objects_entity ent_title On ent.guid = ent_title.guid
                             Left Join annotations a On ent.guid = a.entity_guid
                             Left Join metastrings msv On a.value_id = msv.id";
-                $where[] = "And
-                                Case
-                                    When length('$words') > 2 And length('$words') <= @@ft_min_word_len Then
-                                        ent_title.title Like concat('%', '$words', '%')
+                $where[] = "And (ent_title.title Like concat('%', '$words', '%')
                                         Or ent_title.description Like concat('%', '$words', '%')
-                                        Or msv.string Like concat('%', '$words', '%')
-                                    When length('$words') > @@ft_min_word_len Then
-                                        MATCH (ent_title.title) AGAINST ('$words' IN BOOLEAN MODE)
-                                        Or MATCH (ent_title.description) AGAINST ('$words' IN BOOLEAN MODE)
-                                        Or MATCH (msv.string) AGAINST ('$words' IN BOOLEAN MODE)
-                                    Else true
-                                End";
+                                        Or msv.string Like concat('%', '$words', '%'))";
             }
         }
         #date
@@ -382,7 +375,10 @@ $where
 Order By ent.time_created Desc
 Limit $offset,$limit";
             //echo "<pre>" .$query;die();
-            return  $this->get_data($query, $key_cache, 'entity_row_to_elggstar');
+            $query_count           = str_replace(array('Distinct ent.*',"Limit $offset,$limit"), array('Count(*) total',''), $query);
+            $results               = $this->get_data($query, $key_cache, 'entity_row_to_elggstar');
+            $results['count']      = $this->get_data($query_count, $key_cache, 'entity_row_to_elggstar');
+            return  $results;
 	}
 
 	private function generate_key_cache ($args = false, $prefix = 'enlightn') {
@@ -493,13 +489,7 @@ Limit $offset,$limit";
             $tags_name = implode("','", $tags_name);
             $where = " And tag_name.string In ('$tags_name')";
         } elseif (is_string($tags_name)) {
-            $where = "And
-                            Case
-                                When length('$tags_name') > 2 And length('$tags_name') <= @@ft_min_word_len Then
-                                    tag_name.string Like concat('%', '$tags_name', '%')
-                                When length('$tags_name') > @@ft_min_word_len Then
-                                    MATCH (tag_name.string) AGAINST ('$tags_name' IN BOOLEAN MODE)
-                            End";
+            $where = "And tag_name.string Like concat('%', '$tags_name', '%')";
         }
         if ($user_guid) {
             $where .= " And tag_used.owner_guid = $user_guid ";
@@ -519,7 +509,7 @@ Limit $offset,$limit";
                     Inner Join entities ent On tag_used.entity_guid = ent.guid And ent.site_guid = " . $this->site_guid . "
                     Where tag_name.string != ''
                         And ( Exists (Select rel_all.id  From entity_relationships As rel_all Where tag_used.entity_guid = rel_all.guid_two And rel_all.guid_one = " . elgg_get_logged_in_user_guid() . " And rel_all.relationship = '". ENLIGHTN_FOLLOW . "' And tag_used.access_id  = " . ENLIGHTN_ACCESS_PRIVATE . ")
-                                  Or tag_used.access_id  = " . ENLIGHTN_ACCESS_PUBLIC . "                                  
+                                  Or tag_used.access_id  = " . ENLIGHTN_ACCESS_PUBLIC . "
 				  Or ent.owner_guid = " . elgg_get_logged_in_user_guid() . ")
                     $where
                     Group By tag_name.string

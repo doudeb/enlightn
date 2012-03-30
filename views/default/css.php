@@ -2300,9 +2300,10 @@ form #clonedMessages {
     margin: 2px 0px 0px 5px;
     cursor : pointer;
     color : #2C75E2;
+    display : none;
 }
 .search-memo span {
-    margin: 2px 0px 0px 5px;
+    margin: -1px 5px 0px 5px;
 }
 .saved-search .close,
 .saved-search .editlabel {
@@ -2400,7 +2401,8 @@ form #clonedMessages {
 }
  /** Cloud view **/
 
- #feed.cloud_listing .photo {
+ #feed.cloud_listing .photo,
+ #feed.cloud_listing .thumb-photo {
     float: none;
     height: 30px;
     width: 30px;
@@ -4755,6 +4757,7 @@ fieldset {
 /** AUTOCOMPLETE **/
 .complete-count {
     float : right;
+    font-style : italic;
 }
 
 
@@ -4770,7 +4773,6 @@ ul.token-input-list-facebook {
 
 .search-field ul.token-input-list-facebook {
     border: 0px;
-    width: autox;
     width: 180px;
     overflow: visible;
 }
@@ -4875,6 +4877,6 @@ div.token-input-dropdown-facebook ul li em {
 }
 
 div.token-input-dropdown-facebook ul li.token-input-selected-dropdown-item-facebook {
-    background-color: #3b5998;
-    color: #fff;
+    background-color: #e5e5e5;
+    color: #000;
 }

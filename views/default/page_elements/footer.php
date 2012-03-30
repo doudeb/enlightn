@@ -17,79 +17,99 @@ $en_plugin          = elgg_get_calling_plugin_entity();
      <div id="debug"></div>
     <?php }
     if (elgg_get_plugin_setting('chat_activated','enlightn')==1) {
+        $jabber_host_name = pathinfo($vars['config']->url,PATHINFO_BASENAME);
     ?>
 <script>
 
 $(document).ready(function(){
-                var jid = '<?php echo $user_ent->username ?>@<?php echo $vars['config']->sitename ?>';
-		var password ='<?php echo $user_ent->password;?>';
-		var logContainer = $("#log");
-		var contactList = $("#contacts");
+    var jid = '<?php echo strtolower($user_ent->username) ?>@<?php echo $jabber_host_name ?>';
+    var password ='<?php echo $user_ent->password;?>';
+    var logContainer = $("#log");
+    var contactList = $("#contacts");
+    var sRid = getCookie('sRid');
+    var rid = getCookie('rid');
 
-		//An example of bosh server. This site is working but it can change or go down.
-		//If you are going to have a production site, you must install your own BOSH server
-		var url ="<?php echo $vars['url']?>http-bind/";
 
-		var xmpp = $.xmpp.connect({url:url, jid: jid, password: password,
-			onConnect: function(){
-                            $.xmpp.setPresence(null);
-			},
-			onPresence: function(presence){
-                                var split = presence.from.split('@'),
-                                    username = split[0],
-                                    loggedUserList = contactList.find('li'),
-                                    loggedUsername = new Array();
-                                loggedUserList.each(function () {
-                                    loggedUsername.push($(this).attr('data-username'));
-                                });
-                                if(!loggedUsername.in_array(username) && presence.show != "unavailable") {
-                                    var contact = $("<li data-username=" + username +">");
-                                    contact.append("<span class=\"ico\"/>"+ username +"");
-                                    contact.click(function(){
-                                                    var id = MD5.hexdigest(username);
-                                                    var conversation = $("#"+id);
-                                                    if(conversation.length == 0)
-                                                            openChat({to:presence.from});
-                                    });
-                                    contactList.append(contact);
-                                } else if (presence.show == "unavailable") {
-                                    $.each(contactList.find("li"),function(i,element){
-                                            try{
-                                                var e = $(element);
-                                                    if(e.attr("data-username") == username && username != '<?php echo $user_ent->username;?>') {
-                                                        e.remove();
-                                                    } else if (username == '<?php echo $user_ent->username;?>') {
-                                                        $.xmpp.setPresence(null);
-                                                    }
-                                            } catch(e){}
-                                    });
-                                }
-			},
-			onDisconnect: function() {
-				logContainer.html("Disconnected");
-			},
-			onMessage: function(message){
-				var jid = message.from.split("/");
-				var id = MD5.hexdigest(message.from),
-                                                split = message.from.split('@'),
-                                                username = split[0];
-				var conversation = $("#chat_"+username);
-				if(conversation.length == 0){
-					openChat({to:message.from});
-				}
-				conversation = $("#chat_"+username);
-				conversation.find(".conversation").append("<div>"+ username +": "+ message.body +"</div>").animate({ scrollTop: conversation.prop('scrollHeight') });
-			},onError:function(error){
-				alert(error.error);
-			}
-		});
+    //An example of bosh server. This site is working but it can change or go down.
+    //If you are going to have a production site, you must install your own BOSH server
+    var url ="<?php echo $vars['url']?>http-bind/";
+    var conn = new Strophe.Connection(url);
+    if (sRid != '' && rid != '') {
+        conn.attach(jid,sRid,rid,OnAttachStatus);
+    } else {
+        conn.connect(jid, password, OnConnectionStatus);
+    }
 
-	$("#disconnectBut").click(function(){
-		$.xmpp.disconnect();
-	});
-        $(window).unload( function () { $.xmpp.disconnect(); } );
+    function OnConnectionStatus(nStatus)
+    {
+        if (nStatus == Strophe.Status.CONNECTING) {
+            } else if (nStatus == Strophe.Status.CONNFAIL) {
+            } else if (nStatus == Strophe.Status.DISCONNECTING) {
+            } else if (nStatus == Strophe.Status.DISCONNECTED) {
+            } else if (nStatus == Strophe.Status.CONNECTED) {
+        OnConnected();
+        }
+    }
 
-    function openChat(options){
+    function OnAttachStatus (nStatus) {
+        if (nStatus == Strophe.Status.DISCONNECTED) {
+            conn.connect(jid, password, OnConnectionStatus);
+        } else if (nStatus == Strophe.Status.ATTACHED) {
+            OnConnected();
+        }
+    }
+
+    function OnConnected()
+    {
+        conn.addHandler(OnPresenceStanza, null, "presence");
+        conn.addHandler(OnMessageStanza, null, "message");
+        conn.send($pres());
+    }
+
+    function OnMessageStanza(stanza)
+    {
+        var sFrom = $(stanza).attr('from');
+        var sType = $(stanza).attr('type');
+        var sBareJid = Strophe.getBareJidFromJid(sFrom);
+        var sBody = $(stanza).find('body').text();
+        setCookie ('rid',conn.rid,1);
+        alert(sFrom + sType + sBareJid + sBody);
+        // do something, e.g. show sBody with jQuery
+    return true;
+    }
+
+    function OnPresenceStanza(stanza)
+    {
+        var sFrom = $(stanza).attr('from'),
+            sBareJid = Strophe.getBareJidFromJid(sFrom),
+            sRid = Strophe.getResourceFromJid(sFrom);
+        if (sBareJid == jid) {
+            return true;
+        }
+        contactList.find('li').each(function () {
+            if ($(this).attr('data-username') == sBareJid) {
+                return true;
+            }
+        })
+        // do something, e.g. show status icon with jQuery
+        var contact = $("<li data-username=" + sBareJid +">");
+        contact.append("<span class=\"ico\"/>"+ sBareJid +"")
+                .click(function() {
+                        var id = sBareJid;
+                        var conversation = $("#"+id);
+                        if(conversation.length == 0)
+                                openChat({to:sBareJid});
+                });
+        contactList.append(contact);
+        return true;
+    }
+
+    $(window).unload( function () {
+        setCookie ('rid',conn.rid,1);
+        setCookie ('sRid',conn.sid,1);
+    });
+});
+function openChat(options){
             var id = MD5.hexdigest(options.to),
                         split = options.to.split('@'),
                         username = split[0],
@@ -114,8 +134,11 @@ $(document).ready(function(){
                         close = chat.find(".close");
                 input.keyup(function(e){
                     if(e.keyCode == 13) {
+
                             $.xmpp.sendMessage({to:options.to, body: input.val()});
-                            split = $.xmpp.jid.split('@');
+                            var reply = $msg({to: options.to, from: jid, type: 'chat'}).cnode(input.val());
+                            conn.send(reply.tree());
+                            split = jid;
                             username = split[0];
                             conversation.append("<div>"+ username +": "+ input.val() +"</div>");
                             input.val("");
@@ -136,10 +159,6 @@ $(document).ready(function(){
             }
             input.focus();
     }
-
-});
-
-
 </script>
 <div id="presence">
     <div class="header">Chat</div>

@@ -15,15 +15,15 @@ $i = -1;
 
 $tags_found = false;
 $tags_found[++$i]['id'] 	= $tag;
-$tags_found[$i]['group'] 	= 'Free text';
+$tags_found[$i]['class'] 	= 'text';
 $tags_found[$i]['name'] 	= $tag;
-$tags_found[$i]['count']        = '';
+$tags_found[$i]['count']        = 'Free';
 
 
 $results = $enlightn->get_tags(false, $tag, false, 3);
 foreach ($results as $tag_found) {
     $tags_found[++$i]['id'] 	= 'tag_' . $tag_found->tag_id;
-    $tags_found[$i]['group'] 	= 'Most used tags';
+    $tags_found[$i]['class'] 	= 'tag';
     $tags_found[$i]['name'] 	= $tag_found->tag;
     $tags_found[$i]['count']    = $tag_found->total;
 }

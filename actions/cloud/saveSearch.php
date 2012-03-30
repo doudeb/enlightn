@@ -24,5 +24,5 @@ if (!$saved_search->save()) {
 $last_search                        = $is_label=='true'?serialize(array('subtype'=>'false')):$_SESSION['last_search_cloud'];
 $saved_search->setMetaData(ENLIGHTN_FILTER_CRITERIA, $last_search);
 
-echo json_encode($saved_search->guid);
+echo json_encode(unserialize($last_search));
 exit();

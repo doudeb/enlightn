@@ -101,7 +101,9 @@
 			this.listening = true;
 			xmpp.connections = xmpp.connections + 1;
 			var msg = "<body rid='"+ this.rid +"' xmlns='http://jabber.org/protocol/httpbind' sid='"+ this.sid +"' type='terminate'><presence xmlns='jabber:client' type='unavailable'/></body>";
-			$.post(this.url,msg,function(data){
+                        $.post(this.url,msg,function(data){
+                                alert(data);
+                                console.log(data);
 				xmpp.connections = xmpp.connections - 1;
 				xmpp.messageHandler(data);
 				xmpp.listening = false;
@@ -116,7 +118,6 @@
 
 			}, 'text');
 		},
-
 		loginDigestMD5: function(options){
 
 			var xmpp = this;

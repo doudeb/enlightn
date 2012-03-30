@@ -826,22 +826,22 @@ function create_enlightn_discussion ($user_guid, $access_id,$message, $title,$ta
     }
     $return['guid'] = $enlightndiscussion->guid;
     $message 	= create_embeded_entities($message,$enlightndiscussion);
-	$post		= $message['message'];
+    $post		= $message['message'];
 
-	// now add the topic message as an annotation
-	$annotationid = $enlightndiscussion->annotate(ENLIGHTN_DISCUSSION,$post,$enlightndiscussion->access_id, $user_guid);
+    // now add the topic message as an annotation
+    $annotationid = $enlightndiscussion->annotate(ENLIGHTN_DISCUSSION,$post,$enlightndiscussion->access_id, $user_guid);
     $return['success'] = $annotationid;
     $enlightndiscussion->save();//trigger entities save, in order to update the update_time;
 	//link attachement
 	if (is_array($message['guids'])) {
-        $new_tags = array();
-		foreach ($message['guids'] as $embeded_guid) {
-            disable_right($embeded_guid);
-            $embeded_ent = get_entity($embeded_guid);
-            add_entity_relationship($embeded_guid,ENLIGHTN_EMBEDED,$annotationid);
-            update_entity_access ($embeded_guid,$enlightndiscussion->access_id); //update access_id
-            $new_tags = array_merge($new_tags,!is_array($embeded_ent->getTags())?array():$embeded_ent->getTags());
-		}
+            $new_tags = array();
+            foreach ($message['guids'] as $embeded_guid) {
+                disable_right($embeded_guid);
+                $embeded_ent = get_entity($embeded_guid);
+                add_entity_relationship($embeded_guid,ENLIGHTN_EMBEDED,$annotationid);
+                update_entity_access ($embeded_guid,$enlightndiscussion->access_id); //update access_id
+                $new_tags = array_merge($new_tags,!is_array($embeded_ent->getTags())?array():$embeded_ent->getTags());
+            }
         $tags = array_merge($new_tags,!is_array($enlightndiscussion->getTags())?array():$enlightndiscussion->getTags());
         $tags = array_unique($tags);
         $enlightndiscussion->tags = $tags;
@@ -1259,12 +1259,14 @@ function doc_to_txt ($file_path, $mime_type) {
             $text   = read_pptx($file_path);
             break;
         case 'application/vnd.ms-powerpoint':
-            ob_start();
-            exec('catppt "' . $file_path . '"',$text);
+            //ob_start();
+            echo('ppthtml "' . $file_path . '"');
+            exec('ppthtml "' . $file_path . '"',  $text);
             if (is_array($text)) {
                 $text = implode(' ', $text);
+                $text = _convert($text);
             }
-            ob_end_clean();
+            //ob_flush();
             break;
         case 'application/excel':
         case 'application/vnd.ms-excel':
@@ -1360,3 +1362,62 @@ function get_labels ($user_ent) {
     }
     return $saved_search;
 }
+
+
+if ( ! function_exists('glob_recursive'))
+ {
+     // Does not support flag GLOB_BRACE
+
+     function glob_recursive($pattern, $flags = 0)
+     {
+         $files = glob($pattern, $flags);
+
+         foreach (glob(dirname($pattern).'/*', GLOB_NOSORT) as $dir)
+         {
+             $files = array_merge($files, glob_recursive($dir.'/'.basename($pattern), $flags));
+         }
+
+         return $files;
+     }
+ }
+
+
+ function clean_ms($texz) {
+    $texz = stripslashes(stripslashes($texz));
+    $find[] = "\342\200\176";
+    $find[] = "\342\200\177";
+    $find[] = "\342\200\230";
+    $find[] = "\342\200\231";
+    $find[] = "\342\200\232";
+    $find[] = "\342\200\233";
+    $find[] = "\342\200\234";
+    $find[] = "\342\200\235";
+    $find[] = "\342\200\041";
+    $find[] = "\342\200\174";
+    $find[] = "\342\200\220";
+    $find[] = "\342\200\223";
+    $find[] = "\342\200\224";
+    $find[] = "\342\200\225";
+    $find[] = "\342\200\042";
+    $find[] = "\342\200\246";
+
+    $replace[] = "'";
+    $replace[] = "'";
+    $replace[] = "'";
+    $replace[] = "'";
+    $replace[] = ',';
+    $replace[] = "'";
+    $replace[] = '"';
+    $replace[] = '"';
+    $replace[] = '-';
+    $replace[] = '-';
+    $replace[] = '-';
+    $replace[] = '-';
+    $replace[] = '--';
+    $replace[] = '--';
+    $replace[] = '--';
+    $replace[] = '...';
+
+    $texz = str_replace($find, $replace,$texz);
+    return $texz;
+ }

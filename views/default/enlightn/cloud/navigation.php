@@ -13,10 +13,11 @@
 		<input type="hidden" name="list_limit" id="list_limit" value="20">
 		<div id="feed" class="cloud_listing">
                     <div class="actions">
-                        <span class="star ico"></span><div class="search-memo"><?php echo elgg_echo('enlightn:searchmemo');?></div>
+                        <div class="search-memo"><span class="star ico"></span><?php echo elgg_echo('enlightn:searchmemo');?></div>
                         <ul class="right">
                             <li><a href="" id="cloud_next"><?php echo elgg_echo("enlightn:next")?></a></li>
                             <li><a href="" id="cloud_previous"><?php echo elgg_echo("enlightn:previous")?></a></li>
+                            <li><span id="offset"></span> - <span id="limit"></span> <?php echo elgg_echo("on")?> <span id="found-rows"></span></li>
                         </ul>
                     </div>
                     <div class="changeview">
@@ -50,13 +51,13 @@ $(document).ready(function(){
 	$("#cloud_previous").click(function(){
 		if ($('#see_more_discussion_list_offset').val() > 0) {
 			$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())-parseInt($('#list_limit').val()));
-                        loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
+                        loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>');
 		}
 	  	return false;
 	});
 	$("#cloud_next").click(function(){
 		$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())+parseInt($('#list_limit').val()));
-  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
+  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>');
 	  	return false;
 	});
         $(".search-memo").click(function(){
@@ -70,21 +71,30 @@ $(document).ready(function(){
                     //remove class current
                     if(result)  {
                         listElm = $('#saved-search-list');
-                        listElm.append("<li data-params='" + JSON.stringify(result) + "'>" + $('#search-memo-name').val() + "<span class='close'>&times;</span></li>");
+                        listElm.append("<li data-params='" + JSON.stringify(result) + "' data-name='" + newSearchName + "'><span class='saved-items'>" + $('#search-memo-name').val() + "<span class='close'>&times;</span></span></li>");
                         elm.parent().find('input').remove();
                         elm.parent().addClass('starred');
-                        $('<span>' + newSearchName + '</span>').insertAfter(elm);
-
+                        elm.html('<span class="star ico"></span>' + newSearchName);
+                        elm.toggle();
+                        listElm.find('.saved-items').click(function() {
+                            saveSearch($(this));
+                        });
+                        listElm.find('.close').click(function() {
+                            searchRemove($(this));
+                        });
                     }
                 },'json');
             });
         });
-        $(".saved-search .saved-items").click(function(){
-            elm = $(this).parents();
+        $(".saved-search .saved-items").click(function() {
+            saveSearch(this);
+        });
+        saveSearch = function(e){
+            elm = $(e).parents();
             params = eval('(' + elm.attr('data-params') + ')')
                 ,filter_id = elm.attr('data-guid')
                 ,title = elm.attr('data-name');
-            $(".search-memo").html(title);
+            $(".search-memo").html('<span class="star ico"></span>' + title).css('display','block');
             $(".search-memo").parent().addClass('starred');
             $('#see_more_discussion_list_offset').val(0);
             token_elm  = $('input[name="q"]');
@@ -154,10 +164,13 @@ $(document).ready(function(){
                 }
             });
             loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>');
-        });
+        }
 
         $(".saved-search .close").click(function(){
-            elm = $(this).parent();
+            searchRemove($(this));
+        });
+        searchRemove = function(e){
+            elm = $(e).parent();
             guid = elm.attr('data-guid');
             if(confirm("<?php echo elgg_echo('enlightn:prompt:cloudremovesavedsearch')?>")) {
                 $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/removeSearch");?>', {guid: guid}, function(result) {
@@ -166,7 +179,7 @@ $(document).ready(function(){
                     }
                 },'json');
             }
-        });
+        };
         $('.expand').click( function() {
             alert('pan');
             //$(this).parent().find('.tag_list').toggle();

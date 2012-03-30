@@ -47,6 +47,9 @@ class treeTagger {
             $tag        = $tag[0];
         }
         $tag            = str_replace(array('!','£','$','%','^','&','*','(',')','}','{','@',':','#','~','/','?','<','>','/','\\','|','-','=','_','+','¬','`'), '', $tag);
+        if (is_numeric($tag)) {
+            return false;
+        }
         return $tag;
     }
 

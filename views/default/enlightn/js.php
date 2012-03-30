@@ -79,6 +79,7 @@ function loadResults (task, data, textStatus, XMLHttpRequest) {
     lastModified = XMLHttpRequest.getResponseHeader('Last-Modified');
     queryUid = XMLHttpRequest.getResponseHeader('Query-uid');
     fetchedRows = XMLHttpRequest.getResponseHeader('Fetch-rows');
+    foundRows = XMLHttpRequest.getResponseHeader('found-rows');
 
     if (typeof lastModified != 'undefined') {
         $('<input />', {
@@ -89,6 +90,11 @@ function loadResults (task, data, textStatus, XMLHttpRequest) {
     }
     if (typeof fetchedRows != 'undefined') {
         $('#see_more_discussion_list').toggle(parseInt(fetchedRows) > 9);
+    }
+    if (typeof foundRows != 'undefined') {
+        $('#found-rows').html(foundRows);
+        $('#offset').html(parseInt($('#see_more_discussion_list_offset').val()) + 1);
+        $('#limit').html(parseInt($('#see_more_discussion_list_offset').val()) + parseInt($('#list_limit').val()));
     }
 }
 
@@ -253,7 +259,6 @@ function get_search_criteria (fromLink) {
 							+ '&limit=' + list_limit
 							+ '&filter_id=' + filter_id
 							+ '&tags=' + search_tags;
-
 
 	return search_criteria;
 }
@@ -1000,4 +1005,30 @@ function updateLoginPort() {
   else if (servtype == 'pop3/ssl/novalidate-cert') {
     $('#emailport').val('995');
   }
+}
+
+
+function setCookie(name,value,days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        var expires = "; expires="+date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
+function deleteCookie(name) {
+    setCookie(name,"",-1);
 }
