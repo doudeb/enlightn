@@ -87,6 +87,7 @@ $(document).ready(function(){
             return true;
         }
         contactList.find('li').each(function () {
+            alert($(this).attr('data-username') + ' / ' + sBareJid);
             if ($(this).attr('data-username') == sBareJid) {
                 return true;
             }
@@ -103,14 +104,8 @@ $(document).ready(function(){
         contactList.append(contact);
         return true;
     }
-
-    $(window).unload( function () {
-        setCookie ('rid',conn.rid,1);
-        setCookie ('sRid',conn.sid,1);
-    });
-});
-function openChat(options){
-            var id = MD5.hexdigest(options.to),
+    function openChat(options){
+            var id = options.to,
                         split = options.to.split('@'),
                         username = split[0],
                         chatOpen = $("body").find('.chat'),
@@ -134,15 +129,20 @@ function openChat(options){
                         close = chat.find(".close");
                 input.keyup(function(e){
                     if(e.keyCode == 13) {
-
-                            $.xmpp.sendMessage({to:options.to, body: input.val()});
-                            var reply = $msg({to: options.to, from: jid, type: 'chat'}).cnode(input.val());
+                        var message = input.val();
+                        if(message && options.to){
+                            var reply = $msg({
+                                    to: options.to,
+                                    type: 'chat'
+                            })
+                            .cnode(Strophe.xmlElement('body', message));
                             conn.send(reply.tree());
-                            split = jid;
-                            username = split[0];
-                            conversation.append("<div>"+ username +": "+ input.val() +"</div>");
-                            input.val("");
-                            conversation.animate({ scrollTop: conversation.prop('scrollHeight') });
+                        }
+                        split = jid;
+                        username = split[0];
+                        conversation.append("<div>"+ username +": "+ input.val() +"</div>");
+                        input.val("");
+                        conversation.animate({ scrollTop: conversation.prop('scrollHeight') });
                     }
                 });
                 close.click( function(){
@@ -159,6 +159,11 @@ function openChat(options){
             }
             input.focus();
     }
+    $(window).unload( function () {
+        setCookie ('rid',conn.rid,1);
+        setCookie ('sRid',conn.sid,1);
+    });
+});
 </script>
 <div id="presence">
     <div class="header">Chat</div>

@@ -35,7 +35,7 @@ $(document).ready(function(){
             $(this).toggleClass('selected');
             $('#cloud_full').toggleClass('selected');
             $('#list_limit').val('20');
-            loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
+            loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>');
             return false;
         });
 
@@ -44,7 +44,7 @@ $(document).ready(function(){
             $('#list_limit').val('10');
             $(this).toggleClass('selected');
             $('#cloud_mini').toggleClass('selected');
-            loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>' + get_search_criteria());
+            loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>');
             return false;
         });
 
@@ -67,7 +67,7 @@ $(document).ready(function(){
             $("#search-memo-post").click(function(){
                 newSearchName = $('#search-memo-name').val();
                 /* APPEL AJAX DE CREATION */
-                $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/saveSearch");?>', {searchName: newSearchName}, function(result) {
+                $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/saveSearch");?>', {searchName: newSearchName, isPrivate: true}, function(result) {
                     //remove class current
                     if(result)  {
                         listElm = $('#saved-search-list');

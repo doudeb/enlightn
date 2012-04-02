@@ -20,13 +20,19 @@ function (item) {
 }
 EOT;
 } else if ('q' === $vars['name']) {
-$js_function =  <<<EOT
-function (item) {
-    if(item.id.indexOf('tag_') == -1) {
-        return false;
-    } else {
+    $context        = elgg_get_context();
+    $page           = strstr($context, 'cloud')?'get_my_cloud':'search';
+    $container      = strstr($context, 'cloud')?'cloud_content':'discussion_list_container';
+    $search_memo    = elgg_echo('enlightn:searchmemo');
 
-    }
+    $js_function =  <<<EOT
+function (item) {
+    $(".search-memo").html('<span class="star ico"></span>$search_memo');
+    $(".search-memo").parent().removeClass('starred');
+    $(".search-memo").css('display','block');
+    $("#see_more_discussion_list_offset").val(0);
+    loadContent("#$container",'{$vars['url']}mod/enlightn/ajax/$page.php' + get_search_criteria() + '&context=$context');
+    return true;
 }
 EOT;
 

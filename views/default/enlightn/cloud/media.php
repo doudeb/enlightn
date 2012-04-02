@@ -21,7 +21,6 @@ $('.expand').click( function() {
 	$context    = elgg_get_context();
 	$entities   = $vars['entities'];
 	if (is_array($entities) && !empty($entities)) {
-
 		foreach($entities as $entity) {
 			if ($entity instanceof ElggEntity) {
 				$mime = $entity->mimetype;
