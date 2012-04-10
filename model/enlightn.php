@@ -338,10 +338,8 @@ Limit 150)";
         if (is_array($tags)) {
             $tags_meta_id = get_metastring_id('tags');
             foreach ($tags as $tag) {
-                $sanitised_tags[] = sanitise_int($tag);
+                $join [] = "Inner join metadata md$tag on ent.guid = md$tag.entity_guid And md$tag.name_id = $tags_meta_id And md$tag.value_id = $tag";
             }
-            $tags_in = implode(',', $sanitised_tags);
-            $join [] = "Inner join metadata md on ent.guid = md.entity_guid And md.name_id = $tags_meta_id And md.value_id In($tags_in)";
 
         }
         #filter
@@ -350,8 +348,8 @@ Limit 150)";
             #$join[] = "Left Join entity_relationships As rel_filter On ent.guid = rel_filter.guid_one And rel_filter.guid_two = $filter_id And rel_filter.relationship = '". ENLIGHTN_FILTER_ATTACHED . "'";
             $where[] = "Or Exists(Select rel_filter.id From entity_relationships As rel_filter Where ent.guid = rel_filter.guid_one And rel_filter.guid_two = $filter_id And rel_filter.relationship = '". ENLIGHTN_FILTER_ATTACHED . "')";
         }
-        $join	= implode(' ',$join);
-        $where	= implode(' ',$where);
+        $join	= implode("\n ",$join);
+        $where	= implode("\n ",$where);
         $query      = "Select Distinct ent.*
 From entities ent
 $join

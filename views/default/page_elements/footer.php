@@ -24,9 +24,8 @@ $en_plugin          = elgg_get_calling_plugin_entity();
 $(document).ready(function(){
     var jid = '<?php echo strtolower($user_ent->username) ?>@<?php echo $jabber_host_name ?>';
     var password ='<?php echo $user_ent->password;?>';
-    var logContainer = $("#log");
     var contactList = $("#contacts");
-    var sRid = getCookie('sRid');
+    var sid = getCookie('sid');
     var rid = getCookie('rid');
 
 
@@ -34,24 +33,27 @@ $(document).ready(function(){
     //If you are going to have a production site, you must install your own BOSH server
     var url ="<?php echo $vars['url']?>http-bind/";
     var conn = new Strophe.Connection(url);
-    if (sRid != '' && rid != '') {
-        conn.attach(jid,sRid,rid,OnAttachStatus);
+    if (sid != 'null' && rid != 'null') {
+        conn.attach(jid,sid,rid,OnAttachStatus);
     } else {
         conn.connect(jid, password, OnConnectionStatus);
     }
 
     function OnConnectionStatus(nStatus)
     {
+        console.log(nStatus);
         if (nStatus == Strophe.Status.CONNECTING) {
             } else if (nStatus == Strophe.Status.CONNFAIL) {
             } else if (nStatus == Strophe.Status.DISCONNECTING) {
             } else if (nStatus == Strophe.Status.DISCONNECTED) {
             } else if (nStatus == Strophe.Status.CONNECTED) {
-        OnConnected();
+                OnConnected();
         }
     }
 
     function OnAttachStatus (nStatus) {
+                console.log(nStatus);
+
         if (nStatus == Strophe.Status.DISCONNECTED) {
             conn.connect(jid, password, OnConnectionStatus);
         } else if (nStatus == Strophe.Status.ATTACHED) {
@@ -72,22 +74,30 @@ $(document).ready(function(){
         var sType = $(stanza).attr('type');
         var sBareJid = Strophe.getBareJidFromJid(sFrom);
         var sBody = $(stanza).find('body').text();
-        setCookie ('rid',conn.rid,1);
-        alert(sFrom + sType + sBareJid + sBody);
+        var split = sBareJid.split('@'),
+                        username = split[0];
+        var conversation = $("#chat_"+ username);
+        if(conversation.length == 0){
+                openChat({to:sBareJid});
+        }
+        conversation = $("#chat_"+ username);
+        conversation.find(".conversation").append("<div>"+ username +": "+ sBody +"</div>").animate({ scrollTop: conversation.prop('scrollHeight') });
         // do something, e.g. show sBody with jQuery
-    return true;
+        return true;
     }
 
     function OnPresenceStanza(stanza)
     {
         var sFrom = $(stanza).attr('from'),
             sBareJid = Strophe.getBareJidFromJid(sFrom),
-            sRid = Strophe.getResourceFromJid(sFrom);
+            sRid = Strophe.getResourceFromJid(sFrom),
+            contactList = $("#contacts");
         if (sBareJid == jid) {
             return true;
         }
+        console.log(stanza);
+
         contactList.find('li').each(function () {
-            alert($(this).attr('data-username') + ' / ' + sBareJid);
             if ($(this).attr('data-username') == sBareJid) {
                 return true;
             }
@@ -109,7 +119,7 @@ $(document).ready(function(){
                         split = options.to.split('@'),
                         username = split[0],
                         chatOpen = $("body").find('.chat'),
-                        chat = $("#chat_"+username);
+                        chat = $("#chat_"+id);
             chatOpen.each(function () {
                 pos = $(this).offset();
             });
@@ -138,7 +148,7 @@ $(document).ready(function(){
                             .cnode(Strophe.xmlElement('body', message));
                             conn.send(reply.tree());
                         }
-                        split = jid;
+                        split = jid.split('@');
                         username = split[0];
                         conversation.append("<div>"+ username +": "+ input.val() +"</div>");
                         input.val("");
@@ -161,14 +171,22 @@ $(document).ready(function(){
     }
     $(window).unload( function () {
         setCookie ('rid',conn.rid,1);
-        setCookie ('sRid',conn.sid,1);
+        setCookie ('sid',conn.sid,1);
     });
+
+
+    function log(msg)
+    {
+        $('#log').append('<div></div>').append(document.createTextNode(msg));
+    }
+    Strophe.log = function (level, msg) { log('LOG: ' + msg); };
 });
 </script>
 <div id="presence">
     <div class="header">Chat</div>
     <ul id="contacts"></ul>
 </div>
+<div id="log"></div>
 <?php
     }
 ?>

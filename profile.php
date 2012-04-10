@@ -13,9 +13,8 @@ $user_settings          = get_profile_settings($user->guid);
 if (!$user_guid || !$user_ent) {
 	forward();
 }
-
+add_to_river('enlightn/helper/riverlog','open', $user_guid,$user->guid);
 $tags       = $enlightn->get_tags($user->guid,false,false);
-
 $main  =  elgg_view('enlightn/profile/main',array('user' => $user, 'settings'=>$user_settings, 'tags'=> $tags));
 
 $right = elgg_view('enlightn/profile/sidebar',array('user' => $user, 'settings'=>$user_settings));

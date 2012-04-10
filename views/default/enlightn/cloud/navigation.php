@@ -63,27 +63,29 @@ $(document).ready(function(){
         $(".search-memo").click(function(){
             elm = $(this);
             elm.toggle();
-            $('<input id="search-memo-name"><input type="submit" value="<?php echo elgg_echo("enlightn:buttonpost")?>" id="search-memo-post">').insertAfter(elm);
-            $("#search-memo-post").click(function(){
-                newSearchName = $('#search-memo-name').val();
-                /* APPEL AJAX DE CREATION */
-                $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/saveSearch");?>', {searchName: newSearchName, isPrivate: true}, function(result) {
-                    //remove class current
-                    if(result)  {
-                        listElm = $('#saved-search-list');
-                        listElm.append("<li data-params='" + JSON.stringify(result) + "' data-name='" + newSearchName + "'><span class='saved-items'>" + $('#search-memo-name').val() + "<span class='close'>&times;</span></span></li>");
-                        elm.parent().find('input').remove();
-                        elm.parent().addClass('starred');
-                        elm.html('<span class="star ico"></span>' + newSearchName);
-                        elm.toggle();
-                        listElm.find('.saved-items').click(function() {
-                            saveSearch($(this));
-                        });
-                        listElm.find('.close').click(function() {
-                            searchRemove($(this));
-                        });
-                    }
-                },'json');
+            $('<input id="search-memo-name" placeholder="<?php echo elgg_echo("enlightn:enterlabelname")?>">').insertAfter(elm);
+            $("#search-memo-name").keyup(function(e){
+                if(e.keyCode == 13) {
+                    newSearchName = $('#search-memo-name').val();
+                    /* APPEL AJAX DE CREATION */
+                    $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/saveSearch");?>', {searchName: newSearchName, isPrivate: true}, function(result) {
+                        //remove class current
+                        if(result)  {
+                            listElm = $('#saved-search-list');
+                            listElm.append("<li data-params='" + JSON.stringify(result) + "' data-name='" + newSearchName + "'><span class='saved-items'>" + $('#search-memo-name').val() + "<span class='close'>&times;</span></span></li>");
+                            elm.parent().find('input').remove();
+                            elm.parent().addClass('starred');
+                            elm.html('<span class="star ico"></span>' + newSearchName);
+                            elm.toggle();
+                            listElm.find('.saved-items').click(function() {
+                                saveSearch($(this));
+                            });
+                            listElm.find('.close').click(function() {
+                                searchRemove($(this));
+                            });
+                        }
+                    },'json');
+                 }
             });
         });
         $(".saved-search .saved-items").click(function() {
@@ -102,6 +104,7 @@ $(document).ready(function(){
             $('#search_tags').val('');
             $('#filter_id').val(filter_id);
             $.each(params,function (field,value) {
+                changeElm = null;
                 switch(field) {
                     case 'words':
                         if(!value) break;
@@ -113,16 +116,16 @@ $(document).ready(function(){
                         if(!value) break;
                         $('#search_tags').val('');
                         token_elm  = $('input[name="q"]');
+                        changeElm= $('input[name="q"]');
                         $.each(value,function (key,tag_id) {
+                            value[key] = 'tag_' + tag_id;
                             $.get('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}mod/enlightn/ajax/get_tag_data.php");?>', {tag_id: tag_id}, function(tag_ent) {
                                 if(tag_ent)  {
-                                    token_elm.tokenInput("add", {id: 'tag_' + tag_id, name: tag_ent.name});
+                                    token_elm.tokenInput("add", {id: value[key], name: tag_ent.name, class : 'tag'});
                                 }
                             },'json');
-                            value[key] = 'tag_' + tag_id;
                         });
                         value = value.join(',');
-                        changeElm = $('input[name="q"]');
                         break;
                     case 'from_users':
                         token_elm  = $('input[name="from_users"]');
@@ -159,7 +162,7 @@ $(document).ready(function(){
                         changeElm = $("#" + field);
                         break;
                 }
-                if (typeof changeElm != undefined) {
+                if (changeElm != null) {
                     changeElm.val(value);
                 }
             });

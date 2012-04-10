@@ -23,23 +23,25 @@ $labels                 = get_labels ($user_ent);
         $('#new-label_inputs').remove();
         if ($(this).html() == '<?php echo elgg_echo("enlightn:edit")?>') {
             $(this).html('<?php echo elgg_echo("enlightn:close")?>');
-            $(elm).prepend('<li id="new-label_inputs"><input id="search-memo-name" placeholder="<?php echo elgg_echo("enlightn:enterlabelname")?>"><input type="submit" value="<?php echo elgg_echo("enlightn:buttonpost")?>" id="search-memo-post"><span class="ico private-ico" title="<?php echo elgg_echo("enlightn:privatepublic"); ?>"/></li>');
+            $(elm).prepend('<li id="new-label_inputs"><input id="search-memo-name" placeholder="<?php echo elgg_echo("enlightn:enterlabelname")?>"><span class="ico private-ico" title="<?php echo elgg_echo("enlightn:privatepublic"); ?>"/></li>');
             $('#new-label_inputs .ico')
             .click(function() {
                 $(this).toggleClass('private-ico').toggleClass('public-ico');
             });
-            $("#search-memo-post")
-            .click(function(){
-                var newSearchName = $('#search-memo-name').val(),
-                    isPrivate = $('#new-label_inputs .ico').hasClass('private-ico');
-                /* APPEL AJAX DE CREATION */
-                $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/saveSearch");?>', {searchName: newSearchName, isPrivate: isPrivate, isLabel:true}, function(result) {
-                    //remove class current
-                    if(result)  {
-                        listElm = $('#saved-search-list');
-                        listElm.append("<li data-params='" + JSON.stringify(result) + "'>" + $('#search-memo-name').val() + "<span class='ico " + (isPrivate?'private-ico':'public-ico') + "' title='<?php echo elgg_echo("enlightn:privatepublic"); ?>'/><span class='close'>&times;</span></li>");
-                    }
-                },'json');
+            $("#search-memo-name")
+            .keyup(function(e){
+                if(e.keyCode == 13) {
+                    var newSearchName = $('#search-memo-name').val(),
+                        isPrivate = $('#new-label_inputs .ico').hasClass('private-ico');
+                    /* APPEL AJAX DE CREATION */
+                    $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/saveSearch");?>', {searchName: newSearchName, isPrivate: isPrivate, isLabel:true}, function(result) {
+                        //remove class current
+                        if(result)  {
+                            listElm = $('#saved-search-list');
+                            listElm.append("<li data-params='" + JSON.stringify(result) + "'>" + $('#search-memo-name').val() + "<span class='ico " + (isPrivate?'private-ico':'public-ico') + "' title='<?php echo elgg_echo("enlightn:privatepublic"); ?>'/><span class='close' style='display:block'>&times;</span></li>");
+                        }
+                    },'json');
+                }
             });
         } else {
              $(this).html('<?php echo elgg_echo("enlightn:edit")?>');

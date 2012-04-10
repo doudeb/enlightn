@@ -4,7 +4,7 @@ include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 gatekeeper();
 $user_guid 			= elgg_get_logged_in_user_guid();
 $user_ent			= get_user($user_guid);
-$guid               = get_input('entity_guid');
+$guid                           = get_input('entity_guid');
 global $enlightn;
 if (!$user_guid || !$user_ent) {
 	forward();
@@ -12,6 +12,7 @@ if (!$user_guid || !$user_ent) {
 disable_right($guid);
 $topic 				= get_entity($guid);
 if (!$topic) forward();
+add_to_river('enlightn/helper/riverlog','open', $user_guid,$guid,$topic->access_id);
 /**
  * Left part
  */

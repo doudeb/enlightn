@@ -6,17 +6,17 @@
 	 *
 	 * @package ElggFile
 	 */
-    gatekeeper();
+        gatekeeper();
 	// Get the guid
 	$file_guid = get_input("file_guid");
 
 	// Get the file
-    disable_right($file_guid);
+        disable_right($file_guid);
 	$file = get_entity($file_guid);
 	if ($file) {
 		$mime = $file->getMimeType();
 		if (!$mime) $mime = "application/octet-stream";
-
+                add_to_river('enlightn/helper/riverlog','download', elgg_get_logged_in_user_guid(),$file_guid,$file->access_id);
 		$filename = $file->originalfilename;
 
 		// fix for IE https issue

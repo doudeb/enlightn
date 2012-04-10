@@ -11,6 +11,10 @@ define('PRIVATE_PATERN_KEY', 1);
 define('GET_ID_CALL','get_user_by_email');
 define('DEBUG_ON', false);
 define('DEFAULT_OWNER_ID', 36);
+define('SITE_GUID', 36);
+
+$_SERVER["SERVER_PORT"] = 443;
+$_SERVER["HTTP_HOST"] = '';
 
 
 $tree = glob_recursive(DATA_PATH . '*PNG');

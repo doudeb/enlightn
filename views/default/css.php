@@ -4814,9 +4814,9 @@ li.token-input-token-facebook p {
 }
 
 li.token-input-token-facebook span {
-    color: #a6b3cf;
+    **color: #a6b3cf;
     margin-left: 5px;
-    font-weight: bold;
+    **font-weight: bold;
     cursor: pointer;
 }
 
@@ -4831,6 +4831,22 @@ li.token-input-input-token-facebook {
     margin: 0;
     padding: 0;
     list-style-type: none;
+}
+
+li.token-input-token-facebook span.tag {
+    background-color: #CFE965;
+    color: #000;
+    border: 0px;
+    font-size: 11px;
+    border-radius: 0px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+
+li.token-input-token-facebook.tag {
+    background-color: #CFE965;
 }
 
 div.token-input-dropdown-facebook {
