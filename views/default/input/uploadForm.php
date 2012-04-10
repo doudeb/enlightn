@@ -22,7 +22,7 @@ $labels             = get_labels ($user_ent);
             <h2 id="filetitle_preview"></h2> <span id="editmytitle" class="caption cloud_access"><?php echo elgg_echo("enlightn:editmytitle"); ?></span>
 			<input type="text" placeholder="<?php echo elgg_echo('enlightn:titlefile')?>" name="title" id="filetitle"/>
 	        <?php
-	        	echo elgg_view('input/hidden', array('name' => 'access_id','value' => ACCESS_PRIVATE));
+	        	echo elgg_view('input/hidden', array('name' => 'access_id','id' => 'access_id','value' => ACCESS_PRIVATE));
 	        	echo elgg_view('input/hidden', array('name' => 'file_filter_id','id'=> 'file_filter_id'));
    			echo elgg_view('input/securitytoken');
 	        ?>
