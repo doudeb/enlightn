@@ -337,9 +337,8 @@ Limit 150)";
         #tags
         if (is_array($tags)) {
             $tags_meta_id = get_metastring_id('tags');
-            foreach ($tags as $tag) {
-                $join [] = "Inner join metadata md$tag on ent.guid = md$tag.entity_guid And md$tag.name_id = $tags_meta_id And md$tag.value_id = $tag";
-            }
+            $tags_in = implode(',', $tags);
+            $join [] = "Inner join metadata md on ent.guid = md.entity_guid And md.name_id = $tags_meta_id And md.value_id in($tags_in)";
 
         }
         #filter

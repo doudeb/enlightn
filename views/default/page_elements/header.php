@@ -1,7 +1,6 @@
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.form.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.tokeninput.js"></script>
-	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/jquery.xmpp.js"></script>
-	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/strophe.min.js"></script>
+	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/strophe.js"></script>
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>mod/enlightn/media/js/cal.js"></script>
     <link rel="shortcut icon" href="<?php echo $vars['url']; ?>mod/enlightn/media/graphics/favicon.ico">
     <link rel="icon" href="<?php echo $vars['url']; ?>mod/enlightn/media/graphics/favicon.ico">

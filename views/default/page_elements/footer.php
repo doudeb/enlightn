@@ -33,6 +33,14 @@ $(document).ready(function(){
     //If you are going to have a production site, you must install your own BOSH server
     var url ="<?php echo $vars['url']?>http-bind/";
     var conn = new Strophe.Connection(url);
+
+    conn.rawInput = function (data) {
+        log('RECV: ' + data);
+    };
+    conn.rawOutput = function (data) {
+        log('SENT: ' + data);
+    };
+
     if (sid != 'null' && rid != 'null') {
         conn.attach(jid,sid,rid,OnAttachStatus);
     } else {
@@ -41,31 +49,47 @@ $(document).ready(function(){
 
     function OnConnectionStatus(nStatus)
     {
-        console.log(nStatus);
         if (nStatus == Strophe.Status.CONNECTING) {
             } else if (nStatus == Strophe.Status.CONNFAIL) {
             } else if (nStatus == Strophe.Status.DISCONNECTING) {
             } else if (nStatus == Strophe.Status.DISCONNECTED) {
             } else if (nStatus == Strophe.Status.CONNECTED) {
                 OnConnected();
+                return true;
         }
+        return false;
     }
 
     function OnAttachStatus (nStatus) {
-                console.log(nStatus);
-
-        if (nStatus == Strophe.Status.DISCONNECTED) {
+        log('STATUS ATTACH : ' + nStatus);
+        if (nStatus == Strophe.Status.DISCONNECTED
+            || nStatus == Strophe.Status.AUTHFAIL) {
+            setCookie ('rid',parseInt(conn.rid),1);
+            setCookie ('sid',conn.sid,1);
             conn.connect(jid, password, OnConnectionStatus);
-        } else if (nStatus == Strophe.Status.ATTACHED) {
+            setInterval(function() {
+                conn.send($pres().tree());
+            }, 50000);
+            return true;
+        } else if (nStatus == Strophe.Status.ATTACHED
+                    || nStatus == Strophe.Status.CONNECTED) {
             OnConnected();
+            setInterval(function() {
+                conn.send($pres().tree());
+            }, 50000);
+            return true;
         }
+        return false;
     }
 
     function OnConnected()
     {
-        conn.addHandler(OnPresenceStanza, null, "presence");
-        conn.addHandler(OnMessageStanza, null, "message");
-        conn.send($pres());
+	conn.addHandler(OnMessageStanza, null, 'message', null, null,  null);
+	conn.addHandler(OnPresenceStanza, null, 'presence', null, null,  null);
+        setInterval(function() {
+            conn.send($pres().tree());
+        }, 50000);
+        return true;
     }
 
     function OnMessageStanza(stanza)
@@ -77,6 +101,7 @@ $(document).ready(function(){
         var split = sBareJid.split('@'),
                         username = split[0];
         var conversation = $("#chat_"+ username);
+        if(sBody.length == 0) return true;
         if(conversation.length == 0){
                 openChat({to:sBareJid});
         }
@@ -91,20 +116,29 @@ $(document).ready(function(){
         var sFrom = $(stanza).attr('from'),
             sBareJid = Strophe.getBareJidFromJid(sFrom),
             sRid = Strophe.getResourceFromJid(sFrom),
-            contactList = $("#contacts");
+            sType = $(stanza).attr('type'),
+            contactList = $("#contacts"),
+            alreadyDisplayed = false,
+            split = sBareJid.split('@'),
+            username = split[0];
         if (sBareJid == jid) {
             return true;
         }
-        console.log(stanza);
-
+        log('CONTATCTLIST :' + contactList.html());
         contactList.find('li').each(function () {
+            log('PRESENCE :' + $(this).attr('data-username') + ' / ' + sBareJid + '=>' + sType);
             if ($(this).attr('data-username') == sBareJid) {
+                if (sType == 'unavailable') {
+                    $(this).remove();
+                }
+                alreadyDisplayed = true;
                 return true;
             }
-        })
+        });
+        if (alreadyDisplayed) return true;
         // do something, e.g. show status icon with jQuery
         var contact = $("<li data-username=" + sBareJid +">");
-        contact.append("<span class=\"ico\"/>"+ sBareJid +"")
+        contact.append("<span class=\"ico\"/>"+ username +"")
                 .click(function() {
                         var id = sBareJid;
                         var conversation = $("#"+id);
@@ -168,16 +202,17 @@ $(document).ready(function(){
                 var input = chat.find("textarea");
             }
             input.focus();
+            return true;
     }
     $(window).unload( function () {
-        setCookie ('rid',conn.rid,1);
+        setCookie ('rid',parseInt(conn.rid),1);
         setCookie ('sid',conn.sid,1);
     });
 
 
     function log(msg)
     {
-        $('#log').append('<div></div>').append(document.createTextNode(msg));
+        //$('#log').append('<div></div>').append(document.createTextNode(msg));
     }
     Strophe.log = function (level, msg) { log('LOG: ' + msg); };
 });
