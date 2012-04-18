@@ -279,7 +279,7 @@
 			,'enlightn:newmessage:subject' => 'Re: %s '
 			,'enlightn:newmessage:body' => 'Hola %s,
 
-Se ha añadido un mensaje a la conversación "%s"
+%s ha añadido un mensaje a la conversación "%s"
 %s
 
 <a href="%s">Entrar a la conversación</a>'
