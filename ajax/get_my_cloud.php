@@ -44,5 +44,5 @@ echo elgg_view('enlightn/cloud/media', array(
 							'count' => $count,
 							'simpletype' => $simpletype,
 							'limit' => $limit,
-							'simpletypes' => $types,
+							'simpletypes' => $types
 					   ));

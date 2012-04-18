@@ -183,10 +183,6 @@ $(document).ready(function(){
                 },'json');
             }
         };
-        $('.expand').click( function() {
-            alert('pan');
-            //$(this).parent().find('.tag_list').toggle();
-        });
 });
 </script>
 	</div><!-- end cloud -->

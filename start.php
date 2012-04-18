@@ -6,45 +6,47 @@
 
 function enlightn_init() {
 
-	require_once("helper/config.php");
-	require_once("helper/enlightn.php");
-	require_once("model/enlightn.php");
-	require_once("model/imap.class.php");
-	$enlightn		= new enlightn();
+    require_once("helper/config.php");
+    require_once("helper/enlightn.php");
+    require_once("model/enlightn.php");
+    require_once("model/imap.class.php");
+    $enlightn		= new enlightn();
     // Extend system CSS with our own styles
     //elgg_extend_view('css', 'enlightn/css');
     elgg_extend_view('page/elements/head','page_elements/header');
     elgg_extend_view('js/elgg','enlightn/cloud/js');
     elgg_extend_view('js/elgg','enlightn/js');
     elgg_extend_view('profile/editicon','enlightn/helper/redirect');
-	// Try to remove the dashboard page
-	elgg_register_plugin_hook_handler('validate', 'input', 'enlightn_filter_tags');
+    // Try to remove the dashboard page
+    elgg_register_plugin_hook_handler('validate', 'input', 'enlightn_filter_tags');
     elgg_unregister_plugin_hook_handler('validate', 'input', 'htmlawed_filter_tags');
     elgg_register_plugin_hook_handler('index','system','new_index');
 
-	// register for search
-	elgg_register_entity_type('enlightn','');
-	// Register a page handler, so we can have nice URLs
-	elgg_register_page_handler('enlightn','enlightn_page_handler');
-	// Register some actions
+    // register for search
+    elgg_register_entity_type('enlightn','');
+    // Register a page handler, so we can have nice URLs
+    elgg_register_page_handler('enlightn','enlightn_page_handler');
+    // Register some actions
     $action_path = elgg_get_plugins_path() . 'enlightn/actions/';
-	elgg_register_action("enlightn/edit",$action_path . "discussion_edit.php");
-	elgg_register_action("enlightn/addpost",$action_path . "addpost.php");
-	elgg_register_action("enlightn/join",$action_path . "join.php");
-	elgg_register_action("enlightn/invite",$action_path . "invite.php");
-	elgg_register_action("enlightn/follow",$action_path . "follow.php");
-	elgg_register_action("enlightn/read",$action_path . "read.php");
-	elgg_register_action("enlightn/favorite",$action_path . "favorite.php");
-	elgg_register_action("enlightn/upload",$action_path . "upload.php");
-	elgg_register_action("enlightn/save_notifications",$action_path . "save_notifications.php");
-	elgg_register_action("enlightn/profile_edit",$action_path . "profile_edit.php");
-	//collection
-	elgg_register_action("enlightn/collection/addcollection",$action_path . "collection/addcollection.php");
-	elgg_register_action("enlightn/collection/removefromcollection",$action_path . "collection/removefromcollection.php");
-	elgg_register_action("enlightn/collection/addtocollection",$action_path . "collection/addtocollection.php");
-        //search cloud memo
-        elgg_register_action("enlightn/cloud/saveSearch",$action_path . "cloud/saveSearch.php");
-        elgg_register_action("enlightn/cloud/removeSearch",$action_path . "cloud/removeSearch.php");
+    elgg_register_action("enlightn/edit",$action_path . "discussion_edit.php");
+    elgg_register_action("enlightn/addpost",$action_path . "addpost.php");
+    elgg_register_action("enlightn/join",$action_path . "join.php");
+    elgg_register_action("enlightn/invite",$action_path . "invite.php");
+    elgg_register_action("enlightn/follow",$action_path . "follow.php");
+    elgg_register_action("enlightn/read",$action_path . "read.php");
+    elgg_register_action("enlightn/favorite",$action_path . "favorite.php");
+    elgg_register_action("enlightn/upload",$action_path . "upload.php");
+    elgg_register_action("enlightn/save_notifications",$action_path . "save_notifications.php");
+    elgg_register_action("enlightn/profile_edit",$action_path . "profile_edit.php");
+    //collection
+    elgg_register_action("enlightn/collection/addcollection",$action_path . "collection/addcollection.php");
+    elgg_register_action("enlightn/collection/removefromcollection",$action_path . "collection/removefromcollection.php");
+    elgg_register_action("enlightn/collection/addtocollection",$action_path . "collection/addtocollection.php");
+    //search cloud memo
+    elgg_register_action("enlightn/cloud/saveSearch",$action_path . "cloud/saveSearch.php");
+    elgg_register_action("enlightn/cloud/removeSearch",$action_path . "cloud/removeSearch.php");
+    //for any objects
+    elgg_register_action("enlightn/removeObject",$action_path . "removeObject.php");
     // Register entity type
     elgg_register_entity_type('object',ENLIGHTN_DISCUSSION);
     // Load profile settings

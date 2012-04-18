@@ -1,5 +1,5 @@
 <?php
-$cloud_discussion   = count($vars['cloud_discussion']);
+$cloud_discussion   = count($vars['cloud_discussion'])-1;
 ?>
         <div id="feed" class="detail">
                 <div class="s-actions">

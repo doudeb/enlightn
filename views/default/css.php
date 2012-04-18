@@ -2445,6 +2445,7 @@ form #clonedMessages {
 }
 
 #feed.cloud_listing .msg .follow,
+#feed.cloud_listing .msg .disable_ent,
 #feed.cloud_listing .tag {
     display : none;
 }
@@ -2457,7 +2458,8 @@ form #clonedMessages {
 #feed.cloud_listing .msg:hover .date,
 #feed.cloud_listing .msg:hover .msg .follow,
 #feed.cloud_listing .msg:hover .click-link,
-#feed.cloud_listing .msg:hover .expand {
+#feed.cloud_listing .msg:hover .expand,
+#feed.cloud_listing .msg:hover .disable_ent {
     display:inline-block;
     overflow : hidden;
 }
@@ -2523,6 +2525,17 @@ form #clonedMessages {
     margin-left: 5px;
     cursor : pointer;
 }
+
+.disable_ent {
+    font-size : 130%;
+    cursor : pointer;
+    margin-left: 5px;
+}
+
+#feed.cloud_listing .disable_ent {
+    float: right;
+}
+
 #feed.cloud_listing .msg a {
     color: #444950;
     font-size: 100%;

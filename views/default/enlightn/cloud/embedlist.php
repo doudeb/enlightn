@@ -1,5 +1,4 @@
 <?php
-
 $file 		= $vars['entity'];
 $friendlytime 	= elgg_view_friendly_time($file->time_created);
 $user_ent	= get_user($file->owner_guid);
@@ -19,12 +18,15 @@ $tags		= $file->getTags();
                                 <!--<p class="cloudContent"><?php echo substr($file->originalfilename, 0, 107);?></p>-->
                                 <span class="participants"><?php echo $user_ent->name?></span>
                                 <span class="date"><?php echo elgg_view_friendly_time($file->time_created) ?></span>
+                                <?php if($file->owner_guid==  elgg_get_logged_in_user_guid() || elgg_is_admin_logged_in()) {?>
+                                <span class="disable_ent" data-guid="<?php echo $file->guid ?>">&times;</span>
+                                <?php } ?>
                                 <span class="expand ico"><?php echo elgg_echo('enlightn:clikexpandcloud') ?></span>
                                 <?php if(elgg_get_context() == 'cloud_embed') {?>
                                     <span class="click-link ico embeder" id="<?php echo $file->guid; ?>">&nbsp;<?php echo elgg_echo('enlightn:attach')?></span>
                                 <?php } else { ?>
                                     <span class="click-link ico embederToNew" id="<?php echo $file->guid; ?>">&nbsp;<?php echo elgg_echo('enlightn:attachtoanewdiscussion')?></span>
-                                <?php }?>                                
+                                <?php } ?>
                                 <?php
                                     if (count($tags) > 0) {
                                         echo "<div class='tag_list'>";
@@ -36,5 +38,4 @@ $tags		= $file->getTags();
                                     ?>
                             </div>
                     </li>
-                        
-                      
+

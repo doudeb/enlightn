@@ -26,7 +26,8 @@ $(document).ready(function(){
     var password ='<?php echo $user_ent->password;?>';
     var contactList = $("#contacts");
     var sid = getCookie('sid');
-    var rid = getCookie('rid');
+    var rid = parseInt(getCookie('rid'));
+    var chatStatusElm = $('#presence .header');
 
 
     //An example of bosh server. This site is working but it can change or go down.
@@ -50,6 +51,7 @@ $(document).ready(function(){
     function OnConnectionStatus(nStatus)
     {
         if (nStatus == Strophe.Status.CONNECTING) {
+            chatStatusElm.html('Connecting...');
             } else if (nStatus == Strophe.Status.CONNFAIL) {
             } else if (nStatus == Strophe.Status.DISCONNECTING) {
             } else if (nStatus == Strophe.Status.DISCONNECTED) {
@@ -61,22 +63,15 @@ $(document).ready(function(){
     }
 
     function OnAttachStatus (nStatus) {
-        log('STATUS ATTACH : ' + nStatus);
         if (nStatus == Strophe.Status.DISCONNECTED
             || nStatus == Strophe.Status.AUTHFAIL) {
-            setCookie ('rid',parseInt(conn.rid),1);
-            setCookie ('sid',conn.sid,1);
+            setCookie ('rid',null,1);
+            setCookie ('sid',null,1);
             conn.connect(jid, password, OnConnectionStatus);
-            setInterval(function() {
-                conn.send($pres().tree());
-            }, 50000);
             return true;
         } else if (nStatus == Strophe.Status.ATTACHED
                     || nStatus == Strophe.Status.CONNECTED) {
             OnConnected();
-            setInterval(function() {
-                conn.send($pres().tree());
-            }, 50000);
             return true;
         }
         return false;
@@ -86,9 +81,8 @@ $(document).ready(function(){
     {
 	conn.addHandler(OnMessageStanza, null, 'message', null, null,  null);
 	conn.addHandler(OnPresenceStanza, null, 'presence', null, null,  null);
-        setInterval(function() {
-            conn.send($pres().tree());
-        }, 50000);
+        conn.send($pres().tree());
+        chatStatusElm.html('Connected');
         return true;
     }
 
@@ -174,7 +168,7 @@ $(document).ready(function(){
                 input.keyup(function(e){
                     if(e.keyCode == 13) {
                         var message = input.val();
-                        if(message && options.to){
+                        if(message.length > 0 && options.to){
                             var reply = $msg({
                                     to: options.to,
                                     type: 'chat'
@@ -207,6 +201,7 @@ $(document).ready(function(){
     $(window).unload( function () {
         setCookie ('rid',parseInt(conn.rid),1);
         setCookie ('sid',conn.sid,1);
+        conn.pause();
     });
 
 

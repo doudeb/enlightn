@@ -16,6 +16,18 @@ $(".embederToNew").click(function(){
 $('.expand').click( function() {
     $(this).parent().find('.tag').toggle();
 });
+$(".disable_ent").click( function() {
+    elm = $(this);
+    guid = elm.attr('data-guid');
+    if(confirm("<?php echo elgg_echo('enlightn:prompt:disableentity')?>")) {
+        $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/removeObject");?>', {guid: guid}, function(result) {
+            if(result)  {
+                loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>');
+            }
+        },'json');
+    }
+});
+
 </script>
 <?php
 	$context    = elgg_get_context();

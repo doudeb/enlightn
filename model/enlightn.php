@@ -283,6 +283,7 @@ Limit 150)";
                 return false;
         }
         $where[]= "And ent.site_guid = " . $this->site_guid;
+        $where[]= "And ent.enabled = 'yes'";
         if ($simpletype) {
                 $join[] = "Inner Join metadata mtd On mtd.entity_guid = ent.guid
                                         Inner Join metastrings mst On mtd.value_id = mst.id";
