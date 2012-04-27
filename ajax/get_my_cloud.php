@@ -21,7 +21,6 @@ $filter_id      	= (int)get_input('filter_id');
 if ($context) {
     elgg_set_context($context);
 }
-
 $date_begin             = strtotime($date_begin);
 $date_end 		= strtotime($date_end);
 

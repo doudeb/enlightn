@@ -21,6 +21,7 @@ function enlightn_init() {
     elgg_register_plugin_hook_handler('validate', 'input', 'enlightn_filter_tags');
     elgg_unregister_plugin_hook_handler('validate', 'input', 'htmlawed_filter_tags');
     elgg_register_plugin_hook_handler('index','system','new_index');
+    elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'label_container_check');
 
     // register for search
     elgg_register_entity_type('enlightn','');
@@ -45,6 +46,8 @@ function enlightn_init() {
     //search cloud memo
     elgg_register_action("enlightn/cloud/saveSearch",$action_path . "cloud/saveSearch.php");
     elgg_register_action("enlightn/cloud/removeSearch",$action_path . "cloud/removeSearch.php");
+    elgg_register_action("enlightn/cloud/addFilterToLabel",$action_path . "cloud/addFilterToLabel.php");
+    elgg_register_action("enlightn/cloud/removeAttachedFilter",$action_path . "cloud/removeAttachedFilter.php");
     //for any objects
     elgg_register_action("enlightn/removeObject",$action_path . "removeObject.php");
     // Register entity type

@@ -1350,16 +1350,28 @@ function read_pptx ($file) {
     return $text;
 }
 
-function get_labels ($user_ent) {
-    $options                = array('types'=>'object','subtypes'=>ENLIGHTN_FILTER,'owner_guids'=>$user_ent->guid, 'order_by' => 'time_created Asc');
-    $saved_search           = elgg_get_entities($options);
-    $options['owner_guids'] = false;
-    $options['access_id']   = ENLIGHTN_ACCESS_PUBLIC;
-    $options['wheres']   = array('owner_guid != ' . $user_ent->guid);
-    $saved_search_public    = elgg_get_entities($options);
-    if(count($saved_search_public) > 0) {
-        $saved_search       = array_merge($saved_search,$saved_search_public);
+function get_labels ($mode,$children_guid = false) {
+    $user_guid                      = elgg_get_logged_in_user_guid();
+    $options                        = array('types'=>'object','subtypes'=>ENLIGHTN_FILTER, 'order_by' => 'e.time_created Asc', 'limit'=>150);
+    switch ($mode) {
+        default:
+        case 'suggest':
+            $options['access_id']   = ENLIGHTN_ACCESS_PUBLIC;
+            break;
+        case 'followed':
+            elgg_set_ignore_access(true);
+            $options['wheres']      = array("Exists(Select rel_follow.id From entity_relationships As rel_follow Where e.guid = rel_follow.guid_two And rel_follow.guid_one = $user_guid And rel_follow.relationship = '". ENLIGHTN_FOLLOW . "')");
+            break;
+        case 'invited':
+            elgg_set_ignore_access(true);
+            $options['joins']      = array("Inner Join entity_relationships As rel_req On e.guid = rel_req.guid_one And rel_req.guid_two = $user_guid And rel_req.relationship = '". ENLIGHTN_INVITED . "'");
+            break;
     }
+    if ($children_guid) {
+        $options['container_guids'] = $children_guid;
+    }
+    $saved_search                   = elgg_get_entities($options);
+    elgg_set_ignore_access(false);
     return $saved_search;
 }
 
@@ -1420,4 +1432,35 @@ if ( ! function_exists('glob_recursive'))
 
     $texz = str_replace($find, $replace,$texz);
     return $texz;
+ }
+
+
+ function label_container_check ($hook, $type, $returnvalue, $params) {
+     if ($type === 'object') {
+         if ($params['subtype'] === ENLIGHTN_FILTER) {
+             return true;
+         }
+     }
+     return false;
+ }
+
+ function get_label_parents($label_ent) {
+     if (!$label_ent instanceof ElggObject) return false;
+     $site_guid = elgg_get_config('site_guid');
+     $user_guid = elgg_get_logged_in_user_guid();
+     $i = 0;
+     while (true) {
+        $params = $label_ent->getMetadata(ENLIGHTN_FILTER_CRITERIA);
+        $params = unserialize($params);
+        $params = json_encode($params);
+        $label_parents[$i++] = array('data-guid'=>$label_ent->guid
+                                        ,'data-name'=>$label_ent->title
+                                        ,'data-params'=>$params
+                                    );
+        $is_followed_parent = check_entity_relationship($user_guid, ENLIGHTN_FOLLOW, $label_ent->container_guid);
+        if (($label_ent->container_guid == $site_guid || !$is_followed_parent)|| $i === 25 ) break;
+        disable_right($label_ent->guid);
+        $label_ent = get_entity ($label_ent->container_guid);
+     }
+     return array_reverse($label_parents);
  }

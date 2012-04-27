@@ -64,7 +64,8 @@ input, textarea {
 #feed .open-msg .content .<?php echo ENLIGHTN_IMAGE?>,
 #feed .open-msg .content .<?php echo ENLIGHTN_MEDIA?>,
 #feed .open-msg .content .<?php echo ENLIGHTN_DOCUMENT?>,
-.bubble .redirect {
+.bubble,
+.redirect {
     background: url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/sprite.png') no-repeat scroll 0 0 transparent;
 }
 
@@ -84,7 +85,7 @@ button.submit,
 #sidebar .folders .menu .up,
 #sidebar .folders .menu .down,
 #presence .header,
-#layer .close,
+.layer .close,
 #facebox .close {
     background: url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/sprite-x.png') repeat-x scroll 0 0 transparent;
 }
@@ -131,28 +132,27 @@ input[type=submit],
 }
 
 .follow {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ddd'); /*NEW*/
-	background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ddd)); /*NEW*/
-	background: -moz-linear-gradient(top, #f5f5f5, #ddd); /*NEW*/
-    border-color:#999;/*NEW*/
-    color:#555;/*NEW*/
-    font-size: 93%;/*NEW*/
-    font-weight: bold;/*NEW*/
-    padding: 3px 6px;/*NEW*/
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ddd');
+	background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ddd));
+	background: -moz-linear-gradient(top, #f5f5f5, #ddd);
+    border-color:#999;
+    color:#555;
+    font-size: 93%;
+    font-weight: bold;
+    padding: 3px 6px;
 }
 
 .unfollow {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#AFDD4B', endColorstr='#74C923'); /*NEW*/
-	background: -webkit-gradient(linear, left top, left bottom, from(#AFDD4B), to(#74C923)); /*NEW*/
-	background: -moz-linear-gradient(top, #AFDD4B, #74C923); /*NEW*/
-    border:1px solid #8eac15;/*NEW*/
-    color:#43520a;/*NEW*/
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#AFDD4B', endColorstr='#74C923');
+	background: -webkit-gradient(linear, left top, left bottom, from(#AFDD4B), to(#74C923));
+	background: -moz-linear-gradient(top, #AFDD4B, #74C923);
+    border:1px solid #8eac15;
+    color:#43520a;
 }
 
 span.follow:hover,
 span.button:hover {
     background-color:#bbdc03;
-    background-image:none;
 }
 span.unfollow:hover {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F973BC', endColorstr='#E20780');
@@ -549,14 +549,14 @@ form .privacy .value {
     width: 59px;
 }
 
-/*NEW*/
+
 #new-discussion form .private .value {
     background-image:none;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E20780', endColorstr='#F973BC');
 	background: -webkit-gradient(linear, left top, left bottom, from(#E20780), to(#F973BC));
 	background: -moz-linear-gradient(top, #E20780, #F973BC);
 }
-/*NEW*/
+
 
 form .privacy .private-val, form .private .public-val {
     display:none;
@@ -1941,7 +1941,7 @@ form #clonedMessages {
     padding: 0 4px;
 }
 
-/*NEW*/
+
 #search .toggle,
 #detail .toggle {
     background-position:-197px -212px;
@@ -2111,7 +2111,7 @@ form #clonedMessages {
     border-width: 0 2px 2px;
 }
 
-#sidebar .drop-folders li.highlight {
+#sidebar li.highlight {
     background-color:#fff;
     border-color:#aaa;
     border-style:solid;
@@ -2290,10 +2290,6 @@ form #clonedMessages {
     float: left;
 }
 
-#sidebar .editlabel {
-    float: right;
-}
-
 .search-memo {
     border :none;
     float:left;
@@ -2302,39 +2298,153 @@ form #clonedMessages {
     color : #2C75E2;
     display : none;
 }
+
+.tag-tree {
+    display : none;
+}
+
+.tag-tree ul,
+.saved-search ul,
+.saved-search-select ul,
+.isChildrenOfSelect {
+    margin: 0 0 0 15px;
+    cursor : pointer;
+}
+
+.tag-tree ul li,
+.saved-search ul li,
+.saved-search-select ul li,
+.isChildrenOfSelect li {
+    width : 100%;
+    font-color : #000;
+}
+
+.tag-tree ul li.hasChildren,
+.saved-search ul li.hasChildren,
+.saved-search-select ul li.hasChildren,
+.isChildrenOfSelect li.hasChildren {
+    //background-position: -321px -128px;
+    color : #2C75E2;
+}
+
+.tag-tree ul li.hasChildren.opened,
+.saved-search ul li.hasChildren.opened,
+.saved-search-select ul li.hasChildren.opened,
+.isChildrenOfSelect li.opened {
+    //background-position: -299px -128px;
+    color : #FF0000;
+}
+
+#invited-list span,
+.tag-tree span {
+    float: right;
+    height: 15px;
+    vertical-align: middle;
+    width: 15px;
+    min-width: 0px;
+    padding: 0;
+    border : 0;
+    border-radius : 2px;
+}
+.tag-tree span.followed {
+    background-position: -307px -215px;
+}
+
+#invited-list span.follow,
+.tag-tree span.follow {
+    background-position: -260px -215px;
+}
+
+#invited-list span.followed:hover,
+.tag-tree span.followed:hover {
+    background-color: #dddddd;
+    background-position: -283px -215px;
+}
+
+#invited-list span.follow:hover,
+.tag-tree span.follow:hover {
+    background-position: -307px -215px;
+}
+
+#addtotreeinput {
+    display : none;
+}
+
+#addtotreeinput span {
+    float:none;
+    width:auto;
+    height:auto;
+}
+
+#addtotreeinput span .private-ico,
+#addtotreeinput span .public-ico {
+    width:15px;
+    height:15px;
+    margin:0px;
+    cursor:pointer;
+}
+
+#addtotreeinput.layer {
+    left:auto;
+    top: 220px;
+    width:245px;
+}
+
+#addtotreeinput span .follow,
+#addtotreeinput span .followed,
+#addtotreeinput span .close,
+#shareWithInput,
+#fileFilterTree {
+    display:none;
+}
+
+#addtotreeinput p {
+    margin : 0px;
+}
 .search-memo span {
     margin: -1px 5px 0px 5px;
 }
-.saved-search .close,
-.saved-search .editlabel {
-    float : right;
+
+.saved-search .editlabel,
+.tag-tree .addtotree {
+    float : none;
     color : #bbb;
     margin-right : 5px;
     cursor : pointer;
  }
 
  .saved-search .close {
-    display : none;
+    float : right;
  }
 
+ .tag-tree,
  .saved-search  {
     background-color:#fff;
-    border:1px solid #bbb;
+    border:0 1px 1px 1px solid #bbb;
     padding:4px 6px;
-    margin:16px;
 }
  .saved-search ul {
-    margin-left : 15px;
-    margin-top : 15px;
-    color : #2C75E2;
+    //margin-left : 15px;
+    //margin-top : 15px;
+    //color : #2C75E2;
 
  }
 
  .saved-search li {
-    margin-bottom : 5px;
-    cursor : pointer;
-    width :
+    //margin-bottom : 5px;
+    //cursor : pointer;
  }
+
+#invited-list {
+    background-color:#ddd;
+    border: 1px solid #000;
+}
+
+.railsMenu,
+.railsMenu li {
+    border : 0px;
+    float:left;
+}
 
  #search-memo-name {
     width: 100px;
@@ -2373,7 +2483,7 @@ form #clonedMessages {
     vertical-align: middle;
     width:10px;
 }
-
+/*
 .saved-search-select ul {
     background-color : #fff;
     border: 1px solid rgba(0, 0, 0, 0.196);
@@ -2398,7 +2508,7 @@ form #clonedMessages {
 
 .saved-search-select .close {
     display : none;
-}
+}*/
  /** Cloud view **/
 
  #feed.cloud_listing .photo,
@@ -2960,7 +3070,7 @@ form #clonedMessages {
 }
 
 /** LAYER */
-#layer {
+.layer {
     background-color:#fff;
     border:1px solid #ccc;
     -moz-border-radius:5px;
@@ -2975,10 +3085,9 @@ form #clonedMessages {
     top:300px;
     left:28%;
     width:480px;
-    z-index : 10001;
 }
 
-#layer .close  {
+.layer .close  {
     background-position: 0 -381px;
     border:1px solid #ccc;
     -moz-border-radius:4px;
@@ -2994,30 +3103,30 @@ form #clonedMessages {
     width: 12px;
 }
 
-#layer .caption {
+.layer .caption {
     color:#666;
     font-size: 93%;
 }
 
-#layer .caption small {
+.layer .caption small {
     color:#000;
     font-size:92%;
 }
 
-#layer .cloud_access {
+.layer .cloud_access {
     float:right;
     margin-right : 10px;
 }
 
-#layer .cloud_access a {
+.layer .cloud_access a {
     color : #2c75e2;
 }
-#layer input {
+.layer input {
     border-color: #999999;
     margin: 3px 0px;
 }
 
-#layer .new-bloc {
+.layer .new-bloc {
     padding:5px 0 0;
 }
 

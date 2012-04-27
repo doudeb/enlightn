@@ -1,11 +1,6 @@
-<?php
-$user_ent           = elgg_get_logged_in_user_entity();
-$labels             = get_labels ($user_ent);
-?>
-
 <div id="embedContent" style="display:none">
 	<form id="mediaUpload" action="<?php echo $vars['url']; ?>action/enlightn/upload" method="post" enctype="multipart/form-data">
-	<div id="layer">
+	<div id="layer" class="layer">
 	    <span class="close" id="closeUploader">&times;</span>
 	    <span class="caption">
             <?php echo elgg_echo('enlightn:uploadyourfile')?>
@@ -41,7 +36,7 @@ $labels             = get_labels ($user_ent);
                     ?>
                     <div class="saved-search-select">
                         <span class="ico"></span><span class="saved-search-label-apply"><?php echo elgg_echo("enlightn:applyfilter"); ?><span class="arrow"/></span><span id="selected_filter"></span></span>
-                        <?php echo elgg_view("enlightn/helper/saved_search_list", array('list'=>$labels))?>
+                        <span id="fileFilterTree"><p><?php echo elgg_view("enlightn/helper/saved_search_list", array('show_invite'=>false,'elm'=>'file_filter_select','navcallback'=>'selectFileFilter'))?></p></span>
                     </div>
                     <div class="edit-keyword" id="editkeyword"><?php echo elgg_echo("enlightn:editkeyword"); ?><span class="arrow"/></div>
                     <div class="tags">
@@ -94,19 +89,6 @@ $labels             = get_labels ($user_ent);
                         return false;
                     }
                 });
-        });
-
-        $(".saved-search-select li").click(function(){
-            elm = $(this)
-                    , destElm = $('#file_filter_id')
-                    , selectedElm = $('#selected_filter');
-            filter_id = elm.attr('data-guid')
-                    , name = elm.attr('data-name');
-            if (filter_id) {
-                destElm.val(filter_id);
-                selectedElm.html(name);
-                elm.parent().toggle();
-            }
         });
 
 	$('#editkeyword').click(function() {

@@ -43,15 +43,15 @@ Order By e.time_created desc";
 
 	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $unreaded_only = 0,$words, $from_users = '', $date_begin = false, $date_end =false, $subtype = '', $tags = array(),$offset = 0, $limit = 10) {
 		$key_cache = $this->generate_key_cache(get_defined_vars(), 'search');
-                $force 	= array();
+        $force 	= array();
 		$join	= array();
 		$where	= array();
-                $having = array();
+        $having = array();
 		$group	= array();
-                $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null)?elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null):1;
+        $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null)?elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null):1;
 
-                $where[]= "And ent.site_guid = " . $this->site_guid;
-                $order[] = "ent.time_updated Desc";
+        $where[]= "And ent.site_guid = " . $this->site_guid;
+        $order[] = "ent.time_updated Desc";
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1

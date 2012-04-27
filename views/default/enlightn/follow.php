@@ -1,7 +1,7 @@
 <?php
 $is_follow		= check_entity_relationship($vars['user_guid'], ENLIGHTN_FOLLOW, $vars['entity']->guid);
 $is_invited		= check_entity_relationship($vars['entity']->guid, ENLIGHTN_INVITED,$vars['user_guid']);
-$url 			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?discussion_guid={$vars['entity']->guid}");
+$url 			= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?guid={$vars['entity']->guid}");
 ?>
 <script language="javascript">
 	$(document).ready(function(){
