@@ -719,7 +719,8 @@ $(document).ready(function(){
             elm.html('');
         $.get('<?php echo "{$vars['url']}mod/enlightn/ajax/get_tag_tree.php";?>', {parentId : parentId, mode:mode}, function(tagTree) {
             $.each(tagTree,function(key,tag) {
-                var action =  '<span class="ico' + (!tag.isFollowed?' follow':' followed') + '" />';
+                var action =  '<span class="ico' + (!tag.isFollowed?' follow':' followed') + '" />'
+                    folder = '<span class="ico folder" />';
                 if (tag.owner_guid == elgg.session.user.guid
                     || <?php echo elgg_is_admin_logged_in()?'true':'false'?>
                     || mode === '<?php echo ENLIGHTN_INVITED?>') {
@@ -732,8 +733,8 @@ $(document).ready(function(){
                     ,'data-parent-guid' : tag.parent_guid
                     ,'data-params' : tag.params
                     ,'data-hasChildren' : tag.hasChildren
-                    ,'class' : 'dropable' + (tag.hasChildren?' hasChildren':'')
-                    , html: tag.title + action
+                    ,'class' : 'dropable' + (tag.hasChildren?' hasChildren':'') + (tag.params.length > 25?' hasSearch':'')
+                    , html: folder + '<span class="title">' + tag.title + '</span>' + action
                 })
                     .appendTo(elm)
                     .bind('click',elmBind)
@@ -766,7 +767,7 @@ $(document).ready(function(){
                 var elm = $(this)
                     ,guid =parseInt(elm.parent().attr('data-guid'))
                     ,url = '/action/enlightn/' + (mode==='invited'?'follow':'cloud/removeSearch') + '?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token +'&guid=' + guid + (mode==='invited'?'&ignore=1':'');
-                if(confirm("<?php echo elgg_echo('enlightn:prompt:cloudremovesavedsearch')?>")) {
+                if(confirm("<?php echo elgg_echo('enlightn:prompt:disablefolder')?>")) {
                     $.post(url, {guid: guid}, function() {
                         loadTagTree("#invited-list",'invited',false,tagTreeNav);
                         loadTagTree("#tag-tree-list",'suggest',false,tagTreeNav);
@@ -783,26 +784,24 @@ $(document).ready(function(){
             return false;
         }
         elm = $(this);
+        //elm.addClass('opened');
         params = eval('(' + elm.attr('data-params') + ')')
             ,filter_id = elm.attr('data-guid')
             ,title = elm.attr('data-name');
         $.get('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}mod/enlightn/ajax/get_label_parent.php");?>', {guid: filter_id}, function(parents_label) {
-            var railsMenu = $('<ul />',{'class':'railsMenu'});
-            /*$('<li>',{html : '/home'})
-                .bind('click',saveSearch)
-                .appendTo(railsMenu);*/
+            var railsMenu = $('#railsMenu');
+                railsMenu.html('');
             $.each(parents_label, function (key,label) {
                 $('<li>',{
                     'data-guid' : label["data-guid"]
                     ,'data-name' : label["data-name"]
                     ,'data-params' : label["data-params"]
-                    , html : '/' + label["data-name"]
+                    , html :  label["data-name"]
                 })
                     .bind('click',saveSearch)
                     .appendTo(railsMenu);
             });
-            $(".search-memo").html(railsMenu).css('display','block');
-            //$(".search-memo").parent().addClass('starred');
+            //$(".search-memo").html(railsMenu).css('display','block');
             $('#see_more_discussion_list_offset').val(0);
             token_elm  = $('input[name="q"]');
             token_elm.tokenInput("clear");

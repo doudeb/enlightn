@@ -12,7 +12,10 @@
 		<input type="hidden" name="see_more_discussion_list_offset" id="see_more_discussion_list_offset" value="0">
 		<input type="hidden" name="list_limit" id="list_limit" value="20">
 		<div id="feed" class="cloud_listing">
-            <div class="search-memo"></div>
+            <div class="search-memo">
+                <span class="ico railsMenu home"></span>
+                <ul class="railsMenu" id="railsMenu"></ul>
+            </div>
             <div class="actions">
                 <ul class="right">
                     <li><a href="" id="cloud_next"><?php echo elgg_echo("enlightn:next")?></a></li>
@@ -39,7 +42,7 @@ $(document).ready(function(){
         return false;
     });
 
-        $('#cloud_full').click(function(){
+    $('#cloud_full').click(function(){
         $('#feed').toggleClass('cloud_listing');
         $('#list_limit').val('10');
         $(this).toggleClass('selected');
@@ -58,6 +61,13 @@ $(document).ready(function(){
 	$("#cloud_next").click(function(){
 		$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())+parseInt($('#list_limit').val()));
   		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>');
+	  	return false;
+	});
+ 	$("#.railsMenu.home").click(function(){
+        var railsMenu = $('#railsMenu');
+        railsMenu.html('');
+		$('#see_more_discussion_list_offset').val(0);
+  		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?offset=0&limit=' + parseInt($('#list_limit').val()) +'context=<?php echo elgg_get_context()?>');
 	  	return false;
 	});
         $(".search-memo_old").click(function(){

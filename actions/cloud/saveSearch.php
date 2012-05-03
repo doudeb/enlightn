@@ -15,6 +15,10 @@ if(strstr($search_name, 'tag_')) {
 
 }
 
+if (empty($search_name)) {
+    exit(json_encode(false));
+}
+
 $saved_search                       = new ElggObject();
 $saved_search->subtype              = ENLIGHTN_FILTER;
 $saved_search->owner_guid           = $user_guid;

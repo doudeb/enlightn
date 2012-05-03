@@ -1,5 +1,5 @@
 /*@charset "utf-8";*/
-/* CSS Document */
+/* CSS Document <style>*/
 
 * {
 	font-family: Arial, Helvetica, sans-serif;
@@ -132,9 +132,6 @@ input[type=submit],
 }
 
 .follow {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ddd');
-	background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ddd));
-	background: -moz-linear-gradient(top, #f5f5f5, #ddd);
     border-color:#999;
     color:#555;
     font-size: 93%;
@@ -2112,7 +2109,7 @@ form #clonedMessages {
 }
 
 #sidebar li.highlight {
-    background-color:#fff;
+    background-color:#e3f3a2;
     border-color:#aaa;
     border-style:solid;
     border-width: 1px 2px;
@@ -2291,12 +2288,9 @@ form #clonedMessages {
 }
 
 .search-memo {
-    border :none;
     float:left;
-    margin: 2px 0px 0px 5px;
     cursor : pointer;
-    color : #2C75E2;
-    display : none;
+
 }
 
 .tag-tree {
@@ -2306,7 +2300,7 @@ form #clonedMessages {
 .tag-tree ul,
 .saved-search ul,
 .saved-search-select ul,
-.isChildrenOfSelect {
+.isChildrenOfSelect ul {
     margin: 0 0 0 15px;
     cursor : pointer;
 }
@@ -2314,29 +2308,59 @@ form #clonedMessages {
 .tag-tree ul li,
 .saved-search ul li,
 .saved-search-select ul li,
-.isChildrenOfSelect li {
+.isChildrenOfSelect ul li {
     width : 100%;
     font-color : #000;
+    padding:5px 0px;
+    height: 16px;
 }
 
-.tag-tree ul li.hasChildren,
-.saved-search ul li.hasChildren,
-.saved-search-select ul li.hasChildren,
-.isChildrenOfSelect li.hasChildren {
-    //background-position: -321px -128px;
-    color : #2C75E2;
+.tag-tree ul li:hover,
+.saved-search ul li:hover,
+.saved-search-select ul li:hover,
+.isChildrenOfSelect li:hover {
+    background-color: #EEEEEE;
+    border: 1px 0px 0px 1px dotted #EEEEEE;
 }
 
-.tag-tree ul li.hasChildren.opened,
-.saved-search ul li.hasChildren.opened,
-.saved-search-select ul li.hasChildren.opened,
-.isChildrenOfSelect li.opened {
-    //background-position: -299px -128px;
-    color : #FF0000;
+span.folder_add,
+.railsMenu.home {
+    height: 16px;
+    padding-left: 20px;
+    width : 18px;
+    background-position: -415px -215px;
 }
 
-#invited-list span,
-.tag-tree span {
+li span.folder,
+li.hasChildren span.folder {
+    height: 16px;
+    background-position: -328px -215px;
+    padding-left: 17px;
+}
+
+li.opened span.folder,
+li.hasChildren.opened span.folder {
+    background-position: -350px -215px;
+}
+
+li.hasSearch span.folder {
+    background-position: -394px -215px;
+}
+
+#fileFilterTree span.title,
+.title {
+    height: 16px;
+    margin-left: 3px;
+    border : 0px;
+    padding : 0px;
+}
+
+#invited-list span.close,
+.tag-tree span.close,
+#invited-list span.follow,
+.tag-tree span.follow,
+#invited-list span.followed,
+.tag-tree span.followed {
     float: right;
     height: 15px;
     vertical-align: middle;
@@ -2394,9 +2418,11 @@ form #clonedMessages {
 #addtotreeinput span .followed,
 #addtotreeinput span .close,
 #shareWithInput,
-#fileFilterTree {
+#fileFilterTree,
+#fileFilterTree span.close {
     display:none;
 }
+
 
 #addtotreeinput p {
     margin : 0px;
@@ -2410,18 +2436,21 @@ form #clonedMessages {
     float : none;
     color : #bbb;
     margin-right : 5px;
+    margin-left : 5px;
     cursor : pointer;
+    color : #2C75E2;
  }
 
  .saved-search .close {
     float : right;
+    color: #BBBBBB;
  }
 
  .tag-tree,
  .saved-search  {
     background-color:#fff;
     border:0 1px 1px 1px solid #bbb;
-    padding:4px 6px;
+    padding:6px 6px;
 }
  .saved-search ul {
     //margin-left : 15px;
@@ -2437,13 +2466,34 @@ form #clonedMessages {
 
 #invited-list {
     background-color:#ddd;
-    border: 1px solid #000;
+    margin-top: 5px;
 }
 
-.railsMenu,
+.railsMenu {
+    display : inline;
+}
+.railsMenu.home,
 .railsMenu li {
-    border : 0px;
-    float:left;
+    display : inline;
+    background-color:#e5e5e5;
+    border:1px solid #bbb;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+    -khtml-border-radius:3px;
+    border-radius:3px;
+    -moz-box-shadow:2px 2px 2px #ccc;
+    -webkit-box-shadow:2px 2px 2px #ccc;
+    box-shadow:2px 2px 2px #ccc;
+    font-size:90%;
+    padding:3px;
+    margin:1px;
+    text-align : left;
+}
+
+.railsMenu.home {
+    background-position: -434px -213px;
+    width : 20px;
+    padding-left: 20px;
 }
 
  #search-memo-name {

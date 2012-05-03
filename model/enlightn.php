@@ -346,7 +346,7 @@ Limit 150)";
         if($filter_id) {
             #$force[] = "Force Index (idx_annotations_time)";
             #$join[] = "Left Join entity_relationships As rel_filter On ent.guid = rel_filter.guid_one And rel_filter.guid_two = $filter_id And rel_filter.relationship = '". ENLIGHTN_FILTER_ATTACHED . "'";
-            $where[] = "Or Exists(Select rel_filter.id From entity_relationships As rel_filter Where ent.guid = rel_filter.guid_one And rel_filter.guid_two = $filter_id And rel_filter.relationship = '". ENLIGHTN_FILTER_ATTACHED . "')";
+            $where[] = "Or Exists(Select rel_filter.id From entity_relationships As rel_filter Where ent.guid = rel_filter.guid_one And rel_filter.guid_two = $filter_id And rel_filter.relationship = '". ENLIGHTN_FILTER_ATTACHED . "' And ent.enabled = 'yes')";
         }
         $join	= implode("\n ",$join);
         $where	= implode("\n ",$where);

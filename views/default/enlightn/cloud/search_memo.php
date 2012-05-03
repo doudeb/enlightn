@@ -17,11 +17,11 @@ $current                = 'saved-search';
     </ul>
 </div>
 <div class="saved-search" id="tabsaved-search">
-    <span class="editlabel"><?php echo elgg_echo("enlightn:addnewfolder")?></span>
+    <span class="editlabel"><span class="ico folder_add"></span><?php echo elgg_echo("enlightn:addnewfolder")?></span>
     <?php echo elgg_view("enlightn/helper/saved_search_list", array('show_invite'=>true,'elm'=>'saved-search-list','navcallback'=>'savedTreeNav'))?>
 </div>
 <div class="tag-tree" id="tabtag-tree">
-    <?php if (elgg_is_admin_logged_in()) { ?><span class="addtotree"><?php echo elgg_echo("enlightn:addnewfolder")?></span><?php }?>
+    <?php if (elgg_is_admin_logged_in()) { ?><span class="addtotree"><span class="ico folder_add"></span><?php echo elgg_echo("enlightn:addnewfolder")?></span><?php }?>
     <?php echo elgg_view("enlightn/helper/suggested_search")?>
 </div>
 <div id="addtotreeinput" class="layer">
@@ -33,6 +33,9 @@ $current                = 'saved-search';
                                                                     'id' => 'tag-tree-name',
                                                                     'unique_id' => 'tag-tree-name'
                                                                     ));?></p>
+        <?php if (elgg_is_admin_logged_in()) { ?>
+        <p><span class="ico private-ico" title="<?php echo elgg_echo("enlightn:privatepublic"); ?>"></span><?php echo elgg_echo("enlightn:selectprivacy")?></p>
+        <?php }?>
         <p><input type="checkbox" id="shareWith"><?php echo elgg_echo("enlightn:sharewith")?></p>
         <p id="shareWithInput"><?php echo elgg_view("enlightn/helper/adduser",array(
                                                                     'placeholder' => elgg_echo('enlightn:fromuser'),
@@ -42,9 +45,6 @@ $current                = 'saved-search';
                                                                     )); ?></p>
         <p><input type="checkbox" id="isChildrenOf"><?php echo elgg_echo("enlightn:ischildrenofanothertag")?></p>
         <p><ul id="isChildrenOfSelect" class="isChildrenOfSelect"></ul><span id="selectedParent"></span></p>
-        <?php if (elgg_is_admin_logged_in()) { ?>
-        <p><span class="ico private-ico" title="<?php echo elgg_echo("enlightn:privatepublic"); ?>"></span><?php echo elgg_echo("enlightn:selectprivacy")?></p>
-        <?php }?>
         <p>
             <button type="reset" class="submit" id='cancelnewlabel'><?php echo elgg_echo("enlightn:buttoncancel"); ?></button>
             <button type="submit" class="submit" id="submitnewlabel"><?php echo elgg_echo("enlightn:buttonpost"); ?></button>
@@ -74,14 +74,17 @@ $current                = 'saved-search';
                 if(e.keyCode == 13) {
                     var newSearchName = $('#search-memo-name').val(),
                         isPrivate = $('#new-label_inputs .ico').hasClass('private-ico');
-                        /* APPEL AJAX DE CREATION */
-                        $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/saveSearch");?>', {searchName: newSearchName, isPrivate: isPrivate, isLabel:true}, function(result) {
-                        //remove class current
-                        if(result)  {
-                            listElm = $('#saved-search-list');
-                            listElm.append("<li data-params='" + JSON.stringify(result) + "'>" + $('#search-memo-name').val() + "<span class='ico " + (isPrivate?'private-ico':'public-ico') + "' title='<?php echo elgg_echo("enlightn:privatepublic"); ?>'/><span class='close' style='display:block'>&times;</span></li>");
+                        if (newSearchName.length > 2) {
+                            /* APPEL AJAX DE CREATION */
+                            $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/saveSearch");?>', {searchName: newSearchName, isPrivate: isPrivate, isLabel:true}, function(result) {
+                                //remove class current
+                                if(result)  {
+                                    listElm = $('#saved-search-list');
+                                    listElm.append("<li data-params='" + JSON.stringify(result) + "'>" + $('#search-memo-name').val() + "<span class='ico " + (isPrivate?'private-ico':'public-ico') + "' title='<?php echo elgg_echo("enlightn:privatepublic"); ?>'/><span class='close' style='display:block'>&times;</span></li>");
+
+                                }
+                            },'json');
                         }
-                    },'json');
                 }
             });
         } else {
@@ -143,15 +146,20 @@ $current                = 'saved-search';
                 , parentId = $('#isChildrenOf').val()
                 , invite_users = $('#invite_users').val()
                 , isPrivate = $('#addtotreeinput .ico').hasClass('private-ico')?true:false;
-                $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/saveSearch");?>', {searchName: newSearchName, isPrivate: isPrivate, isLabel:true,parentId:parentId,invite_users:invite_users}, function(result) {
-                    //remove class current
-                    if(result)  {
-                        $("#tag-tree-list").html('');
-                        loadTagTree("#tag-tree-list",'suggest',false,tagTreeNav);
-                        $("#saved-search-list").html('');
-                        loadTagTree("#saved-search-list",'followed',false,savedTreeNav);
-                        $("#addtotreeinput").toggle();
-                    }
-                },'json');
+                if (newSearchName.length <= 2) return false;
+                    $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/saveSearch");?>', {searchName: newSearchName, isPrivate: isPrivate, isLabel:true,parentId:parentId,invite_users:invite_users}, function(result) {
+                        //remove class current
+                        if(result)  {
+                            $("#tag-tree-list").html('');
+                            loadTagTree("#tag-tree-list",'suggest',false,tagTreeNav);
+                            $("#saved-search-list").html('');
+                            loadTagTree("#saved-search-list",'followed',false,savedTreeNav);
+                            $("#addtotreeinput").toggle();
+                            newSearchName.val('');
+                            parentId.val('');
+                            $('#isChildrenOfSelect').html('');
+                            $('#invite_users').val('');
+                        }
+                    },'json');
     });
 </script>
