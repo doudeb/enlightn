@@ -19,7 +19,12 @@ if ($labeltree) {
         $parent_ent = get_entity($label->container_guid);
         $is_followed_parent = check_entity_relationship($user_ent->guid, ENLIGHTN_FOLLOW, $label->container_guid);
         if (($parent_ent instanceof ElggObject && $parent_guid) //asking for childs
-             || (!$parent_guid && ($label->container_guid == $CONFIG->site_guid || (!$is_followed_parent && $mode != 'suggest')))) { //child not following parents
+             || (!$parent_guid && ($label->container_guid == $CONFIG->site_guid
+                                    || (!$is_followed_parent && $mode != 'suggest')
+                                    || ($mode = 'invited')
+                                    )
+                 )
+            ) { //child not following parents
             $params = $label->getMetadata(ENLIGHTN_FILTER_CRITERIA);
             $params = unserialize($params);
             $params = json_encode($params);
