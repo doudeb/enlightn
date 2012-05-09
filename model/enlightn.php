@@ -373,8 +373,9 @@ $where
 Order By ent.time_created Desc
 Limit $offset,$limit";
             //echo "<pre>" .$query;die();
-            $query_count           = str_replace(array('Distinct ent.*',"Limit $offset,$limit"), array('Count(*) total',''), $query);
+            $query_count           = 'Select Count(*) total From (' . str_replace("Limit $offset,$limit", '', $query) . ') total';
             $results               = $this->get_data($query, $key_cache, 'entity_row_to_elggstar');
+            //echo "<pre>" .$query_count;die();
             $results['count']      = $this->get_data($query_count, $key_cache, 'entity_row_to_elggstar');
             return  $results;
 	}

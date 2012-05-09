@@ -726,6 +726,7 @@ $(document).ready(function(){
                     || mode === '<?php echo ENLIGHTN_INVITED?>') {
                     action = action + '<span class="close">&times</span>';
                 }
+                action = action + '<span class="add"><span class="ico"></span></span>';
                 $('<li>', {
                     'id' : tag.guid
                     ,'data-guid' : tag.guid
@@ -733,18 +734,24 @@ $(document).ready(function(){
                     ,'data-parent-guid' : tag.parent_guid
                     ,'data-params' : tag.params
                     ,'data-hasChildren' : tag.hasChildren
-                    ,'class' : 'dropable' + (tag.hasChildren?' hasChildren':'') + (tag.params.length > 25?' hasSearch':'')
+                    ,'class' : 'dropable' + (tag.hasChildren?' hasChildren':'') + (tag.params.length > 25?' hasSearch':'') + (tag.isShared?' isShared':'')
                     , html: folder + '<span class="title">' + tag.title + '</span>' + action
                 })
                     .appendTo(elm)
                     .bind('click',elmBind)
                     .bind('click',saveSearch);
+                if(mode==='invited') {$('#tabsaved-search .inviteHeadLine').css('display','block')};
             });
             follow = elm.find('span.follow');
             follow.click(function () {
                 var elm = $(this)
                     ,guid =parseInt(elm.parent().attr('data-guid'))
                     ,url = '/action/enlightn/follow?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token +'&guid=' + guid;
+                    if (elm.parent().attr('data-hasChildren') === 'true') {
+                        if(confirm("<?php echo elgg_echo('enlightn:prompt:includechildrenent')?>")) {
+                            url = url + '&cascade=true';
+                        }
+                    }
                     loadContent("#loader",url);
                     elm.toggleClass("follow followed");
                     loadTagTree("#invited-list",'invited',false,tagTreeNav);
@@ -756,6 +763,11 @@ $(document).ready(function(){
                 var elm = $(this)
                     ,guid =parseInt(elm.parent().attr('data-guid'))
                     ,url = '/action/enlightn/follow?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token +'&guid=' + guid;
+                    if (elm.parent().attr('data-hasChildren') === 'true') {
+                        if(confirm("<?php echo elgg_echo('enlightn:prompt:includechildrenent')?>")) {
+                            url = url + '&cascade=true';
+                        }
+                    }
                     loadContent("#loader",url);
                     elm.toggleClass("follow followed");
                     loadTagTree("#invited-list",'invited',false,tagTreeNav);
@@ -776,6 +788,54 @@ $(document).ready(function(){
                     },'json');
                 }
                 return false;
+            });
+            invite = elm.find('span.add');
+            invite.click(function () {
+                var elm = $(this)
+                    ,guid = parseInt(elm.parent().attr('data-guid'))
+                    ,url = '/action/enlightn/' + (mode==='invited'?'follow':'cloud/removeSearch') + '?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token +'&guid=' + guid + (mode==='invited'?'&ignore=1':'')
+                    ,html = '<div class="layer inviteToLabel">\n\
+                                <span class="close">&times;</span>\n\
+                                <span class="caption">\n\
+                                    <input type="text" id="userInviteToLabel" />\n\
+                                </span>\n\
+                                <input type="submit" class="submit_button" value="<?php echo elgg_echo("send"); ?>"/>\n\
+                            </div>';
+                    userInput = elm.parent().find('.layer');
+                    if (userInput.length > 0) {
+                        userInput.remove();
+                        return false;
+                    }
+                    $(html).insertAfter(elm);
+                    userInput = elm.parent().find('.layer');
+                    userInput
+                        .css('width','245px')
+                        .css('top','220px')
+                        .css('left','auto')
+                        .css('display','block');
+                    $("#userInviteToLabel").tokenInput("<?php echo $vars['url']; ?>mod/enlightn/ajax/members.php"
+                        ,{
+                            hintText : ""
+                            , searchingText : ""
+                            , preventDuplicates: true
+                            , theme: 'facebook'
+                            , placeholder: '<?php echo $vars['placeholder']; ?>'
+                            , resultsFormatter: function(item){
+                                return "<li>" +  item.pic + "<div class='user_select'>" + item.name + "</div></li>";
+                            }
+                        }
+                    );
+                    closeBtn = userInput.find('.close');
+                    closeBtn.click(function () {$(this).parent().remove();});
+                    postBtn = userInput.find('.submit_button');
+                    postBtn.click(function () {
+                        var elm = $(this)
+                            , url = '/action/enlightn/invite?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token;
+                        $.post(url,{guid:guid,invite:$('#userInviteToLabel').val()}, function (data) {
+                                elm.parent().remove();
+                        });
+                    });
+                    return false;
             });
         },'json');
     }

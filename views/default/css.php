@@ -2315,6 +2315,7 @@ form #clonedMessages {
     height: 16px;
 }
 
+
 .tag-tree ul li:hover,
 .saved-search ul li:hover,
 .saved-search-select ul li:hover,
@@ -2347,6 +2348,10 @@ li.hasSearch span.folder {
     background-position: -394px -215px;
 }
 
+li.isShared span.folder {
+    background-position: -372px -215px;
+}
+
 #fileFilterTree span.title,
 .title {
     height: 16px;
@@ -2360,7 +2365,8 @@ li.hasSearch span.folder {
 #invited-list span.follow,
 .tag-tree span.follow,
 #invited-list span.followed,
-.tag-tree span.followed {
+.tag-tree span.followed,
+#saved-search-list span.followed {
     float: right;
     height: 15px;
     vertical-align: middle;
@@ -2370,7 +2376,8 @@ li.hasSearch span.folder {
     border : 0;
     border-radius : 2px;
 }
-.tag-tree span.followed {
+.tag-tree span.followed,
+#saved-search-list span.followed {
     background-position: -307px -215px;
 }
 
@@ -2380,6 +2387,7 @@ li.hasSearch span.folder {
 }
 
 #invited-list span.followed:hover,
+#saved-search-list span.followed:hover,
 .tag-tree span.followed:hover {
     background-color: #dddddd;
     background-position: -283px -215px;
@@ -2414,9 +2422,11 @@ li.hasSearch span.folder {
     width:245px;
 }
 
-#addtotreeinput span .follow,
-#addtotreeinput span .followed,
-#addtotreeinput span .close,
+#addtotreeinput span.follow,
+#addtotreeinput span.followed,
+#addtotreeinput span.close,
+#saved-search-list span.follow,
+#saved-search-list span.followed,
 #shareWithInput,
 #fileFilterTree,
 #fileFilterTree span.close {
@@ -2466,9 +2476,15 @@ li.hasSearch span.folder {
 
 #invited-list {
     background-color:#ddd;
-    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
+#tabsaved-search p.inviteHeadLine {
+    border: 1px solid #e5e5e5;
+    margin : 10px 0 0 15px;
+    padding : 3px;
+    display : none;
+}
 .railsMenu {
     display : inline;
 }
@@ -2533,6 +2549,31 @@ li.hasSearch span.folder {
     vertical-align: middle;
     width:10px;
 }
+
+.inviteToLabel ul,
+.inviteToLabel ul li,
+.inviteToLabel p {
+    padding: 0;
+    height:auto;
+    width:auto;
+    margin:0;
+}
+
+#invited-list .add,
+#tag-tree-list .add,
+#saved-search-list .add {
+    display:none;
+}
+
+#saved-search-list li:hover .add,
+#saved-search-list li:hover .followed {
+    display:inline-block;
+}
+
+#invite_button {
+    #float : right;
+}
+
 /*
 .saved-search-select ul {
     background-color : #fff;
@@ -3569,6 +3610,10 @@ RTE EDITOR
 	color:#666666;
 	position: relative;
 	/* top: 2px; - only needed if selected tab needs to sit over a border */
+}
+
+#embedContent .layer {
+    z-index:7001;
 }
 
 #mediaUpload,

@@ -868,30 +868,40 @@ function create_enlightn_discussion ($user_guid, $access_id,$message, $title,$ta
     return $return;
 }
 
-function add_folowers ($userto,$enlightndiscussion) {
+function add_folowers ($userto,$ent) {
     global $enlightn,$CONFIG;
     $user = elgg_get_logged_in_user_entity();
+    $subtype_txt = $ent->getSubtype();
     foreach ($userto as $key => $usertoid) {
         // Remove cache for private access, need to be deployed on user side
-        if ($enlightndiscussion->access_id == ACCESS_PRIVATE) {
+        if ($ent->access_id == ACCESS_PRIVATE) {
             $enlightn->flush_cache(array('user_guid' => $usertoid),'unreaded');
             $enlightn->flush_cache(array('user_guid' => $usertoid,'access_level' => ENLIGHTN_ACCESS_PR),'search');
             $enlightn->flush_cache(array('user_guid' => $usertoid,'access_level' => ENLIGHTN_ACCESS_IN),'search');
         }
+        switch ($subtype_txt) {
+            case ENLIGHTN_FILTER:
+                $title_tmpl = elgg_echo('enlightn:invite:subject',$usertoid->language);
+                $subject_tmpl = elgg_echo("enlightn:invite:sharefolder:body",$usertoid->language);
+                $url = "{$CONFIG->url}enlightn/cloud/";
+                break;
+            case ENLIGHTN_DISCUSSION:
+            default:
+                $title_tmpl = elgg_echo('enlightn:invite:subject',$usertoid->language);
+                $subject_tmpl = elgg_echo('enlightn:invite:body',$usertoid->language);
+                $url = "{$CONFIG->url}enlightn/discuss/" . $ent->guid;
+                break;
+        }
         $usertoid = get_entity((int)$usertoid);
-        if ($usertoid->guid && $usertoid->guid != $enlightndiscussion->owner_guid) {
-            /*if (!$usertoid->isFriend()) {
-                add_entity_relationship($_SESSION['user']->guid, 'friend', $usertoid->guid);
-            }*/
-            if(add_entity_relationship($enlightndiscussion->guid, ENLIGHTN_INVITED, $usertoid->guid)) {
+        if ($usertoid->guid && $usertoid->guid != $ent->owner_guid) {
+            if(add_entity_relationship($ent->guid, ENLIGHTN_INVITED, $usertoid->guid)) {
                 // Add membership requested
-                add_entity_relationship($usertoid->guid, 'membership_request', $enlightndiscussion->guid);
+                add_entity_relationship($usertoid->guid, 'membership_request', $ent->guid);
                 // Send email
-                $url = "{$CONFIG->url}enlightn/discuss/" . $enlightndiscussion->guid;
                 if ($usertoid->{"notification:method:".NOTIFICATION_EMAIL_INVITE} != 0 || $usertoid->{"notification:method:".NOTIFICATION_EMAIL_INVITE} === null) {
-                    notify_user($usertoid->getGUID(), $enlightndiscussion->owner_guid,
-                            sprintf(elgg_echo('enlightn:invite:subject',$usertoid->language), $enlightndiscussion->title),
-                            sprintf(elgg_echo('enlightn:invite:body',$usertoid->language), $usertoid->name, $user->name, $enlightndiscussion->title, $url),
+                    notify_user($usertoid->getGUID(), $ent->owner_guid,
+                            sprintf($title_tmpl, $ent->title),
+                            sprintf($subject_tmpl, $usertoid->name, $user->name, $ent->title, $url),
                             NULL);
                 }
 
@@ -1436,12 +1446,17 @@ if ( ! function_exists('glob_recursive'))
 
 
  function label_container_check ($hook, $type, $returnvalue, $params) {
+     $return = false;
      if ($type === 'object') {
          if ($params['subtype'] === ENLIGHTN_FILTER) {
-             return true;
+             $return = true;
+         } else {
+             elgg_unregister_plugin_hook_handler('container_permissions_check', 'object', 'label_container_check');
+             $return = can_write_to_container($params['user']->guid,$params['container']->guid,$type,$params['subtype']);
+             elgg_register_plugin_hook_handler('container_permissions_check', 'object', 'label_container_check');
          }
      }
-     return false;
+     return $return;
  }
 
  function get_label_parents($label_ent) {
@@ -1463,4 +1478,18 @@ if ( ! function_exists('glob_recursive'))
         $label_ent = get_entity ($label_ent->container_guid);
      }
      return array_reverse($label_parents);
+ }
+
+  function get_label_childrens($label_ent) {
+     if (!$label_ent instanceof ElggObject) return false;
+     $site_guid = elgg_get_config('site_guid');
+     $user_guid = elgg_get_logged_in_user_guid();
+     $label_children[] = $label_ent->guid;
+     $has_children = get_labels('suggest',$label_ent->guid);
+     if (is_array($has_children)) {
+         foreach ($has_children as $key => $label_ent) {
+             $label_children = array_merge($label_children, get_label_childrens($label_ent));
+         }
+     }
+     return $label_children;
  }

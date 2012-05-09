@@ -26,7 +26,17 @@ if ($labeltree) {
             $children_ent = get_labels($mode,$label->guid);
             $container_guid = $label->container_guid;
             $is_followed = check_entity_relationship($user_ent->guid, ENLIGHTN_FOLLOW, $label->guid);
-            $json_return[$key] = array('guid'=>$label->guid,'title'=>$label->title,'owner_guid'=>$label->owner_guid,'parent_guid'=>$container_guid,'parent_guid'=>$container_guid,'hasChildren'=>count($children_ent)>0,'isFollowed'=>$is_followed,'params'=>$params);
+            $is_followed = isset($is_followed->id);
+            $is_shared = get_entity_relationships($label->guid,true);
+            $is_shared = $label->access_id==ENLIGHTN_ACCESS_PUBLIC;
+            $json_return[$key] = array('guid'=>$label->guid
+                                        ,'title'=>$label->title
+                                        ,'owner_guid'=>$label->owner_guid
+                                        ,'parent_guid'=>$container_guid
+                                        ,'hasChildren'=>count($children_ent)>0
+                                        ,'isFollowed'=>$is_followed
+                                        ,'isShared'=>$is_shared
+                                        ,'params'=>$params);
         }
     }
 }

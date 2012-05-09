@@ -66,6 +66,7 @@ $(document).ready(function(){
  	$("#.railsMenu.home").click(function(){
         var railsMenu = $('#railsMenu');
         railsMenu.html('');
+        $('#search').find('input, select, textarea, :hidden').not(':button, :submit, :reset').val('').removeAttr('checked').removeAttr('selected');
 		$('#see_more_discussion_list_offset').val(0);
   		loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?offset=0&limit=' + parseInt($('#list_limit').val()) +'context=<?php echo elgg_get_context()?>');
 	  	return false;

@@ -93,6 +93,16 @@
             ,'enlightn:edit' => 'Edit'
             ,'enlightn:close' => 'Close'
             ,'enlightn:enterlabelname' => 'Label name'
+            ,'enlightn:saved-search' => 'Mes folders'
+            ,'enlightn:tag-tree' => 'Suggestions'
+            ,'enlightn:addnewfolder' => 'New folder'
+            ,'enlightn:tagtreeheadline' => 'Folder label'
+            ,'enlightn:sharewith' => ' Share with:'
+            ,'enlightn:ischildrenofanothertag' => ' Parent folder:'
+            ,'enlightn:selectprivacy' => ' Public / Private'
+            ,'enlightn:prompt:disablefolder' => 'Do you really want to remove this folder?'
+            ,'enlightn:prompt:includechildrenent' => 'Include sub directory?'
+            ,'enlightn:folderinvitelist' => 'Resquests'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Read'
