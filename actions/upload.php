@@ -90,7 +90,7 @@
 		$file->setFilename($prefix.$filestorename);
 		$file->setMimeType($_FILES['upload']['type']);
 		$file->originalfilename = $_FILES['upload']['name'];
-                $file->description = $file->originalfilename;
+        $file->description = $file->originalfilename;
 		$file->simpletype = file_get_simple_type($_FILES['upload']['type']);
 		if (!in_array($file->simpletype,(array(ENLIGHTN_LINK,ENLIGHTN_MEDIA,ENLIGHTN_IMAGE,ENLIGHTN_DOCUMENT)))) {
 			$file->simpletype = ENLIGHTN_DOCUMENT;

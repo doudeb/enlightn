@@ -322,7 +322,11 @@ Team Enlightn'
 %s has invited to follow the discussion
 <p><strong>"%s"</strong></p>
 <p><a href="%s"><span class="tag">View discussion</span></a></p>'
-
+            //Invite folder
+			,"enlightn:invite:sharefolder:body" => 'Hi %s,
+%s has invited to follow this folder
+<p><strong>"%s"</strong></p>
+<p><a href="%s"><span class="tag">View your Cloud</span></a></p>'
 	);
 	add_translation("en",$english);
 ?>

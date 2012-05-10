@@ -322,7 +322,7 @@ L\'équipe Enlightn'
 
 %s vous invite à rejoindre le dossier <strong>"%s".</strong>
 
-<p><a href="%s"><span class="tag">Accéder Cloud</span></a></p>
+<p><a href="%s"><span class="tag">Accéder au Cloud</span></a></p>
 <p>A tout de suite sur ' . $CONFIG->sitename . '</p>'
 );
 	add_translation("fr",$french);

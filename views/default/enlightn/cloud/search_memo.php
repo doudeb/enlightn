@@ -26,7 +26,7 @@ $current                = 'saved-search';
 </div>
 <div id="addtotreeinput" class="layer">
     <span class="caption">
-        <span><?php echo elgg_echo("enlightn:tagtreeheadline")?></span>
+        <p><?php echo elgg_echo("enlightn:tagtreeheadline")?></p>
         <p> <?php echo elgg_view("enlightn/helper/addtags",array(
                                                                     'placeholder' => elgg_echo('enlightn:enterlabelname'),
                                                                     'name' => 'tag-tree-name',
@@ -43,9 +43,9 @@ $current                = 'saved-search';
                                                                     'id' => 'invite_users',
                                                                     'unique_id' => 'invite_users',
                                                                     )); ?></p>
-        <p><input type="checkbox" id="isChildrenOf"><?php echo elgg_echo("enlightn:ischildrenofanothertag")?></p>
-        <p><ul id="isChildrenOfSelect" class="isChildrenOfSelect"></ul><span id="selectedParent"></span></p>
-        <p>
+        <p><input type="checkbox" id="isChildrenOf"><?php echo elgg_echo("enlightn:ischildrenofanothertag")?><span id="selectedParent"></span></p>
+        <p><ul id="isChildrenOfSelect" class="isChildrenOfSelect"></ul></p>
+        <p class="submit">
             <button type="reset" class="submit" id='cancelnewlabel'><?php echo elgg_echo("enlightn:buttoncancel"); ?></button>
             <button type="submit" class="submit" id="submitnewlabel"><?php echo elgg_echo("enlightn:buttonpost"); ?></button>
         </p>

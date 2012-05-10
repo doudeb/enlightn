@@ -21,7 +21,7 @@ if ($labeltree) {
         if (($parent_ent instanceof ElggObject && $parent_guid) //asking for childs
              || (!$parent_guid && ($label->container_guid == $CONFIG->site_guid
                                     || (!$is_followed_parent && $mode != 'suggest')
-                                    || ($mode = 'invited')
+                                    || ($mode == 'invited')
                                     )
                  )
             ) { //child not following parents

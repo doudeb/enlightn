@@ -366,7 +366,10 @@ $(document).ready(function(){
                             user_elm.html('');
                             user_elm.append('<?php echo elgg_echo('enlightn:discussionusersuggest')?> :');
                             $.each(data, function(user_guid, user_name){
-                                user_elm.append('<span class="user_suggest" data-user-id="' + user_guid + '" data-user-name="' + user_name + '">'+ user_name +'</span>');
+                                if (elgg.session.user.guid != user_guid
+                                    && $('input[name="invite"]').val().indexOf(user_guid) == -1) {
+                                    user_elm.append('<span class="user_suggest" data-user-id="' + user_guid + '" data-user-name="' + user_name + '">'+ user_name +'</span>');
+                                }
                             });
                             $(".user_suggest").click(function () {
                                 var elm = $(this),
@@ -720,13 +723,13 @@ $(document).ready(function(){
         $.get('<?php echo "{$vars['url']}mod/enlightn/ajax/get_tag_tree.php";?>', {parentId : parentId, mode:mode}, function(tagTree) {
             $.each(tagTree,function(key,tag) {
                 var action =  '<span class="ico' + (!tag.isFollowed?' follow':' followed') + '" />'
-                    folder = '<span class="ico folder" />';
+                    folder = '<span class="ico subdir" /><span class="ico folder" />';
                 if (tag.owner_guid == elgg.session.user.guid
                     || <?php echo elgg_is_admin_logged_in()?'true':'false'?>
                     || mode === '<?php echo ENLIGHTN_INVITED?>') {
                     action = action + '<span class="close">&times</span>';
                 }
-                action = action + '<span class="add"><span class="ico"></span></span>';
+                action = action + '<span class="add"><span class="ico"></span>Invite</span>';
                 $('<li>', {
                     'id' : tag.guid
                     ,'data-guid' : tag.guid
@@ -796,7 +799,7 @@ $(document).ready(function(){
                     ,url = '/action/enlightn/' + (mode==='invited'?'follow':'cloud/removeSearch') + '?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token +'&guid=' + guid + (mode==='invited'?'&ignore=1':'')
                     ,html = '<div class="layer inviteToLabel">\n\
                                 <span class="close">&times;</span>\n\
-                                <span class="caption">\n\
+                                <span class="caption"><?php echo elgg_echo("enlightn:discussioninvite"); ?>\n\
                                     <input type="text" id="userInviteToLabel" />\n\
                                 </span>\n\
                                 <input type="submit" class="submit_button" value="<?php echo elgg_echo("send"); ?>"/>\n\
@@ -819,7 +822,6 @@ $(document).ready(function(){
                             , searchingText : ""
                             , preventDuplicates: true
                             , theme: 'facebook'
-                            , placeholder: '<?php echo $vars['placeholder']; ?>'
                             , resultsFormatter: function(item){
                                 return "<li>" +  item.pic + "<div class='user_select'>" + item.name + "</div></li>";
                             }
@@ -835,12 +837,14 @@ $(document).ready(function(){
                                 elm.parent().remove();
                         });
                     });
+                    elm.click(function () {return false});
                     return false;
             });
         },'json');
     }
     saveSearch = function(){
-        if($('#sidebar .highlight').length > 0) {
+        if($('#sidebar .highlight').length > 0
+                || $('#addtotreeinput').css('display') == 'block') {
             return false;
         }
         elm = $(this);

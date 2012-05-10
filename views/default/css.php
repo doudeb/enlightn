@@ -547,7 +547,7 @@ form .privacy .value {
 }
 
 
-#new-discussion form .private .value {
+form .private .value {
     background-image:none;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E20780', endColorstr='#F973BC');
 	background: -webkit-gradient(linear, left top, left bottom, from(#E20780), to(#F973BC));
@@ -2301,21 +2301,22 @@ form #clonedMessages {
 .saved-search ul,
 .saved-search-select ul,
 .isChildrenOfSelect ul {
-    margin: 0 0 0 15px;
+    margin: 0 0 0 8px;
     cursor : pointer;
 }
 
 .tag-tree ul li,
 .saved-search ul li,
-.saved-search-select ul li,
-.isChildrenOfSelect ul li {
+.saved-search-select ul li {
     width : 100%;
     font-color : #000;
     padding:5px 0px;
     height: 16px;
 }
 
-
+.isChildrenOfSelect ul li {
+    padding:0px;
+}
 .tag-tree ul li:hover,
 .saved-search ul li:hover,
 .saved-search-select ul li:hover,
@@ -2324,12 +2325,28 @@ form #clonedMessages {
     border: 1px 0px 0px 1px dotted #EEEEEE;
 }
 
-span.folder_add,
+.span.folder_add,
 .railsMenu.home {
     height: 16px;
     padding-left: 20px;
     width : 18px;
     background-position: -415px -215px;
+    display : block;
+}
+
+
+li span.subdir {
+    height: 16px;
+    padding-left: 13px;
+    display:bloc;
+}
+
+li.hasChildren span.subdir {
+    background-position: -285px -124px;
+}
+
+li.hasChildren.opened span.subdir {
+    background-position: -271px -124px;
 }
 
 li span.folder,
@@ -2376,8 +2393,7 @@ li.isShared span.folder {
     border : 0;
     border-radius : 2px;
 }
-.tag-tree span.followed,
-#saved-search-list span.followed {
+.tag-tree span.followed {
     background-position: -307px -215px;
 }
 
@@ -2388,6 +2404,7 @@ li.isShared span.folder {
 
 #invited-list span.followed:hover,
 #saved-search-list span.followed:hover,
+#saved-search-list span.followed,
 .tag-tree span.followed:hover {
     background-color: #dddddd;
     background-position: -283px -215px;
@@ -2410,7 +2427,7 @@ li.isShared span.folder {
 
 #addtotreeinput span .private-ico,
 #addtotreeinput span .public-ico {
-    width:15px;
+    width:13px;
     height:15px;
     margin:0px;
     cursor:pointer;
@@ -2422,9 +2439,14 @@ li.isShared span.folder {
     width:245px;
 }
 
+#addtotreeinput.layer .token-input-list-facebook {
+    width:240px;
+}
+
 #addtotreeinput span.follow,
 #addtotreeinput span.followed,
 #addtotreeinput span.close,
+#saved-search-list span.close,
 #saved-search-list span.follow,
 #saved-search-list span.followed,
 #shareWithInput,
@@ -2435,8 +2457,13 @@ li.isShared span.folder {
 
 
 #addtotreeinput p {
-    margin : 0px;
+    margin : 5px;
 }
+
+#addtotreeinput p.submit {
+    text-align:right;
+}
+
 .search-memo span {
     margin: -1px 5px 0px 5px;
 }
@@ -2449,6 +2476,11 @@ li.isShared span.folder {
     margin-left : 5px;
     cursor : pointer;
     color : #2C75E2;
+    width:100%;
+    text-align: center;
+    display: block;
+    font-size:110%;
+    text-decoration: underline;
  }
 
  .saved-search .close {
@@ -2475,13 +2507,14 @@ li.isShared span.folder {
  }
 
 #invited-list {
-    background-color:#ddd;
+    background-color:#e3f3a2;
+    border-color: #bbb;
     margin-bottom: 5px;
 }
 
 #tabsaved-search p.inviteHeadLine {
     border: 1px solid #e5e5e5;
-    margin : 10px 0 0 15px;
+    margin : 10px 0 0 8px;
     padding : 3px;
     display : none;
 }
@@ -2535,7 +2568,8 @@ li.isShared span.folder {
     margin-top: 5px;
  }
 
- #selected_filter {
+#selected_filter,
+#selectedParent {
     margin-left : 10px;
     background-color: #EEEEEE;
  }
@@ -2559,10 +2593,16 @@ li.isShared span.folder {
     margin:0;
 }
 
+#saved-search-list .inviteToLabel span.close {
+    display: block;
+}
+
 #invited-list .add,
 #tag-tree-list .add,
 #saved-search-list .add {
     display:none;
+    float: right;
+    margin-right: 5px;
 }
 
 #saved-search-list li:hover .add,
@@ -2798,7 +2838,10 @@ li.isShared span.folder {
 
 #profile span.tag {
     margin-bottom: 10px;
+    display: none;
 }
+
+
 
 .details  {
     background-color:#fff;
@@ -2942,7 +2985,7 @@ li.isShared span.folder {
 
 /** BUBBLE */
 .bubble {
-    background-color:#fff;
+    background:#fff;
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#f0f0f0');
     background:-webkit-gradient(linear,left top,left bottom,from(#ffffff),to(#f0f0f0));
     background:-moz-linear-gradient(top,#ffffff,#f0f0f0);
@@ -3236,9 +3279,9 @@ li.isShared span.folder {
 #login {
     background-color:#fff;
     min-height:300px;
-    background-image : url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/enlightn_baseline.jpg');
+    background-image : url('<?php echo $vars['url'] ?>mod/enlightn/media/graphics/logo.png');
     background-repeat: no-repeat;
-    width : 745px;
+    width : 800px;
     margin-bottom: auto;
     margin-left: auto;
     margin-right: auto;
@@ -4294,6 +4337,14 @@ ul#friends_collections_accordian {
 	padding:0;
 	position: relative;
 }
+.friends-picker-wrapper .tag {
+    display: none;
+}
+
+.friends-picker-wrapper .tag.mlList {
+    display: inline-block;
+}
+
 .friends-picker {
 	position: relative;
 	overflow: hidden;

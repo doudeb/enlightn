@@ -19,7 +19,7 @@ foreach ($sn_linkers as $key => $name) {
         <div id="settings_tabs">
             <ul class="settings_tabs">
                 <?php
-                foreach (array('account','password','profile','picture','notification','statistics') as $key => $value) {
+                foreach (array('account','password','profile','picture','notification'/*,'statistics'*/) as $key => $value) {
                     echo '<li id="' . $value . '" class="' . ($current===$value?'current':'') . '">' . elgg_echo('enlightn:'. $value) . "</li>\n";
                 }
                 if ($email_activated == 1) {
