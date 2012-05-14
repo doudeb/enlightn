@@ -9,7 +9,7 @@ foreach($members as $mem) {
 	}
 }
 echo implode(', ',$members_summary);
-if (($i - $vars['limit']) > 0 ) {
-	echo sprintf(elgg_echo('enlightn:andothers'),($i - $vars['limit']));
+if (($i - $vars['limit']) -1 > 0 ) {
+	echo sprintf(elgg_echo('enlightn:andothers'),($i - $vars['limit'])-1);
 }
 ?>

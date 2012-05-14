@@ -4,7 +4,7 @@ $flag_readed 		= check_entity_relationship($vars['user_guid'], ENLIGHTN_READED,$
 $flag_folowed 		= check_entity_relationship($vars['user_guid'], ENLIGHTN_FOLLOW,$post->guid);
 $flag_favorite 		= check_entity_relationship($vars['user_guid'], ENLIGHTN_FAVORITE,$post->guid);
 $post_owner 		= get_entity($post->owner_guid);
-$members 		= get_discussion_members($post->guid,12);
+$members            = get_discussion_members($post->guid,12);
 $invited_members	= elgg_get_entities_from_relationship(array(
 															'relationship' => ENLIGHTN_INVITED,
 															'relationship_guid' => $post->guid,
@@ -13,10 +13,10 @@ $invited_members	= elgg_get_entities_from_relationship(array(
 if (!$invited_members) {
 	$invited_members = array();
 }
-$tags			= $post->getTags();
+$tags               = $post->getTags();
 $url_favorite		= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/favorite?discussion_guid={$post->guid}");
-$url_follow		= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?discussion_guid={$post->guid}");
-$url_invite		= elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/invite?discussion_guid={$post->guid}");
+$url_follow         = elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/follow?guid={$post->guid}");
+$url_invite         = elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/invite?guid={$post->guid}");
 ?>
 		<div id="main">
 			<div id="detail" class="msg <?php echo false===$flag_readed?'':'read' ?> <?php echo  false===$flag_favorite?'':'starred'?>">

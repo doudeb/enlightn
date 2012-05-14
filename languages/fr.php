@@ -74,20 +74,30 @@
 			,'enlightn:buttonpost' => 'Envoyer'
 			,'enlightn:missingData' => 'Oups, il manque un titre à votre discussion.'
 			,'enlightn:discussion_sucessfully_created' => ''
-                        ,'enlightn:discussionusersuggest' => 'Suggestion de participant'
+            ,'enlightn:discussionusersuggest' => 'Suggestion de participant'
 
 			//HOME - NEW TOPIC - UPLOAD
 			,'enlightn:uploadcloud' => 'Votre fichier se trouve dans le cloud?'
 			,'enlightn:titlefile' => 'Titre du document'
 			,'enlightn:tagsfile' => 'Mots-clés'
 			,'enlightn:uploadembed' => 'Joindre à la discussion'
-                        ,'enlightn:editmytitle' => 'Modifier'
-                        ,'enlightn:editkeyword' => 'Editer les mots cléfs'
-                        ,'enlightn:savedsearch' => 'Recherches mémorisées'
-                        ,'enlightn:searchmemo' => 'Mémoriser la recherche'
-                        ,'enlightn:prompt:cloudremovesavedsearch' => 'êtes-vous sûr de vouloir supprimer cette recherche?'
-                        ,'enlightn:prompt:disableentity' => 'êtes-vous sûr de vouloir supprimer ?'
-                        ,'enlightn:applyfilter' => 'Appliquer le libélé'
+            ,'enlightn:editmytitle' => 'Modifier'
+            ,'enlightn:editkeyword' => 'Editer les mots cléfs'
+            ,'enlightn:savedsearch' => 'Recherches mémorisées'
+            ,'enlightn:searchmemo' => 'Mémoriser la recherche'
+            ,'enlightn:prompt:cloudremovesavedsearch' => 'êtes-vous sûr de vouloir supprimer cette recherche?'
+            ,'enlightn:prompt:disableentity' => 'êtes-vous sûr de vouloir supprimer ?'
+            ,'enlightn:applyfilter' => 'Appliquer le libélé'
+            ,'enlightn:saved-search' => 'Mes dossiers'
+            ,'enlightn:tag-tree' => 'Suggestions'
+            ,'enlightn:addnewfolder' => 'Créer un nouveau dossier'
+            ,'enlightn:tagtreeheadline' => 'Libellé du dossier'
+            ,'enlightn:sharewith' => ' Partager le dossier avec:'
+            ,'enlightn:ischildrenofanothertag' => ' Imbriquer le dossier sous:'
+            ,'enlightn:selectprivacy' => ' Dossier Public / Privé'
+            ,'enlightn:prompt:disablefolder' => 'Etes-vous sûr de vouloir supprimer ce dossier?'
+            ,'enlightn:prompt:includechildrenent' => 'Inclure les sous dossiers?'
+            ,'enlightn:folderinvitelist' => 'Mes invitations'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Lus'
@@ -299,16 +309,21 @@ Votre compte a bien été créé sur la plateforme %s.
 
 A tout de suite sur %s,
 L\'équipe Enlightn'
-
-            //Invite
 			,'enlightn:invite:subject' => '%s'
+            //Invite discussion
 			,'enlightn:invite:body' => 'Bonjour %s,
 
 %s vous invite à rejoindre la discussion <strong>"%s".</strong>
 
 <p><a href="%s"><span class="tag">Accéder la discussion</span></a></p>
 <p>A tout de suite sur ' . $CONFIG->sitename . '</p>'
+            //Invite folder
+			,"enlightn:invite:sharefolder:body" => 'Bonjour %s,
 
-            );
+%s vous invite à rejoindre le dossier <strong>"%s".</strong>
+
+<p><a href="%s"><span class="tag">Accéder au Cloud</span></a></p>
+<p>A tout de suite sur ' . $CONFIG->sitename . '</p>'
+);
 	add_translation("fr",$french);
 ?>

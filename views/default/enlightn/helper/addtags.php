@@ -27,10 +27,9 @@ EOT;
 
     $js_function =  <<<EOT
 function (item) {
-    $(".search-memo").html('<span class="star ico"></span>$search_memo');
+    /*$(".search-memo").html('<span class="star ico"></span>$search_memo');
     $(".search-memo").parent().removeClass('starred');
-    $(".search-memo").css('display','block');
-    console.log(item);
+    $(".search-memo").css('display','block');*/
     $("#see_more_discussion_list_offset").val(0);
     loadContent("#$container",'{$vars['url']}mod/enlightn/ajax/$page.php' + get_search_criteria() + '&context=$context');
     return true;

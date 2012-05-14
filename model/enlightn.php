@@ -43,15 +43,15 @@ Order By e.time_created desc";
 
 	public function search ($user_guid, $entity_guid = 0, $access_level = 0, $unreaded_only = 0,$words, $from_users = '', $date_begin = false, $date_end =false, $subtype = '', $tags = array(),$offset = 0, $limit = 10) {
 		$key_cache = $this->generate_key_cache(get_defined_vars(), 'search');
-                $force 	= array();
+        $force 	= array();
 		$join	= array();
 		$where	= array();
-                $having = array();
+        $having = array();
 		$group	= array();
-                $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null)?elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null):1;
+        $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null)?elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null):1;
 
-                $where[]= "And ent.site_guid = " . $this->site_guid;
-                $order[] = "ent.time_updated Desc";
+        $where[]= "And ent.site_guid = " . $this->site_guid;
+        $order[] = "ent.time_updated Desc";
 		#Access
 		switch ($access_level) {
 			case 1:#Public Only 1
@@ -346,7 +346,7 @@ Limit 150)";
         if($filter_id) {
             #$force[] = "Force Index (idx_annotations_time)";
             #$join[] = "Left Join entity_relationships As rel_filter On ent.guid = rel_filter.guid_one And rel_filter.guid_two = $filter_id And rel_filter.relationship = '". ENLIGHTN_FILTER_ATTACHED . "'";
-            $where[] = "Or Exists(Select rel_filter.id From entity_relationships As rel_filter Where ent.guid = rel_filter.guid_one And rel_filter.guid_two = $filter_id And rel_filter.relationship = '". ENLIGHTN_FILTER_ATTACHED . "')";
+            $where[] = "Or Exists(Select rel_filter.id From entity_relationships As rel_filter Where ent.guid = rel_filter.guid_one And rel_filter.guid_two = $filter_id And rel_filter.relationship = '". ENLIGHTN_FILTER_ATTACHED . "' And ent.enabled = 'yes')";
         }
         $join	= implode("\n ",$join);
         $where	= implode("\n ",$where);
@@ -373,8 +373,9 @@ $where
 Order By ent.time_created Desc
 Limit $offset,$limit";
             //echo "<pre>" .$query;die();
-            $query_count           = str_replace(array('Distinct ent.*',"Limit $offset,$limit"), array('Count(*) total',''), $query);
+            $query_count           = 'Select Count(*) total From (' . str_replace("Limit $offset,$limit", '', $query) . ') total';
             $results               = $this->get_data($query, $key_cache, 'entity_row_to_elggstar');
+            //echo "<pre>" .$query_count;die();
             $results['count']      = $this->get_data($query_count, $key_cache, 'entity_row_to_elggstar');
             return  $results;
 	}

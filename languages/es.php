@@ -88,10 +88,19 @@
 			,'enlightn:tagsfile' => 'Tags'
 			,'enlightn:uploadembed' => 'Adjunta a la conversación'
 			,'enlightn:editmytitle' => 'Editar titulo'
-                        ,'enlightn:editkeyword' => 'Editar palabra clave'
-                        ,'enlightn:savedsearch' => 'Búsqueda guardada'
-                        ,'enlightn:searchmemo' => 'Guardar búsqueda'
-                        ,'enlightn:prompt:cloudremovesavedsearch' => '¿Estas seguro que quieres borrar la búsqueda?'
+            ,'enlightn:editkeyword' => 'Editar palabra clave'
+            ,'enlightn:savedsearch' => 'Búsqueda guardada'
+            ,'enlightn:searchmemo' => 'Guardar búsqueda'
+            ,'enlightn:prompt:cloudremovesavedsearch' => '¿Estas seguro que quieres borrar la búsqueda?'
+            ,'enlightn:saved-search' => 'Mis carpetas'
+            ,'enlightn:tag-tree' => 'Sugerencias'
+            ,'enlightn:addnewfolder' => 'Crear una nueva carpeta'
+            ,'enlightn:tagtreeheadline' => 'Nombre de la carpeta'
+            ,'enlightn:sharewith' => ' Compartir la carpeta con'
+            ,'enlightn:ischildrenofanothertag' => ' Añadir la carpeta a:'
+            ,'enlightn:selectprivacy' => ' Carpeta pública / privada'
+            ,'enlightn:prompt:disablefolder' => '¿Estás seguro que deseas eliminar esta carpeta?'
+            ,'enlightn:prompt:includechildrenent' => '¿Incluir los subcarpetas?'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Leída'
@@ -279,7 +288,7 @@
 			,'enlightn:newmessage:subject' => 'Re: %s '
 			,'enlightn:newmessage:body' => 'Hola %s,
 
-Se ha añadido un mensaje a la conversación "%s"
+%s ha añadido un mensaje a la conversación "%s"
 %s
 
 <a href="%s">Entrar a la conversación</a>'
@@ -316,7 +325,13 @@ El equipo Enlightn'
 %s te invita a unirte a la conversación <p><strong>"%s"</strong></p>
 
 <p><a href="%s"><span class="tag">Únete a la  conversación</span></a></p>'
+        
+            ,'enlightn:invite:sharefolder:body' => 'Hola %s, >
 
+            %s te invita a unirte a la carpeta <strong>"%s".</strong>  >
+
+            <p><a href="%s"><span class="tag">Acceder al Cloud</span></a></p>
+            <p>Nos vemos pronto en ' . $CONFIG->sitename . '</p>'
 	);
 	add_translation("es",$spain);
 ?>

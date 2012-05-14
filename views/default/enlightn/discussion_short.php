@@ -33,7 +33,7 @@ $short_title    	= substr($entity->title,0,55);
                         </div>
                         <div class="excerpt" id="excerpt<?php echo $post->entity_guid; ?>">
                             <?php echo elgg_view('input/user_photo',array('class'=>'thumb-photo','user_ent'=>$post_owner));?>
-                            <h3><a href="<?php echo $vars['url'] ?>enlightn/discuss/<?php echo $vars['entity']->guid; ?>"><?php echo $short_title?></a><?php echo $flag_readed?></h3>
+                            <h3><a href="<?php echo $vars['url'] ?>enlightn/discuss/<?php echo $vars['entity']->guid; ?>"><?php echo $short_title?></a><?php echo $flag_readed?><span class="<?php echo $post->access_id==ACCESS_PRIVATE?'lock':'unlock'; ?> ico"></span></h3>
                             <span class="participants"><?php echo $post_owner->name?> <?php echo elgg_view("enlightn/discussion_members",array('entity' => $post
 														, 'limit' => 0));?></span>
 	                        <span class="date"><?php echo elgg_view_friendly_time($post->time_created) ?></span>

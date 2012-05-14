@@ -13,9 +13,9 @@
 		$('#search_submit').click( function(){
 			<?php
 				if (in_array(elgg_get_context(),array('cloud','cloud_embed'))) {?>
-                                        $(".search-memo").html('<span class="star ico"></span><?php echo elgg_echo('enlightn:searchmemo');?>');
+                                        /*$(".search-memo").html('<span class="star ico"></span><?php echo elgg_echo('enlightn:searchmemo');?>');
                                         $(".search-memo").parent().removeClass('starred');
-                                        $(".search-memo").css('display','block');
+                                        $(".search-memo").css('display','block');*/
                                         $("#see_more_discussion_list_offset").val(0);
 					loadContent('#cloud_content','<?php echo $vars['url']?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>');
                                 <?php

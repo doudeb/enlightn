@@ -23,7 +23,7 @@ body, #body {
     <div class="box">
         <form action="<?php echo $login_url?>action/login" method="post">
             <?php echo elgg_view('input/securitytoken'); ?>
-            <p><h2><?php echo elgg_echo('username');?> :</h2></p>
+            <p><h2><?php echo elgg_echo('email');?> :</h2></p>
             <p><?php echo elgg_view('input/text', array('name' => 'username',  'placeholder'=>elgg_echo(''))); ?></p>
             <p><h2><?php echo elgg_echo('password');?> :</h2></p>
             <p><?php echo elgg_view('input/password', array('name' => 'password',  'placeholder'=>elgg_echo(''))); ?></p>

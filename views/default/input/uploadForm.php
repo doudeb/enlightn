@@ -1,11 +1,6 @@
-<?php
-$user_ent           = elgg_get_logged_in_user_entity();
-$labels             = get_labels ($user_ent);
-?>
-
 <div id="embedContent" style="display:none">
-	<form id="mediaUpload" action="<?php echo $vars['url']; ?>action/enlightn/upload" method="post" enctype="multipart/form-data">
-	<div id="layer">
+	<form id="mediaUpload" name="mediaUpload" action="<?php echo $vars['url']; ?>action/enlightn/upload" method="post" enctype="multipart/form-data">
+	<div id="layer" class="layer">
 	    <span class="close" id="closeUploader">&times;</span>
 	    <span class="caption">
             <?php echo elgg_echo('enlightn:uploadyourfile')?>
@@ -24,10 +19,13 @@ $labels             = get_labels ($user_ent);
 	        <?php
 	        	echo elgg_view('input/hidden', array('name' => 'access_id','id' => 'access_id','value' => ACCESS_PRIVATE));
 	        	echo elgg_view('input/hidden', array('name' => 'file_filter_id','id'=> 'file_filter_id'));
-   			echo elgg_view('input/securitytoken');
+	        	echo elgg_view('input/securitytoken');
 	        ?>
                 <div class="new-bloc" id="submitBloc">
-                    <div id="submissionUpload"></div>
+                    <div class="progress" id="submissionUpload">
+                        <div class="bar"></div >
+                        <div class="percent">0%</div >
+                    </div>
                     <?php
                     if (elgg_get_context() == 'cloud') {
                     ?>
@@ -41,7 +39,7 @@ $labels             = get_labels ($user_ent);
                     ?>
                     <div class="saved-search-select">
                         <span class="ico"></span><span class="saved-search-label-apply"><?php echo elgg_echo("enlightn:applyfilter"); ?><span class="arrow"/></span><span id="selected_filter"></span></span>
-                        <?php echo elgg_view("enlightn/helper/saved_search_list", array('list'=>$labels))?>
+                        <span id="fileFilterTree"><p><?php echo elgg_view("enlightn/helper/saved_search_list", array('show_invite'=>false,'elm'=>'file_filter_select','navcallback'=>'selectFileFilter'))?></p></span>
                     </div>
                     <div class="edit-keyword" id="editkeyword"><?php echo elgg_echo("enlightn:editkeyword"); ?><span class="arrow"/></div>
                     <div class="tags">
@@ -94,19 +92,6 @@ $labels             = get_labels ($user_ent);
                         return false;
                     }
                 });
-        });
-
-        $(".saved-search-select li").click(function(){
-            elm = $(this)
-                    , destElm = $('#file_filter_id')
-                    , selectedElm = $('#selected_filter');
-            filter_id = elm.attr('data-guid')
-                    , name = elm.attr('data-name');
-            if (filter_id) {
-                destElm.val(filter_id);
-                selectedElm.html(name);
-                elm.parent().toggle();
-            }
         });
 
 	$('#editkeyword').click(function() {
@@ -199,8 +184,15 @@ $labels             = get_labels ($user_ent);
     //$(document).ready(function() {
         // bind 'myForm' and provide a simple callback function
     $('#mediaUpload').submit(function() {
-            var options = {
-                beforeSubmit: showLoading,
+            var   bar = $('.bar')
+            	, percent = $('.percent')
+            	, options = {
+                uploadProgress:
+                    function(event, position, total, percentComplete) {
+	                    var percentVal = percentComplete + '%';                        
+	                    bar.width(percentVal)
+	                    percent.html(percentVal);
+                },
                 target: '#submissionUpload',
                 clearForm: true,
                 resetForm: true,
@@ -233,7 +225,17 @@ $labels             = get_labels ($user_ent);
             return false;
     });
 	function showLoading () {
-		$('#submissionUpload').html('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
+        var form = 'mediaUpload'
+                , i = 0;
+        while (i <= 100) {
+            $.get('/mod/enlightn/ajax/upload_progress.php', {form:form}, function (data) {
+                $('#submissionUpload').html(data + '%');
+                alert(data);
+                i = data;
+            }, 'html');
+            i = i + 25;
+        }
+		//$('#submissionUpload').html('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
 		return true;
 	}
     $('#file_privacy_cursor').click( function(){

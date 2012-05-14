@@ -19,7 +19,7 @@ foreach ($sn_linkers as $key => $name) {
         <div id="settings_tabs">
             <ul class="settings_tabs">
                 <?php
-                foreach (array('account','password','profile','picture','notification','statistics') as $key => $value) {
+                foreach (array('account','password','profile','picture','notification'/*,'statistics'*/) as $key => $value) {
                     echo '<li id="' . $value . '" class="' . ($current===$value?'current':'') . '">' . elgg_echo('enlightn:'. $value) . "</li>\n";
                 }
                 if ($email_activated == 1) {
@@ -49,7 +49,10 @@ foreach ($sn_linkers as $key => $name) {
                 <?php
                 $form_body = '<p><label>' . elgg_echo('user:current_password:label') . '</label> <input type="password" name="current_password" /></p>
                 <p><label>' . elgg_echo('user:password:label') . '</label> <input type="password" name="password" /></p>
-                <p><label>' . elgg_echo('user:password2:label') . '</label> <input type="password" name="password2" /></p>';
+                <p><label>' . elgg_echo('user:password2:label') . '</label> <input type="password" name="password2" /></p>
+                    <input type="hidden" name="name" value="' . $user->name .'" />
+                    <input type="hidden" name="email" value="' . $user->email .'" />
+                    <input type="hidden" name="language" value="' . $user->language .'" />';
                 $form_body .= '<p><button type="submit" class="submit">' . elgg_echo("enlightn:buttonpost") . '</button></p>';
 
                 echo elgg_view('input/form', array('action' => "{$vars['url']}action/usersettings/save", 'body' => $form_body));

@@ -1,11 +1,13 @@
-    <ul id="saved-search-list">
-    <?php
-    $saved_search = $vars['list'];
-    foreach ($saved_search as $search) {
-        $params = $search->getMetadata(ENLIGHTN_FILTER_CRITERIA);
-        $params = unserialize($params);
-        $params = json_encode($params);
-        echo "<li data-params='" . $params . "' data-name='" . $search->title . "' data-guid='" . $search->guid . "'><span class='saved-items'>" . $search->title . "<span class='ico " . ($search->access_id==0?'private':'public') . "-ico'></span></span>" . ($search->owner_guid==elgg_get_logged_in_user_guid()?'<span class="close">&times;</span>':'') . "</li>";
-    }
-    ?>
-    </ul>
+<?php if ($vars['show_invite']) {?>
+<p class="inviteHeadLine"><?php echo elgg_echo('enlightn:folderinvitelist');?></p>
+<ul id="invited-list"></ul>
+<?php } ?>
+<ul id="<?php echo $vars['elm'];?>"></ul>
+<script>
+$(document).ready(function(){
+<?php if ($vars['show_invite']) {?>
+    loadTagTree("#invited-list",'invited',false,false);
+<?php } ?>
+    loadTagTree("#<?php echo $vars['elm'];?>",'followed',false,<?php echo $vars['navcallback'];?>);
+});
+</script>

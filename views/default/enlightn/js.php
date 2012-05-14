@@ -1,3 +1,4 @@
+//<script>
 // Buffer class. Has a public append method that expects some kind of Task.
 // Constructor expects a handler which is a method that takes a ajax task
 // and a callback. Buffer expects the handler to deal with the ajax and run
@@ -302,6 +303,7 @@ function get_search_criteria (fromLink) {
         $('#new-post').fadeToggle();
         $('#forwardActionButton').fadeToggle();
     }
+
 $(document).ready(function(){
     var deletedKeywords = [];
     $('#add-tags')
@@ -310,9 +312,8 @@ $(document).ready(function(){
             .toggle();
     });
     $(".saved-search-label-apply").click(function () {
-        $(".saved-search-select ul").toggle();
+        $("#fileFilterTree").toggle();
     });
-
     $('#tags-result')
         .click(function(e) {
             if($(e.target).hasClass('del')) {
@@ -365,7 +366,10 @@ $(document).ready(function(){
                             user_elm.html('');
                             user_elm.append('<?php echo elgg_echo('enlightn:discussionusersuggest')?> :');
                             $.each(data, function(user_guid, user_name){
-                                user_elm.append('<span class="user_suggest" data-user-id="' + user_guid + '" data-user-name="' + user_name + '">'+ user_name +'</span>');
+                                if (elgg.session.user.guid != user_guid
+                                    && $('input[name="invite"]').val().indexOf(user_guid) == -1) {
+                                    user_elm.append('<span class="user_suggest" data-user-id="' + user_guid + '" data-user-name="' + user_name + '">'+ user_name +'</span>');
+                                }
                             });
                             $(".user_suggest").click(function () {
                                 var elm = $(this),
@@ -535,7 +539,7 @@ $(document).ready(function(){
 
     $("#settings_tabs .settings_tabs li").click(function () {
         elm = $(this);
-        toShowElm = $('#tab' + $(this).attr('id'));
+        toShowElm = $('#tab' + $(this).attr('id'));;
         elm.addClass('current');
         toShowElm.css('display','block');
         $("#settings_tabs .settings_tabs li").each(function () {
@@ -576,7 +580,7 @@ $(document).ready(function(){
 	        target:        '#new-discussion-submission',   // target element(s) to be updated with server response
 	        beforeSubmit:  loading,  // pre-submit callback
 	        success:       autoClose,  // post-submit callback
-                type:      'post',        // 'get' or 'post', override for form's 'method' attribute
+            type:      'post',        // 'get' or 'post', override for form's 'method' attribute
 	        dataType:  'json'
 	    };
 
@@ -638,8 +642,8 @@ $(document).ready(function(){
             $('#new-discussion-submission').html('');
             $('#' + tokenInputName).tokenInput("clear");
             $('#privacy_cursor').parent().removeClass('public');
-			$('#privacy_cursor').parent().addClass('private');
-			$('#membership').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
+            $('#privacy_cursor').parent().addClass('private');
+            $('#membership').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
             $('#clonedMessages').html('');
             $('#tags-result').html('');
             $(".dialog-overlay").css('display','none');
@@ -659,6 +663,291 @@ $(document).ready(function(){
             elm.html(elm.html() + "<br/>" + content + "<br/><br/>");
         }
     }
+    function faceboxClose () {
+        $.facebox.close();
+    }
+    function tagTreeNav () {
+        var elm = $(this)
+            , newElm = 'tagTreeNav' + elm.attr('data-guid');
+        if (elm.hasClass('opened')) {
+            elm.removeClass('opened');
+            $('#' +newElm).remove();
+            return true;
+        } else if(elm.attr('data-hasChildren')==='true') {
+            elm.addClass('opened');
+            $('<ul />', {'id' : newElm}).insertAfter(elm);
+            loadTagTree('#' + newElm,'suggest',elm.attr('data-guid'),tagTreeNav);
+        }
+    }
+    function savedTreeNav () {
+        var elm = $(this)
+            , newElm = 'savedTreeNav' + elm.attr('data-guid');
+        if (elm.hasClass('opened')) {
+            elm.removeClass('opened');
+            $('#' +newElm).remove();
+            return true;
+        } else if(elm.attr('data-hasChildren')==='true') {
+            elm.addClass('opened');
+            $('<ul />', {'id' : newElm}).insertAfter(elm);
+            loadTagTree('#' + newElm,'followed',elm.attr('data-guid'),savedTreeNav);
+        }
+    }
+    function selectFileFilter () {
+        var elm = $(this)
+            , newElm = 'selectFileFilter' + elm.attr('data-guid')
+            , destElm = $('#file_filter_id')
+            , selectedElm = $('#selected_filter')
+            , filter_id = elm.attr('data-guid')
+            , name = elm.attr('data-name');
+        if (elm.hasClass('opened')) {
+            elm.removeClass('opened');
+            $('#' +newElm).remove();
+            return true;
+        } else if(filter_id) {
+            elm.addClass('opened');
+            destElm.val(filter_id);
+            selectedElm.html(name);
+            if(elm.attr('data-hasChildren')==='true') {
+                $('<ul />', {'id' : newElm}).insertAfter(elm);
+                loadTagTree('#' + newElm,'followed',elm.attr('data-guid'),selectFileFilter);
+            } else {
+                $('#file_filter_select').html('');
+            }
+        }
+    }
+
+    function loadTagTree(elm,mode,parentId,elmBind) {
+        var tagTree = false,
+            elm = $(elm);
+            elm.html('');
+        $.get('<?php echo "{$vars['url']}mod/enlightn/ajax/get_tag_tree.php";?>', {parentId : parentId, mode:mode}, function(tagTree) {
+            $.each(tagTree,function(key,tag) {
+                var action =  '<span class="ico' + (!tag.isFollowed?' follow':' followed') + '" />'
+                    folder = '<span class="ico subdir" /><span class="ico folder" />';
+                if (tag.owner_guid == elgg.session.user.guid
+                    || <?php echo elgg_is_admin_logged_in()?'true':'false'?>
+                    || mode === '<?php echo ENLIGHTN_INVITED?>') {
+                    action = action + '<span class="close">&times</span>';
+                }
+                action = action + '<span class="add"><span class="ico"></span>Invite</span>';
+                $('<li>', {
+                    'id' : tag.guid
+                    ,'data-guid' : tag.guid
+                    ,'data-name' : tag.title
+                    ,'data-parent-guid' : tag.parent_guid
+                    ,'data-params' : tag.params
+                    ,'data-hasChildren' : tag.hasChildren
+                    ,'class' : 'dropable' + (tag.hasChildren?' hasChildren':'') + (tag.params.length > 25?' hasSearch':'') + (tag.isShared?' isShared':'')
+                    , html: folder + '<span class="title">' + tag.title + '</span>' + action
+                })
+                    .appendTo(elm)
+                    .bind('click',elmBind)
+                    .bind('click',saveSearch);
+                if(mode==='invited') {$('#tabsaved-search .inviteHeadLine').css('display','block')};
+            });
+            follow = elm.find('span.follow');
+            follow.click(function () {
+                var elm = $(this)
+                    ,guid =parseInt(elm.parent().attr('data-guid'))
+                    ,url = '/action/enlightn/follow?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token +'&guid=' + guid;
+                    if (elm.parent().attr('data-hasChildren') === 'true') {
+                        if(confirm("<?php echo elgg_echo('enlightn:prompt:includechildrenent')?>")) {
+                            url = url + '&cascade=true';
+                        }
+                    }
+                    loadContent("#loader",url);
+                    elm.toggleClass("follow followed");
+                    loadTagTree("#invited-list",'invited',false,tagTreeNav);
+                    loadTagTree("#saved-search-list",'followed',false,savedTreeNav);
+                return false;
+            });
+            followed = elm.find('span.followed');
+            followed.click(function () {
+                var elm = $(this)
+                    ,guid =parseInt(elm.parent().attr('data-guid'))
+                    ,url = '/action/enlightn/follow?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token +'&guid=' + guid;
+                    if (elm.parent().attr('data-hasChildren') === 'true') {
+                        if(confirm("<?php echo elgg_echo('enlightn:prompt:includechildrenent')?>")) {
+                            url = url + '&cascade=true';
+                        }
+                    }
+                    loadContent("#loader",url);
+                    elm.toggleClass("follow followed");
+                    loadTagTree("#invited-list",'invited',false,tagTreeNav);
+                    loadTagTree("#saved-search-list",'followed',false,savedTreeNav);
+                return false;
+            });
+            close = elm.find('span.close');
+            close.click(function () {
+                var elm = $(this)
+                    ,guid =parseInt(elm.parent().attr('data-guid'))
+                    ,url = '/action/enlightn/' + (mode==='invited'?'follow':'cloud/removeSearch') + '?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token +'&guid=' + guid + (mode==='invited'?'&ignore=1':'');
+                if(confirm("<?php echo elgg_echo('enlightn:prompt:disablefolder')?>")) {
+                    $.post(url, {guid: guid}, function() {
+                        loadTagTree("#invited-list",'invited',false,tagTreeNav);
+                        loadTagTree("#tag-tree-list",'suggest',false,tagTreeNav);
+                        loadTagTree("#saved-search-list",'followed',false,savedTreeNav);
+                        return true;
+                    },'json');
+                }
+                return false;
+            });
+            invite = elm.find('span.add');
+            invite.click(function () {
+                var elm = $(this)
+                    ,guid = parseInt(elm.parent().attr('data-guid'))
+                    ,url = '/action/enlightn/' + (mode==='invited'?'follow':'cloud/removeSearch') + '?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token +'&guid=' + guid + (mode==='invited'?'&ignore=1':'')
+                    ,html = '<div class="layer inviteToLabel">\n\
+                                <span class="close">&times;</span>\n\
+                                <span class="caption"><?php echo elgg_echo("enlightn:discussioninvite"); ?>\n\
+                                    <input type="text" id="userInviteToLabel" />\n\
+                                </span>\n\
+                                <input type="submit" class="submit_button" value="<?php echo elgg_echo("send"); ?>"/>\n\
+                            </div>';
+                    userInput = elm.parent().find('.layer');
+                    if (userInput.length > 0) {
+                        userInput.remove();
+                        return false;
+                    }
+                    $(html).insertAfter(elm);
+                    userInput = elm.parent().find('.layer');
+                    userInput
+                        .css('width','245px')
+                        .css('top','220px')
+                        .css('left','auto')
+                        .css('display','block');
+                    $("#userInviteToLabel").tokenInput("<?php echo $vars['url']; ?>mod/enlightn/ajax/members.php"
+                        ,{
+                            hintText : ""
+                            , searchingText : ""
+                            , preventDuplicates: true
+                            , theme: 'facebook'
+                            , resultsFormatter: function(item){
+                                return "<li>" +  item.pic + "<div class='user_select'>" + item.name + "</div></li>";
+                            }
+                        }
+                    );
+                    closeBtn = userInput.find('.close');
+                    closeBtn.click(function () {$(this).parent().remove();});
+                    postBtn = userInput.find('.submit_button');
+                    postBtn.click(function () {
+                        var elm = $(this)
+                            , url = '/action/enlightn/invite?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token;
+                        $.post(url,{guid:guid,invite:$('#userInviteToLabel').val()}, function (data) {
+                                elm.parent().remove();
+                        });
+                    });
+                    userInput.click(function () {return false;});
+                    return false;
+            });
+        },'json');
+    }
+    saveSearch = function(){
+        if($('#sidebar .highlight').length > 0
+                || $('#addtotreeinput').css('display') == 'block') {
+            return false;
+        }
+        elm = $(this);
+        //elm.addClass('opened');
+        params = eval('(' + elm.attr('data-params') + ')')
+            ,filter_id = elm.attr('data-guid')
+            ,title = elm.attr('data-name');
+        $.get('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}mod/enlightn/ajax/get_label_parent.php");?>', {guid: filter_id}, function(parents_label) {
+            var railsMenu = $('#railsMenu');
+                railsMenu.html('');
+            $.each(parents_label, function (key,label) {
+                $('<li>',{
+                    'data-guid' : label["data-guid"]
+                    ,'data-name' : label["data-name"]
+                    ,'data-params' : label["data-params"]
+                    , html :  label["data-name"]
+                })
+                    .bind('click',saveSearch)
+                    .appendTo(railsMenu);
+            });
+            //$(".search-memo").html(railsMenu).css('display','block');
+            $('#see_more_discussion_list_offset').val(0);
+            token_elm  = $('input[name="q"]');
+            token_elm.tokenInput("clear");
+            $('#search_tags').val('');
+            $('#filter_id').val(filter_id);
+            $.each(params,function (field,value) {
+                changeElm = null;
+                switch(field) {
+                    case 'words':
+                        if(!value) break;
+                        token_elm  = $('input[name="q"]');
+                        token_elm.tokenInput("add", {id: value, name: value});
+                        changeElm = $('input[name="q"]');
+                        break;
+                    case 'tags':
+                        if(!value) break;
+                        $('#search_tags').val('');
+                        token_elm  = $('input[name="q"]');
+                        changeElm= $('input[name="q"]');
+                        $.each(value,function (key,tag_id) {
+                            value[key] = 'tag_' + tag_id;
+                            $.get('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}mod/enlightn/ajax/get_tag_data.php");?>', {tag_id: tag_id}, function(tag_ent) {
+                                if(tag_ent)  {
+                                    token_elm.tokenInput("add", {id: value[key], name: tag_ent.name, class : 'tag'});
+                                }
+                            },'json');
+                        });
+                        value = value.join(',');
+                        break;
+                    case 'from_users':
+                        token_elm  = $('input[name="from_users"]');
+                        token_elm.tokenInput("clear");
+                        $.each(value,function (key,user_guid) {
+                            $.get('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}mod/enlightn/ajax/get_user_data.php");?>', {guid: user_guid}, function(user_ent) {
+                                if(user_ent)  {
+                                    token_elm.tokenInput("add", {id: user_guid, name: user_ent.name});
+                                }
+                            },'json');
+                        });
+                        value = value.join(',');
+                        changeElm = $('input[name="from_users"]');
+                        break;
+                    case 'date_begin':
+                    case 'date_end':
+                        if(!value) {
+                            value = '';
+                            changeElm = $("#" + field);
+                            break;
+                        }
+                        var newDate = new Date(parseInt(value)*1000);
+                        value = newDate.getFullYear() + '-' + (newDate.getMonth()+1) + '-' + newDate.getDate();
+                        changeElm = $("#" + field);
+                        break;
+                    case 'filter_id':
+                        if(value == 0) break;
+                        changeElm = $("#" + field);
+                        break;
+                    case 'subtype':
+                        changeElm = $("#subtype_checked");
+                        break;
+                    default :
+                        changeElm = $("#" + field);
+                        break;
+                }
+                if (changeElm != null) {
+                    changeElm.val(value);
+                }
+            });
+            loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>');
+        },'json');
+    }
+    searchRemove = function(e){
+        elm = $(e).parent();
+        guid = elm.attr('data-guid');
+        if(confirm("<?php echo elgg_echo('enlightn:prompt:cloudremovesavedsearch')?>")) {
+            $.post('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}action/enlightn/cloud/removeSearch");?>', {guid: guid}, function(result) {
+                if(result)  {
+                    elm.remove();
+                }
+            },'json');
+        }
+    };
 
 /*
 * jQuery RTE plugin 0.5.1 - create a rich text form for Mozilla, Opera, Safari and Internet Explorer

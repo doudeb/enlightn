@@ -90,7 +90,7 @@
 		$file->setFilename($prefix.$filestorename);
 		$file->setMimeType($_FILES['upload']['type']);
 		$file->originalfilename = $_FILES['upload']['name'];
-                $file->description = $file->originalfilename;
+        $file->description = $file->originalfilename;
 		$file->simpletype = file_get_simple_type($_FILES['upload']['type']);
 		if (!in_array($file->simpletype,(array(ENLIGHTN_LINK,ENLIGHTN_MEDIA,ENLIGHTN_IMAGE,ENLIGHTN_DOCUMENT)))) {
 			$file->simpletype = ENLIGHTN_DOCUMENT;
@@ -153,16 +153,16 @@
 	// handle results differently for new files and file updates
 	if ($new_file) {
 		if ($guid) {
-                    $content        = doc_to_txt($file->getFilenameOnFilestore(),$file->mimetype);
-                    if ($content) {
-                        $file->annotate(ENLIGHTN_DISCUSSION, $content, $file->access_id);
-                    }
-                    generate_preview($file->guid);
-                    add_to_river('river/object/file/create', 'create', elgg_get_logged_in_user_guid(), $file->guid);
-                    if($filter_id > 0) {
-                        add_entity_relationship($file->guid,ENLIGHTN_FILTER_ATTACHED,$filter_id);
-                    }
-                    echo elgg_view('enlightn/new_link', array('type' => $file->simpletype, 'link' => $file->filename . '?fetched=1', 'guid' => $file->guid, 'title'=>$file->title));
+            $content        = doc_to_txt($file->getFilenameOnFilestore(),$file->mimetype);
+            if ($content) {
+                $file->annotate(ENLIGHTN_DISCUSSION, $content, $file->access_id);
+            }
+            generate_preview($file->guid);
+            add_to_river('river/object/file/create', 'create', elgg_get_logged_in_user_guid(), $file->guid);
+            if($filter_id > 0) {
+                add_entity_relationship($file->guid,ENLIGHTN_FILTER_ATTACHED,$filter_id);
+            }
+            echo elgg_view('enlightn/new_link', array('type' => $file->simpletype, 'link' => $file->filename . '?fetched=1', 'guid' => $file->guid, 'title'=>$file->title));
 		} else {
           		// failed to save file object - nothing we can do about this
 			register_error(elgg_echo("file:uploadfailed"));

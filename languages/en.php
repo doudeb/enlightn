@@ -48,8 +48,8 @@
 			,'enlightn:title:discussions' => "Discussions"
 			,'enlightn:title:cloud' => "Cloud"
 			,'enlightn:title:directory' => "Directory"
-			,'enlightn:myprofile' => 'My Profil'
-			,'enlightn:editprofile' => 'Edit profil'
+			,'enlightn:myprofile' => 'My Profile'
+			,'enlightn:editprofile' => 'Edit profile'
 			,'enlightn:settings' => 'Settings'
 			,'enlightn:logout' => 'Log out'
 
@@ -83,16 +83,26 @@
 			,'enlightn:tagsfile' => 'Tags'
 			,'enlightn:uploadembed' => 'Upload a document to the discussion'
 			,'enlightn:editmytitle' => 'Edit title'
-                        ,'enlightn:editkeyword' => 'Edit keyword'
-                        ,'enlightn:savedsearch' => 'Saved search'
-                        ,'enlightn:searchmemo' => 'Save your search'
-                        ,'enlightn:prompt:cloudremovesavedsearch' => 'Do you really want to remove this saved search?'
-                        ,'enlightn:prompt:disableentity' => 'Do you really want to remove this?'
-                        ,'enlightn:applyfilter' => 'Apply filter'
-                        ,'enlightn:alllabels' => 'All labels'
-                        ,'enlightn:edit' => 'Edit'
-                        ,'enlightn:close' => 'Close'
-                        ,'enlightn:enterlabelname' => 'Label name'
+            ,'enlightn:editkeyword' => 'Edit keyword'
+            ,'enlightn:savedsearch' => 'Saved search'
+            ,'enlightn:searchmemo' => 'Save your search'
+            ,'enlightn:prompt:cloudremovesavedsearch' => 'Do you really want to remove this saved search?'
+            ,'enlightn:prompt:disableentity' => 'Do you really want to remove this?'
+            ,'enlightn:applyfilter' => 'Apply filter'
+            ,'enlightn:alllabels' => 'All labels'
+            ,'enlightn:edit' => 'Edit'
+            ,'enlightn:close' => 'Close'
+            ,'enlightn:enterlabelname' => 'Label name'
+            ,'enlightn:saved-search' => 'My folders'
+            ,'enlightn:tag-tree' => 'Suggestions'
+            ,'enlightn:addnewfolder' => 'New folder'
+            ,'enlightn:tagtreeheadline' => 'Folder label'
+            ,'enlightn:sharewith' => ' Share with:'
+            ,'enlightn:ischildrenofanothertag' => ' Parent folder:'
+            ,'enlightn:selectprivacy' => ' Public / Private'
+            ,'enlightn:prompt:disablefolder' => 'Do you really want to remove this folder?'
+            ,'enlightn:prompt:includechildrenent' => 'Include sub directory?'
+            ,'enlightn:folderinvitelist' => 'Resquests'
 
 			//HOME - ACTIONS
 			,'enlightn:read' => 'Read'
@@ -159,7 +169,7 @@
 			,'enlightn:viewimage' => 'Enlarge'
 			,'enlightn:downloaddocument' => 'Download'
 			,'enlightn:attachmentlist' => ''
-			,'enlightn:activity:member' => ' has now join the discussion'
+			,'enlightn:activity:member' => ' has joined join the discussion'
 			,'enlightn:activity:membership_request' => ' has received an invite to join a discussion'
 			,'enlightn:forward' => 'Forward parts'
 			,'enlightn:selectparttoforward' => 'Select parts to forward'
@@ -178,7 +188,7 @@
 			,'*' => 'All' //4 characters max please
 			,'enlightn:taball' => 'All'
 			,'enlightn:directory:search' => 'Last name, First name'
-			,'enlightn:seehisprofil' => 'See his profil'
+			,'enlightn:seehisprofil' => 'See his profile'
 			,'enlightn:createanewlist' => '+ Create a new list' //don't forget the "+"
 			,'enlightn:listname' => 'Title' //short text please
 			,'enlightn:privatepublic' => 'private/public'
@@ -208,7 +218,7 @@
 			,'user:password:label' => 'New password'
 			,'user:password2:label' => 'Retype your new password'
 
-			,'enlightn:profile' => 'Modify my profil'
+			,'enlightn:profile' => 'Modify my profile'
 			,'profile:jobtitle' => 'Job title'
 			,'profile:department' => 'Department'
 			,'profile:location' => 'City'
@@ -291,7 +301,7 @@
 			,'uservalidation:email:validate:body' => 'Hi %s,
 
 You have successfully registered to the platform %s.
-To access your profil, please confirm your email following the link below:
+To access your profile, please confirm your email following the link below:
 %s
 
 See you on %s,
@@ -312,7 +322,11 @@ Team Enlightn'
 %s has invited to follow the discussion
 <p><strong>"%s"</strong></p>
 <p><a href="%s"><span class="tag">View discussion</span></a></p>'
-
+            //Invite folder
+			,"enlightn:invite:sharefolder:body" => 'Hi %s,
+%s has invited to follow this folder
+<p><strong>"%s"</strong></p>
+<p><a href="%s"><span class="tag">View your Cloud</span></a></p>'
 	);
 	add_translation("en",$english);
 ?>
