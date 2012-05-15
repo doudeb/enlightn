@@ -249,6 +249,8 @@ img.online {
 }
 
 #header .tabs li {
+	
+	
     border-left:1px solid #000;
     border-right:1px solid #999;
     *border-left:1px solid #999;
@@ -1035,6 +1037,8 @@ button[type="reset"]:active {
     display: inline-block;
     margin-left: 8px;
 }
+
+
 
 /*home message hover and cursor*/
 .msg_home {
@@ -2619,7 +2623,8 @@ li.isShared span.folder {
 }
 
 #invite_button {
-    #float : right;
+    float : right;
+    min-width: 0px;
 }
 
 /*
@@ -5133,6 +5138,7 @@ div.token-input-dropdown-facebook {
     border-right: 0px solid #ccc;
     border-bottom: 0px solid #ccc;
     cursor: default;
+    background-color: #fff;
     z-index: 10000;
 }
 
