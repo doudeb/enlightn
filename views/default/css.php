@@ -5138,7 +5138,6 @@ div.token-input-dropdown-facebook {
     border-right: 0px solid #ccc;
     border-bottom: 0px solid #ccc;
     cursor: default;
-    background-color: #fff;
     z-index: 10000;
 }
 
