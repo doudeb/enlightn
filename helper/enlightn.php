@@ -845,7 +845,7 @@ function create_enlightn_discussion ($user_guid, $access_id,$message, $title,$ta
         $tags = array_merge($new_tags,!is_array($enlightndiscussion->getTags())?array():$enlightndiscussion->getTags());
         $tags = array_unique($tags);
         $enlightndiscussion->tags = $tags;
-        $enlightndiscussion->save();
+        //$enlightndiscussion->save();
 	}
 	// add to river
 	add_to_river('enlightn/river/create','create',$user_guid,$enlightndiscussion->guid,$enlightndiscussion->access_id, 0, $annotationid);

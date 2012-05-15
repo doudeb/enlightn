@@ -28,8 +28,9 @@ $url_invite         = elgg_add_action_tokens_to_url("{$vars['url']}action/enligh
                     <?php
                         if (is_array($tags)) {
                             echo "<p>";
-                            foreach ($tags as $tag) {
+                            foreach ($tags as $key=>$tag) {
                                 echo "<span class='tag'>$tag</span>";
+                                if ($key >= 10) break;
                             }
                             echo "</p>";
                         }

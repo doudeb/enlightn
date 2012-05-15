@@ -889,7 +889,7 @@ $(document).ready(function(){
                             value[key] = 'tag_' + tag_id;
                             $.get('<?php echo elgg_add_action_tokens_to_url("{$vars['url']}mod/enlightn/ajax/get_tag_data.php");?>', {tag_id: tag_id}, function(tag_ent) {
                                 if(tag_ent)  {
-                                    token_elm.tokenInput("add", {id: value[key], name: tag_ent.name, class : 'tag'});
+                                    token_elm.tokenInput("add", {id: value[key], name: tag_ent.name, 'class' : 'tag'});
                                 }
                             },'json');
                         });

@@ -166,7 +166,6 @@
             $('#upload').css('display','block');
             $('#upload').val('');
             $('#tags-result-file').html('');
-            $('#submissionUpload').val('');
             $('#filetitle_preview').html('');
             $('#access_id').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
             $('#filetags').val('');
@@ -190,10 +189,9 @@
                 uploadProgress:
                     function(event, position, total, percentComplete) {
 	                    var percentVal = percentComplete + '%';                        
-	                    bar.width(percentVal)
+	                    bar.width(percentVal);
 	                    percent.html(percentVal);
                 },
-                target: '#submissionUpload',
                 clearForm: true,
                 resetForm: true,
                 success:    function(data) {
@@ -204,7 +202,6 @@
                     $('#filetags').val('');
                     $('#filetitle').val('');
                     $('#file_privacy_cursor');
-                    $('#submissionUpload').val('');
                     $('#upload').val('');
                     $('#tags-result-file').html('');
                     $('#access_id').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
@@ -212,9 +209,10 @@
                     $('#file_privacy_cursor').parent().addClass('private');
                     $('#file_filter_id').val('');
                     $('#selected_filter').html('');
+                    bar.width('0%')
+                    percent.html('0%');
                     <?php if(elgg_get_context() == 'cloud') {?>
                     loadContent("#cloud_content",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php?context=<?php echo elgg_get_context()?>&' + get_search_criteria());
-                    $('#submissionUpload').val('');
                     <?php } else { ?>
                     updateRte(data);
                     <?php } ?>
@@ -225,7 +223,7 @@
             return false;
     });
 	function showLoading () {
-        var form = 'mediaUpload'
+        /*var form = 'mediaUpload'
                 , i = 0;
         while (i <= 100) {
             $.get('/mod/enlightn/ajax/upload_progress.php', {form:form}, function (data) {
@@ -234,7 +232,7 @@
                 i = data;
             }, 'html');
             i = i + 25;
-        }
+        }*/
 		//$('#submissionUpload').html('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
 		return true;
 	}

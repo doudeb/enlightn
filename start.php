@@ -148,7 +148,7 @@ function enlightn_page_handler($page) {
         case "home":
         default:
             elgg_set_context('home');
-			set_input('discussion_type', $page[0]=='home'?ENLIGHTN_ACCESS_PR:$page[0]);
+			set_input('discussion_type', $page[0]=='home'?ENLIGHTN_ACCESS_PU:$page[0]);
 			include(elgg_get_plugins_path() . "enlightn/home.php");
 			break;
 		}
