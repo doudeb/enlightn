@@ -24,6 +24,7 @@
 	} else {
 		$size = 'small';
 	}
+	
 	// Handle
     switch ($mime)
 	{
@@ -35,7 +36,11 @@
 		case 'image/gif' 	:
 		case 'image/bmp' 	:
 			if ($thumbnail) {
-				echo "<img class=\"photo\" src=\"" . URL_DOWNLOAD . $vars['file_guid'] ."\" border=\"0\" />";
+				$readfile = new ElggFile();
+				$readfile->setFilename($thumbnail);
+				$contents = $readfile->grabFile();
+				$contents = base64_encode($contents);
+				echo "<img class=\"photo\" src=\"data:" . $mime . ";base64," . $contents ."\" border=\"0\" />";
 			} else {
 				if (!empty($mime) && elgg_view_exists("file/icon/{$mime}")) {
 					echo elgg_view("file/icon/{$mime}", $vars);

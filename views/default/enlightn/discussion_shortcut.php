@@ -19,6 +19,7 @@ changeShortCutList = function (accessLevel,offset,discussionId) {
         $(location).attr('href','<?php echo $vars['url'] ?>enlightn/' + accessLevel);
         return true;
     }
+	return false;
     currElement 	= $('#discussion_selector_' + accessLevel);
     if($('#loadingShortcut').hasClass('loading')) {
         return false;
@@ -117,12 +118,19 @@ function changeShortCutMenu (task, data, textStatus, XMLHttpRequest) {
 
 $(document).ready(function(){
     loadContent('#discussion_list_container','<?php echo $vars['url'] ?>/mod/enlightn/ajax/search.php'  + get_search_criteria());
+    $("#list_selector li").each(function () {
+    	$(this).removeClass('current');            
+    });
+    $('#discussion_selector_<?php echo $discussion_type ?>').addClass('current');
+    getUnreadedDiscussion();
+    setInterval(function() {getUnreadedDiscussion()}, 7150);
+    /*
     if ($('#discussion_type').val() != '<?php echo ENLIGHTN_ACCESS_AL?>') {
         getUnreadedDiscussion();
        	reloader("<?php echo $vars['url']; ?>mod/enlightn/ajax/search.php", '#discussion_list_container');
         setInterval(function() {getUnreadedDiscussion()}, 7150);
     } else {
         changeShortCutList($('#discussion_type').val(),undefined,<?php echo $vars['discussion_id']?>);
-    }
+    }*/
 });
 </script>

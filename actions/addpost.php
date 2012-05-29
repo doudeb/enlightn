@@ -10,9 +10,8 @@
 gatekeeper();
 global $enlightn,$CONFIG;
 // Get input
-$guid               = (int) get_input('topic_guid');
-$message    		= get_input('new_post',null);
-$discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
+$guid               = (int) get_input('guid');
+$message    		= get_input('content',null);
 $json_return        = array();
 $json_return['success'] = false;
 

@@ -168,6 +168,7 @@
 			,'enlightn:viewvideo' => 'Watch the video'
 			,'enlightn:viewimage' => 'Enlarge'
 			,'enlightn:downloaddocument' => 'Download'
+			,'enlightn:discussionremove' => 'Remove discussion'
 			,'enlightn:attachmentlist' => ''
 			,'enlightn:activity:member' => ' has joined join the discussion'
 			,'enlightn:activity:membership_request' => ' has received an invite to join a discussion'

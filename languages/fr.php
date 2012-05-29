@@ -167,6 +167,7 @@
 			,'enlightn:activity:membership_request' => ' a été invité à rejoindre la discussion'
 			,'enlightn:forward' => 'Faire suivre'
 			,'enlightn:selectparttoforward' => 'Transférer'
+			,'enlightn:discussionremove' => 'Supprimer la discussion'
 			,'enlightn:buttonforward' => 'Valider'
 			,'enlightn:viewcloud' => 'Cloud'
 			,'enlightn:viewdiscussion' => 'Messages'

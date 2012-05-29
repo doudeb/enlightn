@@ -28,17 +28,17 @@
 	define('NOTIFICATION_EMAIL_MESSAGE_FOLLOWED', 'email_message_followed');
 	define('URL_DOWNLOAD', $CONFIG->url . 'enlightn/download/');
 	define('ENLIGHTN_THUMBNAIL', 'link_thumbnail');
-        //email constant
-        define('ENLIGHTN_EMAILMESSAGE_ID', 'email_message_id');
-        define('ENLIGHTN_EMAILINREPLY_TO', 'email_in_reply_to');
-        define('ENLIGHTN_EMAILREFERENCES', 'email_references');
-        define('ENLIGHTN_EXTERNAL_USER', 'external_user');
-        #regexp patern
+    //email constant
+    define('ENLIGHTN_EMAILMESSAGE_ID', 'email_message_id');
+    define('ENLIGHTN_EMAILINREPLY_TO', 'email_in_reply_to');
+    define('ENLIGHTN_EMAILREFERENCES', 'email_references');
+    define('ENLIGHTN_EXTERNAL_USER', 'external_user');
+    #regexp patern
 	define('REG_LINK', '(https|file|ftp|http)+(://|/)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))');
-	define('REG_LINK_IN_MESSAGE', "#\b" . REG_LINK . "+(\s|\n|$|\r|\t|</p>|<br/>|<br>|<p/>)#");
+	define('REG_LINK_IN_MESSAGE', "#\b" . REG_LINK . "+(\s|\n|$|\r|\t|</p>|</li>|<br/>|<br>|<p/>)#");
 	define('REG_HREF', "/<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>/siU");
-        #bins
-        define('PATH_TO_TREETAGGER','/usr/local/bin/treetagger/cmd/');
-        define('PATH_TO_TMP','/tmp/');
+    #bins
+    define('PATH_TO_TREETAGGER','/usr/local/bin/treetagger/cmd/');
+    define('PATH_TO_TMP','/tmp/');
 
-        $sn_linkers = array('skype','linkedin','twitter','viadeo','facebook','google','flickr','youtube','vimeo','myspace','netvibes');
+    $sn_linkers = array('skype','linkedin','twitter','viadeo','facebook','google','flickr','youtube','vimeo','myspace','netvibes');

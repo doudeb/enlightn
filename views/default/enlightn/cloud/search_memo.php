@@ -37,12 +37,15 @@ $current                = 'saved-search';
         <p><span class="ico private-ico" title="<?php echo elgg_echo("enlightn:privatepublic"); ?>"></span><?php echo elgg_echo("enlightn:selectprivacy")?></p>
         <?php }?>
         <p><input type="checkbox" id="shareWith"><?php echo elgg_echo("enlightn:sharewith")?></p>
-        <p id="shareWithInput"><?php echo elgg_view("enlightn/helper/adduser",array(
+        <p id="shareWithInput">
+        	<?php echo elgg_view("enlightn/helper/adduser",array(
                                                                     'placeholder' => elgg_echo('enlightn:fromuser'),
                                                                     'name' => 'invite_users',
                                                                     'id' => 'invite_users',
                                                                     'unique_id' => 'invite_users',
-                                                                    )); ?></p>
+                                                                    )); ?>
+             <p>&nbsp;</p>
+        </p>
         <p><input type="checkbox" id="isChildrenOf"><?php echo elgg_echo("enlightn:ischildrenofanothertag")?><span id="selectedParent"></span></p>
         <p><ul id="isChildrenOfSelect" class="isChildrenOfSelect"></ul></p>
         <p class="submit">

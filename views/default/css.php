@@ -78,7 +78,7 @@ input, textarea {
 #feed .actions,
 #feed .actions ul li:hover,
 #feed .more,
-form .privacy .value,
+.privacy .value,
 .textarea .toolbar li,
 input[type=submit],
 button.submit,
@@ -524,7 +524,7 @@ img.online {
     overflow: hidden;
 }
 
-form .privacy {
+.privacy {
     border:1px solid #8fad15;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
@@ -535,7 +535,7 @@ form .privacy {
     float : left;
 }
 
-form .privacy .value {
+.privacy .value {
     background-color:#bbdc03;
     background-position:0 -451px;
     color:#fff;
@@ -549,7 +549,7 @@ form .privacy .value {
 }
 
 
-form .private .value {
+.private .value {
     background-image:none;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E20780', endColorstr='#F973BC');
 	background: -webkit-gradient(linear, left top, left bottom, from(#E20780), to(#F973BC));
@@ -557,15 +557,15 @@ form .private .value {
 }
 
 
-form .privacy .private-val, form .private .public-val {
+.privacy .private-val,.private .public-val {
     display:none;
 }
 
-form .private .private-val {
+.private .private-val {
     display:block;
 }
 
-form .private .private-val .ico {
+.private .private-val .ico {
     background-position: -104px -151px;
     display: inline-block;
     height: 14px;
@@ -574,7 +574,7 @@ form .private .private-val .ico {
     width: 11px;
 }
 
-form .privacy .cursor {
+.privacy .cursor {
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     -khtml-border-radius:5px;
@@ -596,9 +596,9 @@ form .privacy .cursor {
     width: 40px;
 }
 
-form .title,
+#new-discussion .title,
 .textarea,
-form .dest ul {
+#new-discussion .dest ul {
     background-color:#fff;
     border:1px solid #ccc;
     -moz-border-radius:5px;
@@ -610,7 +610,7 @@ form .dest ul {
     padding:7px 9px;
 }
 
-form .title {
+#new-discussion .title {
     width: 600px;
     margin-bottom : 10px;
 }
@@ -619,7 +619,7 @@ form .title {
     height:85px;
 }
 
-form .dest ul {
+#new-discussion .dest ul {
     padding:1px 9px;
 }
 
@@ -726,19 +726,19 @@ form .dest ul {
     width: 150px;
 }
 
-form .dest {
+#new-discussion .dest {
     vertical-align : middle;
     display : inline-block;
     #float:left;
     #display: block;
 }
-form .dest input,
-form .dest ul {
+#new-discussion .dest input,
+#new-discussion .dest ul {
     width: 453px;
     height : 28px;
     #border : 0px;
 }
-form .dest li {
+#new-discussion .dest li {
     #padding : 0px;
 }
 
@@ -746,12 +746,15 @@ form label {
     margin : 0px 0px 10px 10px;
 }
 
-form .tags {
+#new-discussion .tags {
     margin-top : 10px;
     clear : left;
 }
 
-form .user_suggest {
+#user_suggest {
+	display : none;
+}
+#new-discussion .user_suggest {
     margin : 0 2px 0 0;
     color:#2d87e1;
     cursor : pointer;
@@ -815,11 +818,11 @@ form .user_suggest {
     text-align: right;
 }
 
-form .sending .checkbox {
+#new-discussion .sending .checkbox {
     vertical-align: middle;
 }
 
-form .sending .reply {
+#new-discussion .sending .reply {
     background-position: -228px -152px;
     display: inline-block;
     height: 15px;
@@ -2377,8 +2380,7 @@ li.isShared span.folder {
     background-position: -372px -215px;
 }
 
-#fileFilterTree span.title,
-.title {
+#fileFilterTree span.title {
     height: 16px;
     margin-left: 3px;
     border : 0px;
@@ -2466,7 +2468,6 @@ li.isShared span.folder {
 #fileFilterTree span.close {
     display:none;
 }
-
 
 #addtotreeinput p {
     margin : 5px;
@@ -3286,7 +3287,9 @@ li.isShared span.folder {
     color : #2c75e2;
 }
 
-
+#uploader h2 {
+    width: 400px;
+}
 /** LOGIN **/
 
 #login {

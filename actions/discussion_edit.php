@@ -6,11 +6,11 @@ if (!isloggedin()) forward();
 global $enlightn;
 // Get input data
 $title 				= strip_tags(get_input('title'));
-$message 			= get_input('description',null);
+$message 			= get_input('content',null);
 $tags 				= get_input('tags');
-$access_id 			= get_input('membership');
+$access_id 			= get_input('access_id');
 $user_guid			= elgg_get_logged_in_user_guid(); // you need to be logged in to comment on a group forum
-$userto 			= get_input('invite');
+$userto 			= get_input('to');
 $cloned_ids			= get_input('cloned_ids');
 $discussion_subtype = get_input('discussion_subtype', ENLIGHTN_DISCUSSION);
 $json_return        = array();

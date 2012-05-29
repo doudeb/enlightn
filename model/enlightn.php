@@ -51,6 +51,7 @@ Order By e.time_created desc";
         $where[]= elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null)?elgg_get_entity_type_subtype_where_sql('ent', 'object', array(ENLIGHTN_DISCUSSION/*,'file'*/), null):1;
 
         $where[]= "And ent.site_guid = " . $this->site_guid;
+        $where[]= "And ent.enabled = 'yes'";
         $order[] = "ent.time_updated Desc";
 		#Access
 		switch ($access_level) {

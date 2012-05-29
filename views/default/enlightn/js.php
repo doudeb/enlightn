@@ -363,8 +363,7 @@ $(document).ready(function(){
                     $.get('<?php echo "{$vars['url']}mod/enlightn/ajax/get_user_by_tags.php";?>', {tags: $('#tags').val()}, function(data) {
                         if (data) {
                             user_elm = $('#user_suggest');
-                            user_elm.html('');
-                            user_elm.append('<?php echo elgg_echo('enlightn:discussionusersuggest')?> :');
+                            user_elm.css('display','block');
                             $.each(data, function(user_guid, user_name){
                                 if (elgg.session.user.guid != user_guid
                                     && $('input[name="invite"]').val().indexOf(user_guid) == -1) {
@@ -576,19 +575,23 @@ $(document).ready(function(){
 	$('.status-box').click( function(){
         showNewDiscussionBox();
 	});
-	    var options = {
-	        target:        '#new-discussion-submission',   // target element(s) to be updated with server response
-	        beforeSubmit:  loading,  // pre-submit callback
-	        success:       autoClose,  // post-submit callback
-            type:      'post',        // 'get' or 'post', override for form's 'method' attribute
-	        dataType:  'json'
-	    };
-
-	    // bind to the form's submit event
-	    $('#discussion_edit').submit(function() {
-	        $(this).ajaxSubmit(options);
-	        return false;
-	    });
+	$('#new-discussion button[type=submit]').click( function () {
+			var url = '/action/enlightn/edit?__elgg_ts=' + elgg.security.token.__elgg_ts + '&__elgg_token=' + elgg.security.token.__elgg_token
+				, content = $(".rte-zone").contents().find(".frameBody")
+				, title = $('#title').val()
+				, access_id = $('#membership').val()
+				, tags = $('#tags').val()
+				, to = $('#new-discussion input:text[name=invite]').val();
+			$('#new-discussion-submission').prepend('<img src="<?php echo $vars['url'] ?>/mod/enlightn/media/graphics/loading.gif" alt="loading">');
+			$.post(url,{title:title
+						,content:content.html()
+						,access_id:access_id
+						,tags:tags
+						,to:to
+						},function(data) {
+				autoClose(data);
+			},'json');
+		});
 	});
 
 	function loading () {
@@ -601,7 +604,7 @@ $(document).ready(function(){
             $(".rte-zone").contents().find(".frameBody").html('');
             $("#new-discussion .textarea").css('height','185');
        		$(".rte-zone").contents().find(".frameBody").css('height','185');
-            tokenInputName = $('#discussion_edit input:text[name=invite]').attr('id');
+            tokenInputName = $('#new-discussion input:text[name=invite]').attr('id');
             $('#new-discussion-submission').html('');
             $('#clonedMessages').html('');
             $('#' + tokenInputName).tokenInput("clear");
@@ -611,6 +614,7 @@ $(document).ready(function(){
             $(".dialog-overlay").css('display','none');
             $('#user_suggest').html('');
             $('#tags-result .tags').html('');
+            $('#title').val('');
             if ($('#forwardActionButton').css('display') === 'block') {
                 showHideForward();
             } else {
@@ -637,8 +641,9 @@ $(document).ready(function(){
         }
        	$('button:[type="reset"] ').click( function(){
             $('#new-discussion').removeClass('open');
+            $(".dialog-overlay").css('display','none');
             $(".rte-zone").contents().find(".frameBody").html('');
-            tokenInputName = $('#discussion_edit input:text[name=invite]').attr('id');
+            tokenInputName = $('#new-discussion input:text[name=invite]').attr('id');
             $('#new-discussion-submission').html('');
             $('#' + tokenInputName).tokenInput("clear");
             $('#privacy_cursor').parent().removeClass('public');
@@ -646,9 +651,9 @@ $(document).ready(function(){
             $('#membership').val(<?php echo ENLIGHTN_ACCESS_PRIVATE?>);
             $('#clonedMessages').html('');
             $('#tags-result').html('');
-            $(".dialog-overlay").css('display','none');
             $('#user_suggest').html('');
             $('#tags-result .tags').html('');
+            $('#title').val('');
         });
     }
 
@@ -660,7 +665,7 @@ $(document).ready(function(){
     function updateRte (content) {
         elm = $(".rte-zone").contents().find(".frameBody");
         if (elm) {
-            elm.html(elm.html() + "<br/>" + content + "<br/><br/>");
+            elm.html(elm.html() + "<p>" + content + "<p>");
         }
     }
     function faceboxClose () {

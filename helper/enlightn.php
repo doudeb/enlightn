@@ -424,7 +424,6 @@ function create_embeded_entities ($message,$entity) {
 				}
 				$guid = false;
 				$new_message['guids'][] = $file->guid;
-				//add_entity_relationship($file->guid,ENLIGHTN_EMBEDED,$entity->guid);
 			}
 
 		}

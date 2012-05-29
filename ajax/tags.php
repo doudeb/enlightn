@@ -17,7 +17,7 @@ $tags_found = false;
 $tags_found[++$i]['id'] 	= $tag;
 $tags_found[$i]['class'] 	= 'text';
 $tags_found[$i]['name'] 	= $tag;
-$tags_found[$i]['count']        = 'Free search';
+$tags_found[$i]['count']    = 'Free search';
 
 
 $results = $enlightn->get_tags(false, $tag, false, 3);

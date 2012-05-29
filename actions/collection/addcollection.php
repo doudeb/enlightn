@@ -10,7 +10,7 @@ $collection_name 		= get_input('listName');
 $friends 				= get_input('userIds');
 $owner_guid				= get_input('isPrivate')=='true'?elgg_get_logged_in_user_guid():'-1';
 
-if (!$collection_name) {
+if (!$collection_name || !is_array($friends)) {
 	register_error(elgg_echo("friends:nocollectionname"));
 	//forward(REFERER);
 }
