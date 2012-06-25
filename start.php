@@ -52,6 +52,9 @@ function enlightn_init() {
     elgg_register_action("enlightn/removeObject",$action_path . "removeObject.php");
     // Register entity type
     elgg_register_entity_type('object',ENLIGHTN_DISCUSSION);
+    // register css
+    elgg_register_external_file('css','discuss',$CONFIG->url . 'mod/enlightn/media/css/discuss.css','head');
+    //elgg_register_external_file('js','discuss',$CONFIG->url . 'mod/enlightn/media/js/discuss.js','head');
     // Load profile settings
     $profile_settings = get_profile_settings();
     if (!empty($profile_settings['timezone'])) {
@@ -67,6 +70,7 @@ function enlightn_init() {
     elgg_register_event_handler('login', 'user','enlightn_verify_user_site_guid');
     // do we need to overrule default email notifications
     register_notification_handler("email", "html_email_handler_notification_handler");
+    elgg_register_plugin_hook_handler('rest', 'init', 'enlightn_api_set_site_id');
     verify_last_forward();
 
 }
@@ -104,6 +108,11 @@ function enlightn_page_handler($page) {
 			set_input('entity_guid', $page[1]);
 			elgg_set_context('discuss');
 			include(elgg_get_plugins_path() . "enlightn/discuss.php");
+			break;
+ 		case "discussV2":
+			set_input('entity_guid', $page[1]);
+			elgg_set_context('discuss');
+			include(elgg_get_plugins_path() . "enlightn/discussV2.php");
 			break;
 		case "cloud":
 			elgg_set_context('cloud');
@@ -184,4 +193,33 @@ function enlightn_verify_user_site_guid($login, $user, ElggUser $user) {
         return true;
     }
     return false;
+}
+
+function enlightn_api_set_site_id () {
+	global $CONFIG;
+	elgg_unregister_event_handler('login', 'user','enlightn_verify_user_site_guid');
+	$method = get_input('method');
+	$token = get_input('auth_token');
+	if ($method == 'auth.gettoken') {
+		$username = get_input('username');
+		$password = get_input('password');
+		if (elgg_authenticate($username, $password)) {
+			$user_ent = get_user_by_username($username);
+		} else {
+			return false;
+		}
+	} elseif (isset($token)) {
+		$time = time();
+		$user_session = get_data_row("SELECT * from {$CONFIG->dbprefix}users_apisessions
+										where token='$token' And $time < expires");
+		$user_guid = validate_user_token($token, $user_session->site_guid);
+		$user_ent = get_entity($user_guid);
+		// user token can also be used for user authentication
+		register_pam_handler('pam_auth_usertoken');
+	}
+	if (isset($user_ent->site_guid)) {
+		$CONFIG->site_guid = $CONFIG->site_id = $user_ent->site_guid;
+		return true;
+	}
+	return false;
 }

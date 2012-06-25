@@ -81,14 +81,14 @@ if ($nb_results > 0) {
 			if(!$flag_readed) {
 				add_entity_relationship($user_guid, ENLIGHTN_QUEUE_READED,$topic->id);
 			}
-            echo elgg_view("enlightn/topic_activities",array('entity' => $topic
-														, 'activities' => $topic_activities));
-            echo elgg_view("enlightn/topicpost",array('entity' => $topic
+            /*echo elgg_view("enlightn/topic_activities",array('entity' => $topic
+														, 'activities' => $topic_activities));*/
+            echo elgg_view("enlightn/discussion/message",array('entity' => $topic
 		    											, 'query' => $words
 		    											, 'flag_readed' => $flag_readed));
             if ($key + $offset + 1 === $total_results) {
-                echo elgg_view("enlightn/topic_activities",array('entity' => $topic
-														, 'activities' => $discussion_activities));
+                /*echo elgg_view("enlightn/topic_activities",array('entity' => $topic
+														, 'activities' => $discussion_activities));*/
             }
 		} else {
 			echo  elgg_view("enlightn/discussion_short", array('entity' => $topic

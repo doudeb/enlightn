@@ -76,16 +76,6 @@ $url_invite         = elgg_add_action_tokens_to_url("{$vars['url']}action/enligh
                 <span class="toggle ico"></span>
             </div>
 <script>
-	$("#invite_button").click( function(){
-        loadContent($('#loader'),'<?php echo $url_invite?>&invite='+$('input[name="invite_to_folow"]').val());
-        $('#invite-form').toggle();
-        $('#invite-form').toggleClass('add-form');
-    });
-    $('#invite').click(function () {
-        $('#invite-form').toggleClass('add-form');
-        $('#invite-form').toggle();
-    });
-
 		$("#favorite<?php echo $post->guid; ?>").click( function(){
 			if ($("#detail").hasClass("starred")) {
 				$("#detail").removeClass("starred");

@@ -156,6 +156,7 @@
             $content        = doc_to_txt($file->getFilenameOnFilestore(),$file->mimetype);
             if ($content) {
                 $file->annotate(ENLIGHTN_DISCUSSION, $content, $file->access_id);
+                $file->save();
             }
             generate_preview($file->guid);
             add_to_river('river/object/file/create', 'create', elgg_get_logged_in_user_guid(), $file->guid);

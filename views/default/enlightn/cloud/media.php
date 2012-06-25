@@ -157,15 +157,86 @@ $(function() {
                     $(document).unbind('mouseup');
                 })
         });
+        $('#cloud_mini').click(function(){
+            $(this).toggleClass('list_active');
+            $('#cloud_full').toggleClass('thumbs_active');
+            $('#list_limit').val('20');
+            loadContent("#cloud",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>&view_type=list&guid='  + $('#guid').val());
+            return false;
+        });
+
+        $('#cloud_full').click(function(){
+            $('#list_limit').val('100');
+            $(this).toggleClass('thumbs_active');
+            $('#cloud_mini').toggleClass('list_active');
+            loadContent("#cloud",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>&view_type=thumbs&guid='  + $('#guid').val());
+            return false;
+        });
+// cloud thumbs
+	(function (){
+		$('#cloud .see_more').each(function (){
+			var button = $(this), content = button.next(), hidden = true;
+
+			button.click(function (){
+				if(hidden) {
+					button.html('-');
+					content.show();
+					hidden = false;
+				}
+				else {
+					button.html('+');
+					content.hide();
+					hidden = true;
+				}
+
+				return false;
+			});
+		});
+	})();
+});
+$(document).ready(function(){
+	$(".prev").click(function(){
+		if ($('#see_more_discussion_list_offset').val() > 0) {
+			$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())-parseInt($('#list_limit').val()));
+            loadContent("#cloud",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>&view_type=<?php echo get_input('view_type','list')?>&guid='  + $('#guid').val());
+		}
+	  	return false;
+	});
+	$(".next").click(function(){
+		$('#see_more_discussion_list_offset').val(parseInt($('#see_more_discussion_list_offset').val())+parseInt($('#list_limit').val()));
+  		loadContent("#cloud",'<?php echo $vars['url'] ?>mod/enlightn/ajax/get_my_cloud.php' + get_search_criteria() + '&context=<?php echo elgg_get_context()?>&view_type=<?php echo get_input('view_type','list')?>&guid='  + $('#guid').val());
+	  	return false;
+	});
 });
 
-
 </script>
+                            <input type="hidden" name="see_more_discussion_list_offset" id="see_more_discussion_list_offset" value="<?php echo get_input('offset',0)?>">
+                            <input type="hidden" name="list_limit" id="list_limit" value="20">
+                            <div class="pagination">
+                                <p class="pages"> <a id="offset"></a> - <a id="limit"></a> <?php echo elgg_echo('on') ?> <a id="found-rows"></a> </p>
+									<p>
+										<a href="#" class="prev"> « <?php echo elgg_echo("enlightn:previous")?> </a>
+										<a href="#" class="next"> <?php echo elgg_echo("enlightn:next")?> » </a>
+									</p>
+								</div>
+
+								<div class="controls">
+									<p class="left"></p>
+
+									<p class="right">
+										<a href="#cloud_list" class="list<?php echo (get_input('view_type','list') == 'list'?' list_active active':'')?>" id="cloud_mini"> list </a>
+										<a href="#cloud_thumbs" class="thumbs<?php echo (get_input('view_type','list') == 'thumbs'?' thumbs_active active':'')?>" id="cloud_full"> thumbs </a>
+									</p>
+								</div>
+
+								<div class="display">
+
+									<ul id="<?php echo (get_input('view_type','list') == 'list'?'cloud_list':'cloud_thumbs')?>">
 <?php
 	$context    = elgg_get_context();
 	$entities   = $vars['entities'];
 	if (is_array($entities) && !empty($entities)) {
-		foreach($entities as $entity) {
+		foreach($entities as $key=>$entity) {
 			if ($entity instanceof ElggEntity) {
 				$mime = $entity->mimetype;
 				$enttype = $entity->getType();
@@ -178,7 +249,7 @@ $(function() {
 				$content = htmlentities($content, ENT_COMPAT, "UTF-8");
 
 				if ($entity instanceof ElggObject) { $title = $entity->title; $mime = $entity->mimetype; } else { $title = $entity->name; $mime = ''; }
-				$entview = elgg_view("enlightn/cloud/embedlist",array('entity' => $entity, 'embeder_content'=>$content));
+				$entview = elgg_view("enlightn/cloud/embedlist",array('entity' => $entity, 'embeder_content'=>$content, 'key'=>$key));
 				echo $entview;
 
 			}
@@ -186,3 +257,5 @@ $(function() {
 	}
 
 ?>
+                                    </ul>
+                                </div>

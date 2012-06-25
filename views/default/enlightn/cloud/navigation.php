@@ -9,14 +9,12 @@
 	        <h2><?php echo elgg_echo('enlightn:cloudmain');?></h2>
                 <p><?php echo elgg_echo('enlightn:cloudheadline');?></p>
 	    </div>
-		<input type="hidden" name="see_more_discussion_list_offset" id="see_more_discussion_list_offset" value="0">
-		<input type="hidden" name="list_limit" id="list_limit" value="20">
 		<div id="feed" class="cloud_listing">
             <div class="search-memo">
                 <span class="ico railsMenu home"></span>
                 <ul class="railsMenu" id="railsMenu"></ul>
             </div>
-            <div class="actions">
+            <!--<div class="actions">
                 <ul class="right">
                     <li><a href="" id="cloud_next"><?php echo elgg_echo("enlightn:next")?></a></li>
                     <li><a href="" id="cloud_previous"><?php echo elgg_echo("enlightn:previous")?></a></li>
@@ -28,7 +26,7 @@
                     <li><span class="change-full ico" id="cloud_full">cloud_full</span></li>
                     <li><span class="change-mini ico selected" id="cloud_mini">cloud_mini</span></li>
                 </ul>
-            </div>
+            </div>-->
 			<?php echo elgg_view('enlightn/cloud/cloud_content',array('internal_id' => $internal_id));?>
 		</div>
 <script>

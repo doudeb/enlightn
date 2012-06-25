@@ -249,8 +249,8 @@ img.online {
 }
 
 #header .tabs li {
-	
-	
+
+
     border-left:1px solid #000;
     border-right:1px solid #999;
     *border-left:1px solid #999;

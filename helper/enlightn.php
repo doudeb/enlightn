@@ -880,14 +880,14 @@ function add_folowers ($userto,$ent) {
         }
         switch ($subtype_txt) {
             case ENLIGHTN_FILTER:
-                $title_tmpl = elgg_echo('enlightn:invite:subject',$usertoid->language);
-                $subject_tmpl = elgg_echo("enlightn:invite:sharefolder:body",$usertoid->language);
+                $title_tmpl = elgg_echo('enlightn:invite:subject',array(),$usertoid->language);
+                $subject_tmpl = elgg_echo("enlightn:invite:sharefolder:body",array(),$usertoid->language);
                 $url = "{$CONFIG->url}enlightn/cloud/";
                 break;
             case ENLIGHTN_DISCUSSION:
             default:
-                $title_tmpl = elgg_echo('enlightn:invite:subject',$usertoid->language);
-                $subject_tmpl = elgg_echo('enlightn:invite:body',$usertoid->language);
+                $title_tmpl = elgg_echo('enlightn:invite:subject',array(),$usertoid->language);
+                $subject_tmpl = elgg_echo('enlightn:invite:body',array(),$usertoid->language);
                 $url = "{$CONFIG->url}enlightn/discuss/" . $ent->guid;
                 break;
         }
@@ -1293,9 +1293,10 @@ function doc_to_txt ($file_path, $mime_type) {
         case 'text/rtf':
         case 'text/xml':
             $handle              = popen("abiword --plugin AbiCommand 2>&1", "w");
-            fwrite($handle, "converttotext \"". $file_path . "\" \"$converted_file\" \n");
-            sleep(3);
-            pclose($handler);
+            fwrite($handle, "server /tmp/abiword_errors \n");
+            fwrite($handle, "load \"". $file_path . "\" \n");
+            fwrite($handle, "save \"$converted_file\" \n");
+            pclose($handle);
             break;
         case 'txt':
         case 'txt/csv':
@@ -1329,7 +1330,7 @@ function doc_to_txt ($file_path, $mime_type) {
     }
     if(file_exists($converted_file) && !$text) {
         $text                   = file_get_contents($converted_file);
-        unlink($converted_file);
+        //unlink($converted_file);
     }
     return $text;
 }
@@ -1491,3 +1492,25 @@ if ( ! function_exists('glob_recursive'))
      }
      return $label_children;
  }
+
+
+ function get_labels_test_ws ($mode,$children_guid = false) {
+ 	$labels = get_labels($mode,$children_guid = false);
+ 	$aLabel = array();
+ 	foreach ($labels as $key => $value) {
+ 		$aLabel[$value->guid] = array('title' => $value->title
+ 										, 'parentGuid' => (int)$value->container_guid);
+ 	}
+ 	return $aLabel;
+ }
+
+ expose_function("enlightn.getLabels",
+					 "get_labels_test_ws",
+					 array("mode" => array('type' => 'string')
+					 		,"childrenGuid" => array('type' => 'int'
+					 									, 'required' => false )),
+					 'A testing method which echos back a string',
+					 'GET',
+					 false,
+					 true
+ );

@@ -1,9 +1,9 @@
 <?php
 include_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 
-
 //Some basic var
 gatekeeper();
+elgg_load_css('discuss');
 global $enlightn;
 $user_guid 				= elgg_get_logged_in_user_guid();
 $user_ent				= get_user($user_guid);

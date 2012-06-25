@@ -10,7 +10,7 @@
 	global $CONFIG;
 
 	$mime = $vars['mimetype'];
-
+    $class = isset($vars['class'])?$vars['class']:'photo';
 	// is this request for an image thumbnail
 	if (isset($vars['thumbnail'])) {
 		$thumbnail = $vars['thumbnail'];
@@ -24,7 +24,7 @@
 	} else {
 		$size = 'small';
 	}
-	
+
 	// Handle
     switch ($mime)
 	{
@@ -47,7 +47,7 @@
 				} else if (!empty($mime) && elgg_view_exists("file/icon/" . substr($mime,0,strpos($mime,'/')) . "/default")) {
 					echo elgg_view("file/icon/" . substr($mime,0,strpos($mime,'/')) . "/default", $vars);
 				} else {
-					echo "<img src=\"". elgg_view('file/icon/default',$vars) ."\" border=\"0\" class=\"thumb-photo\"/>";
+					echo "<img src=\"". elgg_view('file/icon/default',$vars) ."\" border=\"0\" class=\"$class\"/>";
 				}
 			}
 
@@ -56,9 +56,9 @@
         case 'link/image'   :
             $is_document = preg_match("/\.(doc|xls|pdf|csv|txt|php)$/i", $thumbnail);
             if ($thumbnail && !$is_document) {
-				echo "<img class=\"photo\" src=\"" . $thumbnail ."\" border=\"0\" />";
+				echo "<img class=\"$class\" src=\"" . $thumbnail ."\" border=\"0\" />";
 			} else {
-				echo "<img class=\"photo\" src=\"". $vars['url'] ."mod/enlightn/media/graphics/link.jpg\" border=\"0\" />";
+				echo "<img class=\"$class\" src=\"". $vars['url'] ."mod/enlightn/media/graphics/link.jpg\" border=\"0\" />";
 			}
         break;
 		default :
@@ -106,7 +106,7 @@
                 }
 
                 $url = $vars['url'] . "mod/file/graphics/icons/{$type}{$ext}.gif";
-                echo "<img class=\"photo\" src=\"" . $url ."\" border=\"0\" />";
+                echo "<img class=\"$class\" src=\"" . $url ."\" border=\"0\" />";
 		break;
 	}
 

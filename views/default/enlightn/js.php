@@ -94,8 +94,18 @@ function loadResults (task, data, textStatus, XMLHttpRequest) {
     }
     if (typeof foundRows != 'undefined') {
         $('#found-rows').html(foundRows);
-        $('#offset').html(parseInt($('#see_more_discussion_list_offset').val()) + 1);
-        $('#limit').html(parseInt($('#see_more_discussion_list_offset').val()) + parseInt($('#list_limit').val()));
+        if (typeof $('#see_more_discussion_list_offset').val() === undefined) {
+            $('#offset').html(parseInt($('#see_more_discussion_list_offset').val()) + 1);
+        } else {
+            $('#offset').html(0);
+            $('#see_more_discussion_list_offset').val(0);
+        }
+        if (typeof $('#list_limit').val() === undefined) {
+            $('#limit').html(parseInt($('#see_more_discussion_list_offset').val()) + parseInt($('#list_limit').val()));
+        } else {
+            $('#limit').html(20);
+            $('#list_limit').val(20);
+        }
     }
 }
 
@@ -446,12 +456,6 @@ $(document).ready(function(){
 		});
 		$('#subtype_checked').val(items_checked.join("','"));
 	});
-    $('#viewDiscussionCloud').click( function(){
-       $('#discussion_list_container').attr('id','cloud_content');
-       loadContent('#cloud_content','<?php echo $vars['url'] ?>/mod/enlightn/ajax/get_my_cloud.php?limit=100&guid='  + $('#entity_guid').val());
-       $('#viewDiscussion').toggleClass('current');
-       $(this).toggleClass('current');
-    });
     $('#viewDiscussion').click( function(){
         $('#cloud_content').html('');
         $('#cloud_content').attr('id','discussion_list_container');
