@@ -274,7 +274,7 @@ function get_search_criteria (fromLink) {
 			discussion_type = $('#discussion_type').val();
 		}
 
-        if (currElement != '#discussion_selector_sent') {
+        if (currElement == '#discussion_selector_sent') {
             $('input[name="from_users"]').val('');
         }
 

@@ -46,8 +46,8 @@ foreach($followers as $follower) {
     // Send email
     if ($follower->{"notification:method:".NOTIFICATION_EMAIL_MESSAGE_FOLLOWED} == '1' && $follower->guid != $user->guid) {
         notify_user($follower->guid, $user_guid,
-                sprintf(elgg_echo('enlightn:newmessage:subject',$follower->language), $enlightndiscussion->title),
-                sprintf(elgg_echo('enlightn:newmessage:body',$follower->language), $follower->name, $user_ent->name, $enlightndiscussion->title,$content, $url),
+                sprintf(elgg_echo('enlightn:newmessage:subject',array(),$follower->language), $enlightndiscussion->title),
+                sprintf(elgg_echo('enlightn:newmessage:body',array(),$follower->language), $follower->name, $user_ent->name, $enlightndiscussion->title,$content, $url),
                 NULL);
     }
 }
